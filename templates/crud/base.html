@@ -1,0 +1,150 @@
+{% load static %}{% csrf_token %}
+<html lang="ja">
+	<head>
+		<meta charset='utf-8' />       
+		<link rel="stylesheet" href="{% static '\css\style.css' %}">
+		<!-- Datepicker 追加-->
+		<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script> -->
+		<script src="{% static '\js\script.js' %}"></script>
+ 		<title>カノン販売管理システム</title>
+	</head>
+	<body>
+		<div class="fds-page-table-list">
+		<div class="fds-three-pane__side-nav">
+		    <div class="fds-three-pane__top">
+      			<div class="fds-header">
+        			<div class="fds-header__title">
+          				<span class="fds-header__title-text">
+            			カノン販売管理システム
+          				</span>
+        			</div>
+			        <div class="fds-header__ctrl">
+          				<div class="fds-header__item">
+							{% if user.is_authenticated %}
+								<span><a href="{% url 'logout' %}">{{ user.first_name|add:user.last_name }} </a></span>
+	        	    		{% else %}
+								<span><a href="{% url 'login' %}">ログイン</a></span>
+							{% endif %}
+				            </ul>
+			          	</div>
+ 			     	</div>
+    			</div>
+				<div class="fds-three-pane-left">
+					<div class="fds-drawer" id="fds-drawer">
+						<div class="fds-drawer__block fds-drawer__block--ctrl">
+						</div>
+						<div class="fds-drawer__block">
+							<div class="fds-drawer__block-title">
+								<span class="fds-drawer__block-title-text">受発注業務</span>
+							</div>
+						</div>
+						<div class="fds-drawer__block fds-drawer__block--hoverble">
+							<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:orderinglist' %}">受発注一覧</a></span>
+							</div>
+						</div>
+						<div class="fds-drawer__block fds-drawer__block--hoverble">
+							<div class="fds-drawer__block-text">
+								<span class="fds-icon fds-icon--folder-blue"></span>
+								<span class="fds-drawer__block-text-text"><a href="#">製品受発注一覧</a></span>
+							</div>
+						</div>
+						<div class="fds-drawer__block fds-drawer__block--hoverble">
+							<div class="fds-drawer__block-text">
+								<span class="fds-icon fds-icon--folder-blue"></span>
+								<span class="fds-drawer__block-text-text">メニュータイトル</span>
+							</div>
+						</div>
+						<div class="fds-drawer__block fds-drawer__block--hoverble">
+							<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text">メニュータイトル</span>
+							</div>
+						</div>
+						<div class="fds-drawer__block">
+							<div class="fds-drawer__block-title">
+								<span class="fds-drawer__block-text-text">カテゴリータイトル</span>
+							</div>
+						</div>
+						<div class="fds-drawer__block fds-drawer__block--hoverble">
+							<div class="fds-drawer__block-text">
+								<span class="fds-icon fds-icon--folder-blue"></span>
+								<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:pdftest' %}">PDF出力テスト</a></span>
+							</div>
+						</div>
+						<div class="fds-drawer__block fds-drawer__block--hoverble">
+							<div class="fds-drawer__block-text">
+								<span class="fds-icon fds-icon--folder-blue"></span>
+								<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:uploadtest' %}">UPLOADテスト</a></span>
+							</div>
+						</div>
+						<div class="fds-drawer__block fds-drawer__block--hoverble">
+							<div class="fds-drawer__block-text">
+								<span class="fds-icon fds-icon--folder-blue"></span>
+								<span class="fds-drawer__block-text-text">メニュータイトル</span>
+							</div>
+						</div>
+
+						<div class="fds-drawer__block">
+						<div class="fds-drawer__block-title">
+							<span class="fds-drawer__block-text-text">ユーザー管理</span>
+						</div>
+					</div>
+					{% if user.is_superuser %}
+					<div class="fds-drawer__block fds-drawer__block--hoverble">
+						<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:signup' %}">アカウント登録</a></span>
+						</div>
+					</div>
+					<div class="fds-drawer__block fds-drawer__block--hoverble">
+						<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text"><a href="{% url 'password_change_form' %}">ログインパスワード変更</a></span>
+						</div>
+					</div>
+					<div class="fds-drawer__block fds-drawer__block--hoverble">
+						<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text">メニュータイトル</span>
+						</div>
+					</div>
+					{% endif %}
+					{% if user.is_superuser %}
+					<div class="fds-drawer__block">
+						<div class="fds-drawer__block-title">
+							<span class="fds-drawer__block-text-text">マスター管理</span>
+						</div>
+					</div>
+					<div class="fds-drawer__block fds-drawer__block--hoverble">
+						<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:list' %}">得意先仕入先マスタ</a></span>
+						</div>
+					</div>
+					<div class="fds-drawer__block fds-drawer__block--hoverble">
+						<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text">メニュータイトル</span>
+						</div>
+					</div>
+					<div class="fds-drawer__block fds-drawer__block--hoverble">
+						<div class="fds-drawer__block-text">
+							<span class="fds-icon fds-icon--folder-blue"></span>
+							<span class="fds-drawer__block-text-text">メニュータイトル</span>
+						</div>
+					</div>
+					{% endif %}
+    			</div>
+			    <div class="fds-layout-body">
+      				{% block content %}
+				    {% endblock %}
+			    </div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

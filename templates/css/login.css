@@ -1,0 +1,42 @@
+.fds-page-login {
+  width: 100%;
+}
+
+.fds-bgi {
+  width: 100%;
+  padding: 100px 0;
+}
+
+.fds-panel {
+  padding: 48px 80px;
+  width: 480px;
+  margin: auto;
+}
+
+.fds-image {
+  margin-bottom: 48px;
+}
+
+.fds-form-input-icon {
+  width: 100%;
+}
+
+.fds-form-label:first-child {
+  margin-bottom: 24px;
+}
+
+.fds-page-login__form {
+  margin-bottom: 32px;
+}
+
+.fds-btn {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.fds-text {
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+}
