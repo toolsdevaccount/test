@@ -7,7 +7,6 @@ from django.forms import ModelChoiceField
 
 # バリデーション
 import re
-from django.core.exceptions import ValidationError
   
 User = get_user_model()
 
@@ -103,5 +102,5 @@ OrderingFormset = forms.inlineformset_factory(
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
             'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','AnswerDeadline','DeliveryManageDiv',
             ),
-    extra=1, can_delete=False   
+    extra=1, max_num=4, can_delete=False
 )

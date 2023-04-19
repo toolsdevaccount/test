@@ -12,6 +12,9 @@ from django.utils import timezone
 # TEST
 from .forms import OrderingForm,OrderingFormset
 
+# バリデーション
+import re
+
 # 受発注一覧/検索
 class OrderingListView(LoginRequiredMixin,ListView):
     model = OrderingTable
@@ -54,11 +57,13 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
         return render(request, 'crud/ordering/orderingform.html', context)
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
-    def form_valid(self,form):
+    def form_valid(self, form):
         if self.request.method == 'POST': 
             post = form.save(commit=False)
-            formset = OrderingFormset(self.request.POST,instance=post) 
+            #formset = OrderingFormset(self.request.POST,instance=post) 
+            formset = OrderingFormset(self.request.POST)
             instances = formset.save(commit=False)
+            
             if form.is_valid():
                 post.OrderNumber = post.OrderNumber.zfill(7)
                 post.StartItemNumber = post.StartItemNumber.zfill(4)
@@ -71,7 +76,7 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                 post.Updated_at = timezone.datetime.now() # 現在の日時
                 post.save()
                
-            if formset.is_valid():
+            if formset.is_valid():                
                 for file in instances:
                     file.DetailItemNumber = file.DetailItemNumber.zfill(4)
                     file.Created_id = self.request.user.id
