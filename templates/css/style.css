@@ -2832,11 +2832,22 @@
  .fds-two-pane__main {
    flex-grow: 2;
  }
- 
+
+/*
  .fds-uxhub-preview {
    padding: 32px;
  }
- 
+*/
+/* 追加 */
+.fds-uxhub-preview {
+  padding: 32px;
+  /* デフォルトでは非表示にしておく */
+  opacity: 0;
+  visibility: hidden;
+  /* 表示の変化にかかる時間 */
+  transition: .3s;
+}
+
  body {
    line-height: 1.5em;
    font-size: 14px;
@@ -3172,4 +3183,12 @@ justify-content: space-between;
   text-align: center;
   width: 100%;
   display: inline-block;
+}
+
+#modal{
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(100, 100, 100, .8);
+  z-index: 2147483647;
 }

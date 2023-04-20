@@ -12,9 +12,6 @@ from django.utils import timezone
 # TEST
 from .forms import OrderingForm,OrderingFormset
 
-# バリデーション
-import re
-
 # 受発注一覧/検索
 class OrderingListView(LoginRequiredMixin,ListView):
     model = OrderingTable
@@ -60,8 +57,7 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         if self.request.method == 'POST': 
             post = form.save(commit=False)
-            #formset = OrderingFormset(self.request.POST,instance=post) 
-            formset = OrderingFormset(self.request.POST)
+            formset = OrderingFormset(self.request.POST,instance=post) 
             instances = formset.save(commit=False)
             
             if form.is_valid():
@@ -83,8 +79,7 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                     file.Updated_id = self.request.user.id
                     file.Created_at = timezone.datetime.now() # 現在の日時
                     file.Updated_at = timezone.datetime.now() # 現在の日時
-                    file.save()
-        
+                    file.save()        
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時
