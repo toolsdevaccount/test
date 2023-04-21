@@ -1,6 +1,6 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-                        <form method="post">
+                        <form method="post" id="form">
                         {% csrf_token %}
                             <div class="fds-page-table__main">
                                 <div class="fds-breadcrumb">
@@ -60,11 +60,6 @@
                                                 <!-- 伝票区分 -->
                                                 <label class="fds-label-input">オーダーNO:</label>
                                                 <input type="text" class="fds-form-input" placeholder="" name="SlipDiv" id="id_SlipDiv" maxlength="1" style="width:8%;" value={{ form.data.SlipDiv }}>
-                                                {% if form.errors.SlipDiv %}
-                                                {% for error in form.errors.SlipDiv %}
-                                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                {% endfor %}
-                                                {% endif %}
                                                 <!-- オーダーNO -->
                                                 <span>-</span>
                                                 <input type="text" class="fds-form-input" placeholder="" name="OrderNumber" id="id_OrderNumber" maxlength="7" style="width:12%;" value={{ form.data.OrderNumber }}>
@@ -74,6 +69,11 @@
                                                 <!-- 終了項番 -->
                                                 <span>-</span>
                                                 <input type="text" class="fds-form-input" placeholder="" name="EndItemNumber" id="id_EndItemNumber" maxlength="4" style="width:10%;" value={{ form.data.EndItemNumber }}>
+                                                {% if form.errors.SlipDiv %}
+                                                {% for error in form.errors.SlipDiv %}
+                                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
+                                                {% endfor %}
+                                                {% endif %}
                                             </div>
                                             <div class="fds-form-input-message" style="width:25%;">
                                                 <!-- 依頼日 -->
@@ -99,7 +99,7 @@
                                             </div>
                                             <div class="fds-form-input-message" style="width:25%;">
                                                 <!-- 番手 -->
-                                                <label class="fds-label-input">番手:</label>
+                                                <label class="fds-label-input">番　手:</label>
                                                 <input type="text" class="fds-form-input" placeholder="" name="OrderingCount" id="id_OrderingCount" style="width:50%;" value={{ form.data.OrderingCount }}>
                                                 {% if form.errors.OrderingCount %}
                                                 {% for error in form.errors.OrderingCount %}

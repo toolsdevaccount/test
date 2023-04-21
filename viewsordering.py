@@ -12,6 +12,9 @@ from django.utils import timezone
 # TEST
 from .forms import OrderingForm,OrderingFormset
 
+from django.utils.timezone import make_aware
+import datetime
+
 # 受発注一覧/検索
 class OrderingListView(LoginRequiredMixin,ListView):
     model = OrderingTable
@@ -68,8 +71,11 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 # Created_at,Updated_atは現在日付時刻とする
-                post.Created_at = timezone.datetime.now() # 現在の日時
-                post.Updated_at = timezone.datetime.now() # 現在の日時
+                post.Created_at = make_aware(timezone.datetime.now())
+                post.Updated_at = make_aware(timezone.datetime.now()) # 現在の日時
+                
+                #post.Created_at = timezone.datetime.now() # 現在の日時
+                #post.Updated_at = timezone.datetime.now() # 現在の日時
                 post.save()
                
             if formset.is_valid():                

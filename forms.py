@@ -28,7 +28,7 @@ class CustomerSupplierForm(forms.ModelForm):
                   'PrefecturesCode','Municipalities','Address','BuildingName','PhoneNumber','FaxNumber','MasterDiv',
                   'ClosingDate','ExDepositMonth','ExDepositDate','ExDepositDiv','ManagerCode','OffsetDiv')   
 
-    # 独自バリデーション
+    # 得意先仕入先コード
     def clean_CustomerCode(self):
         code = self.cleaned_data['CustomerCode']
         if code:
@@ -82,17 +82,19 @@ class OrderingForm(forms.ModelForm):
     # オーダーナンバー重複チェック
     def clean(self):
         cleaned_data = super(OrderingForm, self).clean()
-        SlipDiv = self.cleaned_data['SlipDiv']
-        OrderNumber = self.cleaned_data['OrderNumber'].zfill(7)
-        StartItemNumber = self.cleaned_data['StartItemNumber'].zfill(4)
-        EndItemNumber = self.cleaned_data['StartItemNumber'].zfill(4)
-        orderNo = OrderingTable.objects.filter(
-            SlipDiv = SlipDiv,
-            OrderNumber = OrderNumber,
-            StartItemNumber = StartItemNumber,
-            EndItemNumber = EndItemNumber
-        ).exists()
-
+        try:            
+            SlipDiv = self.cleaned_data['SlipDiv']
+            OrderNumber = self.cleaned_data['OrderNumber'].zfill(7)
+            StartItemNumber = self.cleaned_data['StartItemNumber'].zfill(4)
+            EndItemNumber = self.cleaned_data['StartItemNumber'].zfill(4)
+            orderNo = OrderingTable.objects.filter(
+                SlipDiv = SlipDiv,
+                OrderNumber = OrderNumber,
+                StartItemNumber = StartItemNumber,
+                EndItemNumber = EndItemNumber
+            ).exists()
+        except KeyError:
+            raise forms.ValidationError(u'登録できません。')
         if orderNo:
             raise forms.ValidationError('このオーダーNOは既に登録済みです。')
         return cleaned_data
@@ -102,5 +104,5 @@ OrderingFormset = forms.inlineformset_factory(
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
             'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','AnswerDeadline','DeliveryManageDiv',
             ),
-    extra=1, max_num=4, can_delete=False
+    extra=1, can_delete=False
 )

@@ -2,10 +2,8 @@
 											<div class="fds-table-actions">
 												<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
 											</div>
-											<div class="fds-table">
-												{% for form in formset %}
-												<table class="fds-table__inner">
-												{{ formset.management_form }}
+											<div class="fds-table" style="height: 10vh;">
+												<table class="fds-table__inner" id="tblrow">
 													<thead>
 														<tr class="fds-table__tr">
 															<th class="fds-table__th">
@@ -100,6 +98,8 @@
 														</tr>
 													</thead>
 													<tbody id="list">
+														{% for form in formset %}
+														{{ formset.management_form }}
 														<tr class="fds-table__tr fds-table__tr--hoverable list_var">
 															<td class="fds-table__td">
 																<div id="div" class="fds-table__td-content" style="width: 50px; text-align: right;">
@@ -152,13 +152,13 @@
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
 																	<input type="text" class="fds-form-input DetailSellPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-																	name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" readonly>                                   
+																	name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" >                                   
 																</div>
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
 																	<input type="text" class="fds-form-input" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
-																	name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" readonly>                                   
+																	name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" >                                   
 																</div>
 															</td>
 															<td class="fds-table__td">
@@ -183,9 +183,9 @@
 																<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny list_del" style="width: 60px;">削除</button>
 															</td>
 														</tr>
+														{% endfor %}
 													</tbody>
 												</table>
-												{% endfor %}
 											</div>
 											{% endblock %}
 	{% block extrajs %}
@@ -200,6 +200,7 @@
 		var OrderingDate = document.getElementById('id_OrderingDate');
 		var fp = flatpickr(OrderingDate, {
 			'locale': 'ja',
+			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
 			onClose: (selectedDates, dateStr, instance) => {
 				if (selectedDates.length === 1) {
@@ -212,6 +213,7 @@
 		var StainShippingDate = document.getElementById('id_StainShippingDate');
 		var fp = flatpickr(StainShippingDate, {
 		    'locale': 'ja',
+			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
 		    onClose: (selectedDates, dateStr, instance) => {
 		        if (selectedDates.length === 1) {
@@ -224,6 +226,7 @@
 		var SpecifyDeliveryDate = document.getElementById('id_SpecifyDeliveryDate');
 		var fp = flatpickr(SpecifyDeliveryDate, {
 		    'locale': 'ja',
+			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
 		    onClose: (selectedDates, dateStr, instance) => {
 		        if (selectedDates.length === 1) {
@@ -236,6 +239,7 @@
 		var StainAnswerDeadline = document.getElementById('id_StainAnswerDeadline');
 		var fp = flatpickr(StainAnswerDeadline, {
 		    'locale': 'ja',
+			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
 		    onClose: (selectedDates, dateStr, instance) => {
 		        if (selectedDates.length === 1) {
@@ -246,25 +250,13 @@
 		});
 
 		$(function(){
-			$('body').on('change', '.DetailPrice', function() {
-				var result = isNumber(parseInt($('.DetailPrice').val())) + isNumber(parseInt($('.DetailOverPrice').val()));
-				$('.DetailSellPrice').val(result);
-			});
-			$('body').on('change', '.DetailOverPrice', function() {
-				var result = isNumber(parseInt($('.DetailPrice').val())) + isNumber(parseInt($('.DetailOverPrice').val()));
-				$('.DetailSellPrice').val(result);
+			$('#form').submit(function() {  	 // フォームを送信する直前 tableの行数を取得
+				var row = tblrow.rows.length -1; //表題分差引く
+				console.log(row);
+				$('[name=OrderingTableId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
 			});
 
-			$("#list").addInputArea();
+			$('#list').addInputArea();
 		});
-
-		function isNumber(numVal){
-			var pattern = /^[-]?([1-9]\d*|0)(\.\d+)?$/;
-			var result = pattern.test(numVal);
-			if(result==false){
-				numVal = 0;
-			}
-			return numVal;
-		}
 	</script>
 	{% endblock %}

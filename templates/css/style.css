@@ -2312,7 +2312,7 @@
    border-collapse: collapse;
    background-color: #FFFFFF;
  }
- 
+
  .fds-table .fds-table__tbody-hover-button .fds-table__tr {
    position: relative;
  }
@@ -2365,6 +2365,8 @@
    transition-duration: 0.1s;
    top: 0;
    position: -webkit-sticky;
+   /* 追加 */
+   /* position: sticky; */
  }
  
  .fds-table .fds-table__th--selected {
@@ -2598,6 +2600,8 @@
  
  .fds-text.fds-form--helper-message.fds-form--helper-massage-with-icon__warn {
    color: #F57F17;
+   /* 追加 */
+   text-align: left;
  }
  
  .fds-text.fds-form--helper-message.fds-form--helper-massage-with-icon__warn:before {
@@ -2961,13 +2965,15 @@
 .fds-page-table__main {
   padding: 32px 32px 32px 52px;
   background-color: #fafafa;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  /* 追加 */
+  height: 105%;              /* 高さ指定 */
 }
 
 .fds-page-table__title-box {
-display: flex;
-align-items: center;
-justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .fds-page-table__title {
@@ -3185,10 +3191,15 @@ justify-content: space-between;
   display: inline-block;
 }
 
+/* 追加 */
 #modal{
   position: absolute;
   left: 0; top: 0;
   width: 100%; height: 100%;
   background: rgba(100, 100, 100, .8);
   z-index: 2147483647;
+}
+/* 追加 */
+.fds-table-form {
+  height: 100%;              /* 高さ指定 */
 }
