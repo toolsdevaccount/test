@@ -428,7 +428,8 @@
  }
  
  .fds-breadcrumb {
-   padding: 10px 0;
+  /* 削除 */
+   /* padding: 10px 0; */
    font-size: 12px;
    display: flex;
    color: rgba(0, 0, 0, 0.6);
@@ -2364,9 +2365,12 @@
    z-index: 150 !important;
    transition-duration: 0.1s;
    top: 0;
-   position: -webkit-sticky;
+   /* position: -webkit-sticky; */
    /* 追加 */
-   /* position: sticky; */
+   position: sticky;
+   top: 0;
+   left: 0;
+   background: #FFFFFF;
  }
  
  .fds-table .fds-table__th--selected {
@@ -2395,8 +2399,23 @@
    text-overflow: ellipsis;
    overflow: hidden;
    line-height: 1.25em;
-   font-size: 14px;
+   /* 変更 */
+   /* font-size: 14px; */
+   font-size: 12px;
  }
+
+ /* 追加 */
+ .fds-table .fds-table__th-text-center {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1.25em;
+  font-size: 12px;
+  position: absolute;
+  left: 50%;
+   transform: translateX(-50%);
+}
+
  
  .fds-table .fds-table__th:hover {
    background: rgba(0, 0, 0, 0.08);
@@ -2437,7 +2456,7 @@
    font-weight: 700 !important;
    color: rgba(0, 0, 0, 0.6);
  }
- 
+
  .fds-table-container {
    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16) !important;
    min-height: 36px;
@@ -3060,6 +3079,7 @@
   width: 80px;
   font-size: 12px !important;
   color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
 }
 .fds-page-login {
   width: 100% !important;

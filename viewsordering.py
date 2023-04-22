@@ -12,7 +12,7 @@ from django.utils import timezone
 # TEST
 from .forms import OrderingForm,OrderingFormset
 
-from django.utils.timezone import make_aware
+from django.utils import timezone
 import datetime
 
 # 受発注一覧/検索
@@ -20,14 +20,14 @@ class OrderingListView(LoginRequiredMixin,ListView):
     model = OrderingTable
     form_class = OrderingForm
     context_object_name = 'object_list'
-    queryset = OrderingTable.objects.order_by('OrderingDate').reverse()
+    queryset = OrderingTable.objects.order_by('OrderingDate','Created_at').reverse()
     template_name = "crud/ordering/orderinglist.html"
     paginate_by = 10
 
     #検索機能
     def get_queryset(self):
         # 依頼日大きい順
-        queryset = OrderingTable.objects.order_by('OrderingDate').reverse()
+        queryset = OrderingTable.objects.order_by('OrderingDate','Created_at').reverse()
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
         query = self.request.GET.get('query')      
@@ -71,11 +71,8 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 # Created_at,Updated_atは現在日付時刻とする
-                post.Created_at = make_aware(timezone.datetime.now())
-                post.Updated_at = make_aware(timezone.datetime.now()) # 現在の日時
-                
-                #post.Created_at = timezone.datetime.now() # 現在の日時
-                #post.Updated_at = timezone.datetime.now() # 現在の日時
+                post.Created_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
+                post.Updated_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
                
             if formset.is_valid():                
@@ -83,8 +80,8 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                     file.DetailItemNumber = file.DetailItemNumber.zfill(4)
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
-                    file.Created_at = timezone.datetime.now() # 現在の日時
-                    file.Updated_at = timezone.datetime.now() # 現在の日時
+                    file.Created_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.Updated_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()        
         return redirect('myapp:orderinglist')
 
