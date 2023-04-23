@@ -7,7 +7,7 @@ from django.forms import ModelChoiceField
 
 # バリデーション
 import re
-  
+
 User = get_user_model()
 
 class SignUpForm(UserCreationForm):
@@ -80,24 +80,20 @@ class OrderingForm(forms.ModelForm):
                  )
 
     # オーダーナンバー重複チェック
-    def clean(self):
-        cleaned_data = super(OrderingForm, self).clean()
-        try:            
-            SlipDiv = self.cleaned_data['SlipDiv']
-            OrderNumber = self.cleaned_data['OrderNumber'].zfill(7)
-            StartItemNumber = self.cleaned_data['StartItemNumber'].zfill(4)
-            EndItemNumber = self.cleaned_data['StartItemNumber'].zfill(4)
-            orderNo = OrderingTable.objects.filter(
-                SlipDiv = SlipDiv,
-                OrderNumber = OrderNumber,
-                StartItemNumber = StartItemNumber,
-                EndItemNumber = EndItemNumber
-            ).exists()
-        except KeyError:
-            raise forms.ValidationError(u'登録できません。')
-        if orderNo:
-            raise forms.ValidationError('このオーダーNOは既に登録済みです。')
-        return cleaned_data
+    #def clean(self):
+    #    cleaned_data = super(OrderingForm, self).clean()
+    #    try:            
+    #        orderNo = OrderingTable.objects.filter(
+    #            SlipDiv = self.cleaned_data['SlipDiv'],
+    #            OrderNumber = self.cleaned_data['OrderNumber'].zfill(7),
+    #            StartItemNumber = self.cleaned_data['StartItemNumber'].zfill(4),
+    #            EndItemNumber = self.cleaned_data['StartItemNumber'].zfill(4),
+    #        ).exists()
+    #    except KeyError:
+    #        raise forms.ValidationError(u'登録できません。')
+    #    if orderNo:
+    #        raise forms.ValidationError('このオーダーNOは既に登録済みです。')
+    #    return cleaned_data
     
 OrderingFormset = forms.inlineformset_factory(
     OrderingTable, OrderingDetail, 

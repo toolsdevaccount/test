@@ -36,6 +36,7 @@
 									<span class="fds-drawer__block-title-text">受発注業務</span>
 								</div>
 							</div>
+							{% if user.is_superuser %}
 							<div class="fds-drawer__block fds-drawer__block--hoverble">
 								<div class="fds-drawer__block-text">
 								<span class="fds-icon fds-icon--folder-blue"></span>
@@ -60,6 +61,8 @@
 								<span class="fds-drawer__block-text-text">メニュータイトル</span>
 								</div>
 							</div>
+							{% endif %}
+							{% if user.is_superuser %}
 							<div class="fds-drawer__block">
 								<div class="fds-drawer__block-title">
 									<span class="fds-drawer__block-text-text">カテゴリータイトル</span>
@@ -83,7 +86,7 @@
 									<span class="fds-drawer__block-text-text">メニュータイトル</span>
 								</div>
 							</div>
-
+							{% endif %}
 							<div class="fds-drawer__block">
 							<div class="fds-drawer__block-title">
 								<span class="fds-drawer__block-text-text">ユーザー管理</span>

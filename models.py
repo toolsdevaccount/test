@@ -182,7 +182,7 @@ class OrderingTable(models.Model):
                 fields=["SlipDiv", "OrderNumber", "StartItemNumber", "EndItemNumber"],
                 name="ordernumber_unique"
             ),
-        ]       
+        ]  
    
     def __str__(self):
         return self.ProductName

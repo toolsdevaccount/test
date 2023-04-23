@@ -8,12 +8,14 @@ from django.db.models import Q
 
 # 日時
 from django.utils import timezone
+import datetime
 
 # TEST
 from .forms import OrderingForm,OrderingFormset
 
-from django.utils import timezone
-import datetime
+# IntegrityError
+#from django import forms
+#from django.db import IntegrityError
 
 # 受発注一覧/検索
 class OrderingListView(LoginRequiredMixin,ListView):
@@ -71,17 +73,17 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 # Created_at,Updated_atは現在日付時刻とする
-                post.Created_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
-                post.Updated_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時               
+                post.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
-               
+       
             if formset.is_valid():                
                 for file in instances:
                     file.DetailItemNumber = file.DetailItemNumber.zfill(4)
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
-                    file.Created_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.Updated_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()        
         return redirect('myapp:orderinglist')
 

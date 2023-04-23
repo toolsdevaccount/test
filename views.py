@@ -105,8 +105,8 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
         # Createid,Updatedidフィールドはログインしているユーザidとする
         post.Created_id = self.request.user.id
         post.Updated_id = self.request.user.id
-        post.Created_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
-        post.Updated_at = datetime.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
+        post.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+        post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
         post.save()
 
         return redirect('myapp:list')
@@ -127,7 +127,7 @@ class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
             post = form.save(commit=False)
             # Updatedidフィールドはログインしているユーザidとする
             post.Updated_id = self.request.user.id
-            post.Updated_at = timezone.datetime.now() + datetime.timedelta(hours=9) # 現在の日時
+            post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
             post.save()
         return redirect('myapp:list')
 

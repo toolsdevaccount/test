@@ -103,31 +103,31 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 70px;">
-																	<input type="text" class="fds-form-input" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
+																	<input type="number" class="fds-form-input" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
 																	name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" >                                   
 																</div>
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
-																	<input type="text" class="fds-form-input" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+																	<input type="number" class="fds-form-input" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
 																	name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" >                                   
 																</div>
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
-																	<input type="text" class="fds-form-input DetailPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-																	name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice">      
+																	<input type="number" class="fds-form-input DetailPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+																	name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);">      
 																</div>
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
-																	<input type="text" class="fds-form-input DetailOverPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-																	name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice">                                                                            
+																	<input type="number" class="fds-form-input DetailOverPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+																	name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);">                                                                            
 																</div>
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
-																	<input type="text" class="fds-form-input DetailSellPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+																	<input type="number" class="fds-form-input DetailSellPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
 																	name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" >                                   
 																</div>
 															</td>
@@ -225,10 +225,49 @@
 		    }
 		});
 
+		// 指定したエレメント(input)が所属する行(tr)を取得
+		function detail(obj)
+		{
+			return obj.parentElement.parentElement.parentElement ;
+		}
+
+		// 指定したエレメント(input)と同じ行にある単価を取得
+		function price(obj)
+		{
+			return detail(obj).querySelectorAll(".DetailPrice")[0].value ;
+		}
+
+		// 指定したエレメント(input)と同じ行にある数量を取得
+		function overprice(obj)
+		{
+			return detail(obj).querySelectorAll(".DetailOverPrice")[0].value ;
+		}
+
+		// 指定したエレメント(input)の横計(単価×数量)を再計算してから取得
+		function calc(obj)
+		{
+			result = Number(price(obj)) + Number(overprice(obj));
+			detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result ;
+			return result ;
+		}
+
+		function startitem(obj)
+		{		
+			var item = document.getElementById('id_StartItemNumber').value ;
+			result = item.toString().padStart( 4, '0');
+			document.getElementById('id_StartItemNumber').value = result;
+		}
+
+		function enditem(obj)
+		{		
+			var item = document.getElementById('id_EndItemNumber').value ;
+			result = item.toString().padStart( 4, '0');
+			document.getElementById('id_EndItemNumber').value = result;
+		}
+
 		$(function(){
 			$('#form').submit(function() {  	 // フォームを送信する直前 tableの行数を取得
 				var row = tblrow.rows.length -1; //表題分差引く
-				console.log(row);
 				$('[name=OrderingTableId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
 			});
 
