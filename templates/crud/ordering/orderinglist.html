@@ -199,11 +199,11 @@
 								<div class="fds-table__td-content" style="width: 80px;">
 								</div>
 							</td>
-							<td class="fds-table__td">
-								<!-- <div class="fds-table__td-content" style="width: 120px;">
-									<span><button type="button" class="fds-btn fds-btn--primary fds-btn--tiny" style="width: 50px;" onclick="location.href='#'">編集</button></span>
-									<span><button type="button" class="fds-btn fds-btn--error fds-btn--tiny" style="width: 50px;" onclick="location.href='#'">削除</button></span>
-								</div> -->
+							<td class="fds-table_tr-hover-buttons">
+								<div class="fds-table__td-content" style="width: 100px;">
+									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button>
+									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href=''">削除</button>
+								</div>
 							</td>
 			            </tr>
             			{% endfor %}
