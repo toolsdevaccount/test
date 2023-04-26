@@ -100,5 +100,5 @@ OrderingFormset = forms.inlineformset_factory(
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
             'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','AnswerDeadline','DeliveryManageDiv',
             ),
-    extra=1, can_delete=False
+    extra=0,min_num=1,validate_min=True,can_delete=False
 )

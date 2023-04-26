@@ -3,6 +3,7 @@
 												<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
 											</div>
 											<div class="fds-table" style="height: 10vh;">
+												{{ formset.management_form }}
 												<table class="fds-table__inner" id="tblrow">
 													<thead>
 														<tr class="fds-table__tr">
@@ -53,17 +54,17 @@
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																	<span class="fds-table__th-text-center">出荷数</span>
+																	<span class="fds-table__th-text-center">摘要</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																	<span class="fds-table__th-text-center">納期管理表</span>
+																	<span class="fds-table__th-text-center">納期</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																	<span class="fds-table__th-text-center">Check</span>
+																	<span class="fds-table__th-text-center">済</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
@@ -74,7 +75,6 @@
 														</tr>
 													</thead>
 													<tbody id="list">
-														{{ formset.management_form }}
 														{% for form in formset %}
 														<tr class="fds-table__tr fds-table__tr--hoverable list_var">
 															<td class="fds-table__td">
@@ -133,14 +133,14 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
-																	<input type="text" class="fds-form-input" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
-																	name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" readonly>                                   
+																	<input type="text" class="fds-form-input" style="width: 96px;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
+																	name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary">                                   
 																</div>
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content" style="width: 96px;">
 																	<input type="text" class="fds-form-input" style="width: 96px;" data-id-format="id_OrderingTableId-%d-AnswerDeadline" data-name-format="OrderingTableId-%d-AnswerDeadline" 
-																	name="OrderingTableId-0-AnswerDeadline" id="id_OrderingTableId-0-AnswerDeadline" readonly>                                   
+																	name="OrderingTableId-0-AnswerDeadline" id="id_OrderingTableId-0-AnswerDeadline">                                   
 																</div>
 															</td>
 															<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">
@@ -188,41 +188,41 @@
 		// 原糸出荷日
 		var StainShippingDate = document.getElementById('id_StainShippingDate');
 		var fp = flatpickr(StainShippingDate, {
-		    'locale': 'ja',
+			'locale': 'ja',
 			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
-		    onClose: (selectedDates, dateStr, instance) => {
-		        if (selectedDates.length === 1) {
+			onClose: (selectedDates, dateStr, instance) => {
+				if (selectedDates.length === 1) {
 					// プロパティにユーザーが選択した日付を代入
-		            this.dateProps = selectedDates[0];
-		        }
-		    }
+					this.dateProps = selectedDates[0];
+				}
+			}
 		});
 		// 指定納期
 		var SpecifyDeliveryDate = document.getElementById('id_SpecifyDeliveryDate');
 		var fp = flatpickr(SpecifyDeliveryDate, {
-		    'locale': 'ja',
+			'locale': 'ja',
 			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
-		    onClose: (selectedDates, dateStr, instance) => {
-		        if (selectedDates.length === 1) {
+			onClose: (selectedDates, dateStr, instance) => {
+				if (selectedDates.length === 1) {
 					// プロパティにユーザーが選択した日付を代入
-		            this.dateProps = selectedDates[0];
-		        }
-		    }
+					this.dateProps = selectedDates[0];
+				}
+			}
 		});
 		// 回答納期
 		var StainAnswerDeadline = document.getElementById('id_StainAnswerDeadline');
 		var fp = flatpickr(StainAnswerDeadline, {
-		    'locale': 'ja',
+			'locale': 'ja',
 			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
-		    onClose: (selectedDates, dateStr, instance) => {
-		        if (selectedDates.length === 1) {
+			onClose: (selectedDates, dateStr, instance) => {
+				if (selectedDates.length === 1) {
 					// プロパティにユーザーが選択した日付を代入
-		            this.dateProps = selectedDates[0];
-		        }
-		    }
+					this.dateProps = selectedDates[0];
+				}
+			}
 		});
 
 		// 指定したエレメント(input)が所属する行(tr)を取得
@@ -256,6 +256,13 @@
 			return result ;
 		}
 
+		function order(obj)
+		{		
+			var item = document.getElementById('id_OrderNumber').value ;
+			result = item.toString().padStart( 7, '0');
+			document.getElementById('id_OrderNumber').value = result;
+		}
+
 		function startitem(obj)
 		{		
 			var item = document.getElementById('id_StartItemNumber').value ;
@@ -279,4 +286,4 @@
 			$('#list').addInputArea();
 		});
 	</script>
-	{% endblock %}
+{% endblock %}

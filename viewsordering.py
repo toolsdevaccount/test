@@ -45,10 +45,10 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     form_class =  OrderingForm
     formset_class = OrderingFormset
     template_name = "crud/ordering/orderingform.html"
-
+   
     def get(self, request):
-        form = OrderingForm(request.POST or None)
-        formset = OrderingFormset()
+        form = OrderingForm(self.request.POST or None)
+        formset = OrderingFormset
 
         context = {
             'form': form,
@@ -88,12 +88,7 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        #print(form.errors)
-        #return super().form_invalid(form)
-        context = self.get_context_data()
-        context['formset'] = self.formset_class
-
-        return self.render_to_response(context)
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
 
 
 # 受発注情報編集
@@ -136,10 +131,12 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時
-    def form_invalid(self, form):
+    def form_invalid(self,form):
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))        
+
         #print(form.errors)
         #return super().form_invalid(form)
-        context = self.get_context_data()
-        context['formset'] = self.formset_class
+        #context = self.get_context_data()
+        #context['formset'] = OrderingFormset()
 
-        return self.render_to_response(context)
+        #return self.render_to_response(context)

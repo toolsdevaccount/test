@@ -147,6 +147,8 @@ class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
         if self.request.method == "POST":
             post = form.save(commit=False)
             # 
+            post.Updated_id = self.request.user.id
+            post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
             post.is_Deleted = True
             post.save()
 
