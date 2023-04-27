@@ -23,7 +23,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
     context_object_name = 'object_list'
     queryset = OrderingTable.objects.order_by('OrderingDate','Created_at').reverse()
     template_name = "crud/ordering/orderinglist.html"
-    paginate_by = 10
+    paginate_by = 7
 
     #検索機能
     def get_queryset(self):
@@ -60,12 +60,12 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
-        if self.request.method == 'POST': 
-            post = form.save(commit=False)
-            formset = OrderingFormset(self.request.POST,instance=post) 
+        post = form.save(commit=False)
+        formset = OrderingFormset(self.request.POST,instance=post) 
+        if self.request.method == 'POST' and formset.is_valid(): 
             instances = formset.save(commit=False)
             
-            if form.is_valid() and formset.is_valid():
+            if form.is_valid(): 
                 post.OrderNumber = post.OrderNumber.zfill(7)
                 post.StartItemNumber = post.StartItemNumber.zfill(4)
                 post.EndItemNumber = post.EndItemNumber.zfill(4)
@@ -83,7 +83,9 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                     file.Updated_id = self.request.user.id
                     file.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.save()        
+                    file.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))                   
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時
@@ -108,12 +110,13 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
-        if self.request.method == 'POST': 
-            post = form.save(commit=False)
-            formset = OrderingFormset(self.request.POST,instance=post) 
+        post = form.save(commit=False)
+        formset = OrderingFormset(self.request.POST,instance=post) 
+
+        if self.request.method == 'POST' and formset.is_valid(): 
             instances = formset.save(commit=False)
            
-            if form.is_valid() and formset.is_valid():
+            if form.is_valid():
                 post.OrderNumber = post.OrderNumber.zfill(7)
                 post.StartItemNumber = post.StartItemNumber.zfill(4)
                 post.EndItemNumber = post.EndItemNumber.zfill(4)
@@ -122,12 +125,14 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
                 # Updated_atは現在日付時刻とする
                 post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
-        
+
                 for file in instances:
                     file.DetailItemNumber = file.DetailItemNumber.zfill(4)
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.save()        
+                    file.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))        
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時

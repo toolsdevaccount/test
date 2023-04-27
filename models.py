@@ -195,7 +195,7 @@ class OrderingDetail(models.Model):
     DetailItemNumber = models.CharField(max_length=4,null=False,blank=False,default=0,verbose_name="項番")
     DetailColorNumber = models.CharField(max_length=6,null=False,blank=True,default=0,verbose_name="色番")
     DetailColor = models.CharField(max_length=12,null=False,blank=True,default=0,verbose_name="カラー")
-    DetailTailoring = models.CharField(max_length=11,null=False,blank=True,default=0,verbose_name="仕立")
+    DetailTailoring = models.CharField(max_length=1,null=False,blank=True,default=0,verbose_name="仕立")
     DetailVolume = models.DecimalField(max_digits=8,decimal_places=2, null=False,blank=True,default=0.00,verbose_name="数量")
     DetailUnitPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=True,default=0,verbose_name="仕入単価")
     DetailPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=True,default=0,verbose_name="通常単価")
