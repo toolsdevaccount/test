@@ -4,7 +4,7 @@
 												<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
 											</div>
 											<div class="fds-table-container">
-												<div class="fds-table" style="height: 10vh;">
+												<div class="fds-table" style="height: 18vh;">
 													{{ formset.management_form }}
 													<table class="fds-table__inner" id="tblrow">
 														<thead>
@@ -258,20 +258,6 @@
 
 			detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result ;
 			return result ;
-		}
-
-		function startitem(obj)
-		{		
-			var item = document.getElementById('id_StartItemNumber').value ;
-			result = item.toString().padStart( 4, '0');
-			document.getElementById('id_StartItemNumber').value = result;
-		}
-
-		function enditem(obj)
-		{		
-			var item = document.getElementById('id_EndItemNumber').value ;
-			result = item.toString().padStart( 4, '0');
-			document.getElementById('id_EndItemNumber').value = result;
 		}
 
 		$(function(){

@@ -33,7 +33,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="fds-panel fds-panel--plain" style="width: 100%; height: 85%;">
+                                <div class="fds-panel fds-panel--plain" style="width: 100%; height: 90%;">
                                     <div class="fds-form-input-message" style="width:30%;">
                                     {% if form.non_field_errors %}
                                         {% for error in form.non_field_errors %}
@@ -63,14 +63,8 @@
                                                 <!-- オーダーNO -->
                                                 <span>-</span>
                                                 <input type="text" class="fds-form-input" placeholder="" name="OrderNumber" id="id_OrderNumber" maxlength="7" style="width:12%;" onchange="order(this);" value={{ form.data.OrderNumber }}>
-                                                <!-- 開始項番 -->
-                                                <span>-</span>
-                                                <input type="text" class="fds-form-input" placeholder="" name="StartItemNumber" id="id_StartItemNumber" maxlength="4" style="width:10%;" onchange="startitem(this);" value={{ form.data.StartItemNumber }}>
-                                                <!-- 終了項番 -->
-                                                <span>-</span>
-                                                <input type="text" class="fds-form-input" placeholder="" name="EndItemNumber" id="id_EndItemNumber" maxlength="4" style="width:10%;" onchange="enditem(this);" value={{ form.data.EndItemNumber }}>
-                                                {% if form.errors.SlipDiv %}
-                                                {% for error in form.errors.SlipDiv %}
+                                                {% if form.errors.OrderNumber %}
+                                                {% for error in form.errors.OrderNumber %}
                                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
                                                 {% endfor %}
                                                 {% endif %}
@@ -289,9 +283,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="fds-table-container">
-                                        {% include "crud/ordering/orderingtable.html" %}
-                                    </div>   
+                                    {% include "crud/ordering/orderingtable.html" %}
                                 </div>
                             </div>
                         </form>

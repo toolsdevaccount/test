@@ -20,6 +20,12 @@ from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 import datetime
 
+# ログ出力
+import logging
+logging.basicConfig(filename='log.txt', format='%(levelname)s:%(levelno)s')
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
+
 # signup
 def signup(request):
     if request.method == 'POST':
@@ -105,8 +111,8 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
         # Createid,Updatedidフィールドはログインしているユーザidとする
         post.Created_id = self.request.user.id
         post.Updated_id = self.request.user.id
-        post.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-        post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+        #post.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+        #post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
         post.save()
 
         return redirect('myapp:list')
@@ -146,7 +152,7 @@ class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         if self.request.method == "POST":
             post = form.save(commit=False)
-            # 
+ 
             post.Updated_id = self.request.user.id
             post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
             post.is_Deleted = True

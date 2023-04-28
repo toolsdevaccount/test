@@ -1,6 +1,9 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+# 日時
+from django.utils import timezone
+import datetime
 
 # Create your models here.
 class CustomerSupplier(models.Model):
@@ -96,7 +99,7 @@ class CustomerSupplier(models.Model):
             (6, "6ヶ月"),
             (99, "6ヶ月以上"),
         ]
-    CustomerCode = models.CharField(max_length=8,null=False,verbose_name="コード")
+    CustomerCode = models.CharField(max_length=6,null=False,verbose_name="コード")
     CustomerName = models.CharField(max_length=30,null=False,blank=True,verbose_name="名称")
     CustomerOmitName = models.CharField(max_length=12,null=False,blank=True,verbose_name="略称")
     CustomerNameKana = models.CharField(max_length=30,null=False,blank=True,verbose_name="カナ")
@@ -123,8 +126,8 @@ class CustomerSupplier(models.Model):
     ProceedsTarget = models.DecimalField(max_digits=10,decimal_places=0,default=0,null=False,blank=True,verbose_name="当年売上目標")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
-    Created_at = models.DateTimeField(null=False, blank=False,default='2000-01-01 00:00:00',verbose_name="登録日時")
-    Updated_at = models.DateTimeField(null=False, blank=False,default='2000-01-01 00:00:00',verbose_name="更新日時")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
@@ -149,8 +152,6 @@ class OrderingTable(models.Model):
 
     SlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
     OrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
-    StartItemNumber = models.CharField(max_length=4,null=False,blank=False,default=0,verbose_name="開始項番")
-    EndItemNumber = models.CharField(max_length=4,null=False,blank=False,default=0,verbose_name="終了項番")
     OrderingDate = models.DateField(null=False,blank=False,default="2000-01-01",verbose_name="依頼日")
     StainShippingDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="原糸出荷日")
     ProductName = models.CharField(max_length=24,null=False,blank=True,verbose_name="商品名")
@@ -171,21 +172,21 @@ class OrderingTable(models.Model):
     OutputDiv = models.IntegerField(null=False,blank=True,default=0,choices=Output,verbose_name="出力区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
-    Created_at = models.DateTimeField(null=False, blank=False,default='2000-01-01 00:00:00',verbose_name="登録日時")
-    Updated_at = models.DateTimeField(null=False, blank=False,default='2000-01-01 00:00:00',verbose_name="更新日時")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     # ユニーク制約（以下の組み合わせを一意とする）
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["SlipDiv", "OrderNumber", "StartItemNumber", "EndItemNumber"],
-                name="ordernumber_unique"
-            ),
-        ]  
+    #class Meta:
+    #    constraints = [
+    #        models.UniqueConstraint(
+    #            fields=["SlipDiv", "OrderNumber", "StartItemNumber", "EndItemNumber"],
+    #            name="ordernumber_unique"
+    #        ),
+    #    ]  
    
     def __str__(self):
-        return self.ProductName
+        return self.OrderNumber
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/ordering/orderinglist.html')
@@ -206,8 +207,8 @@ class OrderingDetail(models.Model):
     DeliveryManageDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="納期管理済区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
-    Created_at = models.DateTimeField(null=False, blank=False,default='2000-01-01 00:00:00',verbose_name="登録日時")
-    Updated_at = models.DateTimeField(null=False, blank=False,default='2000-01-01 00:00:00',verbose_name="更新日時")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):

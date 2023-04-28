@@ -1,292 +1,278 @@
 {% block content %}
 {% load humanize %}
-											<div class="fds-table-actions">
-												<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
+										<div class="fds-table-actions">
+											<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
+										</div>
+										<div class="fds-table-container">	
+											<div class="fds-table" style="height: 18vh;">
+												{{ formset.management_form }}
+												<table class="fds-table__inner" id="tblrow">
+													<thead>
+														<tr class="fds-table__tr">
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
+																	<span class="fds-table__th-text-center">項番</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
+																	<span class="fds-table__th-text-center">色番</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
+																	<span class="fds-table__th-text-center">カラー</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
+																	<span class="fds-table__th-text-center">仕立</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																	<span class="fds-table__th-text-center">数量</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
+																	<span class="fds-table__th-text-center">仕入単価</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
+																	<span class="fds-table__th-text-center">通常単価</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
+																	<span class="fds-table__th-text-center">UP分単価</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
+																	<span class="fds-table__th-text-center">販売単価</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
+																	<span class="fds-table__th-text-center">摘要</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
+																	<span class="fds-table__th-text-center">納期</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
+																	<span class="fds-table__th-text-center">済</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--icon" style="width: 48px;">
+																	<span class="fds-icon fds-icon--more-vert"></span>
+																</div>
+															</th>
+														</tr>
+													</thead>
+													<tbody id="list">
+														{% for form in formset %}
+														<tr class="fds-table__tr fds-table__tr--hoverable list_var">
+															<td class="fds-table__td">
+																<div id="div" class="fds-table__td-content" style="width: 50px; text-align: right;">
+																	<input type="text" class="fds-form-input" style="width: 50px;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+																	name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" >
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 50px;">
+																	<input type="text" class="fds-form-input" style="width: 50px;" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
+																	name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" >                                          
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 100px;">
+																	<input type="text" class="fds-form-input" style="width: 100px;" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
+																	name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" >                                   
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 50px;">
+																	<input type="text" class="fds-form-input" style="width: 50px;" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
+																	name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" >                                   
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 70px;">
+																	<input type="number" step="0.1" class="fds-form-input" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
+																	name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" >                                   
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 96px;">
+																	<input type="number" class="fds-form-input" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+																	name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" >                                   
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 96px;">
+																	<input type="number" class="fds-form-input DetailPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+																	name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);">      
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 96px;">
+																	<input type="number" class="fds-form-input DetailOverPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+																	name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);">                                                                            
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 96px;">
+																	<input type="number" class="fds-form-input DetailSellPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+																	name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" >                                   
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 96px;">
+																	<input type="text" class="fds-form-input" style="width: 96px;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
+																	name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary">                                   
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content" style="width: 96px;">
+																	<input type="text" class="fds-form-input" style="width: 96px;" data-id-format="id_OrderingTableId-%d-AnswerDeadline" data-name-format="OrderingTableId-%d-AnswerDeadline" 
+																	name="OrderingTableId-0-AnswerDeadline" id="id_OrderingTableId-0-AnswerDeadline">                                   
+																</div>
+															</td>
+															<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">
+																<div class="fds-table__td-content">
+																<div class="fds-checkbox fds-checkbox--on-table">
+																	<label class="fds-checkbox__label">
+																		<input type="checkbox" class="fds-checkbox__input" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
+																		name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" >
+																		<span class="fds-checkbox__text">
+																		</span>
+																	</label>
+																</div>
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny list_del" style="width: 60px;">削除</button>
+															</td>
+														</tr>
+														{% endfor %}
+													</tbody>
+												</table>
 											</div>
-											<div class="fds-table-container">	
-												<div class="fds-table" style="height: 10vh;">
-													{{ formset.management_form }}
-													<table class="fds-table__inner" id="tblrow">
-														<thead>
-															<tr class="fds-table__tr">
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
-																		<span class="fds-table__th-text-center">項番</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
-																		<span class="fds-table__th-text-center">色番</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
-																		<span class="fds-table__th-text-center">カラー</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
-																		<span class="fds-table__th-text-center">仕立</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
-																		<span class="fds-table__th-text-center">数量</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																		<span class="fds-table__th-text-center">仕入単価</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																		<span class="fds-table__th-text-center">通常単価</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																		<span class="fds-table__th-text-center">UP分単価</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																		<span class="fds-table__th-text-center">販売単価</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																		<span class="fds-table__th-text-center">摘要</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																		<span class="fds-table__th-text-center">納期</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 96px;">
-																		<span class="fds-table__th-text-center">済</span>
-																	</div>
-																</th>
-																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--icon" style="width: 48px;">
-																		<span class="fds-icon fds-icon--more-vert"></span>
-																	</div>
-																</th>
-															</tr>
-														</thead>
-														<tbody id="list">
-															{% for form in formset %}
-															<tr class="fds-table__tr fds-table__tr--hoverable list_var">
-																<td class="fds-table__td">
-																	<div id="div" class="fds-table__td-content" style="width: 50px; text-align: right;">
-																		<input type="text" class="fds-form-input" style="width: 50px;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-																		name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" >
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 50px;">
-																		<input type="text" class="fds-form-input" style="width: 50px;" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
-																		name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" >                                          
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 70px;">
-																		<input type="text" class="fds-form-input" style="width: 70px;" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
-																		name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" >                                   
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 50px;">
-																		<input type="text" class="fds-form-input" style="width: 50px;" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
-																		name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" >                                   
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 70px;">
-																		<input type="number" step="0.1" class="fds-form-input" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-																		name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" >                                   
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 96px;">
-																		<input type="number" class="fds-form-input" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" >                                   
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 96px;">
-																		<input type="number" class="fds-form-input DetailPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-																		name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);">      
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 96px;">
-																		<input type="number" class="fds-form-input DetailOverPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-																		name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);">                                                                            
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 96px;">
-																		<input type="number" class="fds-form-input DetailSellPrice" style="width: 96px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-																		name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" >                                   
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 96px;">
-																		<input type="text" class="fds-form-input" style="width: 96px;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
-																		name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary">                                   
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content" style="width: 96px;">
-																		<input type="text" class="fds-form-input" style="width: 96px;" data-id-format="id_OrderingTableId-%d-AnswerDeadline" data-name-format="OrderingTableId-%d-AnswerDeadline" 
-																		name="OrderingTableId-0-AnswerDeadline" id="id_OrderingTableId-0-AnswerDeadline">                                   
-																	</div>
-																</td>
-																<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">
-																	<div class="fds-table__td-content">
-																	<div class="fds-checkbox fds-checkbox--on-table">
-																		<label class="fds-checkbox__label">
-																			<input type="checkbox" class="fds-checkbox__input" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
-																			name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" >
-																			<span class="fds-checkbox__text">
-																			</span>
-																		</label>
-																	</div>
-																	</div>
-																</td>
-																<td class="fds-table__td">
-																	<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny list_del" style="width: 60px;">削除</button>
-																</td>
-															</tr>
-															{% endfor %}
-														</tbody>
-													</table>
-												</div>
-											</div>
-											{% endblock %}
-	{% block extrajs %}
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
-	<!-- Datepicker 追加-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-	<script>
-		// 依頼日
-		var OrderingDate = document.getElementById('id_OrderingDate');
-		var fp = flatpickr(OrderingDate, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
-		// 原糸出荷日
-		var StainShippingDate = document.getElementById('id_StainShippingDate');
-		var fp = flatpickr(StainShippingDate, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
-		// 指定納期
-		var SpecifyDeliveryDate = document.getElementById('id_SpecifyDeliveryDate');
-		var fp = flatpickr(SpecifyDeliveryDate, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
-		// 回答納期
-		var StainAnswerDeadline = document.getElementById('id_StainAnswerDeadline');
-		var fp = flatpickr(StainAnswerDeadline, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
+										</div>
+										{% endblock %}
+										{% block extrajs %}
+										<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
+										<!-- Datepicker 追加-->
+										<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+										<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+										<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+										<script>
+											// 依頼日
+											var OrderingDate = document.getElementById('id_OrderingDate');
+											var fp = flatpickr(OrderingDate, {
+												'locale': 'ja',
+												allowInput: true,
+												// onCloseは入力フォームが閉じられた時に発火する
+												onClose: (selectedDates, dateStr, instance) => {
+													if (selectedDates.length === 1) {
+														// プロパティにユーザーが選択した日付を代入
+														this.dateProps = selectedDates[0];
+													}
+												}
+											});
+											// 原糸出荷日
+											var StainShippingDate = document.getElementById('id_StainShippingDate');
+											var fp = flatpickr(StainShippingDate, {
+												'locale': 'ja',
+												allowInput: true,
+												// onCloseは入力フォームが閉じられた時に発火する
+												onClose: (selectedDates, dateStr, instance) => {
+													if (selectedDates.length === 1) {
+														// プロパティにユーザーが選択した日付を代入
+														this.dateProps = selectedDates[0];
+													}
+												}
+											});
+											// 指定納期
+											var SpecifyDeliveryDate = document.getElementById('id_SpecifyDeliveryDate');
+											var fp = flatpickr(SpecifyDeliveryDate, {
+												'locale': 'ja',
+												allowInput: true,
+												// onCloseは入力フォームが閉じられた時に発火する
+												onClose: (selectedDates, dateStr, instance) => {
+													if (selectedDates.length === 1) {
+														// プロパティにユーザーが選択した日付を代入
+														this.dateProps = selectedDates[0];
+													}
+												}
+											});
+											// 回答納期
+											var StainAnswerDeadline = document.getElementById('id_StainAnswerDeadline');
+											var fp = flatpickr(StainAnswerDeadline, {
+												'locale': 'ja',
+												allowInput: true,
+												// onCloseは入力フォームが閉じられた時に発火する
+												onClose: (selectedDates, dateStr, instance) => {
+													if (selectedDates.length === 1) {
+														// プロパティにユーザーが選択した日付を代入
+														this.dateProps = selectedDates[0];
+													}
+												}
+											});
 
-		// 指定したエレメント(input)が所属する行(tr)を取得
-		function detail(obj)
-		{
-			return obj.parentElement.parentElement.parentElement ;
-		}
+											// 指定したエレメント(input)が所属する行(tr)を取得
+											function detail(obj)
+											{
+												return obj.parentElement.parentElement.parentElement ;
+											}
 
-		// 指定したエレメント(input)と同じ行にある単価を取得
-		function price(obj)
-		{
-			return detail(obj).querySelectorAll(".DetailPrice")[0].value ;
-		}
+											// 指定したエレメント(input)と同じ行にある単価を取得
+											function price(obj)
+											{
+												return detail(obj).querySelectorAll(".DetailPrice")[0].value ;
+											}
 
-		// 指定したエレメント(input)と同じ行にある数量を取得
-		function overprice(obj)
-		{
-			return detail(obj).querySelectorAll(".DetailOverPrice")[0].value ;
-		}
+											// 指定したエレメント(input)と同じ行にある数量を取得
+											function overprice(obj)
+											{
+												return detail(obj).querySelectorAll(".DetailOverPrice")[0].value ;
+											}
 
-		// 指定したエレメント(input)の横計(単価×数量)を再計算してから取得
-		function calc(obj)
-		{
-			result = Number(price(obj)) + Number(overprice(obj));
+											// 指定したエレメント(input)の横計(単価×数量)を再計算してから取得
+											function calc(obj)
+											{
+												result = Number(price(obj)) + Number(overprice(obj));
 
-			if(Number(overprice(obj))==0){
-				detail(obj).querySelectorAll(".DetailOverPrice")[0].value = 0; 
-			} 
+												if(Number(overprice(obj))==0){
+													detail(obj).querySelectorAll(".DetailOverPrice")[0].value = 0; 
+												} 
 
-			detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result ;
-			return result ;
-		}
+												detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result ;
+												return result ;
+											}
 
-		function order(obj)
-		{		
-			var item = document.getElementById('id_OrderNumber').value ;
-			result = item.toString().padStart( 7, '0');
-			document.getElementById('id_OrderNumber').value = result;
-		}
+											function order(obj)
+											{		
+												var item = document.getElementById('id_OrderNumber').value ;
+												result = item.toString().padStart( 7, '0');
+												document.getElementById('id_OrderNumber').value = result;
+											}
 
-		function startitem(obj)
-		{		
-			var item = document.getElementById('id_StartItemNumber').value ;
-			result = item.toString().padStart( 4, '0');
-			document.getElementById('id_StartItemNumber').value = result;
-		}
+											$(function(){
+												$('#form').submit(function() {  	 // フォームを送信する直前 tableの行数を取得
+													var row = tblrow.rows.length -1; //表題分差引く
+													$('[name=OrderingTableId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
+												});
 
-		function enditem(obj)
-		{		
-			var item = document.getElementById('id_EndItemNumber').value ;
-			result = item.toString().padStart( 4, '0');
-			document.getElementById('id_EndItemNumber').value = result;
-		}
-
-		$(function(){
-			$('#form').submit(function() {  	 // フォームを送信する直前 tableの行数を取得
-				var row = tblrow.rows.length -1; //表題分差引く
-				$('[name=OrderingTableId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
-			});
-
-			$('#list').addInputArea();
-		});
-	</script>
-{% endblock %}
+												$('#list').addInputArea();
+											});
+										</script>
+									{% endblock %}

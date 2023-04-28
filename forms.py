@@ -73,13 +73,23 @@ class OrderingForm(forms.ModelForm):
 
     class Meta:
         model = OrderingTable
-        fields = ('SlipDiv','OrderNumber','StartItemNumber','EndItemNumber','OrderingDate','StainShippingDate',
-                  'ProductName','OrderingCount','StainPartNumber','StainMixRatio','DestinationCode','SupplierCode',
-                  'ShippingCode','CustomeCode','RequestCode','SupplierPerson','TitleDiv','StockDiv','SpecifyDeliveryDate',
-                  'StainAnswerDeadline','MarkName','OutputDiv',
+        fields = ('SlipDiv','OrderNumber','OrderingDate','StainShippingDate','ProductName','OrderingCount','StainPartNumber',
+                  'StainMixRatio','DestinationCode','SupplierCode','ShippingCode','CustomeCode','RequestCode','SupplierPerson',
+                  'TitleDiv','StockDiv','SpecifyDeliveryDate','StainAnswerDeadline','MarkName','OutputDiv',
                  )
 
     # オーダーナンバー重複チェック
+    def clean_OrderNumber(self):
+        SlipDiv = self.cleaned_data['SlipDiv']
+        OrderNumber = self.cleaned_data['OrderNumber']
+        OrderNumbercnt = OrderingTable.objects.filter(OrderNumber__exact = OrderNumber.zfill(7)).count()
+        if OrderNumbercnt > 0 and (SlipDiv == "S" or SlipDiv == "B" or SlipDiv == "F" or SlipDiv == "D"):
+            OrderNumbercnt = 0
+        if OrderNumber:
+            if OrderNumbercnt > 0:
+                raise forms.ValidationError(u'オーダーNOが重複しています')
+        return OrderNumber
+
     #def clean(self):
     #    cleaned_data = super(OrderingForm, self).clean()
     #    try:            
