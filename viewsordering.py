@@ -114,13 +114,14 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
                 post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
 
-                # 削除チェックがついたfileを取り出して削除
+                # 削除チェックがついたfileを取り出して更新
                 for file in formset.deleted_objects:
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.is_Deleted = True
                     file.save()
 
+                # 明細のfileを取り出して更新
                 for file in instances:
                     file.DetailItemNumber = file.DetailItemNumber.zfill(4)
                     file.Updated_id = self.request.user.id

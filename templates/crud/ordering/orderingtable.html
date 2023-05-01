@@ -19,7 +19,7 @@
 																</div>
 															</th>
 															<th class="fds-table__th">
-																<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
 																	<span class="fds-table__th-text">　カラー</span>
 																</div>
 															</th>
@@ -55,12 +55,12 @@
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 150px;">
-																	<span class="fds-table__th-text">　　　　摘要</span>
+																	<span class="fds-table__th-text">　　　　　摘要</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
-																	<span class="fds-table__th-text">　納期</span>
+																	<span class="fds-table__th-text">　　納期</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
@@ -80,8 +80,8 @@
 														<tr class="fds-table__tr fds-table__tr--hoverable list_var">
 															<td class="fds-table__td">
 																<div id="div" class="fds-table__td-content">
-																	<input type="text" class="fds-form-input" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-																	name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" >
+																	<input type="text" class="fds-form-input DetailItemNumber" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+																	name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="0001">
 																</div>
 															</td>
 															<td class="fds-table__td">
@@ -92,7 +92,7 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input" style="width: 70px;" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
+																	<input type="text" class="fds-form-input" style="width: 120px;" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
 																	name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" >                                   
 																</div>
 															</td>
@@ -271,7 +271,17 @@
 													$('[name=OrderingTableId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
 												});
 
-												$('#list').addInputArea();
+												//$('#list').addInputArea();
+
+												$('#list').addInputArea({
+													after_add: function () {
+														var tbl = document.querySelector('#tblrow');
+														var num = tbl.querySelectorAll('.DetailItemNumber').length;
+														var item = num.toString().padStart( 4, '0');
+
+														tbl.querySelectorAll('.DetailItemNumber')[num -1].value = item;
+													}
+												});
 											});
 										</script>
 									{% endblock %}
