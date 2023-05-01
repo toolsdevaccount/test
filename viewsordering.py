@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
-from .models import OrderingTable
+from .models import OrderingTable, OrderingDetail
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
@@ -93,8 +93,8 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         context = super(orderingUpdateView, self).get_context_data(**kwargs)
-        context.update(dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object())))
-     
+        context.update(dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))))
+        
         return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
@@ -113,6 +113,13 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
                 # Updated_atは現在日付時刻とする
                 post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
+
+                # 削除チェックがついたfileを取り出して削除
+                for file in formset.deleted_objects:
+                    file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.is_Deleted = True
+                    file.save()
 
                 for file in instances:
                     file.DetailItemNumber = file.DetailItemNumber.zfill(4)

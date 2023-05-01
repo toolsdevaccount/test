@@ -82,7 +82,10 @@ class OrderingForm(forms.ModelForm):
     def clean_OrderNumber(self):
         SlipDiv = self.cleaned_data['SlipDiv']
         OrderNumber = self.cleaned_data['OrderNumber']
+        idcnt = OrderingTable.objects.filter(id__exact = self.instance.pk).count()
         OrderNumbercnt = OrderingTable.objects.filter(OrderNumber__exact = OrderNumber.zfill(7)).count()
+        if idcnt > 0:
+            OrderNumbercnt = 0           
         if OrderNumbercnt > 0 and (SlipDiv == "S" or SlipDiv == "B" or SlipDiv == "F" or SlipDiv == "D"):
             OrderNumbercnt = 0
         if OrderNumber:
@@ -108,7 +111,7 @@ class OrderingForm(forms.ModelForm):
 OrderingFormset = forms.inlineformset_factory(
     OrderingTable, OrderingDetail, 
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
-            'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','AnswerDeadline','DeliveryManageDiv',
+            'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','AnswerDeadline','DeliveryManageDiv','is_Deleted',
             ),
-    extra=0,min_num=1,validate_min=True,can_delete=False
+    extra=0,min_num=1,validate_min=True,can_delete=True
 )
