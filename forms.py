@@ -78,6 +78,14 @@ class OrderingForm(forms.ModelForm):
                   'TitleDiv','StockDiv','SpecifyDeliveryDate','StainAnswerDeadline','MarkName','OutputDiv',
                  )
 
+    # 仕入単価
+    def clean_DetailUnitPrice(self):
+        DetailUnitPrice = self.cleaned_data['DetailUnitPrice']
+        if DetailUnitPrice:
+            if not re.match(r'\d+(?:\.\d+)?', DetailUnitPrice):
+                raise forms.ValidationError(u'仕入単価は数値の形式で')
+        return DetailUnitPrice
+
     # オーダーナンバー重複チェック
     def clean_OrderNumber(self):
         SlipDiv = self.cleaned_data['SlipDiv']
@@ -92,6 +100,7 @@ class OrderingForm(forms.ModelForm):
             if OrderNumbercnt > 0:
                 raise forms.ValidationError(u'オーダーNOが重複しています')
         return OrderNumber
+
 
     #def clean(self):
     #    cleaned_data = super(OrderingForm, self).clean()
@@ -115,3 +124,4 @@ OrderingFormset = forms.inlineformset_factory(
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
+

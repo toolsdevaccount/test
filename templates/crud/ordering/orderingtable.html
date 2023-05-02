@@ -4,7 +4,7 @@
 										</div>
 										<div class="fds-table-container">	
 											<div class="fds-table" style="height: 18vh;">
-												{{ formset.management_form }}
+												{{ formset.management_form }}	
 												<table class="fds-table__inner" id="tblrow">
 													<thead>
 														<tr class="fds-table__tr">
@@ -59,7 +59,7 @@
 																</div>
 															</th>
 															<th class="fds-table__th">
-																<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
 																	<span class="fds-table__th-text">　　納期</span>
 																</div>
 															</th>
@@ -76,7 +76,7 @@
 														</tr>
 													</thead>
 													<tbody id="list">
-														{% for form in formset %}
+														{% for form in formset %}	
 														<tr class="fds-table__tr fds-table__tr--hoverable list_var">
 															<td class="fds-table__td">
 																<div id="div" class="fds-table__td-content">
@@ -105,32 +105,57 @@
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
 																	<input type="number" step="0.1" class="fds-form-input" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-																	name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" >                                   
+																	name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="0.0" data-empty-val="false">                                   
 																</div>
+																{% if form.errors.DetailVolume %}
+																{% for error in form.errors.DetailVolume %}
+																	<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
+																{% endfor %}
+																{% endif %}
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="number" class="fds-form-input" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-																	name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" >                                   
+																	<input type="text" class="fds-form-input" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+																	name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" value="0" data-empty-val="false">                                   
 																</div>
+																{% if form.errors.DetailUnitPrice %}
+																{% for error in form.errors.DetailUnitPrice %}
+																	<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
+																{% endfor %}
+																{% endif %}				
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="number" class="fds-form-input DetailPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-																	name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);">      
+																	<input type="text" class="fds-form-input DetailPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+																	name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" value="0" data-empty-val="false">      
 																</div>
+																{% if form.errors.DetailPrice %}
+																{% for error in form.errors.DetailPrice %}
+																	<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
+																{% endfor %}
+																{% endif %}				
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="number" class="fds-form-input DetailOverPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-																	name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);">                                                                            
+																	<input type="text" class="fds-form-input DetailOverPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+																	name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="0" data-empty-val="false">                                                                            
 																</div>
+																{% if form.errors.DetailOverPrice %}
+																{% for error in form.errors.DetailOverPrice %}
+																	<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
+																{% endfor %}
+																{% endif %}				
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="number" class="fds-form-input DetailSellPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-																	name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" >                                   
+																	<input type="text" class="fds-form-input DetailSellPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+																	name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="0" data-empty-val="false">                                   
 																</div>
+																{% if form.errors.DetailSellPrice %}
+																{% for error in form.errors.DetailSellPrice %}
+																	<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
+																{% endfor %}
+																{% endif %}				
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
@@ -140,7 +165,7 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input" style="width: 80px;" data-id-format="id_OrderingTableId-%d-AnswerDeadline" data-name-format="OrderingTableId-%d-AnswerDeadline" 
+																	<input type="text" class="fds-form-input AnswerDeadline" style="width: 100px;" data-id-format="id_OrderingTableId-%d-AnswerDeadline" data-name-format="OrderingTableId-%d-AnswerDeadline" 
 																	name="OrderingTableId-0-AnswerDeadline" id="id_OrderingTableId-0-AnswerDeadline">                                   
 																</div>
 															</td>
@@ -227,6 +252,20 @@
 												}
 											});
 
+											// 納期
+											var AnswerDeadline = document.getElementsByClassName('AnswerDeadline');
+											var fp = flatpickr(AnswerDeadline, {
+												'locale': 'ja',
+												allowInput: true,
+												// onCloseは入力フォームが閉じられた時に発火する
+												onClose: (selectedDates, dateStr, instance) => {
+													if (selectedDates.length === 1) {
+														// プロパティにユーザーが選択した日付を代入
+														this.dateProps = selectedDates[0];
+													}
+												}
+											});
+
 											// 指定したエレメント(input)が所属する行(tr)を取得
 											function detail(obj)
 											{
@@ -277,9 +316,24 @@
 													after_add: function () {
 														var tbl = document.querySelector('#tblrow');
 														var num = tbl.querySelectorAll('.DetailItemNumber').length;
-														var item = num.toString().padStart( 4, '0');
+														var item = tbl.querySelectorAll('.DetailItemNumber')[num -2].value;
+															item = parseInt(item ,10) +1;
+														var result = item.toString().padStart( 4, '0');
 
-														tbl.querySelectorAll('.DetailItemNumber')[num -1].value = item;
+														tbl.querySelectorAll('.DetailItemNumber')[num -1].value = result;
+
+														var AnswerDeadline = document.getElementsByClassName('AnswerDeadline');
+														var fp = flatpickr(AnswerDeadline, {
+															'locale': 'ja',
+															allowInput: true,
+															// onCloseは入力フォームが閉じられた時に発火する
+															onClose: (selectedDates, dateStr, instance) => {
+																if (selectedDates.length === 1) {
+																	// プロパティにユーザーが選択した日付を代入
+																	this.dateProps = selectedDates[0];
+																}
+															}
+														});
 													}
 												});
 											});

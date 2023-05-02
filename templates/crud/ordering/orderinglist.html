@@ -207,7 +207,7 @@
 							<td class="fds-table_tr-hover-buttons">
 								<div class="fds-table__td-content" style="width: 100px;">
 									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button>
-									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href=''">削除</button>
+									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button>
 								</div>
 							</td>
 			            </tr>

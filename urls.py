@@ -27,6 +27,8 @@ urlpatterns = [
     path('ordering/new/', viewsordering.OrderingCreateView.as_view(), name='orderingnew'),
     # 受発注編集
     path('ordering/edit/<int:pk>/', viewsordering.orderingUpdateView.as_view(), name='orderingedit'),
+    # 受発注削除
+    path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
 
     # PDF出力
     path('pdftest/', views.pdftest, name='pdftest'), 

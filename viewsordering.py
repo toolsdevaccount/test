@@ -75,7 +75,9 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                     file.Updated_id = self.request.user.id
                     file.save()
         else:
-            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))                   
+            # is_validがFalseの場合はエラー文を表示
+            return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時
@@ -124,6 +126,51 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
                 # 明細のfileを取り出して更新
                 for file in instances:
                     file.DetailItemNumber = file.DetailItemNumber.zfill(4)
+                    file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=formset)) 
+        return redirect('myapp:orderinglist')
+
+    # バリデーションエラー時
+    def form_invalid(self,form):
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+
+# 受発注情報削除
+class orderingDeleteView(LoginRequiredMixin,UpdateView):
+    model = OrderingTable
+    form_class =  OrderingForm
+    formset_class = OrderingFormset
+    template_name = "crud/ordering/orderingdeleteform.html"
+
+    # get_context_dataをオーバーライド
+    def get_context_data(self, **kwargs):
+        context = super(orderingDeleteView, self).get_context_data(**kwargs)
+        context.update(dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))))
+        
+        return context
+
+    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+    @transaction.atomic # トランザクション設定
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        formset = OrderingFormset(self.request.POST,instance=post) 
+
+        if self.request.method == 'POST' and formset.is_valid(): 
+            instances = formset.save(commit=False)
+           
+            if form.is_valid():
+                post.is_Deleted = True
+                # Updated_idフィールドはログインしているユーザidとする
+                post.Updated_id = self.request.user.id
+                # Updated_atは現在日付時刻とする
+                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
+                post.save()
+
+                # 明細のfileを取り出して削除
+                for file in instances:
+                    file.is_Deleted = True
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
