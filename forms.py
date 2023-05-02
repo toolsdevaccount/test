@@ -78,14 +78,6 @@ class OrderingForm(forms.ModelForm):
                   'TitleDiv','StockDiv','SpecifyDeliveryDate','StainAnswerDeadline','MarkName','OutputDiv',
                  )
 
-    # 仕入単価
-    def clean_DetailUnitPrice(self):
-        DetailUnitPrice = self.cleaned_data['DetailUnitPrice']
-        if DetailUnitPrice:
-            if not re.match(r'\d+(?:\.\d+)?', DetailUnitPrice):
-                raise forms.ValidationError(u'仕入単価は数値の形式で')
-        return DetailUnitPrice
-
     # オーダーナンバー重複チェック
     def clean_OrderNumber(self):
         SlipDiv = self.cleaned_data['SlipDiv']
