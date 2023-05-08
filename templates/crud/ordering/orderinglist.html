@@ -1,6 +1,5 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-<!-- <div class="fds-layout-body"> -->
     <div class="fds-breadcrumb">
         <div class="fds-breadcrumb__item">
             <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">HOME</a>
@@ -18,7 +17,7 @@
             新規登録
         </button>
     </div>
-    <form method="get">
+    <form method="get" id="form">
 		{% csrf_token %}
 		<div class="fds-clousure--bottom-section">
 			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
@@ -36,6 +35,42 @@
 			</div>
 		</div>
     </form>
+	{% block extrajs %}
+	<!-- Datepicker 追加-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+	{% load static %}
+	<script>
+		// 依頼日(From)検索用
+		var orderdateFrom = document.getElementById('orderdateFrom');
+		var fp = flatpickr(orderdateFrom, {
+			'locale': 'ja',
+			allowInput: true,
+			// onCloseは入力フォームが閉じられた時に発火する
+			onClose: (selectedDates, dateStr, instance) => {
+				if (selectedDates.length === 1) {
+					// プロパティにユーザーが選択した日付を代入
+					this.dateProps = selectedDates[0];
+				}
+			}
+		});
+
+		// 依頼日(To)検索用
+		var orderdateTo = document.getElementById('orderdateTo');
+		var fp = flatpickr(orderdateTo, {
+			'locale': 'ja',
+			allowInput: true,
+			// onCloseは入力フォームが閉じられた時に発火する
+			onClose: (selectedDates, dateStr, instance) => {
+				if (selectedDates.length === 1) {
+					// プロパティにユーザーが選択した日付を代入
+					this.dateProps = selectedDates[0];
+				}
+			}
+		});
+	</script>
+	{% endblock %}  
 	<div class="fds-table-controller">
         <div class="fds-page-table__title">
         </div>
@@ -220,16 +255,7 @@
 			</div>
 		</div>
   	</div>
-	{% block extrajs %}
-	<!-- Datepicker 追加-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-	{% load static %}
-	<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
-	{% endblock %}  
 	<div class="fds-pagination">
 		{% include "crud/pagination.html" %}
 	</div>
-<!-- </div> -->
-{% endblock %}
+	{% endblock %}

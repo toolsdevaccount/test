@@ -32,11 +32,10 @@ class OrderingListView(LoginRequiredMixin,ListView):
         orderdateFrom = self.request.GET.get('orderdateFrom')
         orderdateTo = self.request.GET.get('orderdateTo')
 
-        if query or (orderdateFrom and orderdateTo):
+        if query:
             queryset = queryset.filter(
                  Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(OrderingDate__contains=query) | Q(ProductName__contains=query) |
-                 Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query) |
-                 Q(OrderingDate__range=(orderdateFrom,orderdateTo))
+                 Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query)
             )
 
         if orderdateFrom and orderdateTo:
