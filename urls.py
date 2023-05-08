@@ -1,6 +1,6 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-from . import views,viewsordering
+from . import views,viewscustomer, viewsordering, viewspdf
 
 # fileupload import
 from django.conf import settings
@@ -13,13 +13,13 @@ urlpatterns = [
     # signup
     path('signup/', views.signup, name='signup'),
     # 得意先仕入先一覧
-    path('customersupplier/list/', views.CustomerSupplierListView.as_view(), name='list'),
+    path('customersupplier/list/', viewscustomer.CustomerSupplierListView.as_view(), name='list'),
     # 得意先仕入先登録
-    path('customersupplier/new/', views.CustomerSupplierCreateView.as_view(), name='new'),
+    path('customersupplier/new/', viewscustomer.CustomerSupplierCreateView.as_view(), name='new'),
     # 得意先仕入先編集
-    path('customersupplier/edit/<int:pk>/', views.CustomerSupplierUpdateView.as_view(), name='edit'),
+    path('customersupplier/edit/<int:pk>/', viewscustomer.CustomerSupplierUpdateView.as_view(), name='edit'),
     # 得意先仕入先削除
-    path('customersupplier/delete/<int:pk>/',views.CustomerSupplierDeleteView.as_view(),name='delete'),   
+    path('customersupplier/delete/<int:pk>/',viewscustomer.CustomerSupplierDeleteView.as_view(),name='delete'),   
 
     # 受発注一覧
     path('ordering/list/', viewsordering.OrderingListView.as_view(), name='orderinglist'),
@@ -31,7 +31,7 @@ urlpatterns = [
     path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
 
     # PDF出力
-    path('pdftest/', views.pdftest, name='pdftest'), 
+    path('pdftest/', viewspdf.make, name='pdftest'), 
     # fileupload
     path('uploadtest/', views.uploadtest, name='uploadtest'),
 ]
