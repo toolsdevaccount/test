@@ -31,12 +31,11 @@ $(function(){
         }
     });
 });
-$(function(){
-    $('input').change(function() {
-        if($(this).prop("checked")) {
-            $(this).val(1);
-        } else {
-            $(this).val(0);
-        }
-    })
+
+$('.DeliveryManageDiv').click(function() {
+    if($(".DeliveryManageDiv").prop('checked')){
+        $(".DeliveryManageDiv").val(1);
+    } else {
+        $(".DeliveryManageDiv").val(0);
+    }           
 });

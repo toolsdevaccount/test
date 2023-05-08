@@ -29,11 +29,19 @@ class OrderingListView(LoginRequiredMixin,ListView):
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
         query = self.request.GET.get('query')      
+        orderdateFrom = self.request.GET.get('orderdateFrom')
+        orderdateTo = self.request.GET.get('orderdateTo')
 
-        if query:
+        if query or (orderdateFrom and orderdateTo):
             queryset = queryset.filter(
-                 Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(OrderingDate__contains=query) | Q(ProductName__contains=query)
+                 Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(OrderingDate__contains=query) | Q(ProductName__contains=query) |
+                 Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query) |
+                 Q(OrderingDate__range=(orderdateFrom,orderdateTo))
             )
+
+        if orderdateFrom and orderdateTo:
+            queryset = queryset.filter(Q(OrderingDate__range=(orderdateFrom,orderdateTo)))
+
         return queryset
 
 # 受発注情報登録

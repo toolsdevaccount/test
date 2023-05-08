@@ -24,7 +24,11 @@
 			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
 				<div class="fds-form-input-message">
 					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.query }}"/>
+					<input type="search" name="query" id ="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.query }}"/>
+					<label class="fds-label-input">依頼日(From)</label>
+					<input type="search" name="orderdateFrom" id="orderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.orderdateFrom }}"/>
+					<label class="fds-label-input">依頼日(To)</label>
+					<input type="search" name="orderdateTo" id="orderdateTo" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.orderdateTo }}"/>
 					<span><button class="fds-btn fds-btn--primary fds-btn--small" style="width: 100px;" type="submit">
 						検索
 					</button></span>
@@ -203,7 +207,6 @@
 								<div class="fds-table__td-content" style="width: 120px;">
 								</div>
 							</td>
-							<!-- <td class="fds-table__td"> -->
 							<td class="fds-table_tr-hover-buttons">
 								<div class="fds-table__td-content" style="width: 100px;">
 									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button>
@@ -217,6 +220,14 @@
 			</div>
 		</div>
   	</div>
+	{% block extrajs %}
+	<!-- Datepicker 追加-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+	{% load static %}
+	<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
+	{% endblock %}  
 	<div class="fds-pagination">
 		{% include "crud/pagination.html" %}
 	</div>

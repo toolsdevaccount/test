@@ -173,7 +173,7 @@
 																<div class="fds-table__td-content">
 																<div class="fds-checkbox fds-checkbox--on-table">
 																	<label class="fds-checkbox__label">
-																		<input type="checkbox" class="fds-checkbox__input" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
+																		<input type="checkbox" class="fds-checkbox__input DeliveryManageDiv" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
 																		name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" >
 																		<span class="fds-checkbox__text">
 																		</span>
@@ -192,14 +192,14 @@
 										</div>
 										{% endblock %}
 										{% block extrajs %}
-										<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
 										<!-- Datepicker 追加-->
 										<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 										<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 										<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+										<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
 										{% load static %}
-										<script src="{% static '\js\datepicker.js' %}"></script>
-										<script src="{% static '\js\inputarea.js' %}"></script>
-										<script src="{% static '\js\calc.js' %}"></script>
+										<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
 									{% endblock %}

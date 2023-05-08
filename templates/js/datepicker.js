@@ -63,3 +63,31 @@ var fp = flatpickr(AnswerDeadline, {
         }
     }
 });
+
+// 依頼日(From)検索用
+var orderdateFrom = document.getElementById('orderdateFrom');
+var fp = flatpickr(orderdateFrom, {
+    'locale': 'ja',
+    allowInput: true,
+    // onCloseは入力フォームが閉じられた時に発火する
+    onClose: (selectedDates, dateStr, instance) => {
+        if (selectedDates.length === 1) {
+            // プロパティにユーザーが選択した日付を代入
+            this.dateProps = selectedDates[0];
+        }
+    }
+});
+
+// 依頼日(To)検索用
+var orderdateTo = document.getElementById('orderdateTo');
+var fp = flatpickr(orderdateTo, {
+    'locale': 'ja',
+    allowInput: true,
+    // onCloseは入力フォームが閉じられた時に発火する
+    onClose: (selectedDates, dateStr, instance) => {
+        if (selectedDates.length === 1) {
+            // プロパティにユーザーが選択した日付を代入
+            this.dateProps = selectedDates[0];
+        }
+    }
+});
