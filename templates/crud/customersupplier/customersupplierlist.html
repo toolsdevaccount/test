@@ -77,7 +77,7 @@
 								</div>
 							</th>
 							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 200px;">
 									<span class="fds-table__th-text">
 										カナ
 									</span>
@@ -98,27 +98,27 @@
 								</div>
 							</th>
 							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered"	style="width: 100px;">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered"	style="width: 150px;">
 									<span class="fds-table__th-text">
 										市区町村
 									</span>
 								</div>
 							</th>
-							<!-- <th class="fds-table__th">
+							<th class="fds-table__th">
 								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 80px;">
 									<span class="fds-table__th-text">
 									</span>
 									<!-- <span class="fds-icon fds-icon--more-vert"></span>
 									</div> -->
-							<!-- </th> -->
-							<!-- <th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 200px;">
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 120px;">
 									<span class="fds-table__th-text">
 										アクション
-									</span> -->
+									</span>
 									<!-- <span class="fds-icon fds-icon--more-vert"></span>
 									</div> -->
-							<!-- </th> -->
+							</th>
 			            </tr>
 					</thead>
 			        <tbody class="fds-table__tbody-hover-button">
@@ -157,7 +157,7 @@
 								</div>
 							</td>
 							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 150px;">
+								<div class="fds-table__td-content" style="width: 200px;">
 									<span class="fds-table__td-text">
 										{{ customersupplier.CustomerNameKana }}
 									</span>
@@ -178,28 +178,26 @@
 								</div>
 							</td>
 							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 100px;">
+								<div class="fds-table__td-content" style="width: 150px;">
 									<span class="fds-table__td-text">
 										{{ customersupplier.Municipalities }}                 
 									</span>
 								</div>
 							</td>
-							<!-- <td class="fds-table__td">
+							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 80px;">
 								</div>
-							</td> -->
-							<!-- <td class="fds-table__td">
+							</td>
+							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 120px;">
 									<span><button type="button" class="fds-btn fds-btn--primary fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">編集</button></span>
 									<span><button type="button" class="fds-btn fds-btn--error fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>
 								</div>
-							</td> -->
-							<td class="fds-table_tr-hover-buttons">
-								<div class="fds-table__td-content" style="width: 100px;">
-									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button>
-									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button>
-								</div>
 							</td>
+							<!-- <td class="fds-table_tr-hover-buttons">
+								<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 100px;" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button>
+								<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 100px;" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button>
+							</td> -->
 			            </tr>
             			{% endfor %}
 					</tbody>

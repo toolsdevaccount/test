@@ -31,7 +31,7 @@ urlpatterns = [
     path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
 
     # PDF出力
-    path('pdftest/', viewspdf.make, name='pdftest'), 
+    path('ordering/pdf/<int:pk>', viewspdf.pdf, name='orderingpdf'), 
     # fileupload
     path('uploadtest/', views.uploadtest, name='uploadtest'),
 ]

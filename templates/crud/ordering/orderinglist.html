@@ -146,19 +146,19 @@
 								</div>
 							</th>
 							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 80px;">
+								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 150px;">
 									<span class="fds-table__th-text">
-										発注書
+										マーク名
 									</span>
 								</div>
 							</th>
-							<th class="fds-table__th">
+							<!-- <th class="fds-table__th">
 								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 120px;">
 									<span class="fds-table__th-text">
 										アクション
 									</span>
 								<div>
-							</th>
+							</th> -->
 			            </tr>
 					</thead>
 			        <tbody class="fds-table__tbody-hover-button">
@@ -235,17 +235,21 @@
 								</div>
 							</td>
 							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 80px;">
+								<div class="fds-table__td-content" style="width: 150px;">
+									<span class="fds-table__td-text">
+										{{ OrderTable.MarkName }}                 
+									</span>
 								</div>
 							</td>
-							<td class="fds-table__td">
+							<!-- <td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 120px;">
 								</div>
-							</td>
+							</td> -->
 							<td class="fds-table_tr-hover-buttons">
-								<div class="fds-table__td-content" style="width: 100px;">
+								<div class="fds-table__td-content" style="width: 150px;">
 									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button>
-									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button>
+									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 100px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button>
+									<!-- <button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button> -->
 								</div>
 							</td>
 			            </tr>
