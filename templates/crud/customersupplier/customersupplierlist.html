@@ -112,7 +112,7 @@
 									</div> -->
 							</th>
 							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 120px;">
+								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 100px;">
 									<span class="fds-table__th-text">
 										アクション
 									</span>
@@ -189,15 +189,11 @@
 								</div>
 							</td>
 							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span><button type="button" class="fds-btn fds-btn--primary fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">編集</button></span>
-									<span><button type="button" class="fds-btn fds-btn--error fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>
+								<div class="fds-table__td-content" style="width: 100px;">
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button></span>
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--error fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>
 								</div>
 							</td>
-							<!-- <td class="fds-table_tr-hover-buttons">
-								<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 100px;" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button>
-								<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 100px;" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button>
-							</td> -->
 			            </tr>
             			{% endfor %}
 					</tbody>

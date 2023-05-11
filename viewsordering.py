@@ -34,8 +34,8 @@ class OrderingListView(LoginRequiredMixin,ListView):
 
         if query:
             queryset = queryset.filter(
-                 Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(OrderingDate__contains=query) | Q(ProductName__contains=query) |
-                 Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query)
+                 Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(ProductName__contains=query) | Q(MarkName__contains=query) |
+                 Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query) 
             )
 
         if orderdateFrom and orderdateTo:

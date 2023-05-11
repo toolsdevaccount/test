@@ -3,24 +3,27 @@ from django.shortcuts import render,redirect
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.lib.pagesizes import A4, landscape, portrait
+from reportlab.lib.pagesizes import A4, landscape
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import mm
 from reportlab.lib import colors
-import os
+# MySQL
 import MySQLdb
-
 # 日時
 from django.utils import timezone
 import datetime
 
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import ParagraphStyle, ParagraphStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER, TA_LEFT
  
 def pdf(request,pk):
     strtime = timezone.now() + datetime.timedelta(hours=9)
     filename = "estimate_" + strtime.strftime('%Y%m%d%H%M%S')
     make(pk,filename)
-    response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
-    response['Content-Disposition'] = 'filename=' + filename + '.pdf'
+    response = HttpResponse(open('./download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
 
     return response
 
@@ -31,7 +34,7 @@ def make(pk,filename):
     pdf_canvas.save() # 保存
 
 def set_info(filename):
-    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=landscape(A4))
+    pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(A4))
     pdf_canvas.setAuthor("hpscript")
     pdf_canvas.setTitle("注文書")
     pdf_canvas.setSubject("注文書")
@@ -116,16 +119,27 @@ def print_string(pdf_canvas,dt):
     pdf_canvas.drawString(685, 370, '発注番号: ' + dt[0][0] + dt[0][1])
     pdf_canvas.line(680, 365, 808, 365) 
 
-    # 品名、番手、色番、色名、数量、単位、単価、希望納期、回答納期、備考
+    # 品名、番手、色番、色名、数量、単位、単価、希望納期、回答納期、備考(中央寄せ)
+    style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=8, alignment=TA_CENTER)
+    itemNo0 = Paragraph('品名',style)
+    itemNo1 = Paragraph('番手',style)
+    itemNo2 = Paragraph('色番',style)
+    itemNo3 = Paragraph('色名',style)
+    itemNo4 = Paragraph('数量',style)
+    itemNo5 = Paragraph('単位',style)
+    itemNo6 = Paragraph('単価',style)
+    itemNo7 = Paragraph('希望納期',style)
+    itemNo8 = Paragraph('回答納期',style)
+    itemNo9 = Paragraph('備考',style)
+
     data = [
-        ['品名', '番手','色番', '色名','数量','単位','単価','希望納期','回答納期','備考'],
+        [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6, itemNo7, itemNo8, itemNo9],
     ]
 
     table = Table(data, colWidths=(40*mm, 15*mm, 20*mm, 40*mm, 20*mm, 15*mm, 20*mm, 30*mm, 30*mm, 40*mm), rowHeights=7.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 8),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'), 
             ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
@@ -134,12 +148,25 @@ def print_string(pdf_canvas,dt):
 
     data =[]
     l=len(dt)
+    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=8, alignment=TA_LEFT)
+    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=8, alignment=TA_RIGHT)
 
     for i in range(9):
         if i<l: 
             row = dt[i]
+            # 指定した列の左寄せ
+            ProductName = Paragraph(row[3],styleLeft)
+            OrderingCount = Paragraph(row[4],styleLeft)
+            DetailColorNumber = Paragraph(row[16],styleLeft)
+            DetailColor = Paragraph(row[17],styleLeft)
+            # 指定した列の右寄せ
+            Volume = Paragraph(row[19],styleRight)
+            UnitPrice = Paragraph(row[20],styleRight)
+            StainAnswerDeadline = Paragraph(row[8],styleRight)
+            AnswerDeadline = Paragraph(row[22],styleRight)
+
             data += [
-                    [row[3],row[4],row[16],row[17],row[19],' ',row[20],row[8],row[22],' '],
+                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, ' ', UnitPrice, StainAnswerDeadline, AnswerDeadline, ' '],
             ]
         else:
             data += [
@@ -152,7 +179,6 @@ def print_string(pdf_canvas,dt):
                 ('BOX', (0, 0), (-1, -1), 1, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ('ALIGN', (4, 0), (4, 9), 'RIGHT'), 
             ]))
 
     table.wrapOn(pdf_canvas, 10*mm, 10*mm)
@@ -162,6 +188,16 @@ def print_string(pdf_canvas,dt):
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(50, 100, '摘要')
+
+    # メッセージ
+    font_size = 9
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(50, 80, '※単価の違いがございましたらお手数ですがご連絡ください。')
+
+    # メッセージ
+    font_size = 9
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(50, 60, '　出荷次第、納品書を翌日当社宛に発注番号を必ずご記入の上、ご一報ください。')
 
     pdf_canvas.rect(43, 20, 765, 100) 
  

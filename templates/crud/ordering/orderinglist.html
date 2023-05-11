@@ -152,13 +152,13 @@
 									</span>
 								</div>
 							</th>
-							<!-- <th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 120px;">
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 125px;">
 									<span class="fds-table__th-text">
 										アクション
 									</span>
 								<div>
-							</th> -->
+							</th>
 			            </tr>
 					</thead>
 			        <tbody class="fds-table__tbody-hover-button">
@@ -245,11 +245,10 @@
 								<div class="fds-table__td-content" style="width: 120px;">
 								</div>
 							</td> -->
-							<td class="fds-table_tr-hover-buttons">
-								<div class="fds-table__td-content" style="width: 150px;">
-									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button>
-									<button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 100px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button>
-									<!-- <button class="fds-btn fds-btn--outline fds-btn--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button> -->
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 125px;">
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button></span>
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--error fds-btn-origin--tiny" style="width: 65px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>
 								</div>
 							</td>
 			            </tr>
