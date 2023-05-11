@@ -1,0 +1,9 @@
+最初に戻す
+python manage.py migrate myapp zero
+
+指定まで戻す
+python manage.py migrate app 0001_initial
+
+
+pipのアップデート
+python -m pip install --upgrade pip

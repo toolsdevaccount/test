@@ -1,0 +1,20 @@
+GitHub アカウント
+toolsdevaccount
+sakurai79@hotmail.co.jp
+RWiMEtaD3ga3
+
+GitHub リモートリポジトリURL
+https://github.com/toolsdevaccount/test.git
+
+GitHub リモートリポジトリアクセストークン
+MyToken20230417(classic)
+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
+
+
+GitHub cloneコマンド
+git clone https://github.com/toolsdevaccount/test.git
+
+
+tortoisegitをインストール
+日本語化
+ユーザ名とパスワードを設定する
