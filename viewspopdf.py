@@ -53,12 +53,13 @@ def connect(pk):
     conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
     cur = conn.cursor()
     sql = (' SELECT '
-                '  a.SlipDiv,a.OrderNumber,DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),a.ProductName,a.OrderingCount,a.StainPartNumber,a.SupplierPerson'
-                ' ,j.titledivname,DATE_FORMAT(a.StainAnswerDeadline,"%Y年%m月%d日"),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
+                '  a.SlipDiv,a.OrderNumber,IFNULL(DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),""),a.ProductName,a.OrderingCount,a.StainPartNumber,a.SupplierPerson'
+                ' ,j.titledivname,IFNULL(DATE_FORMAT(a.StainAnswerDeadline,"%Y年%m月%d日"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
                 ' ,c.BuildingName,b.DetailItemNumber,b.DetailColorNumber,b.DetailColor,b.DetailTailoring,FORMAT(b.DetailVolume,2),FORMAT(b.detailunitprice,0)'
-                ' ,b.detailsummary,DATE_FORMAT(b.AnswerDeadline,"%Y年%m月%d日"),e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
+                ' ,b.detailsummary,IFNULL(DATE_FORMAT(b.AnswerDeadline,"%Y年%m月%d日"),""),e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
                 ' ,e.BuildingName,e.PhoneNumber,e.FaxNumber,d.first_name,d.last_name,d.email,f.CustomerName,f.PostCode,i.prefecturename,f.Municipalities'
                 ' ,f.Address,f.BuildingName,f.PhoneNumber,f.FaxNumber,a.StainMixRatio,a.OutputDiv'
+                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(a.SpecifyDeliveryDate,"%Y年%m月%d日"),"")'
            ' FROM '
                 'myapp_orderingtable a '
            ' LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
@@ -225,7 +226,10 @@ def print_string_StainRequest(pdf_canvas,dt):
     # title
     font_size = 20
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(240, 800, '染 付 依 頼 書')
+    if dt[0][43]==2:
+        pdf_canvas.drawString(240, 800, '染 付 依 頼 書')
+    if dt[0][43]==3:
+        pdf_canvas.drawString(180, 800, 'ビ ー カ ー 染 付 依 頼 書')
 
     # 発注番号
     font_size = 9
@@ -273,46 +277,54 @@ def print_string_StainRequest(pdf_canvas,dt):
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(20, 550,'原糸出荷')
     pdf_canvas.line(20, 530, 570, 530) 
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(90, 540, dt[0][44])
 
     # 品番
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(20, 510,'品番')
-    #pdf_canvas.drawString(80, 500, dt[0][5])
     pdf_canvas.line(20, 490, 570, 490) 
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(90, 500, dt[0][5])
 
     # 品名
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(20, 470,'品名')
-    #pdf_canvas.drawString(80, 460, dt[0][3])
     pdf_canvas.line(20, 450, 570, 450) 
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(90, 460, dt[0][3])
 
     # 番手
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(20, 430,'番手')
-    #pdf_canvas.drawString(80, 420, dt[0][4])
     pdf_canvas.line(20, 410, 570, 410) 
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(90, 420, dt[0][4])
 
     # 混率
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(20, 390,'混率')
-    #pdf_canvas.drawString(80, 380, dt[0][42])
     pdf_canvas.line(20, 370, 570, 370) 
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(90, 380, dt[0][42])
 
     # 希望納期
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(300, 590,'希望納期')
-    #pdf_canvas.drawString(360, 580, dt[0][8])
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(370, 580, dt[0][8])
 
     # 回答納期
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(300, 550,'回答納期')
-    #pdf_canvas.drawString(360, 540, dt[0][2])
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(370, 540, dt[0][45])
 
     # 不明
     font_size = 9
@@ -323,13 +335,15 @@ def print_string_StainRequest(pdf_canvas,dt):
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(300, 470,'仕入単価')
-    #pdf_canvas.drawString(360, 460, dt[0][20])
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(370, 460, dt[0][20])
 
     # 出荷先名
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(300, 430,'出荷先名')
-    #pdf_canvas.drawString(360, 420, dt[0][34])
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(370, 420, dt[0][34])
 
     # 項番、色番、カラー、仕立、数量、摘要
     style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
@@ -356,6 +370,7 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     data =[]
     l=len(dt)
+    total=0
     styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_LEFT)
     styleRight = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_RIGHT)
 
@@ -389,7 +404,7 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
     table.drawOn(pdf_canvas, 7*mm, 5.5*mm)
- 
+
     pdf_canvas.showPage()
      
 if __name__ == '__main__':
