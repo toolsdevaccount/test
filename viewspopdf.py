@@ -6,21 +6,24 @@ from reportlab.lib.pagesizes import A4, portrait, landscape
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import mm
 from reportlab.lib import colors
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import ParagraphStyle, ParagraphStyle
+from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER, TA_LEFT
 # MySQL
 import MySQLdb
 # 日時
 from django.utils import timezone
 import datetime
+# 計算用
+from decimal import Decimal
 
-from reportlab.platypus import Paragraph
-from reportlab.lib.styles import ParagraphStyle, ParagraphStyle
-from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER, TA_LEFT
  
 def pdf(request,pk):
     strtime = timezone.now() + datetime.timedelta(hours=9)
     filename = "PurchaseOrder_" + strtime.strftime('%Y%m%d%H%M%S')
     make(pk,filename)
     response = HttpResponse(open('./download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
+    #response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
 
     return response
@@ -37,6 +40,7 @@ def make(pk,filename):
 
 def set_info(filename):
     pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(A4))
+    #pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=landscape(A4))
     pdf_canvas.setAuthor("hpscript")
     pdf_canvas.setTitle("注文書")
     pdf_canvas.setSubject("注文書")
@@ -44,6 +48,7 @@ def set_info(filename):
 
 def set_info_stain(filename):
     pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=portrait(A4))
+    #pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(A4))
     pdf_canvas.setAuthor("hpscript")
     pdf_canvas.setTitle("染色依頼注文書")
     pdf_canvas.setSubject("染色依頼注文書")
@@ -377,6 +382,7 @@ def print_string_StainRequest(pdf_canvas,dt):
     for i in range(15):
         if i<l: 
             row = dt[i]
+            total += Decimal(row[19])
             # 指定した列の左寄せ
             DetailColorNumber = Paragraph(row[16],styleLeft)
             DetailColor = Paragraph(row[17],styleLeft)
@@ -385,14 +391,20 @@ def print_string_StainRequest(pdf_canvas,dt):
             # 指定した列の右寄せ
             DetailItemNumber = Paragraph(row[15],styleRight)
             Volume = Paragraph(row[19],styleRight)
-
             data += [
                     [DetailItemNumber, DetailColorNumber, DetailColor, DetailTailoring, Volume, DetailSummary],
             ]
         else:
-            data += [
-                    ['','','','','',''],
-            ]
+            if i==14:
+                # 指定した列の右寄せ
+                Detailtotal = Paragraph(str(total),styleRight)
+                data += [
+                        ['','','','',Detailtotal,''],
+                ]
+            else:            
+                data += [
+                        ['','','','','',''],
+                ]
 
         table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 30*mm, 70*mm), rowHeights=7.5*mm)
         table.setStyle(TableStyle([
