@@ -3238,11 +3238,19 @@
 }
 
 /* 追加 */
+.fds-btn-origin--pdf {
+  color: #FFFFFF;
+  border-color: #ace1af;
+  background-color: #ace1af;
+}
+
+/* 追加 */
 .fds-btn-origin--error {
   color: #FFFFFF;
   border-color: #D50000;
   background-color: #dc3545;
 }
+
 
 /* 追加 */
 .fds-btn-origin--tiny {

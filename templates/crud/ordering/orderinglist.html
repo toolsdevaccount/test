@@ -111,7 +111,7 @@
 								</div>
 							</th>
 							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
+								<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
 									<span class="fds-table__th-text">
 										オーダーNO
 									</span>
@@ -191,7 +191,7 @@
 								</div>
 							</td>
 				            <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 200px;">
+								<div class="fds-table__td-content" style="width: 120px;">
 									<span class="fds-table__td-text">
 										{{ OrderTable.SlipDiv }}
 									</span>
@@ -247,8 +247,9 @@
 							</td> -->
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 125px;">
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--pdf fds-btn-origin--tiny" style="width: 65px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>
 									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button></span>
-									<span><button type="button" class="fds-btn-origin fds-btn-origin--error fds-btn-origin--tiny" style="width: 65px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--error fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button></span>
 								</div>
 							</td>
 			            </tr>

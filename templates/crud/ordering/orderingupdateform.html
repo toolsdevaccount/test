@@ -56,13 +56,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="fds-form-input-message" style="width:50%;">
+                                            <div class="fds-form-input-message" style="width:25%;">
                                                 <!-- 伝票区分 -->
                                                 <label class="fds-label-input">オーダーNO:</label>
                                                 <input type="text" class="fds-form-input" placeholder="" name="SlipDiv" id="id_SlipDiv" maxlength="1" style="width:8%;" value={{ object.SlipDiv }} readonly>
                                                 <!-- オーダーNO -->
                                                 <span>-</span>
-                                                <input type="text" class="fds-form-input" placeholder="" name="OrderNumber" id="id_OrderNumber" maxlength="7" style="width:12%;" value={{ object.OrderNumber }}  readonly>
+                                                <input type="text" class="fds-form-input" placeholder="" name="OrderNumber" id="id_OrderNumber" maxlength="7" style="width:35%;" value={{ object.OrderNumber }}  readonly>
                                                 {% if form.errors.OrderNumber %}
                                                 {% for error in form.errors.OrderNumber %}
                                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
@@ -248,28 +248,6 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="fds-form-label fds-form-label--horizontal">
-                                            <div class="fds-form-input-message" style="width:25%;">
-                                                <!-- 指定納期 -->
-                                                <label class="fds-label-input">指定納期:</label>
-                                                <input type="text" class="fds-form-input" placeholder="" name="SpecifyDeliveryDate" id="id_SpecifyDeliveryDate" value={{ object.SpecifyDeliveryDate | default_if_none:"" }}>
-                                                {% if form.errors.SpecifyDeliveryDate %}
-                                                {% for error in form.errors.SpecifyDeliveryDate %}
-                                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                {% endfor %}
-                                                {% endif %}
-                                            </div>
-                                            <div class="fds-form-input-message" style="width:25%;">
-                                                <!-- 回答納期 -->
-                                                <label class="fds-label-input">回答納期:</label>
-                                                <input type="text" class="fds-form-input" placeholder="" name="StainAnswerDeadline" id="id_StainAnswerDeadline" value={{ object.StainAnswerDeadline | default_if_none:"" }}>
-                                                {% if form.errors.StainAnswerDeadline %}
-                                                {% for error in form.errors.StainAnswerDeadline %}
-                                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                {% endfor %}
-                                                {% endif %}
                                             </div>
                                             <div class="fds-form-input-message" style="width:50%;">
                                                 <!-- マーク名 -->

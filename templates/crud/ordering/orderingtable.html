@@ -3,64 +3,69 @@
 											<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
 										</div>
 										<div class="fds-table-container">	
-											<div class="fds-table" style="height: 18vh;">
+											<div class="fds-table" style="height: 25vh;">
 												{{ formset.management_form }}	
 												<table class="fds-table__inner" id="tblrow">
 													<thead>
 														<tr class="fds-table__tr">
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
-																	<span class="fds-table__th-text">　項番</span>
+																	<span class="fds-table__th-text">項番</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
-																	<span class="fds-table__th-text">　色番</span>
+																	<span class="fds-table__th-text">色番</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
-																	<span class="fds-table__th-text">　カラー</span>
+																	<span class="fds-table__th-text">カラー</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
-																	<span class="fds-table__th-text">　仕立</span>
+																	<span class="fds-table__th-text">仕立</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
-																	<span class="fds-table__th-text">　数量</span>
+																	<span class="fds-table__th-text">数量</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																	<span class="fds-table__th-text">仕入単価</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																	<span class="fds-table__th-text">通常単価</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
-																	<span class="fds-table__th-text">　仕入単価</span>
+																	<span class="fds-table__th-text">UP分単価</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
-																<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
-																	<span class="fds-table__th-text">　通常単価</span>
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																	<span class="fds-table__th-text">販売単価</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
-																<div class="fds-table__th-content fds-table__th-content--text" style="width: 90px;">
-																	<span class="fds-table__th-text">　UP分単価</span>
-																</div>
-															</th>
-															<th class="fds-table__th">
-																<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
-																	<span class="fds-table__th-text">　販売単価</span>
-																</div>
-															</th>
-															<th class="fds-table__th">
-																<div class="fds-table__th-content fds-table__th-content--text" style="width: 150px;">
-																	<span class="fds-table__th-text">　　　　　摘要</span>
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 250px;">
+																	<span class="fds-table__th-text">摘　要</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
 																<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
-																	<span class="fds-table__th-text">　　納期</span>
+																	<span class="fds-table__th-text">希望納期</span>
+																</div>
+															</th>
+															<th class="fds-table__th">
+																<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
+																	<span class="fds-table__th-text">回答納期</span>
 																</div>
 															</th>
 															<th class="fds-table__th">
@@ -98,7 +103,7 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input" style="width: 60px;" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
+																	<input type="text" class="fds-form-input" style="width: 40px;" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
 																	name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" >                                   
 																</div>
 															</td>
@@ -115,7 +120,7 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+																	<input type="text" class="fds-form-input" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
 																	name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" value="0" data-empty-val="false">                                   
 																</div>
 																{% if form.errors.DetailUnitPrice %}
@@ -126,7 +131,7 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input DetailPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+																	<input type="text" class="fds-form-input DetailPrice" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
 																	name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" value="0" data-empty-val="false">      
 																</div>
 																{% if form.errors.DetailPrice %}
@@ -137,7 +142,7 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input DetailOverPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+																	<input type="text" class="fds-form-input DetailOverPrice" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
 																	name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="0" data-empty-val="false">                                                                            
 																</div>
 																{% if form.errors.DetailOverPrice %}
@@ -148,7 +153,7 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input DetailSellPrice" style="width: 80px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+																	<input type="text" class="fds-form-input DetailSellPrice" style="width: 70px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
 																	name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="0" data-empty-val="false">                                   
 																</div>
 																{% if form.errors.DetailSellPrice %}
@@ -159,14 +164,20 @@
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input" style="width: 150px;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
+																	<input type="text" class="fds-form-input" style="width: 250px;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
 																	name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary">                                   
 																</div>
 															</td>
 															<td class="fds-table__td">
 																<div class="fds-table__td-content">
-																	<input type="text" class="fds-form-input AnswerDeadline" style="width: 100px;" data-id-format="id_OrderingTableId-%d-AnswerDeadline" data-name-format="OrderingTableId-%d-AnswerDeadline" 
-																	name="OrderingTableId-0-AnswerDeadline" id="id_OrderingTableId-0-AnswerDeadline">                                   
+																	<input type="text" class="fds-form-input SpecifyDeliveryDate" style="width: 100px;" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
+																	name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate">                                   
+																</div>
+															</td>
+															<td class="fds-table__td">
+																<div class="fds-table__td-content">
+																	<input type="text" class="fds-form-input StainAnswerDeadline" style="width: 100px;" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
+																	name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline">                                   
 																</div>
 															</td>
 															<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">

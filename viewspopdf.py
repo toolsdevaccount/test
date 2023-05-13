@@ -55,16 +55,17 @@ def set_info_stain(filename):
     return pdf_canvas
 
 def connect(pk):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (' SELECT '
                 '  a.SlipDiv,a.OrderNumber,IFNULL(DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),""),a.ProductName,a.OrderingCount,a.StainPartNumber,a.SupplierPerson'
-                ' ,j.titledivname,IFNULL(DATE_FORMAT(a.StainAnswerDeadline,"%Y年%m月%d日"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
+                ' ,j.titledivname,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%Y年%m月%d日"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
                 ' ,c.BuildingName,b.DetailItemNumber,b.DetailColorNumber,b.DetailColor,b.DetailTailoring,FORMAT(b.DetailVolume,2),FORMAT(b.detailunitprice,0)'
-                ' ,b.detailsummary,IFNULL(DATE_FORMAT(b.AnswerDeadline,"%Y年%m月%d日"),""),e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
+                ' ,b.detailsummary,"",e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
                 ' ,e.BuildingName,e.PhoneNumber,e.FaxNumber,d.first_name,d.last_name,d.email,f.CustomerName,f.PostCode,i.prefecturename,f.Municipalities'
                 ' ,f.Address,f.BuildingName,f.PhoneNumber,f.FaxNumber,a.StainMixRatio,a.OutputDiv'
-                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(a.SpecifyDeliveryDate,"%Y年%m月%d日"),"")'
+                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%Y年%m月%d日"),"")'
            ' FROM '
                 'myapp_orderingtable a '
            ' LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
@@ -179,10 +180,10 @@ def print_string(pdf_canvas,dt):
             Volume = Paragraph(row[19],styleRight)
             UnitPrice = Paragraph(row[20],styleRight)
             StainAnswerDeadline = Paragraph(row[8],styleRight)
-            AnswerDeadline = Paragraph(row[22],styleRight)
+            SpecifyDeliveryDate = Paragraph(row[45],styleRight)
 
             data += [
-                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, ' ', UnitPrice, StainAnswerDeadline, AnswerDeadline, ' '],
+                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, ' ', UnitPrice, SpecifyDeliveryDate, StainAnswerDeadline, ' '],
             ]
         else:
             data += [
