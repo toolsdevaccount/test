@@ -75,11 +75,12 @@ class OrderingForm(forms.ModelForm):
     ShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
     CustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
     RequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
+    StainShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
 
     class Meta:
         model = OrderingTable
         fields = ('SlipDiv','OrderNumber','OrderingDate','StainShippingDate','ProductName','OrderingCount','StainPartNumber',
-                  'StainMixRatio','DestinationCode','SupplierCode','ShippingCode','CustomeCode','RequestCode','SupplierPerson',
+                  'StainMixRatio','DestinationCode','SupplierCode','ShippingCode','CustomeCode','StainShippingCode','RequestCode','SupplierPerson',
                   'TitleDiv','StockDiv','MarkName','OutputDiv',
                  )
 

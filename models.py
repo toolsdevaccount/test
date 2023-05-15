@@ -124,6 +124,7 @@ class OrderingTable(models.Model):
     ShippingCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ShippingCode',verbose_name="出荷先コード")
     CustomeCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='CustomeCode',verbose_name="得意先コード")
     RequestCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='RequestCode',verbose_name="依頼先コード")
+    StainShippingCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='StainShippingCode',verbose_name="原糸メーカーコード")
     SupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
     TitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Title,verbose_name="敬称区分")
     StockDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="在庫済区分")
