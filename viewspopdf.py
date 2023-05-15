@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render,redirect
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
@@ -16,16 +17,21 @@ from django.utils import timezone
 import datetime
 # 計算用
 from decimal import Decimal
+# メッセージ
+from django.contrib import messages
 
- 
 def pdf(request,pk):
-    strtime = timezone.now() + datetime.timedelta(hours=9)
-    filename = "PurchaseOrder_" + strtime.strftime('%Y%m%d%H%M%S')
-    make(pk,filename)
-    response = HttpResponse(open('./download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
-    #response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
-
+    try:
+        strtime = timezone.now() + datetime.timedelta(hours=9)
+        filename = "PurchaseOrder_" + strtime.strftime('%Y%m%d%H%M%S')
+        make(pk,filename)
+        #response = HttpResponse(open('./download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
+        response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
+    except Exception as e:
+        message = "PDF作成時にエラーが発生しました"
+        messages.error(request,message) 
+        return redirect("myapp:orderinglist")
     return response
 
 def make(pk,filename):
@@ -39,53 +45,49 @@ def make(pk,filename):
     pdf_canvas.save() # 保存
 
 def set_info(filename):
-    pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(A4))
-    #pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=landscape(A4))
+    #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(A4))
+    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=landscape(A4))
     pdf_canvas.setAuthor("hpscript")
     pdf_canvas.setTitle("注文書")
     pdf_canvas.setSubject("注文書")
     return pdf_canvas
 
 def set_info_stain(filename):
-    pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=portrait(A4))
-    #pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(A4))
+    #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=portrait(A4))
+    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(A4))
     pdf_canvas.setAuthor("hpscript")
     pdf_canvas.setTitle("染色依頼注文書")
     pdf_canvas.setSubject("染色依頼注文書")
     return pdf_canvas
 
 def connect(pk):
-    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (' SELECT '
                 '  a.SlipDiv,a.OrderNumber,IFNULL(DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),""),a.ProductName,a.OrderingCount,a.StainPartNumber,a.SupplierPerson'
-                ' ,j.titledivname,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%Y年%m月%d日"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
+                ' ,CASE WHEN a.TitleDiv=1 THEN "様" ELSE "御中" END'
+                ' ,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%Y年%m月%d日"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
                 ' ,c.BuildingName,b.DetailItemNumber,b.DetailColorNumber,b.DetailColor,b.DetailTailoring,FORMAT(b.DetailVolume,2),FORMAT(b.detailunitprice,0)'
                 ' ,b.detailsummary,"",e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
                 ' ,e.BuildingName,e.PhoneNumber,e.FaxNumber,d.first_name,d.last_name,d.email,f.CustomerName,f.PostCode,i.prefecturename,f.Municipalities'
                 ' ,f.Address,f.BuildingName,f.PhoneNumber,f.FaxNumber,a.StainMixRatio,a.OutputDiv'
                 ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%Y年%m月%d日"),"")'
-           ' FROM '
+        ' FROM '
                 'myapp_orderingtable a '
-           ' LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
-           ' LEFT JOIN myapp_customersupplier c on a.SupplierCode_id = c.id'
-           ' LEFT JOIN auth_user d on c.ManagerCode = d.id'
-           ' LEFT JOIN myapp_customersupplier f on  a.ShippingCode_id = f.id'
-           ' LEFT JOIN prefecture h on c.PrefecturesCode = h.prefecturecode'
-           ' LEFT JOIN prefecture i on f.PrefecturesCode = i.prefecturecode'
-           ' LEFT JOIN title j on a.titlediv = j.titledivcode'
-           ' ,(SELECT PostCode,CustomerName,PrefecturesCode,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042") e'
-	       ' LEFT JOIN prefecture g on e.PrefecturesCode = g.prefecturecode'
-           ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted= 0' 
-           ' ORDER BY b.DetailItemNumber ASC' 
+        ' LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
+        ' LEFT JOIN myapp_customersupplier c on a.RequestCode_id = c.id'
+        ' LEFT JOIN auth_user d on c.ManagerCode = d.id'
+        ' LEFT JOIN myapp_customersupplier f on a.ShippingCode_id = f.id'
+        ' LEFT JOIN myapp_prefecture h on c.PrefecturesCode_id = h.id'
+        ' LEFT JOIN myapp_prefecture i on f.PrefecturesCode_id = i.id'
+        ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042") e'
+        ' LEFT JOIN myapp_prefecture g on e.PrefecturesCode_id = g.id'
+        ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted= 0' 
+        ' ORDER BY b.DetailItemNumber ASC' 
         )
-    try:
-        cur.execute(sql)
-        result = cur.fetchall()
-        
-    except MySQLdb.Error as e:
-        print('MySQLdb.Error: ', e)
+    cur.execute(sql)
+    result = cur.fetchall()     
 
     cur.close()
     conn.close()
@@ -270,86 +272,86 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     # line
     pdf_canvas.line(20, 610, 570, 610) 
-    pdf_canvas.line(290, 370, 290, 610) 
+    pdf_canvas.line(290, 430, 290, 610) 
 
     # 原糸メーカー
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(20, 590,'原糸メーカー')
-    pdf_canvas.line(20, 570, 570, 570) 
+    pdf_canvas.line(20, 580, 570, 580) 
 
     # 原糸出荷
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(20, 550,'原糸出荷')
-    pdf_canvas.line(20, 530, 570, 530) 
+    pdf_canvas.drawString(20, 560,'原糸出荷')
+    pdf_canvas.line(20, 550, 570, 550) 
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(90, 540, dt[0][44])
+    pdf_canvas.drawString(90, 560, dt[0][44])
 
     # 品番
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(20, 510,'品番')
-    pdf_canvas.line(20, 490, 570, 490) 
+    pdf_canvas.drawString(20, 530,'品番')
+    pdf_canvas.line(20, 520, 570, 520) 
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(90, 500, dt[0][5])
+    pdf_canvas.drawString(90, 530, dt[0][5])
 
     # 品名
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(20, 470,'品名')
-    pdf_canvas.line(20, 450, 570, 450) 
+    pdf_canvas.drawString(20, 500,'品名')
+    pdf_canvas.line(20, 490, 570, 490) 
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(90, 460, dt[0][3])
+    pdf_canvas.drawString(90, 500, dt[0][3])
 
     # 番手
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(20, 430,'番手')
-    pdf_canvas.line(20, 410, 570, 410) 
+    pdf_canvas.drawString(20, 470,'番手')
+    pdf_canvas.line(20, 460, 570, 460) 
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(90, 420, dt[0][4])
+    pdf_canvas.drawString(90, 470, dt[0][4])
 
     # 混率
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(20, 390,'混率')
-    pdf_canvas.line(20, 370, 570, 370) 
+    pdf_canvas.drawString(20, 440,'混率')
+    pdf_canvas.line(20, 430, 570, 430) 
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(90, 380, dt[0][42])
+    pdf_canvas.drawString(90, 440, dt[0][42])
 
     # 希望納期
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(300, 590,'希望納期')
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(370, 580, dt[0][8])
+    pdf_canvas.drawString(370, 590, dt[0][8])
 
     # 回答納期
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(300, 550,'回答納期')
+    pdf_canvas.drawString(300, 560,'回答納期')
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(370, 540, dt[0][45])
+    pdf_canvas.drawString(370, 560, dt[0][45])
 
     # 不明
-    font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(300, 510,'')
+    #font_size = 9
+    #pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    #pdf_canvas.drawString(300, 550,'')
 
     # 仕入単価
-    font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(300, 470,'仕入単価')
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(370, 460, dt[0][20])
+    #font_size = 9
+    #pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    #pdf_canvas.drawString(300, 530,'仕入単価')
+    #pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    #pdf_canvas.drawString(370, 530, dt[0][20])
 
     # 出荷先名
     font_size = 9
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(300, 430,'出荷先名')
+    pdf_canvas.drawString(300, 530,'出荷先名')
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(370, 420, dt[0][34])
+    pdf_canvas.drawString(370, 530, dt[0][34])
 
     # 項番、色番、カラー、仕立、数量、摘要
     style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
@@ -358,13 +360,14 @@ def print_string_StainRequest(pdf_canvas,dt):
     itemNo2 = Paragraph('カラー',style)
     itemNo3 = Paragraph('仕立',style)
     itemNo4 = Paragraph('数量',style)
-    itemNo5 = Paragraph('摘要',style)
+    itemNo5 = Paragraph('単価',style)
+    itemNo6 = Paragraph('摘要',style)
 
     data = [
-        [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5],
+        [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6] ,
     ]
 
-    table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 30*mm, 70*mm), rowHeights=7.5*mm)
+    table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 20*mm, 20*mm, 60*mm), rowHeights=7.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
@@ -372,7 +375,7 @@ def print_string_StainRequest(pdf_canvas,dt):
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 118.0*mm)
+    table.drawOn(pdf_canvas, 7*mm, 133.0*mm)
 
     data =[]
     l=len(dt)
@@ -392,8 +395,9 @@ def print_string_StainRequest(pdf_canvas,dt):
             # 指定した列の右寄せ
             DetailItemNumber = Paragraph(row[15],styleRight)
             Volume = Paragraph(row[19],styleRight)
+            DetailUnitPrice = Paragraph(row[20],styleRight)
             data += [
-                    [DetailItemNumber, DetailColorNumber, DetailColor, DetailTailoring, Volume, DetailSummary],
+                    [DetailItemNumber, DetailColorNumber, DetailColor, DetailTailoring, Volume, DetailUnitPrice, DetailSummary],
             ]
         else:
             if i==14:
@@ -407,7 +411,7 @@ def print_string_StainRequest(pdf_canvas,dt):
                         ['','','','','',''],
                 ]
 
-        table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 30*mm, 70*mm), rowHeights=7.5*mm)
+        table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 20*mm, 20*mm, 60*mm), rowHeights=7.5*mm)
         table.setStyle(TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
                 ('BOX', (0, 0), (-1, -1), 1, colors.black),
@@ -416,7 +420,7 @@ def print_string_StainRequest(pdf_canvas,dt):
             ]))
 
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 5.5*mm)
+    table.drawOn(pdf_canvas, 7*mm, 20.5*mm)
 
     pdf_canvas.showPage()
      

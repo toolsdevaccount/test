@@ -37,7 +37,7 @@
             <div class="fds-page-detail__main">
                 <div class="fds-form-label fds-form-label--horizontal">
                     <!-- コード -->
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <label class="fds-label-input">コード:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="CustomerCode" id="id_CustomerCode" value={{ object.CustomerCode }} readonly>
                         {% if form.errors.CustomerCode %}
@@ -59,7 +59,7 @@
                 </div>
                 <div class="fds-divider fds-divider--dark2"></div>
                 <div class="fds-form-label fds-form-label--horizontal">
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 略名 -->
                         <label class="fds-label-input">略名:</label>
                         <input type="text" class="fds-form-input" placeholder=""  name="CustomerOmitName" id="id_CustomerOmitName" value={{ object.CustomerOmitName }}>
@@ -79,7 +79,7 @@
                         {% endfor %}
                         {% endif %}
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 部署名 -->
                         <label class="fds-label-input">部署名:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="Department" id="id_Department" value={{ object.Department }}>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="fds-divider fds-divider--dark2"></div>
                 <div class="fds-form-label fds-form-label--horizontal">
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 郵便番号 -->
                         <label class="fds-label-input">郵便番号:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="PostCode" id="id_PostCode" value={{ object.PostCode }}>
@@ -102,7 +102,7 @@
                         {% endfor %}
                         {% endif %}
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 都道府県 -->
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">都道府県:</label>
@@ -114,11 +114,16 @@
                                 </select>
                             </div>
                         </div>
+                        {% if form.errors.PrefecturesCode %}
+                        {% for error in form.errors.PrefecturesCode %}
+                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 <div class="fds-divider fds-divider--dark2"></div>
                 <div class="fds-form-label fds-form-label--horizontal">
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 市区町村 -->
                         <label class="fds-label-input">市区町村:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="Municipalities" id="id_Municipalities" value={{ object.Municipalities }}>
@@ -128,7 +133,7 @@
                         {% endfor %}
                         {% endif %}
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 番地 -->
                         <label class="fds-label-input">番地:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="Address" id="id_Address" value={{ object.Address }}>
@@ -138,7 +143,7 @@
                         {% endfor %}
                         {% endif %}
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 建物名 -->
                         <label class="fds-label-input">建物名:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="BuildingName" id="id_BuildingName" value={{ object.BuildingName }}>
@@ -151,7 +156,7 @@
                 </div>
                 <div class="fds-divider fds-divider--dark2"></div>
                 <div class="fds-form-label fds-form-label--horizontal">
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 電話番号 -->
                         <label class="fds-label-input">電話番号:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="PhoneNumber" id="id_PhoneNumber" value={{ object.PhoneNumber }}>
@@ -161,7 +166,7 @@
                         {% endfor %}
                         {% endif %}
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- FAX番号 -->
                         <label class="fds-label-input">FAX番号:</label>
                         <input type="text" class="fds-form-input" placeholder="" name="FaxNumber" id="id_FaxNumber" value={{ object.FaxNumber }}>
@@ -175,7 +180,7 @@
                 <!-- マスター区分 -->
                 <div class="fds-divider fds-divider--dark2"></div>
                 <div class="fds-form-label fds-form-label--horizontal">
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">マスター区分:</label>
                             <div class="fds-select-container">
@@ -187,7 +192,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 締日 -->
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">締日:</label>
@@ -203,7 +208,7 @@
                 </div>
                 <div class="fds-divider fds-divider--dark2"></div>
                 <div class="fds-form-label fds-form-label--horizontal">
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 入金予定月 -->
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">入金予定月:</label>
@@ -216,7 +221,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 入金予定日 -->
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">入金予定日:</label>
@@ -229,7 +234,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 入金予定区分 -->
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">入金予定区分:</label>
@@ -245,7 +250,7 @@
                 </div>
                 <div class="fds-divider fds-divider--dark2"></div>
                 <div class="fds-form-label fds-form-label--horizontal">
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 担当者 -->
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">担当者：</label>
@@ -263,7 +268,7 @@
                         {% endfor %}
                         {% endif %}   
                     </div>
-                    <div class="fds-form-input-message">
+                    <div class="fds-form-input-message" style="width:25%;">
                         <!-- 相殺出力区分 -->
                         <div class="fds-page-input-select">
                             <label class="fds-label-input">相殺出力区分:</label>

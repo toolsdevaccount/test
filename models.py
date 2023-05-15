@@ -6,8 +6,18 @@ from django.utils import timezone
 import datetime
 
 # Create your models here.
-class CustomerSupplier(models.Model):
+class prefecture(models.Model):
+    prefecturecode = models.CharField(max_length=2,null=False,blank=True,verbose_name="都道府県コード")
+    prefecturename = models.CharField(max_length=255,null=False,blank=True,verbose_name="都道府県名")
+    blockname = models.CharField(max_length=255,null=False,blank=True,verbose_name="地域名称")
 
+    def __str__(self):
+        return self.prefecturecode
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/ordering/orderinglist.html')
+
+class CustomerSupplier(models.Model):
     Closing = [
             (0, ""),
             (5, "5日"),
@@ -17,58 +27,7 @@ class CustomerSupplier(models.Model):
             (25, "25日"),
             (31, "末日"),
         ]
-
-    PrefecturesCode = [
-            (0, ""),
-        (1,"北海道"),
-        (2,"青森県"),
-        (3,"岩手県"),
-        (4,"宮城県"),
-        (5,"秋田県"),
-        (6,"山形県"),
-        (7,"福島県"),
-        (8,"茨城県"),
-        (9,"栃木県"),
-        (10,"群馬県"),
-        (11,"埼玉県"),
-        (12,"千葉県"),
-        (13,"東京都"),
-        (14,"神奈川県"),
-        (15,"新潟県"),
-        (16,"富山県"),
-        (17,"石川県"),
-        (18,"福井県"),
-        (19,"山梨県"),
-        (20,"長野県"),
-        (21,"岐阜県"),
-        (22,"静岡県"),
-        (23,"愛知県"),
-        (24,"三重県"),
-        (25,"滋賀県"),
-        (26,"京都府"),
-        (27,"大阪府"),
-        (28,"兵庫県"),
-        (29,"奈良県"),
-        (30,"和歌山県"),
-        (31,"鳥取県"),
-        (32,"島根県"),
-        (33,"岡山県"),
-        (34,"広島県"),
-        (35,"山口県"),
-        (36,"徳島県"),
-        (37,"香川県"),
-        (38,"愛媛県"),
-        (39,"高知県"),
-        (40,"福岡県"),
-        (41,"佐賀県"),
-        (42,"長崎県"),
-        (43,"熊本県"),
-        (44,"大分県"),
-        (45,"宮崎県"),
-        (46,"鹿児島県"),
-        (47,"沖縄県"),
-        ]
-    
+   
     MasterDiv = [
             (0, ""),
             (1, "得意先/仕入先未使用"),
@@ -99,13 +58,15 @@ class CustomerSupplier(models.Model):
             (6, "6ヶ月"),
             (99, "6ヶ月以上"),
         ]
+
     CustomerCode = models.CharField(max_length=6,null=False,verbose_name="コード")
     CustomerName = models.CharField(max_length=30,null=False,blank=True,verbose_name="名称")
     CustomerOmitName = models.CharField(max_length=12,null=False,blank=True,verbose_name="略称")
     CustomerNameKana = models.CharField(max_length=30,null=False,blank=True,verbose_name="カナ")
     Department = models.CharField(max_length=20,null=False,blank=True,default="",verbose_name="部署名")
     PostCode = models.CharField(max_length=8,null=False,blank=True,verbose_name="郵便番号")
-    PrefecturesCode = models.IntegerField(default=0,null=False,choices=PrefecturesCode,verbose_name="都道府県コード")
+    #PrefecturesCode = models.IntegerField(default=0,null=False,choices=PrefecturesCode,verbose_name="都道府県コード")
+    PrefecturesCode = models.ForeignKey(prefecture,on_delete=models.PROTECT,related_name='PrefecturesCode',null=False,default=1,verbose_name="都道府県コード")
     Municipalities = models.CharField(max_length=24,null=False,blank=True,verbose_name="市区町村")
     Address = models.CharField(max_length=24,null=False,blank=True,verbose_name="番地")
     BuildingName = models.CharField(max_length=24,null=False,blank=True,verbose_name="建物名")
@@ -166,8 +127,6 @@ class OrderingTable(models.Model):
     SupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
     TitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Title,verbose_name="敬称区分")
     StockDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="在庫済区分")
-    #SpecifyDeliveryDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="指定納期")
-    #StainAnswerDeadline = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="回答納期")
     MarkName = models.CharField(max_length=20,null=False,blank=True,verbose_name="マーク名")
     OutputDiv = models.IntegerField(null=False,blank=True,default=0,choices=Output,verbose_name="出力区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
@@ -205,7 +164,6 @@ class OrderingDetail(models.Model):
     DetailSummary = models.TextField(max_length=1000,null=False,blank=True,verbose_name="摘要")
     SpecifyDeliveryDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="希望納期")
     StainAnswerDeadline = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="回答納期")
-    #AnswerDeadline = models.DateField(null=True,blank=True,verbose_name="納期回答")
     DeliveryManageDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="納期管理済区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")

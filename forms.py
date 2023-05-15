@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomerSupplier,OrderingTable,OrderingDetail
+from .models import prefecture, CustomerSupplier, OrderingTable, OrderingDetail
 
 from django.forms import ModelChoiceField
 
@@ -19,8 +19,13 @@ class ManagerChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
         return  obj.first_name + obj.last_name
 
+class PrefectureChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return  obj.prefecturename
+
 class CustomerSupplierForm(forms.ModelForm):
     ManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
+    PrefecturesCode = PrefectureChoiceField(queryset=prefecture.objects.all(),empty_label='')
 
     class Meta:
         model = CustomerSupplier

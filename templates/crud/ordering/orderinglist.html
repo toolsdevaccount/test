@@ -19,6 +19,13 @@
     </div>
     <form method="get" id="form">
 		{% csrf_token %}
+		{% if messages %}
+		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__error" style="width:300px;">
+			{% for message in messages %}
+				  {{ message }}
+		  </div>
+			{% endfor %}
+		{% endif %}
 		<div class="fds-clousure--bottom-section">
 			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
 				<div class="fds-form-input-message">
