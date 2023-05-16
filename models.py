@@ -15,7 +15,7 @@ class prefecture(models.Model):
         return self.prefecturecode
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
-        return reverse('crud/ordering/orderinglist.html')
+        return reverse('crud/customersupplier/customersupplierlist.html')
 
 class CustomerSupplier(models.Model):
     Closing = [
@@ -65,7 +65,7 @@ class CustomerSupplier(models.Model):
     CustomerNameKana = models.CharField(max_length=30,null=False,blank=True,verbose_name="カナ")
     Department = models.CharField(max_length=20,null=False,blank=True,default="",verbose_name="部署名")
     PostCode = models.CharField(max_length=8,null=False,blank=True,verbose_name="郵便番号")
-    #PrefecturesCode = models.IntegerField(default=0,null=False,choices=PrefecturesCode,verbose_name="都道府県コード")
+    #PrefecturesCode = models.IntegerField(default=0,null=False,choices=prefecture,verbose_name="都道府県コード")
     PrefecturesCode = models.ForeignKey(prefecture,on_delete=models.PROTECT,related_name='PrefecturesCode',null=False,default=1,verbose_name="都道府県コード")
     Municipalities = models.CharField(max_length=24,null=False,blank=True,verbose_name="市区町村")
     Address = models.CharField(max_length=24,null=False,blank=True,verbose_name="番地")
@@ -177,3 +177,37 @@ class OrderingDetail(models.Model):
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/ordering/orderinglist.html')
+    
+class ProductOrder(models.Model):
+    ProductOrderMerchandiseCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
+    ProductOrderOrderingDate = models.DateField(null=False,blank=False,default="2000-01-01",verbose_name="発注日")
+    ProductOrderSlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
+    ProductOrderOrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
+    ProductOrderPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
+    ProductOrderApparelCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderApparelCode',verbose_name="アパレルコード")
+    ProductOrderDestinationCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderDestinationCode',null=False,blank=True,verbose_name="手配先コード",default=1)
+    ProductOrderSupplierCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderSupplierCode',verbose_name="仕入先コード")
+    ProductOrderSupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
+    ProductOrderTitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=OrderingTable.Title,verbose_name="敬称区分")
+    ProductOrderShippingCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderShippingCode',verbose_name="出荷先コード")
+    ProductOrderCustomeCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderCustomeCode',verbose_name="得意先コード")
+    ProductOrderRequestCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderRequestCode',verbose_name="依頼先コード")
+    ProductOrderDeliveryDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="納期")
+    ProductOrderBrandName = models.CharField(max_length=50,null=False,blank=True,default="",verbose_name="ブランド名")
+    ProductOrderUnitPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="仕入単価")
+    ProductOrderSellPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="販売単価")
+    ProductOrderProcesefee = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="加工賃")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+class FileUpload(models.Model):
+    ProductOrderSlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
+    ProductOrderOrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
+    upload = models.FileField(upload_to='file/%Y/%m/%d',verbose_name="アップロードファイルパス")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")

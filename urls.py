@@ -1,6 +1,6 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-from . import views,viewscustomer, viewsordering, viewspopdf
+from . import views,viewscustomer, viewsordering, viewspopdf, viewsproductorder
 
 # fileupload import
 from django.conf import settings
@@ -31,6 +31,17 @@ urlpatterns = [
     path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
     # PDF出力
     path('ordering/pdf/<int:pk>', viewspopdf.pdf, name='orderingpdf'), 
+
+    # 製品発注一覧
+    path('productorder/list/', viewsproductorder.ProductOrderListView.as_view(), name='productorderlist'),
+    # 製品発注登録
+    path('productorder/new/', viewsproductorder.OrderingCreateView.as_view(), name='productordernew'),
+    # 製品発注編集
+    #path('ordering/edit/<int:pk>/', viewsordering.orderingUpdateView.as_view(), name='orderingedit'),
+    # 製品発注削除
+    #path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
+    # PDF出力
+    #path('ordering/pdf/<int:pk>', viewspopdf.pdf, name='orderingpdf'), 
 
     # fileupload
     path('uploadtest/', views.uploadtest, name='uploadtest'),
