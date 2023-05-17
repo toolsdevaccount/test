@@ -35,7 +35,7 @@ urlpatterns = [
     # 製品発注一覧
     path('productorder/list/', viewsproductorder.ProductOrderListView.as_view(), name='productorderlist'),
     # 製品発注登録
-    path('productorder/new/', viewsproductorder.OrderingCreateView.as_view(), name='productordernew'),
+    path('productorder/new/', viewsproductorder.ProductOrderCreateView.as_view(), name='productordernew'),
     # 製品発注編集
     #path('ordering/edit/<int:pk>/', viewsordering.orderingUpdateView.as_view(), name='orderingedit'),
     # 製品発注削除

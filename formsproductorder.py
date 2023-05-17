@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from .models import ProductOrder, FileUpload, CustomerSupplier
 
 from django.forms import ModelChoiceField
+from datetime import datetime
 
 # バリデーション
 import re
@@ -19,7 +20,7 @@ class CustomerSupplierChoiceField(ModelChoiceField):
         return  obj.CustomerCode + ":" + obj.CustomerOmitName
 
 class ProductOrderForm(forms.ModelForm):
-    ManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
+    ProductOrderManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
     ProductOrderApparelCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
     ProductOrderDestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
     ProductOrderSupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
@@ -29,9 +30,10 @@ class ProductOrderForm(forms.ModelForm):
 
     class Meta:
         model = ProductOrder
-        fields = ('ProductOrderMerchandiseCode', 'ProductOrderOrderingDate', 'ProductOrderSlipDiv', 'ProductOrderOrderNumber', 'ProductOrderPartNumber','ProductOrderApparelCode',
-                  'ProductOrderDestinationCode','ProductOrderSupplierCode','ProductOrderShippingCode','ProductOrderCustomeCode','ProductOrderRequestCode','ProductOrderDeliveryDate',
-                  'ProductOrderBrandName','ProductOrderUnitPrice','ProductOrderSellPrice','ProductOrderProcesefee')   
+        fields = ('ProductOrderMerchandiseCode', 'ProductOrderOrderingDate', 'ProductOrderManagerCode','ProductOrderSlipDiv', 'ProductOrderOrderNumber',
+                  'ProductOrderPartNumber','ProductOrderApparelCode','ProductOrderDestinationCode','ProductOrderSupplierCode','ProductOrderShippingCode','ProductOrderCustomeCode',
+                  'ProductOrderRequestCode','ProductOrderDeliveryDate','ProductOrderBrandName','ProductOrderUnitPrice','ProductOrderSellPrice','ProductOrderProcesefee',
+                  'ProductOrderSupplierPerson','ProductOrderTitleDiv')   
 
     # オーダーナンバー重複チェック
     #def clean_OrderNumber(self):
@@ -56,3 +58,13 @@ class ProductOrderForm(forms.ModelForm):
     #extra=0,min_num=1,validate_min=True,can_delete=True
 #)
 
+    # 発注日
+    #def clean_ProductOrderOrderingDate(self):
+    #    ProductOrderOrderingDate = self.cleaned_data['ProductOrderOrderingDate']
+    #    if ProductOrderOrderingDate:
+    #        try:
+    #            if not re.match(r'/^[0-9]{4}/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])$/', ProductOrderOrderingDate):
+    #                raise forms.ValidationError(u'yyyy-mm-dd形式で')
+    #        except Exception:
+    #            raise forms.ValidationError(u'日付に変換できません')
+    #    return ProductOrderOrderingDate

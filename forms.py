@@ -99,7 +99,6 @@ class OrderingForm(forms.ModelForm):
                 raise forms.ValidationError(u'オーダーNOが重複しています')
         return OrderNumber
 
-
     #def clean(self):
     #    cleaned_data = super(OrderingForm, self).clean()
     #    try:            
@@ -122,4 +121,3 @@ OrderingFormset = forms.inlineformset_factory(
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
-

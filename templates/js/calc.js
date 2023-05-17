@@ -36,6 +36,14 @@ function order(obj)
     document.getElementById('id_OrderNumber').value = result;
 }
 
+function Productorder(obj)
+{		
+    var item = document.getElementById('id_ProductOrderOrderNumber').value ;
+    result = item.toString().padStart( 7, '0');
+    document.getElementById('id_ProductOrderOrderNumber').value = result;
+}
+
+
 const input = document.querySelector('input')
 
 input.checked = true

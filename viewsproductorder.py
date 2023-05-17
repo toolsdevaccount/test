@@ -1,17 +1,21 @@
 from django.shortcuts import render,redirect
-from django.views.generic import ListView,CreateView,UpdateView
+from django.views.generic import ListView,CreateView
 from .models import ProductOrder
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
 from django.db.models import Q
 # 日時
-from django.utils import timezone
-import datetime
+#from django.utils import timezone
+#import datetime
 # forms
 from .formsproductorder import ProductOrderForm
 # Transaction
 from django.db import transaction
+# fileupload
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
 
 # 受発注一覧/検索
 class ProductOrderListView(LoginRequiredMixin,ListView):
@@ -44,7 +48,7 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         return queryset
 
 # 受発注情報登録
-class OrderingCreateView(LoginRequiredMixin,CreateView):
+class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     model = ProductOrder
     form_class =  ProductOrderForm
     template_name = "crud/productorder/productorderform.html"
@@ -65,17 +69,28 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
         if self.request.method == 'POST': 
             
             if form.is_valid():
-                post.OrderNumber = post.OrderNumber.zfill(7)
+                post.ProductOrderOrderNumber = post.ProductOrderOrderNumber.zfill(7)
                 # Created_id,Updated_idフィールドはログインしているユーザidとする
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 post.save()      
         else:
             # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form,))
+            return self.render_to_response(self.get_context_data(form=form))
 
-        return redirect('myapp:orderinglist')
+        return redirect('myapp:productorderlist')  
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        return self.render_to_response(self.get_context_data(form=form))  
+
+#def fileupload(request):
+#    if request.method == 'POST' and request.FILES['ProductOrderupload']:
+#        myfile = request.FILES['ProductOrderupload']
+#        fs = FileSystemStorage()
+#        filename = fs.save(myfile.name, myfile)
+#        uploaded_file_url = fs.url(filename)
+#        return render(request, 'crud/productorder/productorderform.html', {
+#            'uploaded_file_url': uploaded_file_url
+#        })
+#    return render(request, 'crud/productorder/productorderform.html')

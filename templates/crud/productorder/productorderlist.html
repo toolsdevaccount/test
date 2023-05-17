@@ -49,9 +49,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 	{% load static %}
 	<script>
-		// 依頼日(From)検索用
+		// 発注日(From)検索用
 		var productorderdateFrom = document.getElementById('productorderdateFrom');
-		var fp = flatpickr(orderdateFrom, {
+		var fp = flatpickr(productorderdateFrom, {
 			'locale': 'ja',
 			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する
@@ -63,9 +63,9 @@
 			}
 		});
 
-		// 依頼日(To)検索用
+		// 発注日(To)検索用
 		var productorderdateTo = document.getElementById('productorderdateTo');
-		var fp = flatpickr(orderdateTo, {
+		var fp = flatpickr(productorderdateTo, {
 			'locale': 'ja',
 			allowInput: true,
 			// onCloseは入力フォームが閉じられた時に発火する

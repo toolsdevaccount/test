@@ -62,7 +62,7 @@
                                                 <input type="text" class="fds-form-input" placeholder="" name="SlipDiv" id="id_SlipDiv" maxlength="1" style="width:8%;" value={{ object.SlipDiv }} readonly>
                                                 <!-- オーダーNO -->
                                                 <span>-</span>
-                                                <input type="text" class="fds-form-input" placeholder="" name="OrderNumber" id="id_OrderNumber" maxlength="7" style="width:35%;" value={{ object.OrderNumber }}  readonly>
+                                                <input type="text" class="fds-form-input" placeholder="" style="text-align: right;" name="OrderNumber" id="id_OrderNumber" maxlength="7" style="width:35%;" value={{ object.OrderNumber }}  readonly>
                                                 {% if form.errors.OrderNumber %}
                                                 {% for error in form.errors.OrderNumber %}
                                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>

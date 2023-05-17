@@ -179,8 +179,14 @@ class OrderingDetail(models.Model):
         return reverse('crud/ordering/orderinglist.html')
     
 class ProductOrder(models.Model):
+    ProductOrderTitleDiv = [
+            (0, ""),
+            (1, "様"),
+            (2, "御中"),
+    ]
     ProductOrderMerchandiseCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
     ProductOrderOrderingDate = models.DateField(null=False,blank=False,default="2000-01-01",verbose_name="発注日")
+    ProductOrderManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
     ProductOrderSlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
     ProductOrderOrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
     ProductOrderPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
@@ -188,7 +194,7 @@ class ProductOrder(models.Model):
     ProductOrderDestinationCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderDestinationCode',null=False,blank=True,verbose_name="手配先コード",default=1)
     ProductOrderSupplierCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderSupplierCode',verbose_name="仕入先コード")
     ProductOrderSupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
-    ProductOrderTitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=OrderingTable.Title,verbose_name="敬称区分")
+    ProductOrderTitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=ProductOrderTitleDiv,verbose_name="敬称区分")
     ProductOrderShippingCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderShippingCode',verbose_name="出荷先コード")
     ProductOrderCustomeCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderCustomeCode',verbose_name="得意先コード")
     ProductOrderRequestCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderRequestCode',verbose_name="依頼先コード")
@@ -203,6 +209,12 @@ class ProductOrder(models.Model):
     Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
+    def __str__(self):
+        return self.ProductOrderMerchandiseCode
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/productorder/productorderlist.html')
+
 class FileUpload(models.Model):
     ProductOrderSlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
     ProductOrderOrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
@@ -211,3 +223,9 @@ class FileUpload(models.Model):
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
     Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+
+    def __str__(self):
+        return self.ProductOrderOrderNumber
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/productorder/productorderlist.html')
