@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.utils import timezone
 import datetime
 # forms
-from .formsmerchandise import MerchandiseForm
+from .formsmerchandise import MerchandiseForm, MerchandiseFormset
 # Transaction
 from django.db import transaction
 
@@ -41,14 +41,18 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
 class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     model = Merchandise
     form_class =  MerchandiseForm
+    formset_class = MerchandiseFormset
     template_name = "crud/merchandise/merchandiseform.html"
    
     def get(self, request):
         form = MerchandiseForm(self.request.POST or None)
+        formset = MerchandiseFormset
 
         context = {
             'form': form,
+            'formset': formset,
         }
+
 
         return render(request, 'crud/merchandise/merchandiseform.html', context)
 
@@ -56,19 +60,26 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
-        if self.request.method == 'POST': 
+        formset = MerchandiseFormset(self.request.POST,instance=post) 
+        if self.request.method == 'POST' and formset.is_valid(): 
+            instances = formset.save(commit=False)
             
             if form.is_valid():
                 # Created_id,Updated_idフィールドはログインしているユーザidとする
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
-                post.save()      
+                post.save()
+        
+                for file in instances:
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
         else:
             # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
-        return redirect('myapp:merchandiselist')  
+        return redirect('myapp:merchandiselist')
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))  
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))

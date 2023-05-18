@@ -1,7 +1,7 @@
 {% extends 'crud/base.html' %}
 {% block content %}
 <!-- <form method="post" class="fds-table-form"> -->
-<form method="post">
+<form method="post" id="form">
 {% csrf_token %}
     <div class="fds-page-table__main">
         <div class="fds-breadcrumb">
@@ -11,7 +11,7 @@
                 </a>
             </div>
             <div class="fds-breadcrumb__item">
-                <a href="{% url 'myapp:list' %}" class="fds-breadcrumb__link">
+                <a href="{% url 'myapp:merchandiselist' %}" class="fds-breadcrumb__link">
                     商品一覧・検索
                 </a>
             </div>
@@ -97,6 +97,7 @@
                         {% endif %}   
                     </div>
                 </div>
+                {% include "crud/merchandise/merchandisetable.html" %}
             </div>
         </div>
     </div>

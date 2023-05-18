@@ -285,14 +285,19 @@ class MerchandiseSize(models.Model):
 class MerchandiseDetail(models.Model):
     UnitCode = [
         (0, ""),
-        (1, "通常"),
-        (2, "扱停止"),
+        (1, "￥"),
+        (2, "US$ FOB東京"),
+        (3, "US$ FOB上海"),
+        (4, "US$ CIF東京"),
+        (5, "US$ CIF上海"),
+        (6, "US$ CMT東京"),
+        (7, "US$ CMT上海"),
     ]  
     McdDtid = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdDtid',verbose_name="商品マスタid")
     McdDtProductName = models.CharField(max_length=24,null=False,blank=True,verbose_name="品名")
     McdDtOrderingCount = models.CharField(max_length=8,null=False,blank=True,verbose_name="番手")
     McdDtStainMixRatio = models.CharField(max_length=20,null=False,blank=True,verbose_name="混率")
-    McdDtlPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="単価")
+    McdDtlPrice = models.DecimalField(max_digits=8,decimal_places=2, null=False,blank=False,default=0.00,verbose_name="単価")
     McdDtUnitCode = models.IntegerField(null=False,blank=True,default=0,choices=UnitCode,verbose_name="単位")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
