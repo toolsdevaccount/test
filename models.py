@@ -229,3 +229,79 @@ class FileUpload(models.Model):
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/productorder/productorderlist.html')
+
+class Merchandise(models.Model):
+    MerchandiseTreatment = [
+            (0, ""),
+            (1, "通常"),
+            (2, "扱停止"),
+    ]
+    McdCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
+    McdTreatmentCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseTreatment,verbose_name="扱区分")
+    McdPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
+    McdManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+    def __str__(self):
+        return self.MerchandiseCode
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/merchandise/merchandiselist.html')
+
+class MerchandiseColor(models.Model):
+    McdColorId = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdColorId',verbose_name="商品マスタid")
+    McdColor = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="商品カラー")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+    def __str__(self):
+        return self.MerchandiseCode
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/merchandise/merchandiselist.html')
+
+class MerchandiseSize(models.Model):
+    McdSizeId = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdSizeId',verbose_name="商品マスタid")
+    McdSize = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="商品サイズ")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+    def __str__(self):
+        return self.MerchandiseCode
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/merchandise/merchandiselist.html')
+
+class MerchandiseDetail(models.Model):
+    UnitCode = [
+        (0, ""),
+        (1, "通常"),
+        (2, "扱停止"),
+    ]  
+    McdDtid = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdDtid',verbose_name="商品マスタid")
+    McdDtProductName = models.CharField(max_length=24,null=False,blank=True,verbose_name="品名")
+    McdDtOrderingCount = models.CharField(max_length=8,null=False,blank=True,verbose_name="番手")
+    McdDtStainMixRatio = models.CharField(max_length=20,null=False,blank=True,verbose_name="混率")
+    McdDtlPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="単価")
+    McdDtUnitCode = models.IntegerField(null=False,blank=True,default=0,choices=UnitCode,verbose_name="単位")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+    def __str__(self):
+        return self.MerchandiseCode
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/merchandise/merchandiselist.html')
