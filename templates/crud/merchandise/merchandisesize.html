@@ -1,0 +1,72 @@
+												{% block content %}
+												{{ inlinessize.management_form }}	
+												<input type="hidden" name="McdSizeId-TOTAL_FORMS" id="McdSizeId-TOTAL_FORMS" value="6">
+												{% for form in inlinessize %}
+												<div class="fds-form-label fds-form-label--horizontal">
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- サイズ1 -->
+														<label class="fds-label-input">サイズ:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize" name="McdSizeId-0-McdSize" id="id_McdSizeId-0-McdSize" value={{ form.data.McdSize }}>
+														{% if form.errors.McdSize %}
+														{% for error in form.errors.McdSize %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- サイズ2 -->
+														<label class="fds-label-input">サイズ:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize" name="McdSizeId-1-McdSize" id="id_McdSizeId-1-McdSize" value={{ form.data.McdSize }}>
+														{% if form.errors.McdSize %}
+														{% for error in form.errors.McdSize %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- サイズ3 -->
+														<label class="fds-label-input">サイズ:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize" name="McdSizeId-2-McdSize" id="id_McdSizeId-2-McdSize" value={{ form.data.McdSize }}>
+														{% if form.errors.McdSize %}
+														{% for error in form.errors.McdSize %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+												</div>
+												<div class="fds-form-label fds-form-label--horizontal">
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- サイズ4 -->
+														<label class="fds-label-input">サイズ:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize" name="McdSizeId-3-McdSize" id="id_McdSizeId-3-McdSize" value={{ form.data.McdSize }}>
+														{% if form.errors.McdSize %}
+														{% for error in form.errors.McdSize %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- サイズ5 -->
+														<label class="fds-label-input">サイズ:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize" name="McdSizeId-4-McdSize" id="id_McdSizeId-4-McdSize" value={{ form.data.McdSize }}>
+														{% if form.errors.McdSize %}
+														{% for error in form.errors.McdSize %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- サイズ6 -->
+														<label class="fds-label-input">サイズ:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdSizeId-%dMcdSize" data-name-format="McdSizeId-%d-McdSize" name="McdSizeId-5-McdSize" id="id_McdSizeId-5-McdSize" value={{ form.data.McdSize }}>
+														{% if form.errors.McdSize %}
+														{% for error in form.errors.McdSize %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													{% endfor %}
+												</div>
+											</div>
+										</div>
+										{% endblock %}

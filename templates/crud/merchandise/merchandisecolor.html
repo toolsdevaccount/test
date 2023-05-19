@@ -1,0 +1,71 @@
+											{% block content %}
+											<div class="fds-page-detail__main">
+												{{ inlines.management_form }}	
+												<input type="hidden" name="McdColorId-TOTAL_FORMS" id="McdColorId-TOTAL_FORMS" value="6">
+												{% for form in inlines %}
+												<div class="fds-form-label fds-form-label--horizontal">
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- カラー1 -->
+														<label class="fds-label-input">カラー:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor" name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value={{ form.data.McdColor }}>
+														{% if form.errors.McdColor %}
+														{% for error in form.errors.McdColor %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- カラー2 -->
+														<label class="fds-label-input">カラー:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor" name="McdColorId-1-McdColor" id="id_McdColorId-1-McdColor" value={{ form.data.McdColor }}>
+														{% if form.errors.McdColor %}
+														{% for error in form.errors.McdColor %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- カラー3 -->
+														<label class="fds-label-input">カラー:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor" name="McdColorId-2-McdColor" id="id_McdColorId-2-McdColor" value={{ form.data.McdColor }}>
+														{% if form.errors.McdColor %}
+														{% for error in form.errors.McdColor %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+												</div>
+												<div class="fds-form-label fds-form-label--horizontal">
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- カラー4 -->
+														<label class="fds-label-input">カラー:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor" name="McdColorId-3-McdColor" id="id_McdColorId-3-McdColor" value={{ form.data.McdColor }}>
+														{% if form.errors.McdColor %}
+														{% for error in form.errors.McdColor %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- カラー5 -->
+														<label class="fds-label-input">カラー:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor" name="McdColorId-4-McdColor" id="id_McdColorId-4-McdColor" value={{ form.data.McdColor }}>
+														{% if form.errors.McdColor %}
+														{% for error in form.errors.McdColor %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													<div class="fds-form-input-message" style="width:25%;">
+														<!-- カラー6 -->
+														<label class="fds-label-input">カラー:</label>
+														<input type="text" class="fds-form-input" placeholder=""  data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor" name="McdColorId-5-McdColor" id="id_McdColorId-5-McdColor" value={{ form.data.McdColor }}>
+														{% if form.errors.McdColor %}
+														{% for error in form.errors.McdColor %}
+															<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+														{% endfor %}
+														{% endif %}
+													</div>
+													{% endfor %}
+												</div>
+												{% endblock %}

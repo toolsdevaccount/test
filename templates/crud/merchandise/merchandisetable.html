@@ -3,8 +3,8 @@
 											<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
 										</div>
 										<input type="hidden" name="McdDtid-TOTAL_FORMS" id="McdDtid-TOTAL_FORMS">
-										<div class="fds-table-container">	
-											<div class="fds-table" style="height: 35vh;">
+										<div class="fds-table-container">
+											<div class="fds-table" style="height: 25vh;">
 												{{ formset.management_form }}	
 												<table class="fds-table__inner" id="tblrow">
 													<thead>
@@ -100,4 +100,5 @@
 										{% load static %}
 										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\inputareamcd.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 										{% endblock %}

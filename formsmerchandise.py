@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Merchandise, MerchandiseDetail
+from .models import Merchandise, MerchandiseDetail, MerchandiseColor, MerchandiseSize
 from django.forms import ModelChoiceField
 
 # バリデーション
@@ -22,5 +22,17 @@ class MerchandiseForm(forms.ModelForm):
 MerchandiseFormset = forms.inlineformset_factory(
     Merchandise, MerchandiseDetail, 
     fields=('McdDtProductName','McdDtOrderingCount','McdDtStainMixRatio','McdDtlPrice','McdDtUnitCode','is_Deleted'),
+    extra=0,min_num=1,validate_min=True,can_delete=True
+)
+
+MerchandiseColorFormset = forms.inlineformset_factory(
+    Merchandise, MerchandiseColor, 
+    fields=('McdColor',),
+    extra=0,min_num=1,validate_min=True,can_delete=True
+)
+
+MerchandiseSizeFormset = forms.inlineformset_factory(
+    Merchandise, MerchandiseSize, 
+    fields=('McdSize',),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )

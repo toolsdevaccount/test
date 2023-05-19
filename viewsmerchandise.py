@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.utils import timezone
 import datetime
 # forms
-from .formsmerchandise import MerchandiseForm, MerchandiseFormset
+from .formsmerchandise import MerchandiseForm, MerchandiseFormset, MerchandiseColorFormset, MerchandiseSizeFormset
 # Transaction
 from django.db import transaction
 
@@ -24,7 +24,7 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
 
     #検索機能
     def get_queryset(self):
-        # 依頼日大きい順で抽出
+        # 商品コード大きい順で抽出
         queryset = Merchandise.objects.order_by('McdCode','Created_at').reverse()
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
@@ -42,15 +42,21 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     model = Merchandise
     form_class =  MerchandiseForm
     formset_class = MerchandiseFormset
+    inlines_class = MerchandiseColorFormset
+    inlinesize_class = MerchandiseSizeFormset
     template_name = "crud/merchandise/merchandiseform.html"
    
     def get(self, request):
         form = MerchandiseForm(self.request.POST or None)
         formset = MerchandiseFormset
+        inlines = MerchandiseColorFormset
+        inlinessize = MerchandiseSizeFormset
 
         context = {
             'form': form,
             'formset': formset,
+            'inlines': inlines,
+            'inlinessize': inlinessize,
         }
 
 
@@ -61,8 +67,12 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         formset = MerchandiseFormset(self.request.POST,instance=post) 
-        if self.request.method == 'POST' and formset.is_valid(): 
+        inlines = MerchandiseColorFormset(self.request.POST,instance=post)
+        inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
+        if self.request.method == 'POST' and formset.is_valid() and inlines.is_valid() and inlinessize.is_valid(): 
             instances = formset.save(commit=False)
+            instance = inlines.save(commit=False)
+            instancesize = inlinessize.save(commit=False)
             
             if form.is_valid():
                 # Created_id,Updated_idフィールドはログインしているユーザidとする
@@ -74,12 +84,22 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
+
+                for file in instance:
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
+
+                for file in instancesize:
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
         else:
             # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form, formset=formset))
+            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlines=inlines, inlinessize=inlinessize))
 
         return redirect('myapp:merchandiselist')
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlines=self.inlines_class, inlinessize=self.inlinesize_class))
