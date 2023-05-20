@@ -215,21 +215,6 @@ class ProductOrder(models.Model):
     def get_absolute_url(self):
         return reverse('crud/productorder/productorderlist.html')
 
-class FileUpload(models.Model):
-    ProductOrderSlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
-    ProductOrderOrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
-    upload = models.FileField(upload_to='file/%Y/%m/%d',verbose_name="アップロードファイルパス")
-    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
-    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
-    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
-    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
-
-    def __str__(self):
-        return self.ProductOrderOrderNumber
-    # 新規登録・編集完了後のリダイレクト先
-    def get_absolute_url(self):
-        return reverse('crud/productorder/productorderlist.html')
-
 class Merchandise(models.Model):
     MerchandiseTreatment = [
             (0, ""),
@@ -262,7 +247,7 @@ class MerchandiseColor(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.MerchandiseCode
+        return self.McdColorId
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
@@ -277,7 +262,7 @@ class MerchandiseSize(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.MerchandiseCode
+        return self.McdSizeId
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
@@ -306,7 +291,21 @@ class MerchandiseDetail(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.MerchandiseCode
+        return self.McdDtid
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/merchandise/merchandiselist.html')
+
+class MerchandiseFileUpload(models.Model):
+    McdDtuploadid = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdDtuploadid',verbose_name="商品マスタid")
+    uploadPath = models.FileField(upload_to='file/%Y/%m/%d',verbose_name="アップロードファイルパス")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+
+    def __str__(self):
+        return self.McdDtuploadid
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')

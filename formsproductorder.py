@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 #from django.contrib.auth.forms import UserCreationForm
-from .models import ProductOrder, FileUpload, CustomerSupplier
+from .models import ProductOrder, CustomerSupplier
 
 from django.forms import ModelChoiceField
 from datetime import datetime

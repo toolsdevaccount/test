@@ -42,20 +42,20 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     model = Merchandise
     form_class =  MerchandiseForm
     formset_class = MerchandiseFormset
-    inlines_class = MerchandiseColorFormset
+    inlinescolor_class = MerchandiseColorFormset
     inlinesize_class = MerchandiseSizeFormset
     template_name = "crud/merchandise/merchandiseform.html"
    
     def get(self, request):
         form = MerchandiseForm(self.request.POST or None)
         formset = MerchandiseFormset
-        inlines = MerchandiseColorFormset
+        inlinescolor = MerchandiseColorFormset
         inlinessize = MerchandiseSizeFormset
 
         context = {
             'form': form,
             'formset': formset,
-            'inlines': inlines,
+            'inlinescolor': inlinescolor,
             'inlinessize': inlinessize,
         }
 
@@ -67,11 +67,11 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         formset = MerchandiseFormset(self.request.POST,instance=post) 
-        inlines = MerchandiseColorFormset(self.request.POST,instance=post)
+        inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
-        if self.request.method == 'POST' and formset.is_valid() and inlines.is_valid() and inlinessize.is_valid(): 
+        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid(): 
             instances = formset.save(commit=False)
-            instance = inlines.save(commit=False)
+            instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
             
             if form.is_valid():
@@ -85,7 +85,7 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                     file.Updated_id = self.request.user.id
                     file.save()
 
-                for file in instance:
+                for file in instancecolor:
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
@@ -96,10 +96,10 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                     file.save()
         else:
             # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlines=inlines, inlinessize=inlinessize))
-
+            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlines=inlinescolor, inlinessize=inlinessize))
+ 
         return redirect('myapp:merchandiselist')
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlines=self.inlines_class, inlinessize=self.inlinesize_class))
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlines=self.inlinescolor_class, inlinessize=self.inlinesize_class))

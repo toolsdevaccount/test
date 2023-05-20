@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Merchandise, MerchandiseDetail, MerchandiseColor, MerchandiseSize
+from .models import Merchandise, MerchandiseDetail, MerchandiseColor, MerchandiseSize, MerchandiseFileUpload
 from django.forms import ModelChoiceField
 
 # バリデーション
@@ -34,5 +34,11 @@ MerchandiseColorFormset = forms.inlineformset_factory(
 MerchandiseSizeFormset = forms.inlineformset_factory(
     Merchandise, MerchandiseSize, 
     fields=('McdSize',),
+    extra=0,min_num=1,validate_min=True,can_delete=True
+)
+
+MerchandisefileFormset = forms.inlineformset_factory(
+    Merchandise, MerchandiseFileUpload, 
+    fields=('uploadPath',),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )

@@ -37,7 +37,8 @@
                                     <div class="wrap-tab">
                                         <ul class="fds-tabs" id="js-tab">
                                             <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
-                                            <li class="fds-tabs__item">カラー/サイズ</li>
+                                            <li class="fds-tabs__item">カラー</li>
+                                            <li class="fds-tabs__item">サイズ</li>
                                             <li class="fds-tabs__item">画像</li>
                                         </ul>
                                         <div class="tab-contents-item active">
@@ -106,10 +107,9 @@
                                                 {% include "crud/merchandise/merchandisetable.html" %}
                                             </div>
                                         </div>
-                                        <div class="tab-contents-item">
-                                            {% include "crud/merchandise/merchandisecolor.html" %}
-                                            {% include "crud/merchandise/merchandisesize.html" %}
-                                        </div>
+                                        {% include "crud/merchandise/merchandisecolor.html" %}
+                                        {% include "crud/merchandise/merchandisesize.html" %}
+                                        {% include "crud/merchandise/merchandisefile.html" %}
                                     </div>
                                 </div>
                             </div>

@@ -3296,10 +3296,17 @@ p{
 .tab-contents-item{
   display: none;
   padding: 1em;
-  /* border-bottom: 1px solid #5bbee5;
-  border-left: 1px solid #5bbee5;
-  border-right: 1px solid #5bbee5; */
 }
 .tab-contents-item.active{
   display: block;
+}
+
+/* 追加 */
+#tblrowcolor{
+  margin:auto;
+}
+
+/* 追加 */
+#tblrowsize{
+  margin:auto;
 }
