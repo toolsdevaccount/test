@@ -9,9 +9,12 @@ from django.db.models import Q
 from django.utils import timezone
 import datetime
 # forms
-from .formsmerchandise import MerchandiseForm, MerchandiseFormset, MerchandiseColorFormset, MerchandiseSizeFormset
+from .formsmerchandise import MerchandiseForm, MerchandiseFormset, MerchandiseColorFormset, MerchandiseSizeFormset, MerchandisefileFormset
 # Transaction
 from django.db import transaction
+# fileupload
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 # 商品一覧/検索
 class MerchandiseListView(LoginRequiredMixin,ListView):
@@ -44,6 +47,7 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     formset_class = MerchandiseFormset
     inlinescolor_class = MerchandiseColorFormset
     inlinesize_class = MerchandiseSizeFormset
+    inlinefile_class = MerchandisefileFormset
     template_name = "crud/merchandise/merchandiseform.html"
    
     def get(self, request):
@@ -51,12 +55,14 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
         formset = MerchandiseFormset
         inlinescolor = MerchandiseColorFormset
         inlinessize = MerchandiseSizeFormset
+        inlinesfile = MerchandisefileFormset
 
         context = {
             'form': form,
             'formset': formset,
             'inlinescolor': inlinescolor,
             'inlinessize': inlinessize,
+            'inlinesfile': inlinesfile,
         }
 
 
@@ -69,10 +75,13 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
         formset = MerchandiseFormset(self.request.POST,instance=post) 
         inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
-        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid(): 
+        inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
+
+        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
+            instancefile = inlinesfile.save(commit=False)
             
             if form.is_valid():
                 # Created_id,Updated_idフィールドはログインしているユーザidとする
@@ -94,12 +103,23 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
+
+                for file in instancefile:
+                    #myfile = self.request.FILES['ProductOrderupload']
+                    #fs = FileSystemStorage()
+                    #filename = fs.save(myfile.name, myfile)
+                    #uploaded_file_url = fs.url(filename)
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
+
         else:
+            print(inlinesfile.non_form_errors)
             # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlines=inlinescolor, inlinessize=inlinessize))
+            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile,))
  
         return redirect('myapp:merchandiselist')
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlines=self.inlinescolor_class, inlinessize=self.inlinesize_class))
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinesize_class, inlinesfile=self.inlinefile_class))

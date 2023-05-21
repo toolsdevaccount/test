@@ -6,7 +6,7 @@
 												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
 												<div class="fds-table-container">
 													<div class="fds-table" style="width: 50%; height: 45vh;">
-														{{ inlinescolor.management_form }}	
+														{{ inlinesfile.management_form }}	
 														<table class="fds-table__inner" id="tblrowfile">
 															<thead>
 																<tr class="fds-table__tr">
@@ -18,11 +18,11 @@
 																</tr>
 															</thead>
 															<tbody id="listfile">
-																{% for form in inlinescolor %}	
+																{% for form in inlinesfile %}	
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
-						                                                    <input type="file" name="myfile" style="width: 200px;" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath"
+						                                                    <input type="file" style="width: 200px;" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath"
 																			name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath">
 																			<!-- <input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdFileId-%d-McdColor" data-name-format="McdFileId-%d-McdColor"
 																			name="McdFileId-0-McdColor" id="McdFileId-0-McdColor"> -->

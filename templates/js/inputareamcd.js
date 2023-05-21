@@ -10,7 +10,7 @@ $(function(){
         $('[name=McdSizeId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
 
         var row = tblrowfile.rows.length -1; //表題分差引く
-        $('[name=McdFileId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
+        $('[name=McdDtuploadid-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
 
     });
 
