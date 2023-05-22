@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 # 日時
 from django.utils import timezone
 import datetime
+# イメージリサイズ
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 # Create your models here.
 class prefecture(models.Model):
@@ -298,7 +301,9 @@ class MerchandiseDetail(models.Model):
 
 class MerchandiseFileUpload(models.Model):
     McdDtuploadid = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdDtuploadid',verbose_name="商品マスタid")
-    uploadPath = models.FileField(upload_to='file/%Y/%m/%d',verbose_name="アップロードファイルパス")
+    #uploadPath = models.FileField(upload_to='photos/%Y/%m/%d',verbose_name="アップロードファイルパス")
+    uploadPath = models.ImageField(upload_to='photos/%Y/%m/%d',blank=True, null=True, verbose_name="アップロードファイルパス")
+    middle = ImageSpecField(source='uploadPath', processors=[ResizeToFill(600, 400)],  format="JPEG",  options={'quality': 75})  
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")

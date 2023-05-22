@@ -1,4 +1,5 @@
 											{% block content %}
+											{% load humanize %}
 											<div class="tab-contents-item" style="width: 70%; height: 60vh;">
 												<div class="fds-table-actions">
 													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addcolor" style="width: 60px">追加</button>
@@ -22,8 +23,13 @@
 																<tr class="fds-table__tr fds-table__tr--hoverable colorarea">
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
+																			{% if form.McdColor.value == 0 %}
 																			<input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
 																			name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor">
+																			{% else %}
+																			<input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
+																			name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default_if_none:'' }}">
+																			{% endif %}
 																		</div>
 																	</td>
 																	<td class="fds-table__td">

@@ -47,7 +47,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 商品コード -->
                                                         <label class="fds-label-input">コード:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdCode" id="id_McdCode" value={{ form.data.McdCode }}>
+                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdCode" id="id_McdCode">
                                                         {% if form.errors.McdCode %}
                                                         {% for error in form.errors.McdCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -78,7 +78,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 本品番 -->
                                                         <label class="fds-label-input">本品番:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdPartNumber" id="id_McdPartNumber" value={{ form.data.McdPartNumber }}>
+                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdPartNumber" id="id_McdPartNumber">
                                                         {% if form.errors.McdPartNumber %}
                                                         {% for error in form.errors.McdPartNumber %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

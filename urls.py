@@ -27,7 +27,7 @@ urlpatterns = [
     # 商品マスター登録
     path('merchandise/new/', viewsmerchandise.MerchandiseCreateView.as_view(), name='merchandisenew'),
     # 商品マスター編集
-    path('merchandise/edit/<int:pk>/', viewscustomer.CustomerSupplierUpdateView.as_view(), name='merchandiseedit'),
+    path('merchandise/edit/<int:pk>/', viewsmerchandise.MerchandiseUpdateView.as_view(), name='merchandiseedit'),
     # 商品マスター削除
     path('merchandise/delete/<int:pk>/',viewscustomer.CustomerSupplierDeleteView.as_view(),name='merchandisedelete'),   
 

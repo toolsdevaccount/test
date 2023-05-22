@@ -20,12 +20,18 @@
 															<tbody id="listfile">
 																{% for form in inlinesfile %}	
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
+																	{% if form.uploadPath %}
+																	<td class="fds-table__td">
+																		<div id="div" class="fds-table__td-content">
+																			{% load imagekit %}
+																			<img src="/{{ form.uploadPath }}" style="width:300px;height:auto">
+																		</div>
+																	</td>
+																	{% endif %}
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 						                                                    <input type="file" style="width: 200px;" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath"
-																			name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath">
-																			<!-- <input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdFileId-%d-McdColor" data-name-format="McdFileId-%d-McdColor"
-																			name="McdFileId-0-McdColor" id="McdFileId-0-McdColor"> -->
+																			name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath" value={{ form.McdDtuploadid.value }}>
 																		</div>
 																	</td>
 																	<td class="fds-table__td">
