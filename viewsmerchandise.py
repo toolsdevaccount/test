@@ -130,11 +130,14 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
+        #イメージファイル
+        images = MerchandiseFileUpload.objects.filter()
         context = super(MerchandiseUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       inlinesfile=MerchandisefileFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter()),
+                       #inlinesfile=MerchandisefileFormset(self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter()),
+                       inlinesfile=images,
                        )      
        
         return context

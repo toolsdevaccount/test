@@ -4,6 +4,20 @@
 													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addfile" style="width: 60px">追加</button>
 												</div>
 												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
+												<table class="fds-table__inner">
+													{% for form in inlinesfile %}	
+													<tr class="fds-table__tr fds-table__tr--hoverable filearea">
+														{% if form.uploadPath.url %}
+														<td class="fds-table__td">
+															<div id="div" class="fds-table__td-content">
+																{% load imagekit %}
+																<img src="{{ form.uploadPath.url }}" style="width:150px;height:150px;">
+															</div>
+														</td>
+														{% endif %}
+													</tr>
+													{% endfor %}
+												</table>
 												<div class="fds-table-container">
 													<div class="fds-table" style="width: 50%; height: 45vh;">
 														{{ inlinesfile.management_form }}	
@@ -20,14 +34,6 @@
 															<tbody id="listfile">
 																{% for form in inlinesfile %}	
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
-																	{% if form.uploadPath %}
-																	<td class="fds-table__td">
-																		<div id="div" class="fds-table__td-content">
-																			{% load imagekit %}
-																			<img src="/{{ form.uploadPath }}" style="width:300px;height:auto">
-																		</div>
-																	</td>
-																	{% endif %}
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 						                                                    <input type="file" style="width: 200px;" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath"
