@@ -5,25 +5,6 @@
 												</div>
 												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
 												{{ inlinesfile.management_form }}	
-												{% for form in inlinesfile %}	
-												<table class="fds-table__inner" id="tblrowfile">
-													{% for image in images %}	
-													{% if image.uploadPath.url %}
-													<tr class="fds-table__tr fds-table__tr--hoverable">
-														<td class="fds-table__td">
-															<div id="div" class="fds-table__td-content">
-																<!-- <img src="{{ image.uploadPath.url }}" style="width:150px;height:150px;"> -->
-																<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny" data-toggle="tooltip" data-html="true" title="<img src='&quot;{{ image.uploadPath.url }}&quot;'>">
-																	{{ image.uploadPath }}
-																	</button>														
-															</div>
-														</td>
-														<!-- <input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" name="McdDtuploadid-0-id" id="id_McdDtuploadid-0-id" value="{{ form.id.value }}"> -->
-													</tr>
-													{% endif %}
-													{% endfor %}
-												</table>
-												{% endfor %}
 												<div class="fds-table-container">
 													<div class="fds-table" style="width: 50%; height: 45vh;">
 														<table class="fds-table__inner" id="tblrowfile">

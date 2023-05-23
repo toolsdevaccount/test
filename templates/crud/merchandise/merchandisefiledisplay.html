@@ -1,0 +1,39 @@
+											{% block content %}
+											<div class="tab-contents-item" style="width: 70%; height: 60vh;">
+												<div class="fds-table-container">
+													<div class="fds-table" style="width: 50%; height: 45vh;">
+														<table class="fds-table__inner" id="tblrowfile">
+															<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
+															{% for image in images %}
+															<tr>
+																<img src="{{ image.middle.url }}" style="width: 50%; height: 50%;"/>
+																<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" name="McdDtuploadid-0-id" id="id_McdDtuploadid-0-id" value="{{ image.id }}">
+															</tr>
+															{% endfor %}
+														</table>
+													</div>
+												</div>
+											</div>
+														
+												<!-- 
+												<div class="fds-form-input-message" style="width:75%; text-align: right;">
+													<p><a href="javascript:void(0);">
+														<label class="fds-label-input"><span id="link">画像表示する</span></label>
+															<span id="tip">
+																<img src="{{ image.middle.url }}" />
+															</span>
+														</a>
+													</p>
+													<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" name="McdDtuploadid-0-id" id="id_McdDtuploadid-0-id" value="{{ image.id }}">
+												</div>
+											 	-->
+											{% endblock %}
+											{% block extrajs %}
+											<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+											<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
+											{% load static %}
+											<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
+											<script src="{% static '\js\inputareamcd.js' %}" charset="UTF-8"></script>
+											<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
+											<link rel="stylesheet" href="{% static '\css\tooltip.css' %}">
+											{% endblock %}

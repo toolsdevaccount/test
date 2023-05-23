@@ -26,7 +26,6 @@
 																			name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath">
 																		</div>
 																	</td>
-																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" name="McdDtuploadid-0-id" id="id_McdDtuploadid-0-id" value="{{ form.id.value }}">
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delfile" style="width: 60px;">削除</button>
@@ -39,12 +38,4 @@
 													</div>
 												</div>
 											</div>
-											{% endblock %}
-											{% block extrajs %}
-											<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-											<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
-											{% load static %}
-											<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
-											<script src="{% static '\js\inputareamcd.js' %}" charset="UTF-8"></script>
-											<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 											{% endblock %}

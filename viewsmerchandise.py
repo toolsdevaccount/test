@@ -138,7 +138,8 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       inlinesfile=MerchandisefileFormset(self.request.POST or self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter()),
+                       #inlinesfile=MerchandisefileFormset(self.request.POST or None, self.request.FILES, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter()),
+                       inlinesfile=MerchandisefileFormset,
                        images=images,
                        )      
        
@@ -152,7 +153,6 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
         inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
-
 
         if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
             instances = formset.save(commit=False)
