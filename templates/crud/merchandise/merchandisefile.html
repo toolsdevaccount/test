@@ -4,23 +4,22 @@
 													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addfile" style="width: 60px">追加</button>
 												</div>
 												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
-												<table class="fds-table__inner">
-													{% for form in inlinesfile %}	
-													<tr class="fds-table__tr fds-table__tr--hoverable filearea">
-														{% if form.uploadPath.url %}
+												{{ inlinesfile.management_form }}	
+												{% for image in images %}	
+												{% if image.uploadPath.url %}
+												<table class="fds-table__inner" id="tblrowfile">
+													<tr class="fds-table__tr fds-table__tr--hoverable">
 														<td class="fds-table__td">
 															<div id="div" class="fds-table__td-content">
-																{% load imagekit %}
-																<img src="{{ form.uploadPath.url }}" style="width:150px;height:150px;">
+																<img src="{{ image.uploadPath.url }}" style="width:150px;height:150px;">
 															</div>
 														</td>
-														{% endif %}
 													</tr>
-													{% endfor %}
 												</table>
+												{% endif %}
+												{% endfor %}
 												<div class="fds-table-container">
 													<div class="fds-table" style="width: 50%; height: 45vh;">
-														{{ inlinesfile.management_form }}	
 														<table class="fds-table__inner" id="tblrowfile">
 															<thead>
 																<tr class="fds-table__tr">
@@ -40,6 +39,7 @@
 																			name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath" value={{ form.McdDtuploadid.value }}>
 																		</div>
 																	</td>
+																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" name="McdDtuploadid-0-id" id="id_McdDtuploadid-0-id" value="{{ form.id.value }}">
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delfile" style="width: 60px;">削除</button>

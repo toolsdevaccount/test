@@ -131,13 +131,16 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         #イメージファイル
-        images = MerchandiseFileUpload.objects.filter()
+        queryset = MerchandiseFileUpload.objects.filter()
+        pk = self.kwargs.get("pk")
+        images = queryset.filter(McdDtuploadid=pk)
+
         context = super(MerchandiseUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       #inlinesfile=MerchandisefileFormset(self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter()),
-                       inlinesfile=images,
+                       inlinesfile=MerchandisefileFormset(self.request.POST or self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter()),
+                       images=images,
                        )      
        
         return context
@@ -152,7 +155,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
 
 
-        if self.request.method == 'POST' and formset.is_valid(): 
+        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
@@ -194,8 +197,8 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.save()
 
         else:
-            return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile,))) 
-        return redirect('myapp:myapp:merchandiselist')
+            return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile))) 
+        return redirect('myapp:merchandiselist')
 
     # バリデーションエラー時
     def form_invalid(self,form):
