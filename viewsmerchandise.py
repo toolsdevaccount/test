@@ -107,7 +107,6 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
-
         else:
             # is_validがFalseの場合はエラー文を表示
             return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile,))
@@ -124,9 +123,9 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
     form_class =  MerchandiseForm
     formset_class = MerchandiseFormset
     inlinescolor_class = MerchandiseColorFormset
-    inlinesize_class = MerchandiseSizeFormset
-    inlinefile_class = MerchandisefileFormset
-    template_name = "crud/merchandise/merchandiseupdateform.html"
+    inlinessize_class = MerchandiseSizeFormset
+    inlinesfile_class = MerchandisefileFormset
+    template_name = "crud/merchandise/merchandiseformupdate.html"
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
@@ -197,9 +196,9 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.save()
 
         else:
-            return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile))) 
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile))
         return redirect('myapp:merchandiselist')
 
     # バリデーションエラー時
     def form_invalid(self,form):
-        return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinesize_class, inlinesfile=self.inlinefile_class)))
+        return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinessize_class, inlinesfile=self.inlinesfile_class)))

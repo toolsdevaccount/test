@@ -33,7 +33,10 @@ $(function(){
         btn_add: '.addfile',
         btn_del: '.delfile'
       });
-});
+
+      $('[data-toggle="tooltip"]').tooltip()
+
+  });
 
 $('.DeliveryManageDiv').click(function() {
     if($(".DeliveryManageDiv").prop('checked')){

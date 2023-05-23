@@ -23,8 +23,13 @@
 																	<tr class="fds-table__tr fds-table__tr--hoverable sizearea">
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
+																				{% if form.McdSize.value == 0 %}
 																				<input type="text" class="fds-form-input McdSize" style="width: 200px;" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"
 																				name="McdSizeId-0-McdSize" id="id_McdSizeId-0-McdSize">
+																				{% else %}
+																				<input type="text" class="fds-form-input McdSize" style="width: 200px;" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"
+																				name="McdSizeId-0-McdSize" id="id_McdSizeId-0-McdSize" value="{{ form.McdSize.value | default_if_none:'' }}">
+																				{% endif %}
 																				{% if form.errors.McdSize %}
 																				{% for error in form.errors.McdSize %}
 																					<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -32,6 +37,7 @@
 																				{% endif %}
 																			</div>				
 																		</td>
+																		<input type="hidden" data-id-format="id_McdSizeId-%d-id" data-name-format="McdSizeId-%d-id" name="McdSizeId-0-id" id="id_McdSizeId-0-id" value="{{ form.id.value }}">
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
 																				<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delsize" style="width: 60px;">削除</button>

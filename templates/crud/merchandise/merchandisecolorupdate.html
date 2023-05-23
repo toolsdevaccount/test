@@ -24,9 +24,10 @@
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			<input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
-																			name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" >
+																			name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default_if_none:'' }}">
 																		</div>
 																	</td>
+																	<input type="hidden" data-id-format="id_McdColorId-%d-id" data-name-format="McdColorId-%d-id" name="McdColorId-0-id" id="id_McdColorId-0-id" value="{{ form.id.value }}">
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delcolor" style="width: 60px;">削除</button>
