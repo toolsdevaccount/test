@@ -52,9 +52,6 @@ urlpatterns = [
     #path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
     # PDF出力
     #path('ordering/pdf/<int:pk>', viewspopdf.pdf, name='orderingpdf'), 
-
-    # fileupload
-    path('uploadtest/', views.uploadtest, name='uploadtest'),
 ]
 
 if settings.DEBUG:
