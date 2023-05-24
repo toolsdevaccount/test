@@ -201,4 +201,5 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
 
     # バリデーションエラー時
     def form_invalid(self,form):
-        return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinessize_class, inlinesfile=self.inlinesfile_class)))
+        #return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinessize_class, inlinesfile=self.inlinesfile_class)))
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinessize_class, inlinesfile=self.inlinesfile_class))

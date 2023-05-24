@@ -40,6 +40,8 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
 
     def get(self, request):
         form = CustomerSupplierForm
+        form = CustomerSupplierForm(self.request.POST or None,initial={'PrefecturesCode': '1',})
+
         context = {
             'form': form,
         }
@@ -65,7 +67,7 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
 class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
     model = CustomerSupplier
     form_class =  CustomerSupplierForm
-    template_name = "crud/customersupplier/customersupplierupdateform.html"
+    template_name = "crud/customersupplier/customersupplierformupdate.html"
        
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
@@ -86,7 +88,7 @@ class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
 class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
     model = CustomerSupplier
     form_class =  CustomerSupplierForm
-    template_name = "crud/customersupplier/customersupplierdeleteform.html"
+    template_name = "crud/customersupplier/customersupplierformdelete.html"
        
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):

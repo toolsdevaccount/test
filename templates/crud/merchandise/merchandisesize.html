@@ -6,7 +6,7 @@
 													</div>
 													<input type="hidden" name="McdSizeId-TOTAL_FORMS" id="McdSizeId-TOTAL_FORMS">
 													<div class="fds-table-container">
-														<div class="fds-table" style="width: 50%; height: 45vh;">
+														<div class="fds-table" style="height: 50vh;">
 															{{ inlinessize.management_form }}	
 															<table class="fds-table__inner" id="tblrowsize">
 																<thead>
@@ -24,7 +24,7 @@
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
 																				<input type="text" class="fds-form-input McdSize" style="width: 200px;" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"
-																				name="McdSizeId-0-McdSize" id="id_McdSizeId-0-McdSize">
+																				name="McdSizeId-0-McdSize" id="id_McdSizeId-0-McdSize" value="{{ form.McdSize.value | default:'' }}">
 																				{% if form.errors.McdSize %}
 																				{% for error in form.errors.McdSize %}
 																					<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

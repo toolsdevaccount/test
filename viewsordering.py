@@ -51,7 +51,15 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/ordering/orderingform.html"
    
     def get(self, request):
-        form = OrderingForm(self.request.POST or None)
+        form = OrderingForm(self.request.POST or None, 
+                            initial={'OutputDiv': '1',
+                                     'DestinationCode': '1',
+                                     'SupplierCode': '1',
+                                     'ShippingCode': '1',
+                                     'StainShippingCode': '1',
+                                     'CustomeCode': '1',
+                                     'RequestCode':'1',
+                                     })
         formset = OrderingFormset
 
         context = {
@@ -97,7 +105,7 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
     model = OrderingTable
     form_class =  OrderingForm
     formset_class = OrderingFormset
-    template_name = "crud/ordering/orderingupdateform.html"
+    template_name = "crud/ordering/orderingformupdate.html"
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
@@ -149,7 +157,7 @@ class orderingDeleteView(LoginRequiredMixin,UpdateView):
     model = OrderingTable
     form_class =  OrderingForm
     formset_class = OrderingFormset
-    template_name = "crud/ordering/orderingdeleteform.html"
+    template_name = "crud/ordering/orderingformdelete.html"
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):

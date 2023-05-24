@@ -25,6 +25,11 @@
 																		<div id="div" class="fds-table__td-content">
 																			<input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
 																			name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default_if_none:'' }}">
+																			{% if form.errors.McdColor %}
+																			{% for error in form.errors.McdColor %}
+																				<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+																			{% endfor %}
+																			{% endif %}
 																		</div>
 																	</td>
 																	<input type="hidden" data-id-format="id_McdColorId-%d-id" data-name-format="McdColorId-%d-id" name="McdColorId-0-id" id="id_McdColorId-0-id" value="{{ form.id.value }}">

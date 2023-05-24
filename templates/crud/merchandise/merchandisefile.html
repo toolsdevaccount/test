@@ -6,12 +6,12 @@
 												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
 												{{ inlinesfile.management_form }}	
 												<div class="fds-table-container">
-													<div class="fds-table" style="width: 50%; height: 45vh;">
+													<div class="fds-table" style="height: 50vh;">
 														<table class="fds-table__inner" id="tblrowfile">
 															<thead>
 																<tr class="fds-table__tr">
 																	<th class="fds-table__th">
-																		<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
+																		<div class="fds-table__th-content fds-table__th-content--text">
 																			<span class="fds-table__th-text">添付ファイル</span>
 																		</div>
 																	</th>
@@ -22,8 +22,8 @@
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
-						                                                    <input type="file" style="width: 200px;" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath"
-																			name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath">
+						                                                    <input type="file" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath"
+																			name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath" value="{{ form.uploadPath.value }}">
 																		</div>
 																	</td>
 																	<td class="fds-table__td">
