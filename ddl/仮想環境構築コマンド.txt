@@ -14,15 +14,11 @@ pip install django-widget-tweaks
 pip install django-glrm
 pip install reportlab
 pip install mysqlclient
-pip install django-cleanup
-pip install django-imagekit
 
 pip uninstall django-widget-tweaks
 pip uninstall django-glrm
 pip uninstall reportlab
 pip uninstall mysqlclient
-pip uninstall django-cleanup
-pip uninstall django-imagekit
 
 CREATE DATABASE ksmDB CHARACTER SET utf8mb4
 

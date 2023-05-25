@@ -29,7 +29,7 @@ urlpatterns = [
     # 商品マスター編集
     path('merchandise/edit/<int:pk>/', viewsmerchandise.MerchandiseUpdateView.as_view(), name='merchandiseedit'),
     # 商品マスター削除
-    path('merchandise/delete/<int:pk>/',viewscustomer.CustomerSupplierDeleteView.as_view(),name='merchandisedelete'),   
+    path('merchandise/delete/<int:pk>/',viewsmerchandise.MerchandiseDeleteView.as_view(),name='merchandisedelete'),   
 
     # 受発注一覧
     path('ordering/list/', viewsordering.OrderingListView.as_view(), name='orderinglist'),
