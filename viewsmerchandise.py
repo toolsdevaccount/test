@@ -22,7 +22,7 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
     form_class = MerchandiseForm
     context_object_name = 'object_list'
     queryset = Merchandise.objects.order_by('McdCode','Created_at').reverse()
-    template_name = "crud/merchandise/merchandiselist.html"
+    template_name = "crud/merchandise/list/merchandiselist.html"
     paginate_by = 10
 
     #検索機能
@@ -48,7 +48,7 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     inlinescolor_class = MerchandiseColorFormset
     inlinesize_class = MerchandiseSizeFormset
     inlinefile_class = MerchandisefileFormset
-    template_name = "crud/merchandise/merchandiseform.html"
+    template_name = "crud/merchandise/new/merchandiseform.html"
    
     def get(self, request):
         form = MerchandiseForm(self.request.POST or None)
@@ -65,7 +65,7 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
             'inlinesfile': inlinesfile,
         }
 
-        return render(request, 'crud/merchandise/merchandiseform.html', context)
+        return render(request, 'crud/merchandise/new/merchandiseform.html', context)
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
@@ -74,13 +74,15 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
         formset = MerchandiseFormset(self.request.POST,instance=post) 
         inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
-        inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
+        inlinesfile = MerchandisefileFormset(self.request.POST or None, self.request.FILES or None,instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
+        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid(): 
+        #if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
-            instancefile = inlinesfile.save(commit=False)
+            if inlinesfile.is_valid():
+                instancefile = inlinesfile.save(commit=False)
             
             if form.is_valid():
                 # Created_id,Updated_idフィールドはログインしているユーザidとする
@@ -103,10 +105,11 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                     file.Updated_id = self.request.user.id
                     file.save()
 
-                for file in instancefile:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
+                if inlinesfile.is_valid():
+                    for file in instancefile:
+                        file.Created_id = self.request.user.id
+                        file.Updated_id = self.request.user.id
+                        file.save()
         else:
             # is_validがFalseの場合はエラー文を表示
             return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile,))
@@ -125,7 +128,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
     inlinescolor_class = MerchandiseColorFormset
     inlinessize_class = MerchandiseSizeFormset
     inlinesfile_class = MerchandisefileFormset
-    template_name = "crud/merchandise/merchandiseformupdate.html"
+    template_name = "crud/merchandise/update/merchandiseformupdate.html"
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
@@ -154,11 +157,13 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
         inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
+        #if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
+        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid():
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
-            instancefile = inlinesfile.save(commit=False)
+            if inlinesfile.is_valid():
+                instancefile = inlinesfile.save(commit=False)
            
             if form.is_valid():
                 # Updated_idフィールドはログインしているユーザidとする
@@ -190,10 +195,11 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.Updated_id = self.request.user.id
                     file.save()
 
-                for file in instancefile:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
+                if inlinesfile.is_valid():
+                    for file in instancefile:
+                        file.Created_id = self.request.user.id
+                        file.Updated_id = self.request.user.id
+                        file.save()
 
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile))
@@ -201,5 +207,4 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
 
     # バリデーションエラー時
     def form_invalid(self,form):
-        #return self.render_to_response(self.get_context_data(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinessize_class, inlinesfile=self.inlinesfile_class)))
         return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinessize_class, inlinesfile=self.inlinesfile_class))

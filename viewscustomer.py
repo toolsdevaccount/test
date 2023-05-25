@@ -16,7 +16,7 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
     model = CustomerSupplier
     context_object_name = 'object_list'
     queryset = CustomerSupplier.objects.order_by('CustomerCode')
-    template_name = "crud/customersupplier/customersupplierlist.html"
+    template_name = "crud/customersupplier/list/customersupplierlist.html"
     paginate_by = 10
 
     #検索機能
@@ -36,7 +36,7 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
 class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
     model = CustomerSupplier
     form_class =  CustomerSupplierForm
-    template_name = "crud/customersupplier/customersupplierform.html"
+    template_name = "crud/customersupplier/new/customersupplierform.html"
 
     def get(self, request):
         form = CustomerSupplierForm(self.request.POST or None,initial={'PrefecturesCode': '1',})
@@ -44,7 +44,7 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
         context = {
             'form': form,
         }
-        return render(request, 'crud/customersupplier/customersupplierform.html', context)
+        return render(request, 'crud/customersupplier/new/customersupplierform.html', context)
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
@@ -63,7 +63,7 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
 class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
     model = CustomerSupplier
     form_class =  CustomerSupplierForm
-    template_name = "crud/customersupplier/customersupplierformupdate.html"
+    template_name = "crud/customersupplier/update/customersupplierformupdate.html"
        
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
@@ -83,7 +83,7 @@ class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
 class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
     model = CustomerSupplier
     form_class =  CustomerSupplierForm
-    template_name = "crud/customersupplier/customersupplierformdelete.html"
+    template_name = "crud/customersupplier/delete/customersupplierformdelete.html"
        
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):

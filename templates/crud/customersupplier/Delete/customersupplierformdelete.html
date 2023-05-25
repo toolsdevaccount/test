@@ -1,0 +1,224 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<form method="post" name="delform">
+{% csrf_token %}
+    <div class="fds-page-table__main">
+        <div class="fds-breadcrumb">
+            <div class="fds-breadcrumb__item">
+                <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">
+                    HOME
+                </a>
+            </div>
+            <div class="fds-breadcrumb__item">
+                <a href="{% url 'myapp:list' %}" class="fds-breadcrumb__link">
+                    得意先仕入先一覧・検索
+                </a>
+            </div>
+            <div class="fds-breadcrumb__item">
+                <span class="fds-breadcrumb__link">
+                    得意先仕入先編集
+                </span>
+            </div>
+        </div>
+        <div class="fds-page-table__title-box">
+            <div class="fds-page-table__title">
+                削除
+            </div>
+            <div class="fds-page-table__search-form">
+                <button type="button" class="fds-btn fds-btn--basic" style="width: 100px" onclick="location.href='{% url 'myapp:list' %}'">
+                    キャンセル
+                </button>
+                <button type="button" id="modalOpen" class="fds-btn fds-btn--error" style="width: 100px;">
+                        削除
+                </button>
+            </div>
+        </div>
+        <div class="fds-panel fds-panel--plain" style="width: 100%">
+            <div class="wrap-tab">
+                <ul class="fds-tabs" id="js-tab">
+                    <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
+                    <li class="fds-tabs__item">残高情報</li>
+                </ul>
+                <div class="tab-contents-item active">
+                    <div class="fds-page-detail__main">
+                        <div class="fds-form-label fds-form-label--horizontal">
+                            <!-- コード -->
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <label class="fds-label-input">コード:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="CustomerCode" id="id_CustomerCode" value={{ object.CustomerCode }} readonly>
+                            </div>
+                            <!-- 名称 -->
+                            <div class="fds-form-input-message" style="width:50%;">
+                                <label class="fds-label-input">名称:</label>
+                                <input type="text" class="fds-form-input" placeholder=""  name="CustomerName" id="id_CustomerName" style="width:500px;" value={{ object.CustomerName }} >
+                            </div>
+                        </div>
+                        <div class="fds-divider fds-divider--dark2"></div>
+                        <div class="fds-form-label fds-form-label--horizontal">
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 略名 -->
+                                <label class="fds-label-input">略名:</label>
+                                <input type="text" class="fds-form-input" placeholder=""  name="CustomerOmitName" id="id_CustomerOmitName" value={{ object.CustomerOmitName }}>
+                            </div>
+                            <div class="fds-form-input-message" style="width:50%;">
+                                <!-- カナ名 -->
+                                <label class="fds-label-input">カナ名:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="CustomerNameKana" id="id_CustomerNameKana" style="width:500px;" value={{ object.CustomerNameKana }}>
+                            </div>
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 部署名 -->
+                                <label class="fds-label-input">部署名:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="Department" id="id_Department" value={{ object.Department }}>
+                            </div>
+                        </div>
+                        <div class="fds-divider fds-divider--dark2"></div>
+                        <div class="fds-form-label fds-form-label--horizontal">
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 郵便番号 -->
+                                <label class="fds-label-input">郵便番号:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="PostCode" id="id_PostCode" value={{ object.PostCode }}>
+                            </div>
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 都道府県 -->
+                                <div class="fds-page-input-select">
+                                    <label class="fds-label-input">都道府県:</label>
+                                    <div class="fds-select-container">
+                                        <select class="fds-select fds-form-input fds-form-input--medium" name="PrefecturesCode" id="id_PrefecturesCode" value={{ object.PrefecturesCode }}>
+                                            {% for data in form.PrefecturesCode %}
+                                            {{ data }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fds-divider fds-divider--dark2"></div>
+                        <div class="fds-form-label fds-form-label--horizontal">
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 市区町村 -->
+                                <label class="fds-label-input">市区町村:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="Municipalities" id="id_Municipalities" value={{ object.Municipalities }} >
+                            </div>
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 番地 -->
+                                <label class="fds-label-input">番地:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="Address" id="id_Address" value={{ object.Address }} >
+                            </div>
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 建物名 -->
+                                <label class="fds-label-input">建物名:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="BuildingName" id="id_BuildingName" value={{ object.BuildingName }} >
+                            </div>
+                        </div>
+                        <div class="fds-divider fds-divider--dark2"></div>
+                        <div class="fds-form-label fds-form-label--horizontal">
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 電話番号 -->
+                                <label class="fds-label-input">電話番号:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="PhoneNumber" id="id_PhoneNumber" value={{ object.PhoneNumber }} >
+                            </div>
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- FAX番号 -->
+                                <label class="fds-label-input">FAX番号:</label>
+                                <input type="text" class="fds-form-input" placeholder="" name="FaxNumber" id="id_FaxNumber" value={{ object.FaxNumber }} >
+                            </div>
+                        </div>
+                        <!-- マスター区分 -->
+                        <div class="fds-divider fds-divider--dark2"></div>
+                        <div class="fds-form-label fds-form-label--horizontal">
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <div class="fds-page-input-select">
+                                    <label class="fds-label-input">マスター区分:</label>
+                                    <div class="fds-select-container">
+                                        <select class="fds-select fds-form-input fds-form-input--medium" name="MasterDiv" id="id_MasterDiv" >
+                                            {% for data in form.MasterDiv %}
+                                            {{ data }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 締日 -->
+                                <div class="fds-page-input-select">
+                                    <label class="fds-label-input">締日:</label>
+                                    <div class="fds-select-container">
+                                        <select class="fds-select fds-form-input fds-form-input--medium" name="ClosingDate" id="id_ClosingDate" >
+                                            {% for data in form.ClosingDate %}
+                                            {{ data }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fds-divider fds-divider--dark2"></div>
+                        <div class="fds-form-label fds-form-label--horizontal">
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 担当者 -->
+                                <div class="fds-page-input-select">
+                                    <label class="fds-label-input">担当者：</label>
+                                    <div class="fds-select-container">
+                                        <select class="fds-select fds-form-input fds-form-input--medium" name="ManagerCode" id="id_ManagerCode" readonly>
+                                            {% for data in form.ManagerCode %}
+                                            {{ data }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fds-form-input-message" style="width:25%;">
+                                <!-- 相殺出力区分 -->
+                                <div class="fds-page-input-select">
+                                    <label class="fds-label-input">相殺出力区分:</label>
+                                    <div class="fds-select-container">
+                                        <select class="fds-select fds-form-input fds-form-input--medium" name="OffsetDiv" id="id_OffsetDiv">
+                                            {% for data in form.OffsetDiv %}
+                                            {{ data }}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include "crud/customersupplier/delete/customersupplierformcontinuedelete.html" %}
+            </div>
+        </div>
+    </div>
+	<div class="fds-uxhub-preview" id="modal">
+		<div class="fds-dialog">
+		  <div class="fds-dialog__title"></div>
+		  <div class="fds-dialog__body">削除してよろしいですか</div>
+		  <div class="fds-dialog__footer">
+			<button type="button" class="fds-btn fds-btn--cancel" id="modalClose">中止</button>
+			<button type="button" class="fds-btn fds-btn--error" id="delete">削除</button>
+		  </div>
+		</div>
+	</div>
+	{% load static %}
+	<script>
+		var btn = document.getElementById('modalOpen');
+		var cls = document.getElementById('modalClose');
+		var dlt = document.getElementById('delete');
+		var modal = document.getElementsByClassName('fds-uxhub-preview');
+	
+		btn.addEventListener('click', function() {
+			for(i=0;i<modal.length;i++){
+				modal[i].style.opacity = '1';
+				modal[i].style.visibility = 'visible';
+			}
+		})
+		dlt.addEventListener('click', function() {
+            document.delform.submit();
+		})
+        cls.addEventListener('click', function() {
+			for(i=0;i<modal.length;i++){
+				modal[i].style.opacity = '0';
+				modal[i].style.visibility = 'hidden';
+			}
+		})
+	</script>
+</form>
+{% endblock %}   

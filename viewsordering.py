@@ -19,7 +19,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
     form_class = OrderingForm
     context_object_name = 'object_list'
     queryset = OrderingTable.objects.order_by('OrderingDate','Created_at').reverse()
-    template_name = "crud/ordering/orderinglist.html"
+    template_name = "crud/ordering/list/orderinglist.html"
     paginate_by = 10
 
     #検索機能
@@ -48,7 +48,7 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     model = OrderingTable
     form_class =  OrderingForm
     formset_class = OrderingFormset
-    template_name = "crud/ordering/orderingform.html"
+    template_name = "crud/ordering/new/orderingform.html"
    
     def get(self, request):
         form = OrderingForm(self.request.POST or None, 
@@ -67,7 +67,7 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
             'formset': formset,
         }
 
-        return render(request, 'crud/ordering/orderingform.html', context)
+        return render(request, 'crud/ordering/new/orderingform.html', context)
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
@@ -105,7 +105,7 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
     model = OrderingTable
     form_class =  OrderingForm
     formset_class = OrderingFormset
-    template_name = "crud/ordering/orderingformupdate.html"
+    template_name = "crud/ordering/update/orderingformupdate.html"
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
@@ -157,7 +157,7 @@ class orderingDeleteView(LoginRequiredMixin,UpdateView):
     model = OrderingTable
     form_class =  OrderingForm
     formset_class = OrderingFormset
-    template_name = "crud/ordering/orderingformdelete.html"
+    template_name = "crud/ordering/delete/orderingformdelete.html"
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
