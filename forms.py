@@ -31,7 +31,8 @@ class CustomerSupplierForm(forms.ModelForm):
         model = CustomerSupplier
         fields = ('CustomerCode', 'CustomerName', 'CustomerOmitName', 'CustomerNameKana', 'Department','PostCode',
                   'PrefecturesCode','Municipalities','Address','BuildingName','PhoneNumber','FaxNumber','MasterDiv',
-                  'ClosingDate','ExDepositMonth','ExDepositDate','ExDepositDiv','ManagerCode','OffsetDiv')   
+                  'ClosingDate','ExDepositMonth','ExDepositDate','ExDepositDiv','ManagerCode','OffsetDiv','EMAIL',
+                  'LastClaimBalance','LastReceivable','LastPayable','LastProceeds','ProceedsTarget')   
 
     # 得意先仕入先コード
     def clean_CustomerCode(self):
@@ -64,6 +65,14 @@ class CustomerSupplierForm(forms.ModelForm):
             if not re.match(r'^\d{2,4}-\d{2,4}-\d{4}$', tel):
                 raise forms.ValidationError(u'FAX番号はXXXX-XXXX-XXXXの形式で')
         return tel
+
+    # E-MAIL
+    #def clean_EMAIL(self):
+    #    email = self.cleaned_data['EMAIL']
+    #    if email:
+    #        if not re.match(r'^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$', email):
+    #            raise forms.ValidationError(u'EMAILはXXXX@XXXX.XX.XXの形式で')
+    #    return email
 
 class CustomerSupplierChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):

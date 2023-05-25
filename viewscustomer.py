@@ -39,7 +39,6 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/customersupplier/customersupplierform.html"
 
     def get(self, request):
-        form = CustomerSupplierForm
         form = CustomerSupplierForm(self.request.POST or None,initial={'PrefecturesCode': '1',})
 
         context = {
@@ -53,14 +52,11 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
         # Createid,Updatedidフィールドはログインしているユーザidとする
         post.Created_id = self.request.user.id
         post.Updated_id = self.request.user.id
-        #post.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-        #post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
         post.save()
 
         return redirect('myapp:list')
     # バリデーションエラー時
     def form_invalid(self, form):
-        #a = self.request.user
         return super().form_invalid(form)
 
 # 得意先仕入先マスター更新
@@ -81,7 +77,6 @@ class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        #a = self.request.user
         return super().form_invalid(form) 
 
 # 得意先仕入先マスター削除
