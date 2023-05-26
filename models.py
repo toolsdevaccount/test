@@ -8,6 +8,8 @@ import datetime
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+import os
+
 # Create your models here.
 class prefecture(models.Model):
     prefecturecode = models.CharField(max_length=2,null=False,blank=True,verbose_name="都道府県コード")
@@ -310,6 +312,10 @@ class MerchandiseFileUpload(models.Model):
 
     def __str__(self):
         return self.McdDtuploadid
+    
+    def file_name(self):
+        return os.path.basename(self.uploadPath.name)
+
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')

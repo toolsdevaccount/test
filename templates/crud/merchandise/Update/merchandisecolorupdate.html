@@ -6,7 +6,7 @@
 												</div>
 												<input type="hidden" name="McdColorId-TOTAL_FORMS" id="McdColorId-TOTAL_FORMS">
 												<div class="fds-table-container">
-													<div class="fds-table" style="width: 50%; height: 45vh;">
+													<div class="fds-table" style="height: 50vh;">
 														{{ inlinescolor.management_form }}	
 														<table class="fds-table__inner" id="tblrowcolor">
 															<thead>
@@ -26,12 +26,11 @@
 															<tbody id="listcolor">
 																{% for form in inlinescolor %}	
 																<tr class="fds-table__tr fds-table__tr--hoverable colorarea">
-																	<!-- 削除 -->
 																	<td class="fds-table__td fds-table__td--col-fixed">
 																		<div class="fds-table__td-content">
 																			<div class="fds-checkbox">
 																				<label class="fds-checkbox__label">
-																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdColorId-%d-DELETE" id="id_McdColorId-0-DELETE" data-name-format="McdColorId-%d-DELETE" name="McdColorId-0-DELETE">
+																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdColorId-%d-DELETE" data-name-format="McdColorId-%d-DELETE" id="id_McdColorId-0-DELETE" name="McdColorId-0-DELETE">
 																					<span class="fds-checkbox__text">
 																					</span>
 																				</label>
