@@ -27,13 +27,13 @@ MerchandiseFormset = forms.inlineformset_factory(
 
 MerchandiseColorFormset = forms.inlineformset_factory(
     Merchandise, MerchandiseColor, 
-    fields=('McdColor',),
+    fields=('McdColor','is_Deleted'),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
 
 MerchandiseSizeFormset = forms.inlineformset_factory(
     Merchandise, MerchandiseSize, 
-    fields=('McdSize',),
+    fields=('McdSize','is_Deleted'),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
 

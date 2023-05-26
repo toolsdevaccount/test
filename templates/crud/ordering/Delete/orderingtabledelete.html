@@ -96,7 +96,7 @@
 																	<div class="fds-table__td-content">
 																		<div class="fds-checkbox">
 																			<label class="fds-checkbox__label">
-																				<input type="checkbox"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" name="OrderingTableId-0-DELETE" id="id_OrderingTableId-0-DELETE" class="fds-checkbox__input">
+																				<input type="checkbox"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-Is_Deleted" data-name-format="OrderingTableId-%d-Is_Deleted" name="OrderingTableId-0-Is_Deleted" id="id_OrderingTableId-0-Is_Deleted" class="fds-checkbox__input DELETE" value="1" checked>
 																				<span class="fds-checkbox__text">
 																				</span>
 																			</label>
@@ -179,7 +179,7 @@
 																	<div class="fds-table__td-content">
 																	<div class="fds-checkbox fds-checkbox--on-table">
 																		<label class="fds-checkbox__label">
-																			<input type="checkbox" class="fds-checkbox__input"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
+																			<input type="checkbox" class="fds-checkbox__input DeliveryManageDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
 																			name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" value={{ form.DeliveryManageDiv.value }}>
 																			<span class="fds-checkbox__text">
 																			</span>
@@ -220,27 +220,6 @@
 										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
-										<script>
-											var btn = document.getElementById('modalOpen');
-											var cls = document.getElementById('modalClose');
-											var dlt = document.getElementById('delete');
-											var modal = document.getElementsByClassName('fds-uxhub-preview');
-										
-											btn.addEventListener('click', function() {
-												for(i=0;i<modal.length;i++){
-													modal[i].style.opacity = '1';
-													modal[i].style.visibility = 'visible';
-												}
-											})
-											dlt.addEventListener('click', function() {
-												document.delform.submit();
-											})
-											cls.addEventListener('click', function() {
-												for(i=0;i<modal.length;i++){
-													modal[i].style.opacity = '0';
-													modal[i].style.visibility = 'hidden';
-												}
-											})
-										</script>
+										<script src="{% static '\js\modal.js' %}" charset="UTF-8"></script>
 										{% endblock %}
 			

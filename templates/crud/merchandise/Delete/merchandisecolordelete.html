@@ -2,7 +2,7 @@
 											{% load humanize %}
 											<div class="tab-contents-item" style="width: 70%; height: 60vh;">
 												<div class="fds-table-actions">
-													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addcolor" style="width: 60px">追加</button>
+													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addcolor" style="width: 60px" disabled>追加</button>
 												</div>
 												<input type="hidden" name="McdColorId-TOTAL_FORMS" id="McdColorId-TOTAL_FORMS">
 												<div class="fds-table-container">
@@ -11,6 +11,11 @@
 														<table class="fds-table__inner" id="tblrowcolor">
 															<thead>
 																<tr class="fds-table__tr">
+																	<th class="fds-table__th">
+																		<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
+																			<span class="fds-table__th-text">削除</span>
+																		</div>
+																	</th>	
 																	<th class="fds-table__th">
 																		<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
 																			<span class="fds-table__th-text">カラー</span>
@@ -21,6 +26,19 @@
 															<tbody id="listcolor">
 																{% for form in inlinescolor %}	
 																<tr class="fds-table__tr fds-table__tr--hoverable colorarea">
+																	<input type="hidden" data-id-format="id_McdColorId-%d-id" data-name-format="McdColorId-%d-id" name="McdColorId-0-id" id="id_McdColorId-0-id" value={{ form.id.value }}>
+																	<!-- 削除 -->
+																	<td class="fds-table__td fds-table__td--col-fixed">
+																		<div class="fds-table__td-content">
+																			<div class="fds-checkbox">
+																				<label class="fds-checkbox__label">
+																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdColorId-%d-DELETE" data-name-format="McdColorId-%d-DELETE" id="id_McdColorId-0-DELETE" name="McdColorId-0-DELETE" value="1" checked>
+																					<span class="fds-checkbox__text">
+																					</span>
+																				</label>
+																			</div>
+																		</div>
+																	</td>
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			<input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
@@ -32,12 +50,11 @@
 																			{% endif %}
 																		</div>
 																	</td>
-																	<input type="hidden" data-id-format="id_McdColorId-%d-id" data-name-format="McdColorId-%d-id" name="McdColorId-0-id" id="id_McdColorId-0-id" value="{{ form.id.value }}">
-																	<td class="fds-table__td">
+																	<!-- <td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delcolor" style="width: 60px;">削除</button>
 																		</div>
-																	</td>
+																	</td> -->
 																</tr>
 																{% endfor %}
 															</tbody>

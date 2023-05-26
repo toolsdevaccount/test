@@ -24,37 +24,7 @@
 											</div>
 											{% endblock %}
 											{% block extrajs %}
-											<!-- Datepicker 追加-->
-											<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-											<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-											<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-											<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-											<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
 											{% load static %}
-											<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
-											<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
-											<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
 											<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
-											<script>
-												var btn = document.getElementById('modalOpen');
-												var cls = document.getElementById('modalClose');
-												var dlt = document.getElementById('delete');
-												var modal = document.getElementsByClassName('fds-uxhub-preview');
-											
-												btn.addEventListener('click', function() {
-													for(i=0;i<modal.length;i++){
-														modal[i].style.opacity = '1';
-														modal[i].style.visibility = 'visible';
-													}
-												})
-												dlt.addEventListener('click', function() {
-													document.delform.submit();
-												})
-												cls.addEventListener('click', function() {
-													for(i=0;i<modal.length;i++){
-														modal[i].style.opacity = '0';
-														modal[i].style.visibility = 'hidden';
-													}
-												})
-											</script>
+											<script src="{% static '\js\modal.js' %}" charset="UTF-8"></script>
 											{% endblock %}

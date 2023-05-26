@@ -185,9 +185,23 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
 
+                # カラー明細の削除チェックがついたfileを取り出して更新
+                for file in inlinescolor.deleted_objects:
+                    file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.is_Deleted = True
+                    file.save()
+
                 for file in instancecolor:
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
+                    file.save()
+
+                # サイズ明細の削除チェックがついたfileを取り出して更新
+                for file in inlinessize.deleted_objects:
+                    file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.is_Deleted = True
                     file.save()
 
                 for file in instancesize:
@@ -262,37 +276,33 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
                 post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
 
-                # 削除チェックがついたfileを取り出して更新
-                for file in formset.deleted_objects:
-                    file.Updated_id = self.request.user.id
-                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.is_Deleted = True
-                    file.save()
-
-                # 明細のfileを取り出して更新
+                # 明細のfileを取り出して削除フラグ更新
                 for file in instances:
                     file.is_Deleted = True
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
 
+                # カラー明細のfileを取り出して削除フラグ更新
                 for file in instancecolor:
                     file.is_Deleted = True
-                    file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
 
+                # サイズ明細のfileを取り出して削除フラグ更新
                 for file in instancesize:
                     file.is_Deleted = True
-                    file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
 
+                # アップロードファイルのfileを取り出して削除フラグ更新
                 if inlinesfile.is_valid():
                     for file in instancefile:
                         file.is_Deleted = True
-                        file.Created_id = self.request.user.id
                         file.Updated_id = self.request.user.id
+                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                         file.save()
 
         else:

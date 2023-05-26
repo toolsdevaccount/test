@@ -1,6 +1,6 @@
 {% block content %}
 										<div class="fds-table-actions">
-											<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
+											<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px" disabled>追加</button>
 										</div>
 										<input type="hidden" name="McdDtid-TOTAL_FORMS" id="McdDtid-TOTAL_FORMS">
 										<div class="fds-table-container">
@@ -49,12 +49,13 @@
 													<tbody id="list">
 														{% for form in formset %}	
 														<tr class="fds-table__tr fds-table__tr--hoverable list_var">
+															<input type="hidden" data-id-format="id_McdDtid-%d-id" data-name-format="McdDtid-%d-id" name="McdDtid-0-id" id="id_McdDtid-0-id" value={{ form.id.value }}>
 															<!-- 削除 -->
 															<td class="fds-table__td fds-table__td--col-fixed">
 																<div class="fds-table__td-content">
 																	<div class="fds-checkbox">
 																		<label class="fds-checkbox__label">
-																			<input type="checkbox"  style="width: 50px;" data-id-format="id_McdDtid-%d-DELETE" data-name-format="McdDtid-%d-DELETE" name="McdDtid-0-DELETE" id="id_McdDtid-0-DELETE" class="fds-checkbox__input">
+																			<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtid-%d-DELETE" data-name-format="McdDtid-%d-DELETE" id="id_McdDtid-0-DELETE" name="McdDtid-0-DELETE">
 																			<span class="fds-checkbox__text">
 																			</span>
 																		</label>
@@ -121,10 +122,9 @@
 																{% endfor %}
 																{% endif %}
 															</td>
-															<input type="hidden" data-id-format="id_McdDtid-%d-id" data-name-format="McdDtid-%d-id" name="McdDtid-0-id" id="id_McdDtid-0-id" value="{{ form.id.value }}">
-															<td class="fds-table__td">
+															<!-- <td class="fds-table__td">
 																<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny list_del" style="width: 60px;">削除</button>
-															</td>
+															</td> -->
 														</tr>
 														{% endfor %}
 													</tbody>
