@@ -1,59 +1,25 @@
 											{% block content %}
-											<div class="tab-contents-item" style="width: 70%; height: 60vh;">
-												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
+											<div class="tab-contents-item">
+												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="id_McdDtuploadid-TOTAL_FORMS">
 												{{ inlinesfile.management_form }}	
-												<div class="fds-table-container">
-													<div class="fds-table" style="height: 15vh;">
-														<table class="fds-table__inner">
-															<thead>
-																<tr class="fds-table__tr">
-																	<th class="fds-table__th">
-																		<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
-																			<span class="fds-table__th-text">削除</span>
-																		</div>
-																	</th>
-																	<th class="fds-table__th">
-																		<div class="fds-table__th-content fds-table__th-content--text">
-																			<span class="fds-table__th-text">アップロードファイル</span>
-																		</div>
-																	</th>
-																</tr>
-															</thead>
-															<tbody>
-																{% for form in images %}
-																<tr class="fds-table__tr fds-table__tr--hoverable">
-																	<td class="fds-table__td fds-table__td--col-fixed">
-																		<div class="fds-table__td-content">
-																			<div class="fds-checkbox">
-																				<label class="fds-checkbox__label">
-																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" id="id_McdDtuploadid-0-DELETE" name="McdDtuploadid-0-DELETE">
-																					<span class="fds-checkbox__text">
-																					</span>
-																				</label>
-																			</div>
-																		</div>
-																	</td>
-																	<td class="fds-table__td">
-																		<div id="div" class="fds-table__td-content">
-																			{% if form.file_name %} 
-																			<label class="fds-label-input" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath" id="id_McdDtuploadid-0-uploadPath" name="McdDtuploadid-0-uploadPath" style="width: 100%;">{{ form.file_name }}</label>
-																			{% endif %}
-																		</div>
-																	</td>
-																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" name="McdDtuploadid-0-id" id="id_McdDtuploadid-0-id" value="{{ form.id.value }}">
-																</tr>
-																{% endfor %}
-															</tbody>
-														</table>
-													</div>
 													<div class="fds-table-actions">
 														<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addfile" style="width: 60px">追加</button>
 													</div>
 													<div class="fds-table-container">
-														<div class="fds-table" style="height: 35vh;">
+														<div class="fds-table" style="height: 30vh;">
 															<table class="fds-table__inner" id="tblrowfile">
 																<thead>
 																	<tr class="fds-table__tr">
+																		<th class="fds-table__th">
+																			<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
+																				<span class="fds-table__th-text">削除</span>
+																			</div>
+																		</th>
+																			<th class="fds-table__th">
+																			<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
+																				<span class="fds-table__th-text">ファイル名</span>
+																			</div>
+																		</th>
 																		<th class="fds-table__th">
 																			<div class="fds-table__th-content fds-table__th-content--text">
 																				<span class="fds-table__th-text">添付ファイル</span>
@@ -63,19 +29,40 @@
 																</thead>
 																<tbody id="listfile">
 																	{% for form in inlinesfile %}
+																	{% for image in images %}
 																	<tr class="fds-table__tr fds-table__tr--hoverable filearea">
-																		<td class="fds-table__td">
-																			<div id="div" class="fds-table__td-content">
-																				<input type="file" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath"
-																				name="McdDtuploadid-0-uploadPath" id="McdDtuploadid-0-uploadPath">
+																		<td class="fds-table__td fds-table__td--col-fixed">
+																			<div class="fds-table__td-content">
+																				<div class="fds-checkbox">
+																					<label class="fds-checkbox__label">
+																						<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" id="idMcdDtuploadid-0-DELETE" name="McdDtuploadid-0-DELETE">
+																						<span class="fds-checkbox__text">
+																						</span>
+																					</label>
+																				</div>
 																			</div>
 																		</td>
+																		<td class="fds-table__td">
+																			<div id="div" class="fds-table__td-content">
+																				{% if image.file_name %}
+																				<input type="text" class="fds-label-input" data-id-format="id_McdDtuploadid-%d-middle" data-name-format="McdDtuploadid-%d-middle" id="id_McdDtuploadid-0-middle" name="McdDtuploadid-0-middle" value="{{ image.file_name }}" Disabled>
+																				{% endif %}
+																			</div>
+																		</td>
+																		<td class="fds-table__td">
+																			<div id="div" class="fds-table__td-content">
+																				<input type="file" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath" 
+																				id="id_McdDtuploadid-0-uploadPath" name="McdDtuploadid-0-uploadPath" value="{{ form.UploadPath }}">
+																			</div>
+																		</td>
+																		<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value="{{ form.id.value }}">
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
 																				<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delfile" style="width: 60px;">削除</button>
 																			</div>
 																		</td>
 																	</tr>
+																	{% endfor %}
 																	{% endfor %}
 																</tbody>
 															</table>

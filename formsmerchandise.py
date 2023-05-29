@@ -40,5 +40,5 @@ MerchandiseSizeFormset = forms.inlineformset_factory(
 MerchandisefileFormset = forms.inlineformset_factory(
     Merchandise, MerchandiseFileUpload, 
     fields=('uploadPath','is_Deleted'),
-    extra=0,min_num=1,validate_min=True,can_delete=True
+    extra=0,min_num=1,max_num=3,validate_min=True,can_delete=True
 )

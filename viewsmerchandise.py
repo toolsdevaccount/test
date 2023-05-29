@@ -74,15 +74,12 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
         formset = MerchandiseFormset(self.request.POST,instance=post) 
         inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
-        inlinesfile = MerchandisefileFormset(self.request.POST or None, self.request.FILES or None, instance=post)
 
         if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid(): 
-        #if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
-            if inlinesfile.is_valid():
-                instancefile = inlinesfile.save(commit=False)
+            inlinesfile = MerchandisefileFormset(self.request.POST or None, files=self.request.FILES, instance=post)
             
             if form.is_valid():
                 # Created_id,Updated_idフィールドはログインしているユーザidとする
@@ -106,6 +103,7 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                     file.save()
 
                 if inlinesfile.is_valid():
+                    instancefile = inlinesfile.save(commit=False)
                     for file in instancefile:
                         file.Created_id = self.request.user.id
                         file.Updated_id = self.request.user.id
@@ -141,8 +139,8 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       #inlinesfile=MerchandisefileFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(is_Deleted=0)),
-                       inlinesfile=MerchandisefileFormset,
+                       inlinesfile=MerchandisefileFormset(self.request.POST or None, instance=self.get_object(), queryset=images),
+                       #inlinesfile=MerchandisefileFormset,
                        images=images,
                        )      
        
@@ -155,15 +153,12 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         formset = MerchandiseFormset(self.request.POST,instance=post) 
         inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
-        inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
 
-        #if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
         if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid():
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
-            if inlinesfile.is_valid():
-                instancefile = inlinesfile.save(commit=False)
+            inlinesfile = MerchandisefileFormset(self.request.POST, files=self.request.FILES, instance=post)
            
             if form.is_valid():
                 # Updated_idフィールドはログインしているユーザidとする
@@ -210,6 +205,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.save()
 
                 if inlinesfile.is_valid():
+                    instancefile = inlinesfile.save(commit=False)
                     for file in inlinesfile.deleted_objects:
                         file.Updated_id = self.request.user.id
                         file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時

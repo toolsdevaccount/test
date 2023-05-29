@@ -1,12 +1,12 @@
 												{% block content %}
 												{% load humanize %}
-												<div class="tab-contents-item" style="width: 70%; height: 60vh;">
+												<div class="tab-contents-item">
 													<div class="fds-table-actions">
 														<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addsize" style="width: 60px">追加</button>
 													</div>
-													<input type="hidden" name="McdSizeId-TOTAL_FORMS" id="McdSizeId-TOTAL_FORMS">
+													<input type="hidden" name="McdSizeId-TOTAL_FORMS" id="id_McdSizeId-TOTAL_FORMS">
 													<div class="fds-table-container">
-														<div class="fds-table" style="height: 50vh;">
+														<div class="fds-table" style="width: 70%; height: 50vh;">
 															{{ inlinessize.management_form }}	
 															<table class="fds-table__inner" id="tblrowsize">
 																<thead>

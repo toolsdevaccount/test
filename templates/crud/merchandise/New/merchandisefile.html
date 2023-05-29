@@ -1,12 +1,12 @@
 											{% block content %}
-											<div class="tab-contents-item" style="width: 70%; height: 60vh;">
+											<div class="tab-contents-item">
 												<div class="fds-table-actions">
 													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addfile" style="width: 60px">追加</button>
 												</div>
-												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
-												{{ inlinesfile.management_form }}	
+												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="id_McdDtuploadid-TOTAL_FORMS">
 												<div class="fds-table-container">
-													<div class="fds-table" style="height: 50vh;">
+													<div class="fds-table" style="width: 70%; height: 50vh;">
+														{{ inlinesfile.management_form }}	
 														<table class="fds-table__inner" id="tblrowfile">
 															<thead>
 																<tr class="fds-table__tr">
