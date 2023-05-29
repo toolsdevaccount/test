@@ -1,5 +1,7 @@
 											{% block content %}
 											<div class="tab-contents-item" style="width: 70%; height: 60vh;">
+												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
+												{{ inlinesfile.management_form }}	
 												<div class="fds-table-container">
 													<div class="fds-table" style="height: 15vh;">
 														<table class="fds-table__inner">
@@ -34,10 +36,11 @@
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			{% if form.file_name %} 
-																			<label class="fds-label-input" style="width: 100%;">{{ form.file_name }}</label>
+																			<label class="fds-label-input" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath" id="id_McdDtuploadid-0-uploadPath" name="McdDtuploadid-0-uploadPath" style="width: 100%;">{{ form.file_name }}</label>
 																			{% endif %}
 																		</div>
 																	</td>
+																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" name="McdDtuploadid-0-id" id="id_McdDtuploadid-0-id" value="{{ form.id.value }}">
 																</tr>
 																{% endfor %}
 															</tbody>
@@ -46,8 +49,6 @@
 													<div class="fds-table-actions">
 														<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addfile" style="width: 60px">追加</button>
 													</div>
-													<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="McdDtuploadid-TOTAL_FORMS">
-													{{ inlinesfile.management_form }}	
 													<div class="fds-table-container">
 														<div class="fds-table" style="height: 35vh;">
 															<table class="fds-table__inner" id="tblrowfile">
