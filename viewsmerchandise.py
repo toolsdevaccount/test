@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
-from .models import Merchandise,MerchandiseDetail, MerchandiseColor,MerchandiseSize,MerchandiseFileUpload
+from .models import Merchandise,MerchandiseDetail, MerchandiseColor, MerchandiseSize, MerchandiseFileUpload
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
@@ -46,8 +46,8 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     form_class =  MerchandiseForm
     formset_class = MerchandiseFormset
     inlinescolor_class = MerchandiseColorFormset
-    inlinesize_class = MerchandiseSizeFormset
-    inlinefile_class = MerchandisefileFormset
+    inlinessize_class = MerchandiseSizeFormset
+    inlinesfile_class = MerchandisefileFormset
     template_name = "crud/merchandise/new/merchandiseform.html"
    
     def get(self, request):
@@ -74,12 +74,12 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
         formset = MerchandiseFormset(self.request.POST,instance=post) 
         inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
+        inlinesfile = MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=post)
 
         if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid(): 
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
-            inlinesfile = MerchandisefileFormset(self.request.POST or None, files=self.request.FILES, instance=post)
             
             if form.is_valid():
                 # Created_id,Updated_idフィールドはログインしているユーザidとする
@@ -116,7 +116,7 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinesize_class, inlinesfile=self.inlinefile_class))
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=self.inlinescolor_class, inlinessize=self.inlinessize_class, inlinesfile=self.inlinesfile_class))
 
 # 商品情報編集
 class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
@@ -139,7 +139,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       inlinesfile=MerchandisefileFormset(self.request.POST or None, instance=self.get_object(), queryset=images),
+                       inlinesfile=MerchandisefileFormset(self.request.POST or None, self.request.FILES or None, instance=self.get_object(), queryset=images),
                        #inlinesfile=MerchandisefileFormset,
                        images=images,
                        )      
@@ -206,11 +206,14 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
 
                 if inlinesfile.is_valid():
                     instancefile = inlinesfile.save(commit=False)
+
+                    # アップロード明細の削除チェックがついたfileを取り出して更新
                     for file in inlinesfile.deleted_objects:
                         file.Updated_id = self.request.user.id
                         file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                         file.is_Deleted = True
                         file.save()
+
 
                     for file in instancefile:
                         file.Created_id = self.request.user.id

@@ -29,7 +29,6 @@
 																</thead>
 																<tbody id="listfile">
 																	{% for form in inlinesfile %}
-																	{% for image in images %}
 																	<tr class="fds-table__tr fds-table__tr--hoverable filearea">
 																		<td class="fds-table__td fds-table__td--col-fixed">
 																			<div class="fds-table__td-content">
@@ -42,10 +41,11 @@
 																				</div>
 																			</div>
 																		</td>
+																		{{ form.as_p }}
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
-																				{% if image.file_name %}
-																				<input type="text" class="fds-label-input" data-id-format="id_McdDtuploadid-%d-middle" data-name-format="McdDtuploadid-%d-middle" id="id_McdDtuploadid-0-middle" name="McdDtuploadid-0-middle" value="{{ image.file_name }}" Disabled>
+																				{% if form.file_name %}
+																				<input type="text" class="fds-label-input" data-id-format="id_McdDtuploadid-%d-middle" data-name-format="McdDtuploadid-%d-middle" id="id_McdDtuploadid-0-middle" name="McdDtuploadid-0-middle" value="{{ form.file_name }}" Disabled>
 																				{% endif %}
 																			</div>
 																		</td>
@@ -55,14 +55,13 @@
 																				id="id_McdDtuploadid-0-uploadPath" name="McdDtuploadid-0-uploadPath" value="{{ form.UploadPath }}">
 																			</div>
 																		</td>
-																		<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value="{{ form.id.value }}">
+																		<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value="{{ form.id.value | default:'1' }}">
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
 																				<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delfile" style="width: 60px;">削除</button>
 																			</div>
 																		</td>
 																	</tr>
-																	{% endfor %}
 																	{% endfor %}
 																</tbody>
 															</table>
