@@ -1,40 +1,12 @@
 											{% block content %}
 											<div class="tab-contents-item">
 												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="id_McdDtuploadid-TOTAL_FORMS">
-												<div class="fds-table-container">
-													<div class="fds-table" style="height: 20vh;">
-														<table class="fds-table__inner">
-															<thead>
-																<tr class="fds-table__tr">
-																	<th class="fds-table__th">
-																		<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
-																			<span class="fds-table__th-text">ファイル名</span>
-																		</div>
-																	</th>
-																</tr>
-															</thead>
-															<tbody>
-																{% for image in images %}
-																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
-																	<td class="fds-table__td">
-																		<div id="div" class="fds-table__td-content">
-																			{% if image.file_name %}
-																			<a class="fds-table__url" style="color:black;" href="{{ image.middle.url }}">{{ image.file_name }}</a>
-																			{% endif %}
-																		</div>
-																	</td>
-																</tr>
-																{% endfor %}
-															</tbody>
-														</table>
-													</div>
-												</div>
 												<div class="fds-table-actions">
 													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addfile" style="width: 60px">追加</button>
 												</div>
 												<div class="fds-table-container">
 													<div class="fds-table" style="height: 20vh;">
-														{{ inlinesfile.management_form }}	
+														{{ inlinesfile.management_form }}
 														<table class="fds-table__inner" id="tblrowfile">
 															<thead>
 																<tr class="fds-table__tr">
@@ -47,6 +19,7 @@
 															</thead>
 															<tbody id="listfile">
 																{% for form in inlinesfile %}
+																{{ form.as_table }}
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">

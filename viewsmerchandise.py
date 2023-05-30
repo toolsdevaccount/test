@@ -207,6 +207,13 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                 if inlinesfile.is_valid():
                     instancefile = inlinesfile.save(commit=False)
 
+                    # サイズ明細の削除チェックがついたfileを取り出して更新
+                    for file in inlinesfile.deleted_objects:
+                        file.Updated_id = self.request.user.id
+                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                        file.is_Deleted = True
+                        file.save()
+
                     for file in instancefile:
                         file.Created_id = self.request.user.id
                         file.Updated_id = self.request.user.id
