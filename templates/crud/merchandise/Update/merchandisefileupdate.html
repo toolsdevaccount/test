@@ -1,7 +1,7 @@
 											{% block content %}
 											<div class="tab-contents-item">
 												<input type="hidden" name="McdDtuploadid-TOTAL_FORMS" id="id_McdDtuploadid-TOTAL_FORMS">
-												{{ inlinesfile.management_form }}	
+													{{ inlinesfile.management_form }}	
 													<div class="fds-table-actions">
 														<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addfile" style="width: 60px">追加</button>
 													</div>
@@ -34,28 +34,32 @@
 																			<div class="fds-table__td-content">
 																				<div class="fds-checkbox">
 																					<label class="fds-checkbox__label">
-																						<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" id="idMcdDtuploadid-0-DELETE" name="McdDtuploadid-0-DELETE">
+																						<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" id="id_McdDtuploadid-0-DELETE" name="McdDtuploadid-0-DELETE">
 																						<span class="fds-checkbox__text">
 																						</span>
 																					</label>
 																				</div>
 																			</div>
 																		</td>
-																		{{ form.as_p }}
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
-																				{% if form.file_name %}
-																				<input type="text" class="fds-label-input" data-id-format="id_McdDtuploadid-%d-middle" data-name-format="McdDtuploadid-%d-middle" id="id_McdDtuploadid-0-middle" name="McdDtuploadid-0-middle" value="{{ form.file_name }}" Disabled>
+																				{% if form.uploadPath %}
+																				<a class="fds-table__url" style="color:black;" href="/media/{{ form.uploadPath.value }}">{{ form.uploadPath.value }}</a>
 																				{% endif %}
 																			</div>
 																		</td>
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
+																				{% if form.uploadPath %}
+																				<input type="file" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath" 
+																				id="id_McdDtuploadid-0-uploadPath" name="McdDtuploadid-0-uploadPath" accept="image/*" value="{{ form.UploadPath }}">
+																				{% else %}
 																				<input type="file" data-id-format="id_McdDtuploadid-%d-uploadPath" data-name-format="McdDtuploadid-%d-uploadPath" 
 																				id="id_McdDtuploadid-0-uploadPath" name="McdDtuploadid-0-uploadPath" value="{{ form.UploadPath }}">
+																				{% endif %}
 																			</div>
 																		</td>
-																		<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value="{{ form.id.value | default:'1' }}">
+																		<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value={{ form.id.value }}>
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
 																				<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delfile" style="width: 60px;">削除</button>
@@ -69,4 +73,12 @@
 													</div>
 												</div>
 											</div>
+											{% endblock %}
+											{% block extrajs %}
+											<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+											<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
+											{% load static %}
+											<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
+											<script src="{% static '\js\inputareamcd.js' %}" charset="UTF-8"></script>
+											<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 											{% endblock %}

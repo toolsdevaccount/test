@@ -302,7 +302,7 @@ class MerchandiseDetail(models.Model):
         return reverse('crud/merchandise/merchandiselist.html')
 
 class MerchandiseFileUpload(models.Model):
-    McdDtuploadid = models.ForeignKey(Merchandise,on_delete=models.SET_NULL,blank=True, null=True,related_name='McdDtuploadid',verbose_name="商品マスタid")
+    McdDtuploadid = models.ForeignKey(Merchandise, on_delete=models.SET_NULL, blank=True, null=True, related_name='McdDtuploadid', verbose_name="商品マスタid")
     uploadPath = models.ImageField(upload_to='photos/%Y/%m/%d',blank=True, null=True, verbose_name="アップロードファイルパス")
     middle = ImageSpecField(source='uploadPath', processors=[ResizeToFill(600, 400)],  format="JPEG",  options={'quality': 75})  
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
