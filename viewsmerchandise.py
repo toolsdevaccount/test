@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView,CreateView,UpdateView
 from .models import Merchandise,MerchandiseDetail, MerchandiseColor, MerchandiseSize, MerchandiseFileUpload
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -131,17 +131,17 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         #イメージファイル
-        #queryset = MerchandiseFileUpload.objects.filter()
-        #pk = self.kwargs.get("pk")
-        #images = queryset.filter(McdDtuploadid=pk)
+        queryset = MerchandiseFileUpload.objects.filter()
+        pk = self.kwargs.get("pk")
+        images = queryset.filter(McdDtuploadid=pk)
+        #images = get_object_or_404(MerchandiseFileUpload, McdDtuploadid=pk)
 
         context = super(MerchandiseUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
                        inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(is_Deleted=0)),
-                       #inlinesfile=MerchandisefileFormset,
-                       #images=images,
+                       images = images
                        )      
        
         return context
@@ -206,14 +206,6 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
 
                 if inlinesfile.is_valid():
                     instancefile = inlinesfile.save(commit=False)
-
-                    # アップロード明細の削除チェックがついたfileを取り出して更新
-                    for file in inlinesfile.deleted_objects:
-                        file.Updated_id = self.request.user.id
-                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                        file.is_Deleted = True
-                        file.save()
-
 
                     for file in instancefile:
                         file.Created_id = self.request.user.id
