@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.generic import ListView,CreateView,UpdateView
 from .models import Merchandise,MerchandiseDetail, MerchandiseColor, MerchandiseSize, MerchandiseFileUpload
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -133,7 +133,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         #イメージファイル
         queryset = MerchandiseFileUpload.objects.filter()
         pk = self.kwargs.get("pk")
-        images = queryset.filter(McdDtuploadid=pk)
+        images = queryset.filter(McdDtuploadid=pk,is_Deleted=0)
         #images = get_object_or_404(MerchandiseFileUpload, McdDtuploadid=pk)
 
         context = super(MerchandiseUpdateView, self).get_context_data(**kwargs)
@@ -141,9 +141,9 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
                        inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(is_Deleted=0)),
-                       images = images
+                       #inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=queryset.filter(McdDtuploadid=pk,is_Deleted=0)),
+                       #images=images,
                        )      
-       
         return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
@@ -153,12 +153,13 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         formset = MerchandiseFormset(self.request.POST,instance=post) 
         inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
+        inlinesfile = MerchandisefileFormset(self.request.POST, files=self.request.FILES, instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid():
+        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid():
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
-            inlinesfile = MerchandisefileFormset(self.request.POST, files=self.request.FILES, instance=post)
+            instancefile = inlinesfile.save(commit=False)
            
             if form.is_valid():
                 # Updated_idフィールドはログインしているユーザidとする
@@ -204,21 +205,17 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.Updated_id = self.request.user.id
                     file.save()
 
-                if inlinesfile.is_valid():
-                    instancefile = inlinesfile.save(commit=False)
+                # サイズ明細の削除チェックがついたfileを取り出して更新
+                for file in inlinesfile.deleted_objects:
+                    file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.is_Deleted = True
+                    file.save()
 
-                    # サイズ明細の削除チェックがついたfileを取り出して更新
-                    for file in inlinesfile.deleted_objects:
-                        file.Updated_id = self.request.user.id
-                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                        file.is_Deleted = True
-                        file.save()
-
-                    for file in instancefile:
-                        file.Created_id = self.request.user.id
-                        file.Updated_id = self.request.user.id
-                        file.save()
-
+                for file in instancefile:
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile))
         return redirect('myapp:merchandiselist')
