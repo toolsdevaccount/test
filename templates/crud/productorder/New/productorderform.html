@@ -38,7 +38,6 @@
                                         <ul class="fds-tabs" id="js-tab">
                                             <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
                                             <li class="fds-tabs__item">カラー/サイズ</li>
-                                            <li class="fds-tabs__item">画像</li>
                                         </ul>
                                         <div class="tab-contents-item active">
                                             <div class="fds-form-input-message" style="width:30%;">
@@ -270,57 +269,7 @@
                                                         {% endif %}
                                                     </div>
                                                 </div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 仕入単価 -->
-                                                        <label class="fds-label-input">仕入単価:</label>
-                                                        <input type="number" step="0.1" class="fds-form-input" placeholder="" style="text-align: right;" name="ProductOrderUnitPrice" id="id_ProductOrderUnitPrice" value={{ form.data.ProductOrderUnitPrice }}>
-                                                        {% if form.errors.ProductOrderUnitPrice %}
-                                                        {% for error in form.errors.ProductOrderUnitPrice %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 販売単価 -->
-                                                        <label class="fds-label-input">販売単価:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right;" name="ProductOrderSellPrice" id="id_ProductOrderSellPrice" value={{ form.data.ProductOrderSellPrice }}>
-                                                        {% if form.errors.ProductOrderSellPrice %}
-                                                        {% for error in form.errors.ProductOrderSellPrice %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 加工賃 -->
-                                                        <label class="fds-label-input">加工賃:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right;" name="ProductOrderProcesefee" id="id_ProductOrderProcesefee" value={{ form.data.ProductOrderProcesefee }}>
-                                                        {% if form.errors.ProductOrderProcesefee %}
-                                                        {% for error in form.errors.ProductOrderProcesefee %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="fds-form-label fds-form-label--horizontal">
-                                                    <label class="fds-label-input">ファイル:</label>
-                                                    <input type="file" name="myfile">
-                                                </div> -->
                                             </div>
-                                        </div>
-                                        <div class="tab-contents-item">   
-                                            <div class="fds-form-label fds-form-label--horizontal">
-                                                <div class="fds-form-input-message" style="width:25%;">
-                                                    <!-- 仕入単価 -->
-                                                    <label class="fds-label-input">仕入単価:</label>
-                                                    <input type="number" step="0.1" class="fds-form-input" placeholder="" style="text-align: right;" name="ProductOrderUnitPrice" id="id_ProductOrderUnitPrice" value={{ form.data.ProductOrderUnitPrice }}>
-                                                    {% if form.errors.ProductOrderUnitPrice %}
-                                                    {% for error in form.errors.ProductOrderUnitPrice %}
-                                                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                    {% endfor %}
-                                                    {% endif %}
-                                                </div>
-                                            </div>   
                                         </div>
                                     </div>
                                 </div>

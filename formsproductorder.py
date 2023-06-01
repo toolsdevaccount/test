@@ -32,8 +32,8 @@ class ProductOrderForm(forms.ModelForm):
         model = ProductOrder
         fields = ('ProductOrderMerchandiseCode', 'ProductOrderOrderingDate', 'ProductOrderManagerCode','ProductOrderSlipDiv', 'ProductOrderOrderNumber',
                   'ProductOrderPartNumber','ProductOrderApparelCode','ProductOrderDestinationCode','ProductOrderSupplierCode','ProductOrderShippingCode','ProductOrderCustomeCode',
-                  'ProductOrderRequestCode','ProductOrderDeliveryDate','ProductOrderBrandName','ProductOrderUnitPrice','ProductOrderSellPrice','ProductOrderProcesefee',
-                  'ProductOrderSupplierPerson','ProductOrderTitleDiv')   
+                  'ProductOrderRequestCode','ProductOrderDeliveryDate','ProductOrderBrandName','ProductOrderSupplierPerson','ProductOrderTitleDiv',
+                  )   
 
     # オーダーナンバー重複チェック
     #def clean_OrderNumber(self):

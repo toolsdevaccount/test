@@ -30,17 +30,21 @@
 																			<span class="fds-table__th-text">ファイル添付</span>
 																		</div>
 																	</th>
+																	<th class="fds-table__th" style="width: 50px;">
+																		<div class="fds-table__th-content fds-table__th-content--text">
+																			<span class="fds-table__th-text">Dummy</span>
+																		</div>
+																	</th>
 																</tr>
 															</thead>
 															<tbody id="listfile">
+																{% for image in images %}
 																{% for form in inlinesfile %}
-																{{ form.uploadPath }}
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
 																	<td class="fds-table__td fds-table__td--col-fixed">
 																		<div class="fds-table__td-content">
 																			<div class="fds-checkbox">
 																				<label class="fds-checkbox__label" style="width: 50px;">
-																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtuploadid-%d-is_Deleted" data-name-format="McdDtuploadid-%d-is_Deleted" name="McdDtuploadid-0-is_Deleted" id="id_McdDtuploadid-0-is_Deleted">
 																					<input type="checkbox" class="fds-checkbox__input" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" id="id_McdDtuploadid-0-DELETE" name="McdDtuploadid-0-DELETE">
 																					<span class="fds-checkbox__text">
 																					</span>
@@ -49,11 +53,9 @@
 																		</div>
 																	</td>
 																	<td class="fds-table__td" style="width: 200px;">
-																		{% if form.uploadpath %}
 																		<div id="div" class="fds-table__td-content">
-																			<a href="{{ form.uploadpath.url }}" style="color: black;">{{ form.uploadPath.value }}</a>
+																			<a href="{{ image.middle.url }}" style="color: black;">{{ image.file_name }}</a>
 																		</div>
-																		{% endif %}
 																	</td>
 																	<td class="fds-table__td fds-table__td--col-fixed">
 																		<div class="fds-table__td-content">
@@ -72,6 +74,17 @@
 																			name="McdDtuploadid-0-uploadPath" id="id_McdDtuploadid-0-uploadPath" accept="image/*">
 																		</div>
 																	</td>
+																	<td class="fds-table__td fds-table__td--col-fixed">
+																		<div class="fds-table__td-content">
+																			<div class="fds-checkbox">
+																				<label class="fds-checkbox__label" style="width: 50px;">
+																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtuploadid-%d-is_Deleted" data-name-format="McdDtuploadid-%d-is_Deleted" name="McdDtuploadid-0-is_Deleted" id="id_McdDtuploadid-0-is_Deleted">
+																					<span class="fds-checkbox__text">
+																					</span>
+																				</label>
+																			</div>
+																		</div>
+																	</td>
 																	<td class="fds-table__td">
 																		<div id="div" class="fds-table__td-content">
 																			<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delfile" style="width: 60px;">削除</button>
@@ -82,6 +95,7 @@
 																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-McdDtuploadid" data-name-format="McdDtuploadid-%d-McdDtuploadid" name="McdDtuploadid-0-McdDtuploadid" id="id_McdDtuploadid-0-McdDtuploadid" value={{ form.McdDtuploadid.value }}>
 																	{% endif %}
 																</tr>
+																{% endfor %}
 																{% endfor %}
 															</tbody>
 														</table>

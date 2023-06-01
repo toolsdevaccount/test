@@ -134,7 +134,6 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         queryset = MerchandiseFileUpload.objects.filter()
         pk = self.kwargs.get("pk")
         images = queryset.filter(McdDtuploadid=pk,is_Deleted=0)
-        #images = get_object_or_404(MerchandiseFileUpload, McdDtuploadid=pk)
 
         context = super(MerchandiseUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
@@ -142,7 +141,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
                        inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(is_Deleted=0)),
                        #inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=queryset.filter(McdDtuploadid=pk,is_Deleted=0)),
-                       #images=images,
+                       images=images,
                        )      
         return context
 

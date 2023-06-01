@@ -23,7 +23,7 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
     form_class = ProductOrderForm
     context_object_name = 'object_list'
     queryset = ProductOrder.objects.order_by('ProductOrderOrderingDate','Created_at').reverse()
-    template_name = "crud/productorder/productorderlist.html"
+    template_name = "crud/productorder/List/productorderlist.html"
     paginate_by = 10
 
     #検索機能
@@ -51,7 +51,7 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
 class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     model = ProductOrder
     form_class =  ProductOrderForm
-    template_name = "crud/productorder/productorderform.html"
+    template_name = "crud/productorder/new/productorderform.html"
    
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
@@ -60,7 +60,7 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
             'form': form,
         }
 
-        return render(request, 'crud/productorder/productorderform.html', context)
+        return render(request, 'crud/productorder/new/productorderform.html', context)
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
@@ -82,15 +82,4 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))  
-
-#def fileupload(request):
-#    if request.method == 'POST' and request.FILES['ProductOrderupload']:
-#        myfile = request.FILES['ProductOrderupload']
-#        fs = FileSystemStorage()
-#        filename = fs.save(myfile.name, myfile)
-#        uploaded_file_url = fs.url(filename)
-#        return render(request, 'crud/productorder/productorderform.html', {
-#            'uploaded_file_url': uploaded_file_url
-#        })
-#    return render(request, 'crud/productorder/productorderform.html')
+        return self.render_to_response(self.get_context_data(form=form))
