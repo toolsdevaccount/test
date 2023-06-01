@@ -1,4 +1,4 @@
-pytpython 仮想環境構築
+python 仮想環境構築
 
 pip install Django
 pip install virtualenv
