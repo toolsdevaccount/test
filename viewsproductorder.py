@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
-from django.views.generic import ListView,CreateView
-from .models import ProductOrder
+from django.views.generic import ListView,CreateView,UpdateView
+from .models import ProductOrder, ProductOrderDetail, MerchandiseColor, MerchandiseSize
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
@@ -9,12 +9,11 @@ from django.db.models import Q
 #from django.utils import timezone
 #import datetime
 # forms
-from .formsproductorder import ProductOrderForm
+from .formsproductorder import ProductOrderForm, ProductOrderDetailForm
 # Transaction
 from django.db import transaction
-# fileupload
-from django.conf import settings
-from django.core.files.storage import FileSystemStorage
+
+from django.views.generic.edit import ModelFormMixin
 
 
 # 受発注一覧/検索
@@ -48,19 +47,20 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         return queryset
 
 # 受発注情報登録
-class ProductOrderCreateView(LoginRequiredMixin,CreateView):
+class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
     model = ProductOrder
     form_class =  ProductOrderForm
-    template_name = "crud/productorder/new/productorderform.html"
+    template_name = "crud/productorder/new/productorderform.html"  
    
-    def get(self, request):
-        form = ProductOrderForm(self.request.POST or None)
+    def get_context_data(self, **kwargs):
+            context = super(ProductOrderCreateView, self).get_context_data(**kwargs)
+            context.update({
+                'detail_form': ProductOrderDetailForm(**self.get_form_kwargs()),
+                'detail_color': MerchandiseColor.objects.all(),
+                'detail_size': MerchandiseSize.objects.all(),
+            })
 
-        context = {
-            'form': form,
-        }
-
-        return render(request, 'crud/productorder/new/productorderform.html', context)
+            return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定

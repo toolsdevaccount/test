@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 #from django.contrib.auth.forms import UserCreationForm
-from .models import ProductOrder, CustomerSupplier
+from .models import ProductOrder, ProductOrderDetail, CustomerSupplier
 
 from django.forms import ModelChoiceField
 from datetime import datetime
@@ -34,6 +34,12 @@ class ProductOrderForm(forms.ModelForm):
                   'ProductOrderPartNumber','ProductOrderApparelCode','ProductOrderDestinationCode','ProductOrderSupplierCode','ProductOrderShippingCode','ProductOrderCustomeCode',
                   'ProductOrderRequestCode','ProductOrderDeliveryDate','ProductOrderBrandName','ProductOrderSupplierPerson','ProductOrderTitleDiv',
                   )   
+
+class ProductOrderDetailForm(forms.ModelForm):
+    class Meta:
+        model = ProductOrderDetail
+        fields = ('PodColorId','PodSizeId','PodVolume',)
+
 
     # オーダーナンバー重複チェック
     #def clean_OrderNumber(self):
@@ -68,3 +74,4 @@ class ProductOrderForm(forms.ModelForm):
     #        except Exception:
     #            raise forms.ValidationError(u'日付に変換できません')
     #    return ProductOrderOrderingDate
+
