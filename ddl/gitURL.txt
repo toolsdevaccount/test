@@ -18,3 +18,5 @@ git clone https://github.com/toolsdevaccount/test.git
 tortoisegitをインストール
 日本語化
 ユーザ名とパスワードを設定する
+
+6/3 publicからprivateに変更
