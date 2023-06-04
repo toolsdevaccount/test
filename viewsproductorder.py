@@ -9,7 +9,7 @@ from django.db.models import Q
 #from django.utils import timezone
 #import datetime
 # forms
-from .formsproductorder import ProductOrderForm, ProductOrderDetailForm
+from .formsproductorder import ProductOrderForm, ProductOrderFormset
 # Transaction
 from django.db import transaction
 
@@ -50,35 +50,56 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
 class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
     model = ProductOrder
     form_class =  ProductOrderForm
+    formset_class = ProductOrderFormset
+
     template_name = "crud/productorder/new/productorderform.html"  
    
-    def get_context_data(self, **kwargs):
-            context = super(ProductOrderCreateView, self).get_context_data(**kwargs)
-            context.update({
-                'detail_form': ProductOrderDetailForm(**self.get_form_kwargs()),
-                'detail_color': MerchandiseColor.objects.all(),
-                'detail_size': MerchandiseSize.objects.all(),
-            })
+    def get(self, request):
+        form = ProductOrderForm(self.request.POST or None)
+        formset = ProductOrderFormset
 
-            return context
+        context = {
+            'form': form,
+            'formset': formset,
+            'detail_color': MerchandiseColor.objects.all(),
+            'detail_size': MerchandiseSize.objects.all(),
+        }
 
-    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+        return render(request, 'crud/productorder/new/productorderform.html', context)
+
+
+    #def get_context_data(self, **kwargs):
+    #        context = super(ProductOrderCreateView, self).get_context_data(**kwargs)
+    #        context.update({
+    #            'formset': ProductOrderFormset(**self.get_form_kwargs()),
+    #            'detail_color': MerchandiseColor.objects.all(),
+    #            'detail_size': MerchandiseSize.objects.all(),
+    #        })
+
+    #        return context
+
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
-        if self.request.method == 'POST': 
-            
+        formset = ProductOrderFormset(self.request.POST,instance=post) 
+
+        if self.request.method == 'POST' and formset.is_valid():
+            instances = formset.save(commit=False)
+           
             if form.is_valid():
                 post.ProductOrderOrderNumber = post.ProductOrderOrderNumber.zfill(7)
-                # Created_id,Updated_idフィールドはログインしているユーザidとする
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 post.save()      
-        else:
-            # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form))
 
-        return redirect('myapp:productorderlist')  
+                # 明細のfileを取り出して更新
+                for file in instances:
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        return redirect('myapp:productorderlist')
 
     # バリデーションエラー時
     def form_invalid(self, form):

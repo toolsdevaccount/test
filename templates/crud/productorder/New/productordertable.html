@@ -1,10 +1,11 @@
 										{% block content %}
 										{% load humanize %}
 										<div class="tab-contents-item">
-											</style>
+											<input type="hidden" name="PodDetailId-TOTAL_FORMS" id="id_PodDetailId-TOTAL_FORMS">
+											{{ formset.management_form }}	
 											<div class="fds-table-container">
 												<div class="fds-table">
-													<table class="fds-table__inner" id="tblrowcolor">
+													<table class="fds-table__inner" id="tblrowclsz">
 														<thead>
 															<tr class="fds-table__tr">
 																<th class="fds-table__th">
@@ -22,6 +23,7 @@
 															</tr>
 														</thead>
 														<tbody id="list">
+															{% for form in formset %}	
 															{% for detail_color in detail_color %}
 															<tr class="fds-table__tr fds-table__tr--hoverable list_var">
 																<td class="fds-table__td">
@@ -32,11 +34,15 @@
 																{% for detail_size in detail_size %}
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input" style="text-align: right;">
+																		<input type="hidden" data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId" name="PodDetailId-0-PodColorId" id="id_PodDetailId-0-PodColorId" value={{ detail_color.id }}>
+																		<input type="hidden" data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId" name="PodDetailId-0-PodSizeId" id="id_PodDetailId-0-PodSizeId" value={{ detail_size.id }}>
+																		<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume"
+																		name="PodDetailId-0-PodVolume" id="id_PodDetailId-0-PodVolume" value={{ form.PodVolume.value | default_if_none:'0' }}>
 																	</div>
 																</td>
 																{% endfor %}
 															</tr>
+															{% endfor %}
 															{% endfor %}
 														</tbody>
 													</table>
@@ -44,3 +50,17 @@
 											</div>
 										</div>
 										{% endblock %}
+										{% block extrajs %}
+										<!-- Datepicker 追加-->
+										<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+										<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+										<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+										<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
+										{% load static %}
+										<script src="{% static '\js\datepickerproductorder.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\productorder.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
+										{% endblock %}
+				
