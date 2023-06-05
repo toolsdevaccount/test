@@ -16,6 +16,7 @@ pip install reportlab
 pip install mysqlclient
 pip install django-imagekit
 pip install django-cleanup
+pip install django-extra-views
 
 
 pip uninstall django-widget-tweaks
@@ -24,6 +25,7 @@ pip uninstall reportlab
 pip uninstall mysqlclient
 pip uninstall django-imagekit
 pip uninstall django-cleanup
+pip uninstall django-extra-views
 
 CREATE DATABASE ksmDB CHARACTER SET utf8mb4
 

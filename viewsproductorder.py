@@ -14,7 +14,7 @@ from .formsproductorder import ProductOrderForm, ProductOrderFormset
 from django.db import transaction
 
 from django.views.generic.edit import ModelFormMixin
-
+from django.forms import formset_factory
 
 # 受発注一覧/検索
 class ProductOrderListView(LoginRequiredMixin,ListView):
@@ -57,12 +57,28 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
         formset = ProductOrderFormset
+        #detail_size = MerchandiseSize.objects.all()
+        #detail_color = MerchandiseColor.objects.all()
+        
+        #volume = []
+        #color_list = []
+        #for color in detail_color:
+        #    color_list.append((color))
+        #    size_list = []
+        #    for size in detail_size:
+        #        size_list.append((size))
+
+            # colorとsizeリストをtupleで持つ
+        #    volume.append((color_list, size_list))
+
+        #testformset = formset_factory(ProductOrderForm)
+        #formset = testformset(initial=volume)
 
         context = {
             'form': form,
             'formset': formset,
-            'detail_color': MerchandiseColor.objects.all(),
             'detail_size': MerchandiseSize.objects.all(),
+            'detail_color': MerchandiseColor.objects.all()
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
