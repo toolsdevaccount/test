@@ -39,7 +39,15 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/customersupplier/new/customersupplierform.html"
 
     def get(self, request):
-        form = CustomerSupplierForm(self.request.POST or None,initial={'PrefecturesCode': '1',})
+        form = CustomerSupplierForm(self.request.POST or None,initial=
+            {
+            'PrefecturesCode': '1',
+            'LastClaimBalance': 0,
+            'LastReceivable': 0,
+            'LastPayable': 0,
+            'LastProceeds': 0,
+            'ProceedsTarget': 0,
+            })
 
         context = {
             'form': form,

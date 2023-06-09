@@ -18,31 +18,31 @@
 																	<div class="fds-table__th-content fds-table__th-content--text">
 																		<span class="fds-table__th-text">{{ detail_size.McdSize }}</span>
 																	</div>
-																	<!-- <input type="hidden" name="PodDetailId-{{ forloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.counter0 }}-PodSizeId" value={{ detail_size.id }}> -->
+																	<input type="hidden" name="PodDetailId-{{ forloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.counter0 }}-PodSizeId" value={{ detail_size.id }}>
 																</th>
 																{% endfor %}
 															</tr>
 														</thead>
 														<tbody id="list">
 															{% for detail_color in detail_color %}
-															{% for form in formset %}
-																{{ form.color }}
-															{% endfor %}
 															<tr class="fds-table__tr fds-table__tr--hoverable">
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<label class="fds-label-input">{{ detail_color.McdColor }}</label>										
 																	</div>
-																	<!-- <input type="hidden" name="PodDetailId-{{ forloop.counter0 }}-PodColorId" id="id_PodDetailId-{{ forloop.counter0 }}-PodColorId" value={{ detail_color.id }}> -->
+																	<input type="hidden" name="PodDetailId-{{ forloop.counter0 }}-PodColorId" id="id_PodDetailId-{{ forloop.counter0 }}-PodColorId" value={{ detail_color.id }}>
 																</td>
 																{% for detail_size in detail_size %}
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input" style="text-align: right;" name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value={{ form.PodVolume.value | default_if_none:'0' }}>
+																		<input type="text" class="fds-form-input" style="text-align: right;" name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value="" >
 																	</div>
 																</td>
 																{% endfor %}
 															</tr>
+															{% endfor %}
+															{% for key, value in dic.items %}
+															    <p>{{ key }}{{ value }}</p>
 															{% endfor %}
 														</tbody>
 													</table>

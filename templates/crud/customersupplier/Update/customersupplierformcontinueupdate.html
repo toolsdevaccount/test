@@ -62,7 +62,7 @@
                 <div class="fds-form-input-message" style="width:25%;">
                     <!-- 前回請求残 -->
                     <label class="fds-label-input">前回請求残:</label>
-                    <input type="number" class="fds-form-input" maxlength="10" placeholder="" name="LastClaimBalance" id="id_LastClaimBalance" style="text-align: right;" value={{ object.LastClaimBalance }}>
+                    <input type="text" class="fds-form-input" maxlength="10" placeholder="" name="LastClaimBalance" id="id_LastClaimBalance" style="text-align: right;" value={{ object.LastClaimBalance }}>
                     {% if form.errors.LastClaimBalance %}
                     {% for error in form.errors.LastClaimBalance %}
                         <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -75,7 +75,7 @@
                 <div class="fds-form-input-message" style="width:25%;">
                     <!-- 前月売掛残 -->
                     <label class="fds-label-input">前月売掛残:</label>
-                    <input type="number" class="fds-form-input" maxlength="10" placeholder="" name="LastReceivable" id="id_LastReceivable" style="text-align: right;" value={{ object.LastReceivable }}>
+                    <input type="text" class="fds-form-input" maxlength="10" placeholder="" name="LastReceivable" id="id_LastReceivable" style="text-align: right;" value={{ object.LastReceivable }}>
                     {% if form.errors.LastReceivable %}
                     {% for error in form.errors.LastReceivable %}
                         <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -85,7 +85,7 @@
                 <div class="fds-form-input-message" style="width:25%;">
                     <!-- 前月買掛残 -->
                     <label class="fds-label-input">前月買掛残:</label>
-                    <input type="number" class="fds-form-input" maxlength="10" placeholder="" name="LastPayable" id="id_LastPayable" style="text-align: right;" value={{ object.LastPayable }}>
+                    <input type="text" class="fds-form-input" maxlength="10" placeholder="" name="LastPayable" id="id_LastPayable" style="text-align: right;" value={{ object.LastPayable }}>
                     {% if form.errors.LastPayable %}
                     {% for error in form.errors.LastPayable %}
                         <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -98,7 +98,7 @@
                 <div class="fds-form-input-message" style="width:25%;">
                     <!-- 前年売上実績 -->
                     <label class="fds-label-input">前年売上実績:</label>
-                    <input type="number" class="fds-form-input" maxlength="10" placeholder="" name="LastProceeds" id="id_LastProceeds" style="text-align: right;" value={{ object.LastProceeds }}>
+                    <input type="text" class="fds-form-input" maxlength="10" placeholder="" name="LastProceeds" id="id_LastProceeds" style="text-align: right;" value={{ object.LastProceeds }}>
                     {% if form.errors.LastProceeds %}
                     {% for error in form.errors.LastProceeds %}
                         <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -108,7 +108,7 @@
                 <div class="fds-form-input-message" style="width:25%;">
                     <!-- 当年売上目標 -->
                     <label class="fds-label-input">当年売上目標:</label>
-                    <input type="number" class="fds-form-input" maxlength="10" placeholder="" name="ProceedsTarget" id="id_ProceedsTarget" style="text-align: right;" value={{ object.ProceedsTarget }}>
+                    <input type="text" class="fds-form-input" maxlength="10" placeholder="" name="ProceedsTarget" id="id_ProceedsTarget" style="text-align: right;" value={{ object.ProceedsTarget }}>
                     {% if form.errors.ProceedsTarget %}
                     {% for error in form.errors.ProceedsTarget %}
                         <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

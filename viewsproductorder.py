@@ -57,19 +57,22 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
         formset = ProductOrderFormset
-        #detail_size = MerchandiseSize.objects.all()
-        #detail_color = MerchandiseColor.objects.all()
+
+        #dic = {"S":"10", "M":"10", "L":"10", "M":"10"}
+
+        detail_size = MerchandiseSize.objects.all()
+        detail_color = MerchandiseColor.objects.all()
         
-        #volume = []
-        #color_list = []
-        #for color in detail_color:
-        #    color_list.append((color))
-        #    size_list = []
-        #    for size in detail_size:
-        #        size_list.append((size))
+        volume = []
+        color_list = []
+        for color in detail_color:
+            color_list.append((color))
+            size_list = []
+            for size in detail_size:
+                size_list.append((size))
 
             # colorとsizeリストをtupleで持つ
-        #    volume.append((color_list, size_list))
+            volume.append((color_list, size_list))
 
         #testformset = formset_factory(ProductOrderForm)
         #formset = testformset(initial=volume)
@@ -78,7 +81,8 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
             'form': form,
             'formset': formset,
             'detail_size': MerchandiseSize.objects.all(),
-            'detail_color': MerchandiseColor.objects.all()
+            'detail_color': MerchandiseColor.objects.all(),
+            'dic': volume,
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
