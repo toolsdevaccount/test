@@ -10,12 +10,11 @@ from django.db.models import Q
 #import datetime
 # forms
 from django import forms
-from .formsproductorder import ProductOrderForm
+from .formsproductorder import ProductOrderForm, ProductOrderDetailForm
 # Transaction
 from django.db import transaction
 
-import pprint
-#from django.views.generic.edit import ModelFormMixin
+from django.views.generic.edit import ModelFormMixin
 
 # 受発注一覧/検索
 class ProductOrderListView(LoginRequiredMixin,ListView):
@@ -48,15 +47,14 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         return queryset
 
 # 受発注情報登録
-class ProductOrderCreateView(LoginRequiredMixin,CreateView):
+class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
     model = ProductOrder
     form_class =  ProductOrderForm
     template_name = "crud/productorder/new/productorderform.html"  
    
-    def get(self, request):
-        form = ProductOrderForm(self.request.POST or None)
-        detailsize = MerchandiseSize.objects.filter(McdSizeId_id=2).values('id','McdSizeId_id','McdSize')
-        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=2).values('id','McdColorId_id','McdColor')
+    def get_context_data(self, **kwargs):
+        detailsize = MerchandiseSize.objects.filter(McdSizeId_id=1).values('id','McdSizeId_id','McdSize')
+        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1).values('id','McdColorId_id','McdColor')
        
         sizelist = []
         vollist = []
@@ -71,13 +69,41 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
         for color in detailcolor:
             # colorとsizeリストをtupleで持つ
             detaillist.append((color, sizelist, vollist))
-        
-        context = {
-            'form': form,
-            'lists': detaillist,
-        }
 
-        return render(request, 'crud/productorder/new/productorderform.html', context)
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'form': ProductOrderForm(**self.get_form_kwargs()),
+            'Detail': ProductOrderDetailForm(**self.get_form_kwargs()),
+            'lists': detaillist,
+        })
+
+        return context
+
+    #def get(self, request):
+    #    form = ProductOrderForm(self.request.POST or None)
+    #    detailsize = MerchandiseSize.objects.filter(McdSizeId_id=2).values('id','McdSizeId_id','McdSize')
+    #    detailcolor = MerchandiseColor.objects.filter(McdColorId_id=2).values('id','McdColorId_id','McdColor')
+       
+    #    sizelist = []
+    #    vollist = []
+    #    detaillist =[]
+
+    #    for size in detailsize:
+    #        sizelist.append(size)
+
+    #    for size in detailsize:
+    #        vollist.append({"Volume":0})
+
+    #    for color in detailcolor:
+    #        # colorとsizeリストをtupleで持つ
+    #        detaillist.append((color, sizelist, vollist))
+        
+    #    context = {
+    #        'form': form,
+    #        'lists': detaillist,
+    #    }
+
+    #    return render(request, 'crud/productorder/new/productorderform.html', context)
 
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
