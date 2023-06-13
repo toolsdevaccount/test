@@ -17,7 +17,7 @@ class prefecture(models.Model):
     blockname = models.CharField(max_length=255,null=False,blank=True,verbose_name="地域名称")
 
     def __str__(self):
-        return self.prefecturecode
+        return str(self.prefecturecode)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/customersupplier/customersupplierlist.html')
@@ -97,7 +97,7 @@ class CustomerSupplier(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.CustomerCode
+        return str(self.CustomerCode)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/customersupplier/customersupplierlist.html')
@@ -151,7 +151,7 @@ class OrderingTable(models.Model):
     #    ]  
    
     def __str__(self):
-        return self.OrderNumber
+        return str(self.OrderNumber)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/ordering/orderinglist.html')
@@ -178,7 +178,7 @@ class OrderingDetail(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.DetailItemNumber
+        return str(self.DetailItemNumber)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/ordering/orderinglist.html')
@@ -215,7 +215,7 @@ class Merchandise(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.McdCode
+        return str(self.McdPartNumber)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
@@ -230,7 +230,7 @@ class MerchandiseColor(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.McdColorId
+        return str(self.McdColorId)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
@@ -245,7 +245,7 @@ class MerchandiseSize(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.McdSizeId
+        return str(self.McdSizeId)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
@@ -274,7 +274,7 @@ class MerchandiseDetail(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.McdDtid
+        return str(self.McdDtid)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
@@ -290,7 +290,7 @@ class MerchandiseFileUpload(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.McdDtuploadid
+        return str(self.McdDtuploadid)
     
     def file_name(self):
         return os.path.basename(self.uploadPath.name)
@@ -328,7 +328,7 @@ class ProductOrder(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.ProductOrderMerchandiseCode
+        return str(self.ProductOrderMerchandiseCode)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/productorder/productorderlist.html')
@@ -345,7 +345,7 @@ class ProductOrderDetail(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return self.PodDetailId
+        return str(self.PodDetailId)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/productorder/productorderlist.html')

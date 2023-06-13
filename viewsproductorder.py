@@ -9,12 +9,13 @@ from django.db.models import Q
 #from django.utils import timezone
 #import datetime
 # forms
-from .formsproductorder import ProductOrderForm, ProductOrderFormset
+from django import forms
+from .formsproductorder import ProductOrderForm
 # Transaction
 from django.db import transaction
 
-from django.views.generic.edit import ModelFormMixin
-from django.forms import formset_factory
+import pprint
+#from django.views.generic.edit import ModelFormMixin
 
 # 受発注一覧/検索
 class ProductOrderListView(LoginRequiredMixin,ListView):
@@ -47,78 +48,50 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         return queryset
 
 # 受発注情報登録
-class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
+class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     model = ProductOrder
     form_class =  ProductOrderForm
-    formset_class = ProductOrderFormset
-
     template_name = "crud/productorder/new/productorderform.html"  
    
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
-        formset = ProductOrderFormset
+        detailsize = MerchandiseSize.objects.filter(McdSizeId_id=2).values('id','McdSizeId_id','McdSize')
+        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=2).values('id','McdColorId_id','McdColor')
+       
+        sizelist = []
+        vollist = []
+        detaillist =[]
 
-        #dic = {"S":"10", "M":"10", "L":"10", "M":"10"}
+        for size in detailsize:
+            sizelist.append(size)
 
-        detail_size = MerchandiseSize.objects.all()
-        detail_color = MerchandiseColor.objects.all()
-        
-        volume = []
-        color_list = []
-        for color in detail_color:
-            color_list.append((color))
-            size_list = []
-            for size in detail_size:
-                size_list.append((size))
+        for size in detailsize:
+            vollist.append({"Volume":0})
 
+        for color in detailcolor:
             # colorとsizeリストをtupleで持つ
-            volume.append((color_list, size_list))
-
-        #testformset = formset_factory(ProductOrderForm)
-        #formset = testformset(initial=volume)
-
+            detaillist.append((color, sizelist, vollist))
+        
         context = {
             'form': form,
-            'formset': formset,
-            'detail_size': MerchandiseSize.objects.all(),
-            'detail_color': MerchandiseColor.objects.all(),
-            'dic': volume,
+            'lists': detaillist,
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
 
-
-    #def get_context_data(self, **kwargs):
-    #        context = super(ProductOrderCreateView, self).get_context_data(**kwargs)
-    #        context.update({
-    #            'formset': ProductOrderFormset(**self.get_form_kwargs()),
-    #            'detail_color': MerchandiseColor.objects.all(),
-    #            'detail_size': MerchandiseSize.objects.all(),
-    #        })
-
-    #        return context
-
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
-        formset = ProductOrderFormset(self.request.POST,instance=post) 
 
-        if self.request.method == 'POST' and formset.is_valid():
-            instances = formset.save(commit=False)
+        if self.request.method == 'POST':
            
             if form.is_valid():
                 post.ProductOrderOrderNumber = post.ProductOrderOrderNumber.zfill(7)
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 post.save()      
-
-                # 明細のfileを取り出して更新
-                for file in instances:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
         else:
-            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+            return self.render_to_response(self.get_context_data(form=form))
         return redirect('myapp:productorderlist')
 
     # バリデーションエラー時
