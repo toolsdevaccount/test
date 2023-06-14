@@ -35,16 +35,16 @@ class ProductOrderForm(forms.ModelForm):
                   'ProductOrderRequestCode','ProductOrderDeliveryDate','ProductOrderBrandName','ProductOrderSupplierPerson','ProductOrderTitleDiv',
                   )   
 
-class ProductOrderDetailForm(forms.ModelForm):
-    class Meta:
-        model = ProductOrderDetail
-        fields = ('PodColorId','PodSizeId','PodVolume',)
+#class ProductOrderDetailForm(forms.ModelForm):
+#    class Meta:
+#        model = ProductOrderDetail
+#        fields = ('PodColorId','PodSizeId','PodVolume',)
 
-#ProductOrderFormset = forms.inlineformset_factory(
-#    ProductOrder, ProductOrderDetail, 
-#    fields=('PodVolume',),
-#    extra=0,min_num=1,validate_min=True,can_delete=False
-#)
+ProductOrderFormset = forms.inlineformset_factory(
+    ProductOrder, ProductOrderDetail, 
+    fields=('PodVolume',),
+    extra=0,min_num=1,max_num=10,validate_min=True,can_delete=False
+)
 
     # オーダーナンバー重複チェック
     #def clean_OrderNumber(self):

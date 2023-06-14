@@ -1,6 +1,8 @@
 										{% block content %}
 										{% load humanize %}
 										<div class="tab-contents-item">
+											<input type="hidden" name="PodDetailId-TOTAL_FORMS" id="id_PodDetailId-TOTAL_FORMS">
+											{{ formset.management_form }}
 											<div class="fds-table-container">
 												<div class="fds-table">
 													<table class="fds-table__inner" id="tblrowclsz">
@@ -11,31 +13,36 @@
 																		<span class="fds-table__th-text">カラー/サイズ</span>
 																	</div>
 																</th>
-																{% for list in lists %}
-																{% if forloop.first %}
-																{% for size in list.1 %}
+																{% for size in detailsize %}
 																<th class="fds-table__th">
 																	<div class="fds-table__th-content fds-table__th-content--text">
 																		<span class="fds-table__th-text">{{ size.McdSize }}</span>
 																	</div>
+																	<input type="hidden" data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId" 
+																	name="PodDetailId-0-PodSizeId" id="id_PodDetailId-0-PodSizeId" value={{ size.id }}>
 																</th>
-																{% endfor %}
-																{% endif %}
 																{% endfor %}
 															</tr>
 														</thead>
 														<tbody id="list">
-															{% for list in lists %}
+															{% for color in detailcolor %}
 															<tr class="fds-table__tr fds-table__tr--hoverable">
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<label class="fds-label-input">{{ list.0.McdColor }}</label>										
+																		<label class="fds-label-input">{{ color.McdColor }}</label>										
 																	</div>
+																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId"
+																	name="PodDetailId-0-PodColorId" id="id_PodDetailId-0-PodColorId" value={{ color.id }}>
 																</td>
-																{% for vol in list.2 %}
+																{% for form in formset %}
 																<td class="fds-table__td">
-																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input" style="text-align: right;" value="{{ vol.Volume }}" >
+																	<div class="fds-table__td-content">	
+																		<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume"
+																		name="PodDetailId-0-PodVolume" id="id_PodDetailId-0-PodVolume">		
+																		<!-- <input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-%d-PodVolume" data-name-format="PodDetailId-%d-%d-PodVolume"
+																		name="PodDetailId-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}-PodVolume"> -->		
+																		<!-- <input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume"
+																		name="PodDetailId-0-PodVolume" id="id_PodDetailId-0-PodVolume">	 -->		
 																	</div>
 																</td>
 																{% endfor %}
@@ -60,4 +67,3 @@
 										<script src="{% static '\js\productorder.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 										{% endblock %}
-				

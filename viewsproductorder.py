@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
-from .models import ProductOrder, ProductOrderDetail, MerchandiseColor, MerchandiseSize
+from .models import ProductOrder, MerchandiseColor, MerchandiseSize
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
@@ -9,12 +9,9 @@ from django.db.models import Q
 #from django.utils import timezone
 #import datetime
 # forms
-from django import forms
-from .formsproductorder import ProductOrderForm, ProductOrderDetailForm
+from .formsproductorder import ProductOrderForm, ProductOrderFormset
 # Transaction
 from django.db import transaction
-
-from django.views.generic.edit import ModelFormMixin
 
 # 受発注一覧/検索
 class ProductOrderListView(LoginRequiredMixin,ListView):
@@ -47,77 +44,54 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         return queryset
 
 # 受発注情報登録
-class ProductOrderCreateView(LoginRequiredMixin,CreateView,ModelFormMixin):
+class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     model = ProductOrder
     form_class =  ProductOrderForm
-    template_name = "crud/productorder/new/productorderform.html"  
+    formset_class = ProductOrderFormset
+    template_name = "crud/productorder/new/productorderform.html" 
    
-    def get_context_data(self, **kwargs):
+    def get(self, request):
+        form = ProductOrderForm(self.request.POST or None)
+        formset = ProductOrderFormset(self.request.POST or None)
         detailsize = MerchandiseSize.objects.filter(McdSizeId_id=1).values('id','McdSizeId_id','McdSize')
-        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1).values('id','McdColorId_id','McdColor')
-       
-        sizelist = []
-        vollist = []
-        detaillist =[]
+        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1).values('id','McdColorId_id','McdColor')      
+        #extranum = len(detailsize) * len(detailcolor)
 
-        for size in detailsize:
-            sizelist.append(size)
 
-        for size in detailsize:
-            vollist.append({"Volume":0})
+        context = {
+            'form': form,
+            'formset': formset,
+            'detailsize': detailsize,
+            'detailcolor':detailcolor,
+        }
 
-        for color in detailcolor:
-            # colorとsizeリストをtupleで持つ
-            detaillist.append((color, sizelist, vollist))
-
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'form': ProductOrderForm(**self.get_form_kwargs()),
-            'Detail': ProductOrderDetailForm(**self.get_form_kwargs()),
-            'lists': detaillist,
-        })
-
-        return context
-
-    #def get(self, request):
-    #    form = ProductOrderForm(self.request.POST or None)
-    #    detailsize = MerchandiseSize.objects.filter(McdSizeId_id=2).values('id','McdSizeId_id','McdSize')
-    #    detailcolor = MerchandiseColor.objects.filter(McdColorId_id=2).values('id','McdColorId_id','McdColor')
-       
-    #    sizelist = []
-    #    vollist = []
-    #    detaillist =[]
-
-    #    for size in detailsize:
-    #        sizelist.append(size)
-
-    #    for size in detailsize:
-    #        vollist.append({"Volume":0})
-
-    #    for color in detailcolor:
-    #        # colorとsizeリストをtupleで持つ
-    #        detaillist.append((color, sizelist, vollist))
-        
-    #    context = {
-    #        'form': form,
-    #        'lists': detaillist,
-    #    }
-
-    #    return render(request, 'crud/productorder/new/productorderform.html', context)
+        return render(request, 'crud/productorder/new/productorderform.html', context)
 
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
+        formset = ProductOrderFormset(self.request.POST,instance=post) 
 
-        if self.request.method == 'POST':
+        if self.request.method == 'POST' and formset.is_valid():
+            instances = formset.save(commit=False)
            
             if form.is_valid():
                 post.ProductOrderOrderNumber = post.ProductOrderOrderNumber.zfill(7)
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 post.save()      
+
+                # 明細のfileを取り出して更新
+                i = 0
+                for file in instances:
+                    file.PodColorId_id = self.request.POST.getlist('PodDetailId-0-PodColorId')[i]
+                    file.PodSizeId_id = self.request.POST.getlist('PodDetailId-0-PodSizeId')[0]
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
+                    i = i + 1
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
         return redirect('myapp:productorderlist')
 
     # バリデーションエラー時
