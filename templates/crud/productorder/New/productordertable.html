@@ -40,7 +40,7 @@
 																	</div>
 																</td>
 																<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"
-																name="PodDetailId-{{ forloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.counter0 }}-PodSizeId" value={{ size.id }}>
+																name="PodDetailId-{{ forloop.parentloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.parentloop.counter0 }}-PodSizeId" value={{ size.id }}>
 																{% endfor %}
 															</tr>
 															{% endfor %}

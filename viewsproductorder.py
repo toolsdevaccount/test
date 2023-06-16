@@ -85,7 +85,7 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
 
                 # 明細のfileを取り出して更新
                 for file in instances:
-                    file.PodSizeId_id = self.request.POST.getlist('PodDetailId-0-PodSizeId')[0]
+                    #file.PodSizeId_id = self.request.POST.getlist('PodDetailId-0-PodSizeId')[0]
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
