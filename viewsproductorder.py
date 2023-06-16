@@ -53,16 +53,18 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
         formset = ProductOrderFormset(self.request.POST or None)
-        detailsize = MerchandiseSize.objects.filter(McdSizeId_id=1).values('id','McdSizeId_id','McdSize')
-        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1).values('id','McdColorId_id','McdColor')      
-        #extranum = len(detailsize) * len(detailcolor)
-
+        detailsize = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).values('id','McdSizeId_id','McdSize')
+        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).values('id','McdColorId_id','McdColor')      
+        sizecount = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).count()
+        colorcount = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).count()
 
         context = {
             'form': form,
             'formset': formset,
             'detailsize': detailsize,
             'detailcolor':detailcolor,
+            'sizecount':sizecount,
+            'colorcount':colorcount,
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
@@ -82,14 +84,11 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                 post.save()      
 
                 # 明細のfileを取り出して更新
-                i = 0
                 for file in instances:
-                    file.PodColorId_id = self.request.POST.getlist('PodDetailId-0-PodColorId')[i]
                     file.PodSizeId_id = self.request.POST.getlist('PodDetailId-0-PodSizeId')[0]
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
-                    i = i + 1
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
         return redirect('myapp:productorderlist')
