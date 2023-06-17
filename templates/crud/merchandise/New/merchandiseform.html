@@ -110,7 +110,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 販売単価 -->
                                                         <label class="fds-label-input">販売単価:</label>
-                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdSellPrice" id="id_McdSellPrice" value={{ form.data.McdSellPrice }}>
+                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdSellPrice" id="id_McdSellPrice" value={{ form.data.McdSellPrice|default:"0" }}>
                                                         {% if form.errors.McdSellPrice %}
                                                         {% for error in form.errors.McdSellPrice %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -123,7 +123,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 仕入単価 -->
                                                         <label class="fds-label-input">仕入単価:</label>
-                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdUnitPrice" id="id_McdUnitPrice" value={{ form.data.McdUnitPrice }}>
+                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdUnitPrice" id="id_McdUnitPrice" value={{ form.data.McdUnitPrice|default:"0" }}>
                                                         {% if form.errors.McdUnitPrice %}
                                                         {% for error in form.errors.McdUnitPrice %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
