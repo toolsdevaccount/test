@@ -49,7 +49,8 @@
 												</div>
 											</div>
 										</div>
-										{% endblock %}
+										</div>
+									{% endblock %}
 										{% block extrajs %}
 										<!-- Datepicker 追加-->
 										<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -63,3 +64,31 @@
 										<script src="{% static '\js\productorder.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 										{% endblock %}
+										<script>
+											/*
+											$('#id_ProductOrderMerchandiseCode').on('change', function(){
+												$('#resultGET').text('通信中...');
+												// Ajax通信を開始
+												$.ajax({
+													url: "{% url 'myapp:exec' %}",
+													method: "GET",
+													// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
+													dataType: 'text',
+													// リクエストパラメータ「?param1=いろはに」
+													data: {
+														param: $('#id_ProductOrderMerchandiseCode').val(),
+													},
+													timeout: 5000,
+												})
+												.done(function(data) {
+													// 通信成功時の処理を記述
+													//$('#ajaxreload').html(data);
+													 $('#resultGET').text('GET処理成功:' + data);
+												})
+												.fail(function() {
+													// 通信失敗時の処理を記述
+													$('#resultGET').text('GET処理失敗.');
+												});
+											})
+											*/
+										</script>

@@ -96,6 +96,10 @@
                                                         <!-- 商品コード -->
                                                         <label class="fds-label-input">商品コード:</label>
                                                         <input type="text" class="fds-form-input" placeholder=""  maxlength="5" style="text-align: right;" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value={{ form.data.ProductOrderMerchandiseCode }}>
+                                                        <!-- <span><button class="fds-btn fds-btn--primary fds-btn--small" id="button" style="width: 60px;" type="button">
+                                                            GET
+                                                        </button></span> -->
+                                   
                                                         {% if form.errors.ProductOrderMerchandiseCode %}
                                                         {% for error in form.errors.ProductOrderMerchandiseCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -271,7 +275,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {% include "crud/productorder/new/productordertable.html" %}
+                                            {% include "crud/productorder/new/productordertable.html" %}
                                     </div>
                                 </div>
                             </div>

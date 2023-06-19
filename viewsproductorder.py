@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from django.views.generic import ListView,CreateView,UpdateView
 from .models import ProductOrder, MerchandiseColor, MerchandiseSize
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -52,22 +52,56 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
    
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
-        formset = ProductOrderFormset(self.request.POST or None)
-        detailsize = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).values('id','McdSizeId_id','McdSize')
-        detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).values('id','McdColorId_id','McdColor')      
-        sizecount = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).count()
-        colorcount = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).count()
+        #formset = ProductOrderFormset(self.request.POST or None)
+        #detailsize = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).values('id','McdSizeId_id','McdSize')
+        #detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).values('id','McdColorId_id','McdColor')      
+        #sizecount = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).count()
+        #colorcount = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).count()
+
+        formset = MerchandiseColor.objects.extra(
+            tables=['myapp_merchandisesize'],
+            where=['myapp_MerchandiseColor.McdColorId_id=1']
+            ).extra(select={'McdSize': "myapp_MerchandiseSize.McdSize"}).extra(select={'McdSizeid': "myapp_MerchandiseSize.id"})
+        
+        formset = formset.extra(order_by = ['id','McdSizeid'])
+
+        #formset = MerchandiseSize.objects.filter(McdSizeId_id=1).all()
+
+        for k in formset:
+            print(k.McdColor,":",k.id,":",k.McdSize,":",k.McdSizeid)
+
+
 
         context = {
             'form': form,
             'formset': formset,
-            'detailsize': detailsize,
-            'detailcolor':detailcolor,
-            'sizecount':sizecount,
-            'colorcount':colorcount,
+            #'detailsize': detailsize,
+            #'detailcolor':detailcolor,
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
+    
+    def exec_ajax(request):
+        if request.method == 'GET':  # GETの処理
+            param = request.GET.get("param")  # GETパラメータ
+            form = ProductOrderForm(request.POST or None)
+            formset = ProductOrderFormset(request.POST or None)
+            detailsize = MerchandiseSize.objects.filter(McdSizeId_id=param,is_Deleted=0).values('id','McdSizeId_id','McdSize')
+            detailcolor = MerchandiseColor.objects.filter(McdColorId_id=param,is_Deleted=0).values('id','McdColorId_id','McdColor')      
+            sizecount = MerchandiseSize.objects.filter(McdSizeId_id=param,is_Deleted=0).count()
+            colorcount = MerchandiseColor.objects.filter(McdColorId_id=param,is_Deleted=0).count()
+
+
+            context = {
+                'form': form,
+                'formset': formset,
+                'detailsize': detailsize,
+                'detailcolor':detailcolor,
+            }
+
+            return render(request, 'crud/productorder/new/productorderform.html', context)
+
+            #return HttpResponse(context)
 
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):

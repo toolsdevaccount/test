@@ -46,6 +46,8 @@ urlpatterns = [
     path('productorder/list/', viewsproductorder.ProductOrderListView.as_view(), name='productorderlist'),
     # 製品発注登録
     path('productorder/new/', viewsproductorder.ProductOrderCreateView.as_view(), name='productordernew'),
+    # Ajax処理
+    path("productorder/new/exec/", viewsproductorder.ProductOrderCreateView.exec_ajax, name='exec'),
     # 製品発注編集
     #path('ordering/edit/<int:pk>/', viewsordering.orderingUpdateView.as_view(), name='orderingedit'),
     # 製品発注削除
