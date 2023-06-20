@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
-from .models import ProductOrder, MerchandiseColor, MerchandiseSize
+from .models import ProductOrder, ProductOrderDetail, MerchandiseColor, MerchandiseSize
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
@@ -12,6 +12,9 @@ from django.db.models import Q
 from .formsproductorder import ProductOrderForm, ProductOrderFormset
 # Transaction
 from django.db import transaction
+
+# SQL直接実行
+from django.db import connection
 
 # 受発注一覧/検索
 class ProductOrderListView(LoginRequiredMixin,ListView):
@@ -47,56 +50,65 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
 class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     model = ProductOrder
     form_class =  ProductOrderForm
-    formset_class = ProductOrderFormset
-    template_name = "crud/productorder/new/productorderform.html" 
+    formset_class =  ProductOrderFormset
+    template_name = "crud/productorder/new/productorderform.html"
    
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
-        #formset = ProductOrderFormset(self.request.POST or None)
-        #detailsize = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).values('id','McdSizeId_id','McdSize')
-        #detailcolor = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).values('id','McdColorId_id','McdColor')      
-        #sizecount = MerchandiseSize.objects.filter(McdSizeId_id=1,is_Deleted=0).count()
-        #colorcount = MerchandiseColor.objects.filter(McdColorId_id=1,is_Deleted=0).count()
+        formset = ProductOrderFormset(self.request.POST or None)
+        param = 2
 
-        formset = MerchandiseColor.objects.extra(
-            tables=['myapp_merchandisesize'],
-            where=['myapp_MerchandiseColor.McdColorId_id=1']
-            ).extra(select={'McdSize': "myapp_MerchandiseSize.McdSize"}).extra(select={'McdSizeid': "myapp_MerchandiseSize.id"})
-        
-        formset = formset.extra(order_by = ['id','McdSizeid'])
+        # カラーとサイズを取得する
+        def dictfetchall(cursor):
+            "Return all rows from a cursor as a dict"
+            columns = [col[0] for col in cursor.description]
+            return [
+                dict(zip(columns, row))
+                for row in cursor.fetchall()
+            ]
 
-        #formset = MerchandiseSize.objects.filter(McdSizeId_id=1).all()
+        with connection.cursor() as cursor:
+            cursor.execute(" select "
+                                 "a.Mcdcolorid_id   AS Mcdcolorid_id, "
+                                 "a.McdColor        AS McdColor, "
+                                 "b.mcdsize         AS McdSize, "
+                                 "a.id              AS id, "
+                                 "b.id              AS McdSizeid "
+                            "from " 
+                            	"myapp_merchandisecolor a " 
+	                            "INNER JOIN "
+	                            "myapp_merchandisesize b on "
+		                            "a.McdColorId_id = b.McdSizeId_id "
+                            "where " 
+	                            "a.Mcdcolorid_id = %s "
+                            "and a.is_Deleted = 0 "
+                            "order by "
+                            "    a.id, "
+                            "    b.id "
+                           , [str(param)])
+            weather_data = dictfetchall(cursor)
 
-        for k in formset:
-            print(k.McdColor,":",k.id,":",k.McdSize,":",k.McdSizeid)
-
-
+        for data in weather_data:
+            print(data)
 
         context = {
             'form': form,
             'formset': formset,
-            #'detailsize': detailsize,
-            #'detailcolor':detailcolor,
+            'list': weather_data,
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
+
     
     def exec_ajax(request):
         if request.method == 'GET':  # GETの処理
             param = request.GET.get("param")  # GETパラメータ
             form = ProductOrderForm(request.POST or None)
             formset = ProductOrderFormset(request.POST or None)
-            detailsize = MerchandiseSize.objects.filter(McdSizeId_id=param,is_Deleted=0).values('id','McdSizeId_id','McdSize')
-            detailcolor = MerchandiseColor.objects.filter(McdColorId_id=param,is_Deleted=0).values('id','McdColorId_id','McdColor')      
-            sizecount = MerchandiseSize.objects.filter(McdSizeId_id=param,is_Deleted=0).count()
-            colorcount = MerchandiseColor.objects.filter(McdColorId_id=param,is_Deleted=0).count()
-
 
             context = {
                 'form': form,
                 'formset': formset,
-                'detailsize': detailsize,
-                'detailcolor':detailcolor,
             }
 
             return render(request, 'crud/productorder/new/productorderform.html', context)
@@ -106,7 +118,7 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
-        formset = ProductOrderFormset(self.request.POST,instance=post) 
+        formset = ProductOrderFormset(self.request.POST,instance=post)
 
         if self.request.method == 'POST' and formset.is_valid():
             instances = formset.save(commit=False)
@@ -119,7 +131,47 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
 
                 # 明細のfileを取り出して更新
                 for file in instances:
-                    #file.PodSizeId_id = self.request.POST.getlist('PodDetailId-0-PodSizeId')[0]
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        return redirect('myapp:productorderlist')
+
+    # バリデーションエラー時
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
+    model = ProductOrder
+    form_class =  ProductOrderForm
+    formset_class =  ProductOrderFormset
+    template_name = "crud/productorder/update/productorderformupdate.html" 
+   
+    # get_context_dataをオーバーライド
+    def get_context_data(self, **kwargs):
+        context = super(ProductOrderUpdateView, self).get_context_data(**kwargs)
+        context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
+        print(context)
+
+        return context
+    
+    @transaction.atomic # トランザクション設定
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        formset = ProductOrderFormset(self.request.POST,instance=post)
+
+        if self.request.method == 'POST' and formset.is_valid():
+            instances = formset.save(commit=False)
+           
+            if form.is_valid():
+                post.ProductOrderOrderNumber = post.ProductOrderOrderNumber.zfill(7)
+                post.Created_id = self.request.user.id
+                post.Updated_id = self.request.user.id
+                post.save()      
+
+                # 明細のfileを取り出して更新
+                for file in instances:
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()

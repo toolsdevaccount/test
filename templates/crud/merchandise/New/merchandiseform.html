@@ -154,7 +154,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 加工賃 -->
                                                         <label class="fds-label-input">加工賃:</label>
-                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdProcessfee" id="id_McdProcessfee" value={{ form.data.McdProcessfee }}>
+                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdProcessfee" id="id_McdProcessfee" value={{ form.data.McdProcessfee|default:"0" }}>
                                                         {% if form.errors.McdProcessfee %}
                                                         {% for error in form.errors.McdProcessfee %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

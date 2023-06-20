@@ -230,7 +230,7 @@ class MerchandiseColor(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return str(self.McdColorId)
+        return str(self.McdColor)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
@@ -245,7 +245,7 @@ class MerchandiseSize(models.Model):
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
 
     def __str__(self):
-        return str(self.McdSizeId)
+        return str(self.McdSize)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')

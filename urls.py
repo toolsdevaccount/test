@@ -49,7 +49,7 @@ urlpatterns = [
     # Ajax処理
     path("productorder/new/exec/", viewsproductorder.ProductOrderCreateView.exec_ajax, name='exec'),
     # 製品発注編集
-    #path('ordering/edit/<int:pk>/', viewsordering.orderingUpdateView.as_view(), name='orderingedit'),
+    path('productorder/edit/<int:pk>/', viewsproductorder.ProductOrderUpdateView.as_view(), name='productorderedit'),
     # 製品発注削除
     #path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
     # PDF出力
