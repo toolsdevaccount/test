@@ -3,7 +3,7 @@
 										<div class="tab-contents-item">
 											<input type="hidden" name="PodDetailId-TOTAL_FORMS" id="id_PodDetailId-TOTAL_FORMS">
 											{{ formset.management_form }}
-											<div class="fds-table-container">
+											<div class="fds-table-container" style="height: 85%;">
 												<div class="fds-table">
 													<table class="fds-table__inner" id="tblrowclsz">
 														<thead>
@@ -30,21 +30,22 @@
 															<tr class="fds-table__tr fds-table__tr--hoverable">
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<label class="fds-label-input">{{ MerchandiseColor.McdColor.value }}</label>										
+																		<label class="fds-label-input">{{ form.PodColorId }}</label>										
 																	</div>
 																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId"
 																	name="PodDetailId-{{ forloop.counter0 }}-PodColorId" id="id_PodDetailId-{{ forloop.counter0 }}-PodColorId" value={{ form.PodColorId.value }}>
 																</td>
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<label class="fds-label-input">{{ MerchandiseSize.McdSize.value }}</label>										
+																		<label class="fds-label-input">{{ form.PodSizeId }}</label>										
 																	</div>
 																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"
 																	name="PodDetailId-{{ forloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.counter0 }}-PodSizeId" value={{ form.PodSizeId.value }}>
 																</td>
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume" name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value={{ form.PodVolume.value }}>
+																		<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume" 
+																		name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value={{ form.PodVolume.value }}>
 																	</div>
 																</td>
 																<input type="hidden" data-id-format="id_PodDetailId-%d-id" data-name-format="PodDetailId-%d-id" name="PodDetailId-{{ forloop.counter0 }}-id" id="id_PodDetailId-{{ forloop.counter0 }}-id" value={{ form.id.value }}>

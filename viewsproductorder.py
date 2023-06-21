@@ -66,7 +66,7 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                 dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
-
+        # カラーとサイズを取得するSQL
         with connection.cursor() as cursor:
             cursor.execute(" select "
                                  "a.Mcdcolorid_id   AS Mcdcolorid_id, "
@@ -152,7 +152,6 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ProductOrderUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
-        print(context)
 
         return context
     

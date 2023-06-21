@@ -145,12 +145,12 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
         else:
-            return self.render_to_response(self.get_context_data(form=form, formset=formset)) 
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時
-    def form_invalid(self,form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+    def form_invalid(self,form,formset):
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 # 受発注情報削除
 class orderingDeleteView(LoginRequiredMixin,UpdateView):
