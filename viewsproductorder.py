@@ -4,7 +4,6 @@ from .models import ProductOrder, ProductOrderDetail
 from django.contrib.auth.mixins import LoginRequiredMixin
 # ajax
 from django.http import JsonResponse
-from django.core import serializers
 # 検索機能のために追加
 from django.db.models import Q
 # forms
@@ -52,7 +51,15 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/productorder/new/productorderform.html"
    
     def get(self, request):
-        form = ProductOrderForm(self.request.POST or None)
+        form = ProductOrderForm(self.request.POST or None,
+                initial={'ProductOrderDestinationCode': '1',
+                         'ProductOrderSupplierCode': '1',
+                         'ProductOrderShippingCode': '1',
+                         'ProductOrderCustomeCode': '1',
+                         'ProductOrderRequestCode': '1',
+                         'ProductOrderApparelCode': '1',
+                        })
+
         formset = ProductOrderFormset(self.request.POST or None)
 
         context = {

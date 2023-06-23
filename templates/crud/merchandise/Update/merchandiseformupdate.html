@@ -49,7 +49,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 商品コード -->
                                                         <label class="fds-label-input">コード:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdCode" id="id_McdCode" value={{ object.McdCode }} readonly>
+                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right;" name="McdCode" id="id_McdCode" value={{ object.McdCode }} readonly>
                                                         {% if form.errors.McdCode %}
                                                         {% for error in form.errors.McdCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
