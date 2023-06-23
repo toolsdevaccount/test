@@ -1,18 +1,16 @@
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
-from .models import ProductOrder, ProductOrderDetail, MerchandiseColor, MerchandiseSize
+from .models import ProductOrder, ProductOrderDetail
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+# ajax
+from django.http import JsonResponse
+from django.core import serializers
 # 検索機能のために追加
 from django.db.models import Q
-# 日時
-#from django.utils import timezone
-#import datetime
 # forms
 from .formsproductorder import ProductOrderForm, ProductOrderFormset
 # Transaction
 from django.db import transaction
-
 # SQL直接実行
 from django.db import connection
 
@@ -56,45 +54,10 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     def get(self, request):
         form = ProductOrderForm(self.request.POST or None)
         formset = ProductOrderFormset(self.request.POST or None)
-        param = 2
-
-        # カラーとサイズを取得する
-        def dictfetchall(cursor):
-            "Return all rows from a cursor as a dict"
-            columns = [col[0] for col in cursor.description]
-            return [
-                dict(zip(columns, row))
-                for row in cursor.fetchall()
-            ]
-        # カラーとサイズを取得するSQL
-        with connection.cursor() as cursor:
-            cursor.execute(" select "
-                                 "a.Mcdcolorid_id   AS Mcdcolorid_id, "
-                                 "a.McdColor        AS McdColor, "
-                                 "b.mcdsize         AS McdSize, "
-                                 "a.id              AS id, "
-                                 "b.id              AS McdSizeid "
-                            "from " 
-                            	"myapp_merchandisecolor a " 
-	                            "INNER JOIN "
-	                            "myapp_merchandisesize b on "
-		                            "a.McdColorId_id = b.McdSizeId_id "
-                            "where " 
-	                            "a.Mcdcolorid_id = %s "
-                            "and a.is_Deleted = 0 "
-                            "order by "
-                            "    a.id, "
-                            "    b.id "
-                           , [str(param)])
-            weather_data = dictfetchall(cursor)
-
-        for data in weather_data:
-            print(data)
 
         context = {
             'form': form,
             'formset': formset,
-            'list': weather_data,
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
@@ -103,17 +66,41 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     def exec_ajax(request):
         if request.method == 'GET':  # GETの処理
             param = request.GET.get("param")  # GETパラメータ
-            form = ProductOrderForm(request.POST or None)
-            formset = ProductOrderFormset(request.POST or None)
+            # カラーとサイズを取得する
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+            # カラーとサイズを取得するSQL
+            with connection.cursor() as cursor:
+                cursor.execute(" select "
+                                    "a.Mcdcolorid_id   AS Mcdcolorid_id, "
+                                    "a.McdColor        AS McdColor, "
+                                    "b.mcdsize         AS McdSize, "
+                                    "a.id              AS id, "
+                                    "b.id              AS McdSizeid "
+                                " from " 
+                                    "myapp_merchandisecolor a " 
+                                    "INNER JOIN "
+                                    "myapp_merchandisesize b on "
+                                        "a.McdColorId_id = b.McdSizeId_id "
+                                " where " 
+                                "     a.Mcdcolorid_id = %s "
+                                " and a.is_Deleted = 0 "
+                                 "order by "
+                                "    a.id, "
+                                "    b.id "
+                            , [str(param)])
+                weather_data = dictfetchall(cursor)
 
             context = {
-                'form': form,
-                'formset': formset,
+                'list': weather_data,
             }
 
-            return render(request, 'crud/productorder/new/productorderform.html', context)
-
-            #return HttpResponse(context)
+            return JsonResponse(context)
 
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
@@ -150,9 +137,11 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
    
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
+        pk = self.kwargs.get("pk")
         context = super(ProductOrderUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
 
+        print(context["formset"])
         return context
     
     @transaction.atomic # トランザクション設定

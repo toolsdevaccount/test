@@ -26,30 +26,6 @@
 															</tr>
 														</thead>
 														<tbody id="list">
-															{% for form in list %}
-															<tr class="fds-table__tr fds-table__tr--hoverable">
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content">
-																		<label class="fds-label-input">{{ form.McdColor }}</label>										
-																	</div>
-																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId"
-																	name="PodDetailId-{{ forloop.counter0 }}-PodColorId" id="id_PodDetailId-{{ forloop.counter0 }}-PodColorId" value={{ form.id }}>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content">
-																		<label class="fds-label-input">{{ form.McdSize }}</label>										
-																	</div>
-																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"
-																	name="PodDetailId-{{ forloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.counter0 }}-PodSizeId" value={{ form.McdSizeid }}>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume"
-																		 name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value={{ form.PodVolume|default:"0" }}>
-																	</div>
-																</td>
-															</tr>
-															{% endfor %}
 														</tbody>
 													</table>
 												</div>
@@ -70,30 +46,52 @@
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 										{% endblock %}
 										<script>
-											/*
 											$('#id_ProductOrderMerchandiseCode').on('change', function(){
-												$('#resultGET').text('通信中...');
 												// Ajax通信を開始
 												$.ajax({
 													url: "{% url 'myapp:exec' %}",
 													method: "GET",
 													// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
-													dataType: 'text',
-													// リクエストパラメータ「?param1=いろはに」
+													dataType: 'json',
+													// リクエストパラメータ「?param=商品コード」
 													data: {
 														param: $('#id_ProductOrderMerchandiseCode').val(),
 													},
 													timeout: 5000,
 												})
-												.done(function(data) {
+												.done(function(response) {
 													// 通信成功時の処理を記述
-													//$('#ajaxreload').html(data);
-													 $('#resultGET').text('GET処理成功:' + data);
+													$.each(response.list, function(index, list) {
+														console.log(list.id);
+														console.log(list.McdSizeid);
+														$('#list').append(														
+															'<tr class="fds-table__tr fds-table__tr--hoverable">' +
+																'<td class="fds-table__td">' +
+																	'<div class="fds-table__td-content">' +
+																		'<label class="fds-label-input">' + list.McdColor + '</label>' +										
+																	'</div>' +
+																	'<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId" name="PodDetailId-' + index + '-PodColorId" id="id_PodDetailId-' + index + '-PodColorId" value='+ list.id + '>' +
+																'</td>' +
+																'<td class="fds-table__td">' +
+																	'<div class="fds-table__td-content">' +
+																		'<label class="fds-label-input">' + list.McdSize + '</label>' +										
+																	'</div>' +
+																	'<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"' +
+																	'name="PodDetailId-' + index + '-PodSizeId" id="id_PodDetailId-' + index + '-PodSizeId" value=' + list.McdSizeid + '>' +
+																'</td>' +
+																'<td class="fds-table__td">' +
+																	'<div class="fds-table__td-content">' +
+																		'<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume"' +
+																		 'name="PodDetailId-' + index + '-PodVolume" id="id_PodDetailId-' + index + '-PodVolume" value={{ form.PodVolume|default:"0" }}>' +
+																	'</div>' +
+																'</td>' +
+															'</tr>' 
+														);
+													});
 												})
 												.fail(function() {
 													// 通信失敗時の処理を記述
 													$('#resultGET').text('GET処理失敗.');
 												});
 											})
-											*/
 										</script>

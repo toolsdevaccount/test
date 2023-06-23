@@ -187,7 +187,11 @@
                                         {% include "crud/merchandise/update/merchandisetableupdate.html" %}
                                         {% include "crud/merchandise/update/merchandisecolorupdate.html" %}
                                         {% include "crud/merchandise/update/merchandisesizeupdate.html" %}
+                                        {% if count == 0 %}
+                                        {% include "crud/merchandise/new/merchandisefile.html" %}
+                                        {% else %}
                                         {% include "crud/merchandise/update/merchandisefileupdate.html" %}
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

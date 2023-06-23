@@ -99,7 +99,6 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
 
-
 # 受発注情報編集
 class orderingUpdateView(LoginRequiredMixin,UpdateView):
     model = OrderingTable
@@ -149,8 +148,8 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時
-    def form_invalid(self,form,formset):
-        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+    def form_invalid(self,form):
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
 
 # 受発注情報削除
 class orderingDeleteView(LoginRequiredMixin,UpdateView):

@@ -55,7 +55,7 @@
                                                         <input type="text" class="fds-form-input" placeholder="" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" style="width:8%;" value={{ form.data.ProductOrderSlipDiv }}>
                                                         <!-- オーダーNO -->
                                                         <span>-</span>
-                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right; width:35%;" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value={{ form.data.ProductOrderOrderNumber }}>
+                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right; width:40%;" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value={{ form.data.ProductOrderOrderNumber }}>
                                                         {% if form.errors.ProductOrderOrderNumber %}
                                                         {% for error in form.errors.ProductOrderOrderNumber %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
