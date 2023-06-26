@@ -101,10 +101,10 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                                 "    a.id, "
                                 "    b.id "
                             , [str(param)])
-                weather_data = dictfetchall(cursor)
+                colorsize = dictfetchall(cursor)
 
             context = {
-                'list': weather_data,
+                'list': colorsize,
             }
 
             return JsonResponse(context)
@@ -146,9 +146,41 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self, **kwargs):
         pk = self.kwargs.get("pk")
         context = super(ProductOrderUpdateView, self).get_context_data(**kwargs)
-        context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
+        # カラーとサイズを取得する
+        def dictfetchall(cursor):
+            "Return all rows from a cursor as a dict"
+            columns = [col[0] for col in cursor.description]
+            return [
+                dict(zip(columns, row))
+                for row in cursor.fetchall()
+            ]
+        # カラーとサイズを取得するSQL
+        with connection.cursor() as cursor:
+            cursor.execute(
+                            " select "
+                                " a.id "
+                                " ,a.podcolorid_id "
+                                " ,b.McdColor "
+                                " ,a.podsizeid_id "
+                                " ,c.McdSize "
+                                " ,a.PodVolume"
+                            " from " 
+                                " myapp_productorderdetail a "
+                                " left join " 
+                                " myapp_merchandisecolor b on "
+                                    " a.PodColorId_id = b.id "
+                                " left join "
+                                " myapp_merchandisesize c on "
+                                    " a.PodsizeId_id = c.id "
+                            " where "
+                                " a.PodDetailId_id = %s "
+                        , [str(pk)])
+            colorsize = dictfetchall(cursor)
 
-        print(context["formset"])
+        context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
+        context.update(list=colorsize) 
+        print(context["list"])
+
         return context
     
     @transaction.atomic # トランザクション設定
