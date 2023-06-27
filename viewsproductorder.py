@@ -179,7 +179,6 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
 
         context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
         context.update(list=colorsize) 
-        print(context["list"])
 
         return context
     
@@ -200,6 +199,78 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
                 # 明細のfileを取り出して更新
                 for file in instances:
                     file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        return redirect('myapp:productorderlist')
+
+    # バリデーションエラー時
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+class ProductOrderDeleteView(LoginRequiredMixin,UpdateView):
+    model = ProductOrder
+    form_class =  ProductOrderForm
+    formset_class =  ProductOrderFormset
+    template_name = "crud/productorder/Delete/productorderformdelete.html" 
+   
+    # get_context_dataをオーバーライド
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get("pk")
+        context = super(ProductOrderDeleteView, self).get_context_data(**kwargs)
+        # カラーとサイズを取得する
+        def dictfetchall(cursor):
+            "Return all rows from a cursor as a dict"
+            columns = [col[0] for col in cursor.description]
+            return [
+                dict(zip(columns, row))
+                for row in cursor.fetchall()
+            ]
+        # カラーとサイズを取得するSQL
+        with connection.cursor() as cursor:
+            cursor.execute(
+                            " select "
+                                " a.id "
+                                " ,a.podcolorid_id "
+                                " ,b.McdColor "
+                                " ,a.podsizeid_id "
+                                " ,c.McdSize "
+                                " ,a.PodVolume"
+                            " from " 
+                                " myapp_productorderdetail a "
+                                " left join " 
+                                " myapp_merchandisecolor b on "
+                                    " a.PodColorId_id = b.id "
+                                " left join "
+                                " myapp_merchandisesize c on "
+                                    " a.PodsizeId_id = c.id "
+                            " where "
+                                " a.PodDetailId_id = %s "
+                        , [str(pk)])
+            colorsize = dictfetchall(cursor)
+
+        context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
+        context.update(list=colorsize) 
+
+        return context
+    
+    @transaction.atomic # トランザクション設定
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        formset = ProductOrderFormset(self.request.POST,instance=post)
+
+        if self.request.method == 'POST' and formset.is_valid():
+            instances = formset.save(commit=False)
+           
+            if form.is_valid():
+                post.is_Deleted = True
+                post.Updated_id = self.request.user.id
+                post.save()      
+
+                # 明細のfileを取り出して更新
+                for file in instances:
+                    file.is_Deleted = True
                     file.Updated_id = self.request.user.id
                     file.save()
         else:

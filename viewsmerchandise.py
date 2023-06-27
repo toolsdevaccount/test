@@ -141,7 +141,6 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
                        inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(is_Deleted=0)),
-                       #inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=queryset.filter(McdDtuploadid=pk,is_Deleted=0)),
                        images=images,
                        count=count,
                        )      
@@ -246,7 +245,6 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       #inlinesfile=MerchandisefileFormset(self.request.POST or None, self.request.FILES, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter()),
                        inlinesfile=MerchandisefileFormset,
                        images=images,
                        )      
@@ -262,13 +260,13 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
         inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
 
-        #if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid(): 
-        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid():
+        if self.request.method == 'POST':
+#        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid():
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
-            instancesize = inlinessize.save(commit=False)
-            if inlinesfile.is_valid():
-                instancefile = inlinesfile.save(commit=False)
+            #instancesize = inlinessize.save(commit=False)
+            #if inlinesfile.is_valid():
+            #    instancefile = inlinesfile.save(commit=False)
            
             if form.is_valid():
                 post.is_Deleted = True
@@ -278,6 +276,7 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
                 post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
 
+            if formset.is_valid():
                 # 明細のfileを取り出して削除フラグ更新
                 for file in instances:
                     file.is_Deleted = True
@@ -293,19 +292,19 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
                     file.save()
 
                 # サイズ明細のfileを取り出して削除フラグ更新
-                for file in instancesize:
-                    file.is_Deleted = True
-                    file.Updated_id = self.request.user.id
-                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.save()
+                #for file in instancesize:
+                #    file.is_Deleted = True
+                #    file.Updated_id = self.request.user.id
+                #    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                #    file.save()
 
                 # アップロードファイルのfileを取り出して削除フラグ更新
-                if inlinesfile.is_valid():
-                    for file in instancefile:
-                        file.is_Deleted = True
-                        file.Updated_id = self.request.user.id
-                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                        file.save()
+                #if inlinesfile.is_valid():
+                #    for file in instancefile:
+                #        file.is_Deleted = True
+                #        file.Updated_id = self.request.user.id
+                #        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                #        file.save()
 
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile))

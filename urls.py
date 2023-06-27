@@ -51,7 +51,7 @@ urlpatterns = [
     # 製品発注編集
     path('productorder/edit/<int:pk>/', viewsproductorder.ProductOrderUpdateView.as_view(), name='productorderedit'),
     # 製品発注削除
-    #path('ordering/delete/<int:pk>/', viewsordering.orderingDeleteView.as_view(), name='orderingdelete'),
+    path('productorder/delete/<int:pk>/', viewsproductorder.ProductOrderDeleteView.as_view(), name='productorderdelete'),
     # PDF出力
     #path('ordering/pdf/<int:pk>', viewspopdf.pdf, name='orderingpdf'), 
 ]

@@ -12,6 +12,11 @@
 																<thead>
 																	<tr class="fds-table__tr">
 																		<th class="fds-table__th">
+																			<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
+																				<span class="fds-table__th-text">削除</span>
+																			</div>
+																		</th>
+																		<th class="fds-table__th">
 																			<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
 																				<span class="fds-table__th-text">サイズ</span>
 																			</div>
@@ -21,6 +26,18 @@
 																<tbody id="listsize">
 																	{% for form in inlinessize %}	
 																	<tr class="fds-table__tr fds-table__tr--hoverable sizearea">
+																		<!-- 削除 -->
+																		<td class="fds-table__td fds-table__td--col-fixed">
+																			<div class="fds-table__td-content">
+																				<div class="fds-checkbox">
+																					<label class="fds-checkbox__label">
+																						<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_McdSizeId-%d-Is_Deleted" data-name-format="McdSizeId-%d-Is_Deleted" name="McdSizeId-0-Is_Deleted" id="id_McdSizeId-0-Is_Deleted">
+																						<span class="fds-checkbox__text">
+																						</span>
+																					</label>
+																				</div>
+																			</div>
+																		</td>
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">
 																				<input type="text" class="fds-form-input McdSize" style="width: 200px;" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"

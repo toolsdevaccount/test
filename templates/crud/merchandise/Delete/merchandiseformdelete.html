@@ -1,6 +1,7 @@
 {% extends 'crud/base.html' %}
-{% block content %}
-                        <form method="post" id="form" name="delform" enctype="multipart/form-data">
+                        {% block content %}
+                        <!-- <form method="post" id="form" name="delform" enctype="multipart/form-data"> -->
+                        <form method="post" name="delform">
                         {% csrf_token %}
                             <div class="fds-page-table__main">
                                 <div class="fds-breadcrumb">
@@ -37,13 +38,20 @@
                                     <div class="wrap-tab">
                                         <ul class="fds-tabs" id="js-tab">
                                             <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
+                                            <li class="fds-tabs__item">商品明細</li>
                                             <li class="fds-tabs__item">カラー</li>
                                             <li class="fds-tabs__item">サイズ</li>
                                             <li class="fds-tabs__item">画像添付</li>
-                                            <li class="fds-tabs__item">画像表示</li>
                                         </ul>
                                         <div class="tab-contents-item active">
                                             <div class="fds-page-detail__main">
+                                                <div class="fds-form-input-message" style="width:30%;">
+                                                    {% if form.non_field_errors %}
+                                                        {% for error in form.non_field_errors %}
+                                                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </div>              
                                                 <div class="fds-form-label fds-form-label--horizontal">
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 商品コード -->
@@ -105,15 +113,90 @@
                                                         {% endif %}   
                                                     </div>
                                                 </div>
-                                                {% include "crud/merchandise/delete/merchandisetabledelete.html" %}
+
+                                                <div class="fds-divider fds-divider--dark2"></div>
+                                                <div class="fds-form-label fds-form-label--horizontal">
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 販売単価 -->
+                                                        <label class="fds-label-input">販売単価:</label>
+                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdSellPrice" id="id_McdSellPrice" value={{ object.McdSellPrice }}>
+                                                        {% if form.errors.McdSellPrice %}
+                                                        {% for error in form.errors.McdSellPrice %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="fds-divider fds-divider--dark2"></div>
+                                                <div class="fds-form-label fds-form-label--horizontal">
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 仕入単価 -->
+                                                        <label class="fds-label-input">仕入単価:</label>
+                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdUnitPrice" id="id_McdUnitPrice" value={{ object.McdUnitPrice }}>
+                                                        {% if form.errors.McdUnitPrice %}
+                                                        {% for error in form.errors.McdUnitPrice %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 仕入単位 -->
+                                                        <div class="fds-page-input-select">
+                                                            <label class="fds-label-input">仕入単位：</label>
+                                                            <div class="fds-select-container">
+                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="McdUnitCode" id="id_McdUnitCode">
+                                                                    {% for data in form.McdUnitCode %}
+                                                                    {{ data }}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        {% if form.errors.McdUnitCode %}
+                                                        {% for error in form.errors.McdUnitCode %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}   
+                                                    </div>
+                                                </div>
+                                                <div class="fds-divider fds-divider--dark2"></div>
+                                                <div class="fds-form-label fds-form-label--horizontal">
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 加工賃 -->
+                                                        <label class="fds-label-input">加工賃:</label>
+                                                        <input type="number" class="fds-form-input" placeholder="" style="text-align: right;" name="McdProcessfee" id="id_McdProcessfee" value={{ object.McdProcessfee }}>
+                                                        {% if form.errors.McdProcessfee %}
+                                                        {% for error in form.errors.McdProcessfee %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 加工単位 -->
+                                                        <div class="fds-page-input-select">
+                                                            <label class="fds-label-input">加工単位：</label>
+                                                            <div class="fds-select-container">
+                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="McdProcessCode" id="id_McdProcessCode">
+                                                                    {% for data in form.McdProcessCode %}
+                                                                    {{ data }}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        {% if form.errors.McdProcessCode %}
+                                                        {% for error in form.errors.McdProcessCode %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}   
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                        {% include "crud/merchandise/delete/merchandisetabledelete.html" %}
                                         {% include "crud/merchandise/delete/merchandisecolordelete.html" %}
                                         {% include "crud/merchandise/delete/merchandisesizedelete.html" %}
                                         {% include "crud/merchandise/delete/merchandisefiledelete.html" %}
-                                        {% include "crud/merchandise/delete/merchandisefiledisplay.html" %}
                                     </div>
                                 </div>
                             </div>
                         </form>
-{% endblock %}
+                        {% endblock %}
