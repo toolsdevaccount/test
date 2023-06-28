@@ -31,7 +31,7 @@
 																			<div class="fds-table__td-content">
 																				<div class="fds-checkbox">
 																					<label class="fds-checkbox__label">
-																						<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_McdSizeId-%d-Is_Deleted" data-name-format="McdSizeId-%d-Is_Deleted" name="McdSizeId-0-Is_Deleted" id="id_McdSizeId-0-Is_Deleted">
+																						<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_McdSizeId-%d-is_Deleted" data-name-format="McdSizeId-%d-is_Deleted" name="McdSizeId-0-is_Deleted" id="id_McdSizeId-0-is_Deleted" value="1" checked>
 																						<span class="fds-checkbox__text">
 																						</span>
 																					</label>
@@ -49,6 +49,7 @@
 																				{% endif %}
 																			</div>				
 																		</td>
+																		<input type="hidden" data-id-format="id_McdSizeId-%d-DELETE" data-name-format="McdSizeId-%d-DELETE" name="McdSizeId-0-DELETE" id="id_McdSizeId-0-DELETE">
 																		<input type="hidden" data-id-format="id_McdSizeId-%d-id" data-name-format="McdSizeId-%d-id" name="McdSizeId-0-id" id="id_McdSizeId-0-id" value="{{ form.id.value }}">
 																		<td class="fds-table__td">
 																			<div id="div" class="fds-table__td-content">

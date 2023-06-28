@@ -12,6 +12,9 @@ from .formsproductorder import ProductOrderForm, ProductOrderFormset
 from django.db import transaction
 # SQL直接実行
 from django.db import connection
+# 日時
+from django.utils import timezone
+import datetime
 
 # 受発注一覧/検索
 class ProductOrderListView(LoginRequiredMixin,ListView):
@@ -97,7 +100,8 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                                 " where " 
                                 "     a.Mcdcolorid_id = %s "
                                 " and a.is_Deleted = 0 "
-                                 "order by "
+                                " and b.is_Deleted = 0 "
+                                " order by "
                                 "    a.id, "
                                 "    b.id "
                             , [str(param)])
@@ -260,18 +264,19 @@ class ProductOrderDeleteView(LoginRequiredMixin,UpdateView):
         post = form.save(commit=False)
         formset = ProductOrderFormset(self.request.POST,instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid():
-            instances = formset.save(commit=False)
-           
+        if self.request.method == 'POST':          
             if form.is_valid():
                 post.is_Deleted = True
                 post.Updated_id = self.request.user.id
                 post.save()      
 
-                # 明細のfileを取り出して更新
+            if formset.is_valid():
+                instances = formset.save(commit=False)
+                # サイズ明細のfileを取り出して削除フラグ更新
                 for file in instances:
                     file.is_Deleted = True
                     file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))

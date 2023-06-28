@@ -87,27 +87,30 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                 post.Updated_id = self.request.user.id
                 post.save()
         
+            if formset.is_valid():
                 for file in instances:
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
 
+            if inlinescolor.is_valid():
                 for file in instancecolor:
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
 
+            if inlinessize.is_valid():
                 for file in instancesize:
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
 
-                if inlinesfile.is_valid():
-                    instancefile = inlinesfile.save(commit=False)
-                    for file in instancefile:
-                        file.Created_id = self.request.user.id
-                        file.Updated_id = self.request.user.id
-                        file.save()
+            if inlinesfile.is_valid():
+               instancefile = inlinesfile.save(commit=False)
+               for file in instancefile:
+                    file.Created_id = self.request.user.id
+                    file.Updated_id = self.request.user.id
+                    file.save()
         else:
             # is_validがFalseの場合はエラー文を表示
             return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile,))
@@ -143,7 +146,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                        inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(is_Deleted=0)),
                        images=images,
                        count=count,
-                       )      
+                       )
         return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
@@ -155,11 +158,11 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
         inlinesfile = MerchandisefileFormset(self.request.POST, files=self.request.FILES, instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid():
+        #if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid():
+        if self.request.method == 'POST':
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
             instancesize = inlinessize.save(commit=False)
-            instancefile = inlinesfile.save(commit=False)
            
             if form.is_valid():
                 # Updated_idフィールドはログインしているユーザidとする
@@ -168,6 +171,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                 post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
                 post.save()
 
+            if formset.is_valid():
                 # 削除チェックがついたfileを取り出して更新
                 for file in formset.deleted_objects:
                     file.Updated_id = self.request.user.id
@@ -181,7 +185,8 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
 
-                # カラー明細の削除チェックがついたfileを取り出して更新
+            if inlinescolor.is_valid():
+               # カラー明細の削除チェックがついたfileを取り出して更新
                 for file in inlinescolor.deleted_objects:
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
@@ -193,6 +198,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.Updated_id = self.request.user.id
                     file.save()
 
+            if inlinessize.is_valid():
                 # サイズ明細の削除チェックがついたfileを取り出して更新
                 for file in inlinessize.deleted_objects:
                     file.Updated_id = self.request.user.id
@@ -205,6 +211,8 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
                     file.Updated_id = self.request.user.id
                     file.save()
 
+            if inlinesfile.is_valid():
+                instancefile = inlinesfile.save(commit=False)
                 # サイズ明細の削除チェックがついたfileを取り出して更新
                 for file in inlinesfile.deleted_objects:
                     file.Updated_id = self.request.user.id
@@ -261,12 +269,9 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
         inlinesfile = MerchandisefileFormset(self.request.POST,self.request.FILES,instance=post)
 
         if self.request.method == 'POST':
-#        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid():
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
-            #instancesize = inlinessize.save(commit=False)
-            #if inlinesfile.is_valid():
-            #    instancefile = inlinesfile.save(commit=False)
+            instancesize = inlinessize.save(commit=False)
            
             if form.is_valid():
                 post.is_Deleted = True
@@ -284,6 +289,7 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
 
+            if inlinescolor.is_valid():
                 # カラー明細のfileを取り出して削除フラグ更新
                 for file in instancecolor:
                     file.is_Deleted = True
@@ -291,21 +297,13 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
 
+            if inlinessize.is_valid():
                 # サイズ明細のfileを取り出して削除フラグ更新
-                #for file in instancesize:
-                #    file.is_Deleted = True
-                #    file.Updated_id = self.request.user.id
-                #    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                #    file.save()
-
-                # アップロードファイルのfileを取り出して削除フラグ更新
-                #if inlinesfile.is_valid():
-                #    for file in instancefile:
-                #        file.is_Deleted = True
-                #        file.Updated_id = self.request.user.id
-                #        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                #        file.save()
-
+                for file in instancesize:
+                    file.is_Deleted = True
+                    file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.save()
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile))
         return redirect('myapp:merchandiselist')

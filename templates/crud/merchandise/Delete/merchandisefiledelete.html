@@ -45,7 +45,7 @@
 																		<div class="fds-table__td-content">
 																			<div class="fds-checkbox">
 																				<label class="fds-checkbox__label" style="width: 50px;">
-																					<input type="checkbox" class="fds-checkbox__input DELETE" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" id="id_McdDtuploadid-0-DELETE" name="McdDtuploadid-0-DELETE">
+																					<input type="checkbox" class="fds-checkbox__input DELETE" data-id-format="id_McdDtuploadid-%d-is_Deleted" data-name-format="McdDtuploadid-%d-is_Deleted" id="id_McdDtuploadid-0-is_Deleted" name="McdDtuploadid-0-is_Deleted" value="1" checked>
 																					<span class="fds-checkbox__text">
 																					</span>
 																				</label>
@@ -78,7 +78,7 @@
 																		<div class="fds-table__td-content">
 																			<div class="fds-checkbox">
 																				<label class="fds-checkbox__label" style="width: 50px;">
-																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="id_McdDtuploadid-%d-is_Deleted" data-name-format="McdDtuploadid-%d-is_Deleted" name="McdDtuploadid-0-is_Deleted" id="id_McdDtuploadid-0-is_Deleted">
+																					<input type="checkbox" class="fds-checkbox__input" style="width: 50px;" data-id-format="McdDtuploadid-%d-clear_id" data-name-format="McdDtuploadid-%d-clear" name="McdDtuploadid-0-clear" id="McdDtuploadid-0-clear_id">
 																					<span class="fds-checkbox__text">
 																					</span>
 																				</label>
@@ -90,10 +90,7 @@
 																			<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delfile" style="width: 60px;">削除</button>
 																		</div>
 																	</td>
-																	{% if form.id.value %}
-																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value={{ form.id.value }}>
-																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-McdDtuploadid" data-name-format="McdDtuploadid-%d-McdDtuploadid" name="McdDtuploadid-0-McdDtuploadid" id="id_McdDtuploadid-0-McdDtuploadid" value={{ form.McdDtuploadid.value }}>
-																	{% endif %}
+																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" name="McdDtuploadid-0-DELETE" id="id_McdDtuploadid-0-DELETE">
 																</tr>
 																{% endfor %}
 																{% endfor %}

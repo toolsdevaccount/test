@@ -43,7 +43,7 @@ class ProductOrderForm(forms.ModelForm):
 ProductOrderFormset = forms.inlineformset_factory(
     ProductOrder, ProductOrderDetail, 
     fields=('PodColorId','PodSizeId','PodVolume',),
-    extra=0,min_num=1,max_num=10,validate_min=True,can_delete=False
+    extra=0,min_num=1,max_num=10,validate_min=True,can_delete=True
 )
 
     # オーダーナンバー重複チェック

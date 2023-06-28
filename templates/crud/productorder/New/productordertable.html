@@ -62,8 +62,6 @@
 												.done(function(response) {
 													// 通信成功時の処理を記述
 													$.each(response.list, function(index, list) {
-														console.log(list.id);
-														console.log(list.McdSizeid);
 														$('#list').append(														
 															'<tr class="fds-table__tr fds-table__tr--hoverable">' +
 																'<td class="fds-table__td">' +

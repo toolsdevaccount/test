@@ -10,6 +10,11 @@
 															<tr class="fds-table__tr">
 																<th class="fds-table__th">
 																	<div class="fds-table__th-content fds-table__th-content--text">
+																		<span class="fds-table__th-text">削除</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text">
 																		<span class="fds-table__th-text">カラー</span>
 																	</div>
 																</th>
@@ -28,6 +33,18 @@
 														<tbody id="list">
 															{% for col in list %}
 															<tr class="fds-table__tr fds-table__tr--hoverable">
+																<!-- 削除 -->
+																<td class="fds-table__td fds-table__td--col-fixed">
+																	<div class="fds-table__td-content">
+																		<div class="fds-checkbox">
+																			<label class="fds-checkbox__label">
+																				<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_PodDetailId-%d-is_Deleted" data-name-format="PodDetailId-%d-is_Deleted" name="PodDetailId-{{ forloop.counter0 }}-is_Deleted" id="id_PodDetailId-{{ forloop.counter0 }}-is_Deleted" value="1" checked>
+																				<span class="fds-checkbox__text">
+																				</span>
+																			</label>
+																		</div>
+																	</div>
+																</td>								
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<label class="fds-label-input">{{ col.McdColor }}</label>										
@@ -48,6 +65,7 @@
 																		name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value={{ col.PodVolume }}>
 																	</div>
 																</td>
+																<input type="hidden" data-id-format="id_PodDetailId-%d-DELETE" data-name-format="PodDetailId-%d-DELETE" name="PodDetailId-{{ forloop.counter0 }}-DELETE" id="id_PodDetailId-{{ forloop.counter0 }}-DELETE">
 																<input type="hidden" data-id-format="id_PodDetailId-%d-id" data-name-format="PodDetailId-%d-id" name="PodDetailId-{{ forloop.counter0 }}-id" id="id_PodDetailId-{{ forloop.counter0 }}-id" value={{ col.id }}>
 															</tr>
 															{% endfor %}
