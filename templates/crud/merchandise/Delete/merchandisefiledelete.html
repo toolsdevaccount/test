@@ -38,7 +38,6 @@
 																</tr>
 															</thead>
 															<tbody id="listfile">
-																{% for image in images %}
 																{% for form in inlinesfile %}
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
 																	<td class="fds-table__td fds-table__td--col-fixed">
@@ -54,7 +53,8 @@
 																	</td>
 																	<td class="fds-table__td" style="width: 200px;">
 																		<div id="div" class="fds-table__td-content">
-																			<a href="{{ image.middle.url }}" style="color: black;">{{ image.file_name }}</a>
+																			<a href="/media/{{ form.uploadPath.value }}" style="color: black;">{{ form.uploadPath.value }}</a>
+																			<!-- <a href="{{ image.middle.url }}" style="color: black;">{{ image.file_name }}</a> -->
 																		</div>
 																	</td>
 																	<td class="fds-table__td fds-table__td--col-fixed">
@@ -91,8 +91,9 @@
 																		</div>
 																	</td>
 																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" name="McdDtuploadid-0-DELETE" id="id_McdDtuploadid-0-DELETE">
+																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value={{ form.id.value }}>
+																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-McdDtuploadid" data-name-format="McdDtuploadid-%d-McdDtuploadid" name="McdDtuploadid-0-McdDtuploadid" id="id_McdDtuploadid-0-McdDtuploadid" value={{ form.McdDtuploadid.value }}>
 																</tr>
-																{% endfor %}
 																{% endfor %}
 															</tbody>
 														</table>

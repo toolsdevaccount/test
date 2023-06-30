@@ -199,7 +199,7 @@ class Merchandise(models.Model):
         (6, "US$ CMT東京"),
         (7, "US$ CMT上海"),
         ]
-    McdCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
+    #McdCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
     McdTreatmentCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseTreatment,verbose_name="扱区分")
     McdPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
     McdManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")

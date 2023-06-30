@@ -14,6 +14,7 @@ from django.db import transaction
 from django.db import connection
 # 日時
 from django.utils import timezone
+from datetime import date
 import datetime
 
 # 受発注一覧/検索
@@ -61,6 +62,7 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                          'ProductOrderCustomeCode': '1',
                          'ProductOrderRequestCode': '1',
                          'ProductOrderApparelCode': '1',
+                         'ProductOrderOrderingDate': date.today(),
                         })
 
         formset = ProductOrderFormset(self.request.POST or None)
@@ -86,17 +88,22 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                 ]
             # カラーとサイズを取得するSQL
             with connection.cursor() as cursor:
-                cursor.execute(" select "
+                cursor.execute(
+                                " select "
                                     "a.Mcdcolorid_id   AS Mcdcolorid_id, "
                                     "a.McdColor        AS McdColor, "
                                     "b.mcdsize         AS McdSize, "
                                     "a.id              AS id, "
-                                    "b.id              AS McdSizeid "
+                                    "b.id              AS McdSizeid, "
+                                    "d.McdPartNumber   AS McdPartNumber "
                                 " from " 
                                     "myapp_merchandisecolor a " 
                                     "INNER JOIN "
                                     "myapp_merchandisesize b on "
                                         "a.McdColorId_id = b.McdSizeId_id "
+                                    " left join "
+                                    " myapp_Merchandise d on "
+                                        " d.id = a.McdColorId_id"
                                 " where " 
                                 "     a.Mcdcolorid_id = %s "
                                 " and a.is_Deleted = 0 "
@@ -249,6 +256,9 @@ class ProductOrderDeleteView(LoginRequiredMixin,UpdateView):
                                 " left join "
                                 " myapp_merchandisesize c on "
                                     " a.PodsizeId_id = c.id "
+                                " left join "
+                                " myapp_Merchandise d on "
+                                    " d.id = b.McdColorId_id"
                             " where "
                                 " a.PodDetailId_id = %s "
                         , [str(pk)])

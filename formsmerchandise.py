@@ -17,7 +17,7 @@ class MerchandiseForm(forms.ModelForm):
 
     class Meta:
         model = Merchandise
-        fields = ('McdCode', 'McdTreatmentCode', 'McdPartNumber', 'McdManagerCode', 'McdUnitPrice', 'McdUnitCode', 
+        fields = ('McdTreatmentCode', 'McdPartNumber', 'McdManagerCode', 'McdUnitPrice', 'McdUnitCode', 
                   'McdSellPrice', 'McdProcessfee', 'McdProcessCode'
                   )
   

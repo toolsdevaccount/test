@@ -1,5 +1,6 @@
-{% extends 'crud/base.html' %}
-{% block content %}
+                        {% extends 'crud/base.html' %}
+                        {% block content %}
+                        {% load humanize %}
                         <form method="post" id="form">
                         {% csrf_token %}
                             <div class="fds-page-table__main">
@@ -77,8 +78,8 @@
                                                     </div>
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 依頼日 -->
-                                                        <label class="fds-label-input">依頼日:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" value={{ form.data.OrderingDate }}>
+                                                        <label class="fds-label-input">依頼日:</label>                                                        
+                                                        <input type="text" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" value="{{ form.OrderingDate.value |date:'Y-m-d' }}" >
                                                         {% if form.errors.OrderingDate %}
                                                         {% for error in form.errors.OrderingDate %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

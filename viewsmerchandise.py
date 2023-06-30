@@ -21,21 +21,21 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
     model = Merchandise
     form_class = MerchandiseForm
     context_object_name = 'object_list'
-    queryset = Merchandise.objects.order_by('McdCode','Created_at').reverse()
+    queryset = Merchandise.objects.order_by('Created_at').reverse()
     template_name = "crud/merchandise/list/merchandiselist.html"
     paginate_by = 10
 
     #検索機能
     def get_queryset(self):
         # 商品コード大きい順で抽出
-        queryset = Merchandise.objects.order_by('McdCode','Created_at').reverse()
+        queryset = Merchandise.objects.order_by('Created_at').reverse()
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
         query = self.request.GET.get('query')      
 
         if query:
             queryset = queryset.filter(
-                 Q(McdCode__contains=query) | Q(McdPartNumber__contains=query) | Q(McdManagerCode__first_name__icontains=query)  
+                Q(McdPartNumber__contains=query) | Q(McdManagerCode__first_name__icontains=query)  
             )
 
         return queryset
@@ -136,16 +136,16 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         #イメージファイル
         queryset = MerchandiseFileUpload.objects.filter()
         pk = self.kwargs.get("pk")
-        images = queryset.filter(McdDtuploadid=pk,is_Deleted=0)
-        count = queryset.filter(McdDtuploadid=pk,is_Deleted=0).count()
+        #images = queryset.filter(McdDtuploadid=pk,is_Deleted=0)
+        #count = queryset.filter(McdDtuploadid=pk,is_Deleted=0).count()
 
         context = super(MerchandiseUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(is_Deleted=0)),
-                       images=images,
-                       count=count,
+                       inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(McdDtuploadid=pk,is_Deleted=0)),
+                       #images=images,
+                       #count=count,
                        )
         return context
 
@@ -253,8 +253,8 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
-                       inlinesfile=MerchandisefileFormset,
-                       images=images,
+                       inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(McdDtuploadid=pk,is_Deleted=0)),
+                       #images=images,
                        )      
        
         return context
@@ -300,6 +300,15 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
             if inlinessize.is_valid():
                 # サイズ明細のfileを取り出して削除フラグ更新
                 for file in instancesize:
+                    file.is_Deleted = True
+                    file.Updated_id = self.request.user.id
+                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    file.save()
+
+            if inlinesfile.is_valid():
+                instancefile = inlinesfile.save(commit=False)
+                # アップロードファイルの削除チェックがついたfileを取り出して更新
+                for file in instancefile:
                     file.is_Deleted = True
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時

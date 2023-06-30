@@ -38,7 +38,6 @@
 																</tr>
 															</thead>
 															<tbody id="listfile">
-																{% for image in images %}
 																{% for form in inlinesfile %}
 																<tr class="fds-table__tr fds-table__tr--hoverable filearea">
 																	<td class="fds-table__td fds-table__td--col-fixed">
@@ -53,8 +52,8 @@
 																		</div>
 																	</td>
 																	<td class="fds-table__td" style="width: 200px;">
-																		<div id="div" class="fds-table__td-content">
-																			<a href="{{ image.middle.url }}" style="color: black;">{{ image.file_name }}</a>
+																		<div id="div" class="fds-table__td-content">																	
+																			<a href="/media/{{ form.uploadPath.value }}" style="color: black;">{{ form.uploadPath.value }}</a>
 																		</div>
 																	</td>
 																	<td class="fds-table__td fds-table__td--col-fixed">
@@ -95,7 +94,6 @@
 																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-McdDtuploadid" data-name-format="McdDtuploadid-%d-McdDtuploadid" name="McdDtuploadid-0-McdDtuploadid" id="id_McdDtuploadid-0-McdDtuploadid" value={{ form.McdDtuploadid.value }}>
 																	{% endif %}
 																</tr>
-																{% endfor %}
 																{% endfor %}
 															</tbody>
 														</table>

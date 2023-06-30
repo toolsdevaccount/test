@@ -65,7 +65,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 発注日 -->
                                                         <label class="fds-label-input">発注日:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" maxlength="10" value={{ form.data.ProductOrderOrderingDate }}>
+                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" maxlength="10" value={{ form.ProductOrderOrderingDate.value }}>
                                                         {% if form.errors.ProductOrderOrderingDate %}
                                                         {% for error in form.errors.ProductOrderOrderingDate %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

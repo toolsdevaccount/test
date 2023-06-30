@@ -8,6 +8,7 @@ from django.db.models import Q
 # 日時
 from django.utils import timezone
 import datetime
+from datetime import date
 # forms
 from .forms import OrderingForm,OrderingFormset
 # Transaction
@@ -59,6 +60,7 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
                                      'StainShippingCode': '1',
                                      'CustomeCode': '1',
                                      'RequestCode':'1',
+                                     'OrderingDate':date.today(),
                                      })
         formset = OrderingFormset
 
