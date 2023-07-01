@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', function(){
         };
     });
 
+    function removeComma(number) {
+        var removed = number.replace(/,/g, '');
+        return parseInt(removed, 10);
+    }
+  
     // 指定したエレメント(input)が所属する行(tr)を取得
     function detail(obj)
     {
@@ -83,10 +88,3 @@ document.addEventListener('DOMContentLoaded', function(){
         target = Number(ProceedsTarget(obj)).toLocaleString();
         detail(obj).querySelectorAll(".ProceedsTarget")[0].value = target;
     }
-
-    function removeComma(number) {
-      var removed = number.replace(/,/g, '');
-      return parseInt(removed, 10);
-    }
-  
-    

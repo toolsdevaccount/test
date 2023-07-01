@@ -1,6 +1,6 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-<form method="post">
+<form method="post" id="form">
 {% csrf_token %}
     <div class="fds-page-table__main">
         <div class="fds-breadcrumb">
@@ -112,13 +112,14 @@
                                 <!-- 都道府県 -->
                                 <div class="fds-page-input-select">
                                     <label class="fds-label-input">都道府県:</label>
-                                    <div class="fds-select-container">
-                                        <select class="fds-select fds-form-input fds-form-input--medium" name="PrefecturesCode" id="id_PrefecturesCode" value={{ form.data.PrefecturesCode }}>
+                                    <!-- <div class="fds-select-container"> -->
+                                        <input type="text" name="PrefecturesCode" list="id_PrefecturesCode" autocomplete="off">
+                                        <datalist class="fds-select fds-form-input fds-form-input--medium" name="PrefecturesCode" id="id_PrefecturesCode" value={{ form.data.PrefecturesCode }}>
                                             {% for data in form.PrefecturesCode %}
                                             {{ data }}
                                             {% endfor %}
-                                        </select>        
-                                    </div>
+                                        </datalist>        
+                                    <!-- </div> -->
                                 </div>
                                 {% if form.errors.PrefecturesCode %}
                                 {% for error in form.errors.PrefecturesCode %}

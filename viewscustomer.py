@@ -76,12 +76,13 @@ class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
         if self.request.method == "POST":
-            post = form.save(commit=False)
-            # Updatedidフィールドはログインしているユーザidとする
-            post.Updated_id = self.request.user.id
-            post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-            post.save()
-        return redirect('myapp:list')
+            if form.is_valid():
+                post = form.save(commit=False)
+                # Updatedidフィールドはログインしているユーザidとする
+                post.Updated_id = self.request.user.id
+                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                post.save()
+            return redirect('myapp:list')
 
     # バリデーションエラー時
     def form_invalid(self, form):
