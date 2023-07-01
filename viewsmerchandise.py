@@ -134,10 +134,7 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         #イメージファイル
-        queryset = MerchandiseFileUpload.objects.filter()
         pk = self.kwargs.get("pk")
-        #images = queryset.filter(McdDtuploadid=pk,is_Deleted=0)
-        #count = queryset.filter(McdDtuploadid=pk,is_Deleted=0).count()
 
         context = super(MerchandiseUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
@@ -158,7 +155,6 @@ class MerchandiseUpdateView(LoginRequiredMixin,UpdateView):
         inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
         inlinesfile = MerchandisefileFormset(self.request.POST, files=self.request.FILES, instance=post)
 
-        #if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid() and inlinesfile.is_valid():
         if self.request.method == 'POST':
             instances = formset.save(commit=False)
             instancecolor = inlinescolor.save(commit=False)
@@ -245,16 +241,13 @@ class MerchandiseDeleteView(LoginRequiredMixin,UpdateView):
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         #イメージファイル
-        queryset = MerchandiseFileUpload.objects.filter()
         pk = self.kwargs.get("pk")
-        images = queryset.filter(McdDtuploadid=pk)
 
         context = super(MerchandiseDeleteView, self).get_context_data(**kwargs)
         context.update(dict(formset=MerchandiseFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseDetail.objects.filter(is_Deleted=0))),
                        inlinescolor=MerchandiseColorFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseColor.objects.filter(is_Deleted=0)),
                        inlinessize=MerchandiseSizeFormset(self.request.POST or None, instance=self.get_object(), queryset=MerchandiseSize.objects.filter(is_Deleted=0)),
                        inlinesfile=MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=self.get_object(), queryset=MerchandiseFileUpload.objects.filter(McdDtuploadid=pk,is_Deleted=0)),
-                       #images=images,
                        )      
        
         return context

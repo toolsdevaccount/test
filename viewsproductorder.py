@@ -125,15 +125,15 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
         post = form.save(commit=False)
         formset = ProductOrderFormset(self.request.POST,instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid():
-            instances = formset.save(commit=False)
-           
+        if self.request.method == 'POST':          
             if form.is_valid():
                 post.ProductOrderOrderNumber = post.ProductOrderOrderNumber.zfill(7)
                 post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 post.save()      
 
+            if formset.is_valid():
+                instances = formset.save(commit=False)
                 # 明細のfileを取り出して更新
                 for file in instances:
                     file.Created_id = self.request.user.id
@@ -198,18 +198,16 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
         post = form.save(commit=False)
         formset = ProductOrderFormset(self.request.POST,instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid():
-            instances = formset.save(commit=False)
-           
+        if self.request.method == 'POST':          
             if form.is_valid():
                 post.ProductOrderOrderNumber = post.ProductOrderOrderNumber.zfill(7)
-                post.Created_id = self.request.user.id
                 post.Updated_id = self.request.user.id
                 post.save()      
 
+            if formset.is_valid():
+                instances = formset.save(commit=False)
                 # 明細のfileを取り出して更新
                 for file in instances:
-                    file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
         else:
@@ -282,7 +280,7 @@ class ProductOrderDeleteView(LoginRequiredMixin,UpdateView):
 
             if formset.is_valid():
                 instances = formset.save(commit=False)
-                # サイズ明細のfileを取り出して削除フラグ更新
+                # 削除チェックがついたfileを取り出して削除
                 for file in instances:
                     file.is_Deleted = True
                     file.Updated_id = self.request.user.id

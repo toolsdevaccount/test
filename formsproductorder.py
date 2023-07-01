@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 #from django.contrib.auth.forms import UserCreationForm
-from .models import ProductOrder, ProductOrderDetail, CustomerSupplier
+from .models import ProductOrder, ProductOrderDetail, CustomerSupplier, Merchandise
 
 from django.forms import ModelChoiceField
 from datetime import datetime
@@ -35,31 +35,33 @@ class ProductOrderForm(forms.ModelForm):
                   'ProductOrderRequestCode','ProductOrderDeliveryDate','ProductOrderBrandName','ProductOrderSupplierPerson','ProductOrderTitleDiv',
                   )   
 
-#class ProductOrderDetailForm(forms.ModelForm):
-#    class Meta:
-#        model = ProductOrderDetail
-#        fields = ('PodColorId','PodSizeId','PodVolume',)
+    # 商品コード存在チェック
+    def clean_ProductOrderMerchandiseCode(self):
+        McdPartNumber = self.cleaned_data['ProductOrderMerchandiseCode']
+        idcnt = Merchandise.objects.filter(id = McdPartNumber).count()
+        if idcnt == 0:
+            raise forms.ValidationError(u'商品コードが存在しません')
+        return McdPartNumber
+
+    # オーダーナンバー重複チェック
+    def clean_ProductOrderOrderNumber(self):
+        ProductOrderOrderNumber = self.cleaned_data['ProductOrderOrderNumber']
+        idcnt = ProductOrder.objects.filter(id__exact = self.instance.pk).count()
+        OrderNumbercnt = ProductOrder.objects.filter( ProductOrderOrderNumber__exact = ProductOrderOrderNumber.zfill(7)).count()
+        if idcnt > 0:
+            OrderNumbercnt = 0           
+        if ProductOrderOrderNumber:
+            if OrderNumbercnt > 0:
+                raise forms.ValidationError(u'オーダーNOが重複しています')
+        return ProductOrderOrderNumber
 
 ProductOrderFormset = forms.inlineformset_factory(
     ProductOrder, ProductOrderDetail, 
-    fields=('PodColorId','PodSizeId','PodVolume',),
+    fields=('PodColorId','PodSizeId','PodVolume','is_Deleted'),
     extra=0,min_num=1,max_num=10,validate_min=True,can_delete=True
 )
 
-    # オーダーナンバー重複チェック
-    #def clean_OrderNumber(self):
-    #    SlipDiv = self.cleaned_data['SlipDiv']
-    #    OrderNumber = self.cleaned_data['OrderNumber']
-    #    idcnt = OrderingTable.objects.filter(id__exact = self.instance.pk).count()
-    #    OrderNumbercnt = OrderingTable.objects.filter(OrderNumber__exact = OrderNumber.zfill(7)).count()
-    #    if idcnt > 0:
-    #        OrderNumbercnt = 0           
-    #    if OrderNumbercnt > 0 and (SlipDiv == "S" or SlipDiv == "B" or SlipDiv == "F" or SlipDiv == "D"):
-    #        OrderNumbercnt = 0
-    #    if OrderNumber:
-    #        if OrderNumbercnt > 0:
-    #            raise forms.ValidationError(u'オーダーNOが重複しています')
-    #    return OrderNumber
+
    
 #OrderingFormset = forms.inlineformset_factory(
     #OrderingTable, OrderingDetail, 

@@ -52,10 +52,10 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 伝票区分 -->
                                                         <label class="fds-label-input">オーダーNO:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" style="width:8%;" value={{ object.ProductOrderSlipDiv }}>
+                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" style="width:8%;" value={{ object.ProductOrderSlipDiv }} readonly>
                                                         <!-- オーダーNO -->
                                                         <span>-</span>
-                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right; width:40%;" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value={{ object.ProductOrderOrderNumber }}>
+                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right; width:40%;" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value={{ object.ProductOrderOrderNumber }} readonly>
                                                         {% if form.errors.ProductOrderOrderNumber %}
                                                         {% for error in form.errors.ProductOrderOrderNumber %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
@@ -95,11 +95,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 商品コード -->
                                                         <label class="fds-label-input">商品コード:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  maxlength="5" style="text-align: right;" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value={{ object.ProductOrderMerchandiseCode }}>
-                                                        <!-- <span><button class="fds-btn fds-btn--primary fds-btn--small" id="button" style="width: 60px;" type="button">
-                                                            GET
-                                                        </button></span> -->
-                                   
+                                                        <input type="text" class="fds-form-input" placeholder=""  maxlength="5" style="text-align: right;" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value={{ object.ProductOrderMerchandiseCode }} readonly>                                  
                                                         {% if form.errors.ProductOrderMerchandiseCode %}
                                                         {% for error in form.errors.ProductOrderMerchandiseCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -109,7 +105,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 本品番 -->
                                                         <label class="fds-label-input">本品番:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  maxlength="20" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value={{ object.ProductOrderPartNumber }}>
+                                                        <input type="text" class="fds-form-input" placeholder=""  maxlength="20" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value={{ object.ProductOrderPartNumber }} readonly>
                                                         {% if form.errors.ProductOrderPartNumber %}
                                                         {% for error in form.errors.ProductOrderPartNumber %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

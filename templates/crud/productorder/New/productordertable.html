@@ -47,49 +47,51 @@
 										{% endblock %}
 										<script>
 											$('#id_ProductOrderMerchandiseCode').on('change', function(){
-												// Ajax通信を開始
-												$.ajax({
-													url: "{% url 'myapp:exec' %}",
-													method: "GET",
-													// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
-													dataType: 'json',
-													// リクエストパラメータ「?param=商品コード」
-													data: {
-														param: $('#id_ProductOrderMerchandiseCode').val(),
-													},
-													timeout: 5000,
-												})
-												.done(function(response) {
-													// 通信成功時の処理を記述
-													$.each(response.list, function(index, list) {
-														$('#list').append(														
-															'<tr class="fds-table__tr fds-table__tr--hoverable">' +
-																'<td class="fds-table__td">' +
-																	'<div class="fds-table__td-content">' +
-																		'<label class="fds-label-input">' + list.McdColor + '</label>' +										
-																	'</div>' +
-																	'<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId" name="PodDetailId-' + index + '-PodColorId" id="id_PodDetailId-' + index + '-PodColorId" value='+ list.id + '>' +
-																'</td>' +
-																'<td class="fds-table__td">' +
-																	'<div class="fds-table__td-content">' +
-																		'<label class="fds-label-input">' + list.McdSize + '</label>' +										
-																	'</div>' +
-																	'<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"' +
-																	'name="PodDetailId-' + index + '-PodSizeId" id="id_PodDetailId-' + index + '-PodSizeId" value=' + list.McdSizeid + '>' +
-																'</td>' +
-																'<td class="fds-table__td">' +
-																	'<div class="fds-table__td-content">' +
-																		'<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume"' +
-																		 'name="PodDetailId-' + index + '-PodVolume" id="id_PodDetailId-' + index + '-PodVolume" value={{ form.PodVolume|default:"0" }}>' +
-																	'</div>' +
-																'</td>' +
-															'</tr>' 
-														);
-													});
-												})
-												.fail(function() {
-													// 通信失敗時の処理を記述
-													$('#resultGET').text('GET処理失敗.');
+											$('#list').empty();
+											// Ajax通信を開始
+											$.ajax({
+												url: "{% url 'myapp:exec' %}",
+												method: "GET",
+												// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
+												dataType: 'json',
+												// リクエストパラメータ「?param=商品コード」
+												data: {
+													param: $('#id_ProductOrderMerchandiseCode').val(),
+												},
+												timeout: 5000,
+											})
+											.done(function(response) {
+												// 通信成功時の処理を記述
+												$.each(response.list, function(index, list) {
+													$('#list').append(														
+														'<tr class="fds-table__tr fds-table__tr--hoverable">' +
+															'<td class="fds-table__td">' +
+																'<div class="fds-table__td-content">' +
+																	'<label class="fds-label-input">' + list.McdColor + '</label>' +										
+																'</div>' +
+																'<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId" name="PodDetailId-' + index + '-PodColorId" id="id_PodDetailId-' + index + '-PodColorId" value='+ list.id + '>' +
+															'</td>' +
+															'<td class="fds-table__td">' +
+																'<div class="fds-table__td-content">' +
+																	'<label class="fds-label-input">' + list.McdSize + '</label>' +										
+																'</div>' +
+																'<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"' +
+																'name="PodDetailId-' + index + '-PodSizeId" id="id_PodDetailId-' + index + '-PodSizeId" value=' + list.McdSizeid + '>' +
+															'</td>' +
+															'<td class="fds-table__td">' +
+																'<div class="fds-table__td-content">' +
+																	'<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume"' +
+																		'name="PodDetailId-' + index + '-PodVolume" id="id_PodDetailId-' + index + '-PodVolume" value={{ form.PodVolume|default:"0" }}>' +
+																'</div>' +
+															'</td>' +
+														'</tr>' 
+													);
+													$('#id_ProductOrderPartNumber').val(list.McdPartNumber);
 												});
+											})
+											.fail(function() {
+												// 通信失敗時の処理を記述
+												$('#resultGET').text('GET処理失敗.');
+											});
 											})
 										</script>
