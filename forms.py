@@ -76,7 +76,8 @@ class CustomerSupplierForm(forms.ModelForm):
 
 class CustomerSupplierChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
-        return  obj.CustomerCode + ":" + obj.CustomerOmitName
+        return  obj.CustomerOmitName + ":" + obj.CustomerCode
+        #return  obj.CustomerCode + ":" + obj.CustomerOmitName
 
 class OrderingForm(forms.ModelForm):
     DestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
