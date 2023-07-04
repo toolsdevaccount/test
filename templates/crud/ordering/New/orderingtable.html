@@ -129,7 +129,7 @@
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input DetailUnitPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" value="0" data-empty-val="false">                                   
+																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" value="0" data-empty-val="false">                                   
 																	</div>
 																	{% if form.errors.DetailUnitPrice %}
 																	{% for error in form.errors.DetailUnitPrice %}
@@ -226,8 +226,8 @@
 										<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
 										{% load static %}
-										<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 										{% endblock %}

@@ -28,7 +28,7 @@ function overprice(obj)
     return removeComma(detail(obj).querySelectorAll(".DetailOverPrice")[0].value);
 }
 
-function intcomma(obj)
+function comma(obj)
 {
     //桁区切りして配置（仕入単価）
     detailunitprice = Number(UnitPrice(obj)).toLocaleString();
@@ -38,20 +38,24 @@ function intcomma(obj)
 // 指定したエレメント(input)の横計を再計算してから取得
 function calc(obj)
 {
-    //detailprice = Number(price(obj)).toLocaleString();
-    //detailoverprice = Number(overprice(obj)).toLocaleString(); 
-
-    //detail(obj).querySelectorAll(".DetailPrice")[0].value = detailprice;
-    //detail(obj).querySelectorAll(".DetailOverPrice")[0].value = detailoverprice;
-
+    // 計算
     result = Number(price(obj)) + Number(overprice(obj));
 
-    if(Number(overprice(obj))==0){
+    // 単価にカンマをつける
+    detailprice = Number(price(obj)).toLocaleString();
+    detail(obj).querySelectorAll(".DetailPrice")[0].value = detailprice;
+
+    // UP分単価にカンマをつける
+    detailoverprice = Number(overprice(obj)).toLocaleString(); 
+    detail(obj).querySelectorAll(".DetailOverPrice")[0].value = detailoverprice;
+
+    if(Number(overprice(obj))==0){       
         detail(obj).querySelectorAll(".DetailOverPrice")[0].value = 0; 
     } 
 
-    detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result;
-    //detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result.toLocaleString();
+    // 計算結果にカンマをつける
+    //detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result;
+    detail(obj).querySelectorAll(".DetailSellPrice")[0].value = result.toLocaleString();
     return result ;
 }
 
@@ -74,6 +78,18 @@ function Productorder(obj)
     document.getElementById('id_ProductOrderOrderNumber').value = result;
 }
 
+// submit前にカンマをはずす
+$('#form').submit(function(){
+    var DetailUnitPrice = removeComma($(".DetailUnitPrice").val());
+    var DetailPrice = removeComma($(".DetailPrice").val());
+    var DetailOverPrice = removeComma($(".DetailOverPrice").val());
+    var DetailSellPrice = removeComma($(".DetailSellPrice").val());
+
+    $(".DetailUnitPrice").val(DetailUnitPrice);
+    $(".DetailPrice").val(DetailPrice);
+    $(".DetailOverPrice").val(DetailOverPrice);
+    $(".DetailSellPrice").val(DetailSellPrice);
+});
 
 const input = document.querySelector('input')
 

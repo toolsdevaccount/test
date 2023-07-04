@@ -148,7 +148,7 @@
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input DetailUnitPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="intcomma(this);" value={{ form.DetailUnitPrice.value| intcomma }}>                                   
+																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" value={{ form.DetailUnitPrice.value| intcomma }}>                                   
 																	</div>
 																	{% if form.errors.DetailUnitPrice %}
 																	{% for error in form.errors.DetailUnitPrice %}

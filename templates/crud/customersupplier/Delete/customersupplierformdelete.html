@@ -211,6 +211,18 @@
 			}
 		})
 		dlt.addEventListener('click', function() {
+            var lastclaim = removeComma($(".LastClaimBalance").val());
+            var receivable = removeComma($(".LastReceivable").val());
+            var payable = removeComma($(".LastPayable").val());
+            var proceeds = removeComma($(".LastProceeds").val());
+            var target = removeComma($(".ProceedsTarget").val());
+
+            $(".LastClaimBalance").val(lastclaim);
+            $(".LastReceivable").val(receivable);
+            $(".LastPayable").val(payable);
+            $(".LastProceeds").val(proceeds);
+            $(".ProceedsTarget").val(target);
+
             document.delform.submit();
 		})
         cls.addEventListener('click', function() {
@@ -219,6 +231,11 @@
 				modal[i].style.visibility = 'hidden';
 			}
 		})
+        function removeComma(number) {
+            var removed = number.replace(/,/g, '');
+            return parseInt(removed, 10);
+        }
+
 	</script>
 </form>
 {% endblock %}   

@@ -23,18 +23,4 @@ document.addEventListener('DOMContentLoaded', function(){
         
         document.querySelectorAll('.tab-contents-item')[index].classList.add('active');
         };
-    });
-
-    // 3桁カンマ区切りとする.
-    function comma(obj) {
-        var lastclaim = detail(obj).querySelectorAll(".LastClaimBalance")[0].value;
-        var item =  lastclaim.toLocaleString();
-        detail(obj).querySelectorAll(".LastClaimBalance")[0].value = item;
-    }
-
-    // 指定したエレメント(input)が所属する行(tr)を取得
-    function detail(obj)
-    {
-        return obj.parentElement.parentElement.parentElement ;
-    }
-    
+    });    

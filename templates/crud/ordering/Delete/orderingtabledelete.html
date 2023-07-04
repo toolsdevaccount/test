@@ -90,13 +90,12 @@
 														<tbody id="list">
 															{% for form in formset %}
 															<tr class="fds-table__tr fds-table__tr--hoverable list_var">
-																<input type="hidden" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" name="OrderingTableId-0-id" id="id_OrderingTableId-0-id" value={{ form.id.value }} >
 																<!-- 削除 -->
 																<td class="fds-table__td fds-table__td--col-fixed">
 																	<div class="fds-table__td-content">
 																		<div class="fds-checkbox">
 																			<label class="fds-checkbox__label">
-																				<input type="checkbox"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-Is_Deleted" data-name-format="OrderingTableId-%d-Is_Deleted" name="OrderingTableId-0-Is_Deleted" id="id_OrderingTableId-0-Is_Deleted" class="fds-checkbox__input DELETE" value="1" checked>
+																				<input type="checkbox"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-is_Deleted" data-name-format="OrderingTableId-%d-is_Deleted" name="OrderingTableId-0-is_Deleted" id="id_OrderingTableId-0-is_Deleted" class="fds-checkbox__input DELETE" value="1" checked>
 																				<span class="fds-checkbox__text">
 																				</span>
 																			</label>
@@ -141,7 +140,7 @@
 																<!-- 仕入単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+																		<input type="text" class="fds-form-input DetailUnitPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
 																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" value={{ form.DetailUnitPrice.value| intcomma }}>                                   
 																	</div>
 																</td>
@@ -200,6 +199,8 @@
 																	</div>
 																	</div>
 																</td>
+																<input type="hidden" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" name="OrderingTableId-0-DELETE" id="id_OrderingTableId-0-DELETE">
+																<input type="hidden" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" name="OrderingTableId-0-id" id="id_OrderingTableId-0-id" value={{ form.id.value }} >
 																<!-- <td class="fds-table__td">
 																	<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny list_del" style="width: 60px;">削除</button>
 																</td> -->
@@ -233,6 +234,6 @@
 										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
-										<script src="{% static '\js\modal.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\modalordering.js' %}" charset="UTF-8"></script>
 										{% endblock %}
 			
