@@ -78,19 +78,6 @@ function Productorder(obj)
     document.getElementById('id_ProductOrderOrderNumber').value = result;
 }
 
-// submit前にカンマをはずす
-$('#form').submit(function(){
-    var DetailUnitPrice = removeComma($(".DetailUnitPrice").val());
-    var DetailPrice = removeComma($(".DetailPrice").val());
-    var DetailOverPrice = removeComma($(".DetailOverPrice").val());
-    var DetailSellPrice = removeComma($(".DetailSellPrice").val());
-
-    $(".DetailUnitPrice").val(DetailUnitPrice);
-    $(".DetailPrice").val(DetailPrice);
-    $(".DetailOverPrice").val(DetailOverPrice);
-    $(".DetailSellPrice").val(DetailSellPrice);
-});
-
 const input = document.querySelector('input')
 
 input.checked = true

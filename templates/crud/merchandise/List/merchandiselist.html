@@ -128,7 +128,8 @@
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 200px;">
 									<span class="fds-table__td-text">
-										{{ merchandise.McdManagerCode.first_name|add:user.last_name }}
+										<!-- {{ merchandise.McdManagerCode.first_name|add:user.last_name }} -->
+										{{ merchandise.McdManagerCode.first_name|add:merchandise.McdManagerCode.last_name }}
 									</span>
 								</div>
 							</td>

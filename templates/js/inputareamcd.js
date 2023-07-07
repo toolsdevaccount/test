@@ -1,6 +1,23 @@
 $(function(){
     $('#form').submit(function() {  	 // フォームを送信する直前 tableの行数を取得
-        var row = tblrow.rows.length -1; //表題分差引く
+        //仕入単価のカンマを取り除く
+        $(".McdUnitPrice").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+        //販売単価のカンマを取り除く
+        $(".McdSellPrice").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+        //加工賃のカンマを取り除く
+        $(".McdProcessfee").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+        //明細の単価のカンマを取り除く
+        $(".McdDtlPrice").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+	
+		var row = tblrow.rows.length -1; //表題分差引く
         $('[name=McdDtid-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
 
         var row = tblrowcolor.rows.length -1; //表題分差引く

@@ -40,16 +40,12 @@
         //桁区切りして配置（加工賃）
         Processfee = Number(McdProcessfee(obj)).toLocaleString();
         detail(obj).querySelectorAll(".McdProcessfee")[0].value = Processfee;
-
     }
-
-    // submit前にカンマをはずす
-    $('#form').submit(function(){
-        var UnitPrice = removeComma($(".McdUnitPrice").val());
-        var SellPrice = removeComma($(".McdSellPrice").val());
-        var Processfee = removeComma($(".McdProcessfee").val());
-
-        $(".McdUnitPrice").val(UnitPrice);
-        $(".McdSellPrice").val(SellPrice);
-        $(".McdProcessfee").val(Processfee);
-    });
+   
+    function detailcomma(obj)
+    {
+        //桁区切りして配置（仕入単価）
+        val = Number(detail(obj).querySelectorAll(".McdDtlPrice")[0].value);
+        DtlPrice = val.toLocaleString();
+        detail(obj).querySelectorAll(".McdDtlPrice")[0].value = DtlPrice;
+    }

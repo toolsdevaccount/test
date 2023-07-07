@@ -1,10 +1,28 @@
 $(function(){
     $('#form').submit(function() {  	 // フォームを送信する直前 tableの行数を取得
+        //仕入単価のカンマを取り除く
+        $(".DetailUnitPrice").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+
+        //通常単価のカンマを取り除く
+        $(".DetailPrice").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+
+        //UP分単価のカンマを取り除く
+        $(".DetailOverPrice").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+
+        //販売単価のカンマを取り除く
+        $(".DetailSellPrice").each(function() {
+            $(this).val(removeComma($(this).val()));
+        });
+
         var row = tblrow.rows.length -1; //表題分差引く
         $('[name=OrderingTableId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
     });
-
-    //$('#list').addInputArea();
 
     $('#list').addInputArea({
         after_add: function () {

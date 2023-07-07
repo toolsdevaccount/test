@@ -26,7 +26,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
     #検索機能
     def get_queryset(self):
         # 依頼日大きい順で抽出
-        queryset = OrderingTable.objects.order_by('OrderingDate','Created_at').reverse()
+        queryset = OrderingTable.objects.order_by('OrderingDate','SlipDiv','OrderNumber').reverse()
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
         query = self.request.GET.get('query')      
@@ -184,15 +184,9 @@ class orderingDeleteView(LoginRequiredMixin,UpdateView):
 
             if formset.is_valid():
                 instances = formset.save(commit=False)
-                # 明細の削除チェックがついたfileを取り出して更新
-                for file in formset.deleted_objects:
-                    file.Updated_id = self.request.user.id
-                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.is_Deleted = True
-                    file.save()
-
                 # 明細のfileを取り出して削除
                 for file in instances:
+                    file.is_Deleted = True
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()

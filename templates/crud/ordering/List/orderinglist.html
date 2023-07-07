@@ -123,26 +123,33 @@
 							<th class="fds-table__th">
 								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
 									<span class="fds-table__th-text">
-										商品名
+										依頼先
 									</span>
 								</div>
 							</th>
-							<th class="fds-table__th">
+							<!-- <th class="fds-table__th">
 				                <div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 100px;">
 				                  <span class="fds-table__th-text">
                     				番手
 				                  </span>
                 				</div>
-							</th>
+							</th> -->
 							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 120px;">
 									<span class="fds-table__th-text">
 										出荷先
 									</span>
 								</div>
 							</th>
 							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 150px;">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
+									<span class="fds-table__th-text">
+										商品名
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 120px;">
 									<span class="fds-table__th-text">
 										マーク名
 									</span>
@@ -200,19 +207,19 @@
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 150px;">
 									<span class="fds-table__td-text">
-										{{ OrderTable.ProductName }}
+										{{ OrderTable.RequestCode.CustomerOmitName }}
 									</span>
 								</div>
 							</td>
-							<td class="fds-table__td">
+							<!-- <td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 100px;">
 									<span class="fds-table__td-text">
 										{{ OrderTable.OrderingCount }}                 
 									</span>
 								</div>
-							</td>
+							</td> -->
 							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 150px;">
+								<div class="fds-table__td-content" style="width: 120px;">
 									<span class="fds-table__td-text">
 										{{ OrderTable.ShippingCode.CustomerOmitName }}                 
 									</span>
@@ -221,14 +228,17 @@
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 150px;">
 									<span class="fds-table__td-text">
+										{{ OrderTable.ProductName }}
+									</span>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 120px;">
+									<span class="fds-table__td-text">
 										{{ OrderTable.MarkName }}                 
 									</span>
 								</div>
 							</td>
-							<!-- <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-								</div>
-							</td> -->
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 125px;">
 									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 65px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>

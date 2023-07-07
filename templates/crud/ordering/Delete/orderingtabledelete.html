@@ -1,9 +1,6 @@
 										{% block content %}
 										{% load humanize %}
 										<div class="tab-contents-item">
-											<!-- <div class="fds-table-actions">
-												<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
-											</div> -->
 											<div class="fds-table-container" style="height: 85%;">
 												<div class="fds-table">
 													{{ formset.management_form }}
@@ -95,7 +92,7 @@
 																	<div class="fds-table__td-content">
 																		<div class="fds-checkbox">
 																			<label class="fds-checkbox__label">
-																				<input type="checkbox"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-is_Deleted" data-name-format="OrderingTableId-%d-is_Deleted" name="OrderingTableId-0-is_Deleted" id="id_OrderingTableId-0-is_Deleted" class="fds-checkbox__input DELETE" value="1" checked>
+																				<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_OrderingTableId-%d-is_Deleted" data-name-format="OrderingTableId-%d-is_Deleted" name="OrderingTableId-{{ forloop.counter0 }}-is_Deleted" id="id_OrderingTableId-{{ forloop.counter0 }}-is_Deleted" value="1" checked>
 																				<span class="fds-checkbox__text">
 																				</span>
 																			</label>
@@ -199,11 +196,8 @@
 																	</div>
 																	</div>
 																</td>
-																<input type="hidden" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" name="OrderingTableId-0-DELETE" id="id_OrderingTableId-0-DELETE">
+																<input type="hidden" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" name="OrderingTableId-{{ forloop.counter0 }}-DELETE" id="id_OrderingTableId-{{ forloop.counter0 }}-DELETE">
 																<input type="hidden" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" name="OrderingTableId-0-id" id="id_OrderingTableId-0-id" value={{ form.id.value }} >
-																<!-- <td class="fds-table__td">
-																	<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny list_del" style="width: 60px;">削除</button>
-																</td> -->
 															</tr>
 															{% endfor %}
 														</tbody>
