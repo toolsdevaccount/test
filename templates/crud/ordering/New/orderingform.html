@@ -145,16 +145,6 @@
                                                             {% endfor %}
                                                         </datalist> 
                                                         <output name="DestinationCode" id="id_DestinationCode"></output>
-                                                        <!-- <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">手配先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="DestinationCode" id="id_DestinationCode">
-                                                                    {% for data in form.DestinationCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div> -->
                                                         {% if form.errors.DestinationCode %}
                                                         {% for error in form.errors.DestinationCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -171,16 +161,6 @@
                                                             {% endfor %}
                                                         </datalist>
                                                         <output name="SupplierCode" id="id_SupplierCode"></output>
-                                                        <!-- <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">仕入先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="SupplierCode" id="id_SupplierCode">
-                                                                    {% for data in form.SupplierCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div> -->
                                                         {% if form.errors.SupplierCode %}
                                                         {% for error in form.errors.SupplierCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -197,17 +177,6 @@
                                                             {% endfor %}
                                                         </datalist>
                                                         <output name="ShippingCode" id="id_ShippingCode"></output>
-
-                                                        <!-- <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">出荷先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ShippingCode" id="id_ShippingCode">
-                                                                    {% for data in form.ShippingCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div> -->
                                                         {% if form.errors.ShippingCode %}
                                                         {% for error in form.errors.ShippingCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -221,13 +190,13 @@
                                                         <!-- 得意先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">得意先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="CustomeCode" id="id_CustomeCode">
-                                                                    {% for data in form.CustomeCode %}
+                                                            <input type="text" class="fds-form-input" placeholder="" list="Customer" name="CustomeCode" id="id_CustomeCode" style="width:25%;">
+                                                            <datalist id="Customer">
+                                                                {% for data in form.CustomeCode %}
                                                                     {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                                {% endfor %}
+                                                            </datalist>
+                                                            <output name="CustomeCode" id="id_CustomeCode"></output>
                                                         </div>
                                                         {% if form.errors.CustomeCode %}
                                                         {% for error in form.errors.CustomeCode %}
@@ -239,13 +208,13 @@
                                                         <!-- 依頼先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">依頼先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="RequestCode" id="id_RequestCode">
-                                                                    {% for data in form.RequestCode %}
+                                                            <input type="text" class="fds-form-input" placeholder="" list="Request" name="RequestCode" id="id_RequestCode" style="width:25%;">
+                                                            <datalist id="Request">
+                                                                {% for data in form.RequestCode %}
                                                                     {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                                {% endfor %}
+                                                            </datalist>
+                                                            <output name="RequestCode" id="id_RequestCode"></output>
                                                         </div>
                                                         {% if form.errors.RequestCode %}
                                                         {% for error in form.errors.RequestCode %}
@@ -260,13 +229,13 @@
                                                         <!-- 原糸メーカ -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">原糸メーカー:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="StainShippingCode" id="id_StainShippingCode">
-                                                                    {% for data in form.StainShippingCode %}
+                                                            <input type="text" class="fds-form-input" placeholder="" list="Stain" name="StainShippingCode" id="id_StainShippingCode" style="width:25%;">
+                                                            <datalist id="Stain">
+                                                                {% for data in form.StainShippingCode %}
                                                                     {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                                {% endfor %}
+                                                            </datalist>
+                                                            <output name="StainShippingCode" id="id_StainShippingCode"></output>
                                                         </div>
                                                         {% if form.errors.StainShippingCode %}
                                                         {% for error in form.errors.StainShippingCode %}

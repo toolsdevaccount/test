@@ -78,6 +78,13 @@ function Productorder(obj)
     document.getElementById('id_ProductOrderOrderNumber').value = result;
 }
 
+function ItemNumber(obj)
+{		
+    var item = detail(obj).querySelectorAll(".DetailItemNumber")[0].value;
+    var Result = item.toString().padStart( 4, '0'); 
+    detail(obj).querySelectorAll(".DetailItemNumber")[0].value = Result;
+}
+
 const input = document.querySelector('input')
 
 input.checked = true

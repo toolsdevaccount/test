@@ -80,12 +80,12 @@ class CustomerSupplierChoiceField(ModelChoiceField):
         #return  obj.CustomerCode + ":" + obj.CustomerOmitName
 
 class OrderingForm(forms.ModelForm):
-    DestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    SupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    ShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    CustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    RequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    StainShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
+    DestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    SupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    ShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    CustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    RequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    StainShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
 
     class Meta:
         model = OrderingTable

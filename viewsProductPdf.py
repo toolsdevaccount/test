@@ -121,8 +121,7 @@ def print_string(pdf_canvas,dt):
     pdf_canvas.drawString(50, 430, '出荷先: ' + dt[0][34])
     pdf_canvas.drawString(50, 410, '〒 ' + dt[0][35])
     pdf_canvas.drawString(50, 390, dt[0][36] + dt[0][37] + dt[0][38] + dt[0][39])
-    #pdf_canvas.drawString(50, 370, 'TEL: ' + dt[0][40] + '　FAX: ' + dt[0][41])
-    pdf_canvas.drawString(50, 370, 'TEL: ' + dt[0][40])
+    pdf_canvas.drawString(50, 370, 'TEL: ' + dt[0][40] + '　FAX: ' + dt[0][41])
 
     # 自社情報
     font_size = 10
@@ -179,7 +178,6 @@ def print_string(pdf_canvas,dt):
             OrderingCount = Paragraph(row[4],styleLeft)
             DetailColorNumber = Paragraph(row[16],styleLeft)
             DetailColor = Paragraph(row[17],styleLeft)
-            DetailSummary = Paragraph(row[21],styleLeft)
             # 指定した列の右寄せ
             Volume = Paragraph(row[19],styleRight)
             UnitPrice = Paragraph(row[20],styleRight)
@@ -187,7 +185,7 @@ def print_string(pdf_canvas,dt):
             SpecifyDeliveryDate = Paragraph(row[45],styleRight)
 
             data += [
-                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, ' ', UnitPrice, SpecifyDeliveryDate, StainAnswerDeadline, DetailSummary],
+                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, ' ', UnitPrice, SpecifyDeliveryDate, StainAnswerDeadline, ' '],
             ]
         else:
             data += [
