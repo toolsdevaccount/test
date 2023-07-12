@@ -65,10 +65,10 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 伝票区分 -->
                                                         <label class="fds-label-input">オーダーNO:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="SlipDiv" id="id_SlipDiv" maxlength="1" style="width:9%;" value={{ object.SlipDiv }} readonly>
+                                                        <input type="tel" class="fds-form-input" placeholder="" name="SlipDiv" id="id_SlipDiv" maxlength="1" style="width: 10%;" value={{ object.SlipDiv }} readonly>
                                                         <!-- オーダーNO -->
                                                         <span>-</span>
-                                                        <input type="text" class="fds-form-input" placeholder="" style="width:40%; text-align: right;" name="OrderNumber" id="id_OrderNumber" maxlength="7" value={{ object.OrderNumber }}  readonly>
+                                                        <input type="tel" class="fds-form-input" placeholder="" style="width:40%; text-align: right;" name="OrderNumber" id="id_OrderNumber" maxlength="7" value={{ object.OrderNumber }}  readonly>
                                                         {% if form.errors.OrderNumber %}
                                                         {% for error in form.errors.OrderNumber %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
@@ -78,7 +78,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 依頼日 -->
                                                         <label class="fds-label-input">依頼日:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" value={{ object.OrderingDate }}>
+                                                        <input type="tel" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" value={{ object.OrderingDate }}>
                                                         {% if form.errors.OrderingDate %}
                                                         {% for error in form.errors.OrderingDate %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

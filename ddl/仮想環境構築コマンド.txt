@@ -1,0 +1,38 @@
+python 仮想環境構築
+
+pip install Django
+pip install virtualenv
+mkdir pythontest
+virtualenv env
+python -m venv env
+env\scripts\activate
+django-admin startproject mysite
+cd mysite
+django-admin startapp myapp
+
+pip install django-widget-tweaks
+pip install django-glrm
+pip install reportlab
+pip install mysqlclient
+
+pip uninstall django-widget-tweaks
+pip uninstall django-glrm
+pip uninstall reportlab
+pip uninstall mysqlclient
+
+CREATE DATABASE ksmDB CHARACTER SET utf8mb4
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
+python manage.py runserver
+
+社内ネットワークで他PCから利用したい場合
+python manage.py runserver IPアドレス:ポート番号
+
+
+デバッグ時にimporteroor等発生した場合
+pip install Django
+
+

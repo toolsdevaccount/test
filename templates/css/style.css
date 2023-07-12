@@ -6619,3 +6619,12 @@ p{
   margin:auto;
 }
 
+/* 追加 ime-modeをinactiveに*/ 
+input[type="tel"]{
+  ime-mode: inactive;
+}
+
+/* 追加 ime-modeをactiveに*/ 
+input[type="text"]{
+  ime-mode: active;
+}

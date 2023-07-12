@@ -45,7 +45,7 @@
                             <!-- コード -->
                             <div class="fds-form-input-message" style="width:25%;">
                                 <label class="fds-label-input">コード:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="CustomerCode" id="id_CustomerCode" value={{ form.data.CustomerCode }}>
+                                <input type="tel" class="fds-form-input" placeholder="" name="CustomerCode" id="id_CustomerCode" value={{ form.data.CustomerCode }}>
                                 {% if form.errors.CustomerCode %}
                                 {% for error in form.errors.CustomerCode %}
                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -101,7 +101,7 @@
                             <div class="fds-form-input-message" style="width:25%;">
                                 <!-- 郵便番号 -->
                                 <label class="fds-label-input">郵便番号:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="PostCode" id="id_PostCode" value={{ form.data.PostCode }}>
+                                <input type="tel" class="fds-form-input" placeholder="" name="PostCode" id="id_PostCode" value={{ form.data.PostCode }}>
                                 {% if form.errors.PostCode %}
                                 {% for error in form.errors.PostCode %}
                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -165,7 +165,7 @@
                             <div class="fds-form-input-message" style="width:25%;">
                                 <!-- 電話番号 -->
                                 <label class="fds-label-input">電話番号:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="PhoneNumber" id="id_PhoneNumber" value={{ form.data.PhoneNumber }}>
+                                <input type="tel" class="fds-form-input" placeholder="" name="PhoneNumber" id="id_PhoneNumber" value={{ form.data.PhoneNumber }}>
                                 {% if form.errors.PhoneNumber %}
                                 {% for error in form.errors.PhoneNumber %}
                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -175,7 +175,7 @@
                             <div class="fds-form-input-message" style="width:25%;">
                                 <!-- FAX番号 -->
                                 <label class="fds-label-input">FAX番号:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="FaxNumber" id="id_FaxNumber" value={{ form.data.FaxNumber }}>
+                                <input type="tel" class="fds-form-input" placeholder="" name="FaxNumber" id="id_FaxNumber" value={{ form.data.FaxNumber }}>
                                 {% if form.errors.FaxNumber %}
                                 {% for error in form.errors.FaxNumber %}
                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

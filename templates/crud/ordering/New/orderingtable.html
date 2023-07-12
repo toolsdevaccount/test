@@ -88,7 +88,7 @@
 																<!-- 項番 -->
 																<td class="fds-table__td">
 																	<div id="div" class="fds-table__td-content">
-																		<input type="text" class="fds-form-input DetailItemNumber" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+																		<input type="tel" class="fds-form-input DetailItemNumber" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
 																		name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="0001" onchange="ItemNumber(this);">
 																	</div>
 																</td>
@@ -116,7 +116,7 @@
 																<!-- 数量 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" step="0.1" class="fds-form-input DetailVolume" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
+																		<input type="tel" step="0.1" class="fds-form-input DetailVolume" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
 																		name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="0.0" data-empty-val="false">                                   
 																	</div>
 																	{% if form.errors.DetailVolume %}
@@ -128,7 +128,7 @@
 																<!-- 仕入単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input DetailUnitPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+																		<input type="tel" class="fds-form-input DetailUnitPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
 																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" value="0" data-empty-val="false">                                   
 																	</div>
 																	{% if form.errors.DetailUnitPrice %}
@@ -140,7 +140,7 @@
 																<!-- 通常単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input DetailPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+																		<input type="tel" class="fds-form-input DetailPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
 																		name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" value="0" data-empty-val="false">      
 																	</div>
 																	{% if form.errors.DetailPrice %}
@@ -152,7 +152,7 @@
 																<!-- UP分単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input DetailOverPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+																		<input type="tel" class="fds-form-input DetailOverPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
 																		name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="0" data-empty-val="false">                                                                            
 																	</div>
 																	{% if form.errors.DetailOverPrice %}
@@ -164,7 +164,7 @@
 																<!-- 販売単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input DetailSellPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+																		<input type="tel" class="fds-form-input DetailSellPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
 																		name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="0" data-empty-val="false">                                   
 																	</div>
 																	{% if form.errors.DetailSellPrice %}
@@ -183,14 +183,14 @@
 																<!-- 希望納期 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input SpecifyDeliveryDate" style="width: 100px;" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
+																		<input type="tel" class="fds-form-input SpecifyDeliveryDate" style="width: 100px;" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
 																		name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate">                                   
 																	</div>
 																</td>
 																<!-- 回答納期 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input StainAnswerDeadline" style="width: 100px;" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
+																		<input type="tel" class="fds-form-input StainAnswerDeadline" style="width: 100px;" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
 																		name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline">                                   
 																	</div>
 																</td>
