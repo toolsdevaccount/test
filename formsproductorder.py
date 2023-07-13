@@ -21,12 +21,12 @@ class CustomerSupplierChoiceField(ModelChoiceField):
 
 class ProductOrderForm(forms.ModelForm):
     ProductOrderManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
-    ProductOrderApparelCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    ProductOrderDestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    ProductOrderSupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    ProductOrderShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    ProductOrderCustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
-    ProductOrderRequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all(),empty_label='')
+    ProductOrderApparelCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    ProductOrderDestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    ProductOrderSupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    ProductOrderShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    ProductOrderCustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    ProductOrderRequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
 
     class Meta:
         model = ProductOrder
