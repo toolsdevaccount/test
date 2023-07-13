@@ -17,7 +17,7 @@ class ManagerChoiceField(ModelChoiceField):
 
 class CustomerSupplierChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
-        return  obj.CustomerCode + ":" + obj.CustomerOmitName
+        return  obj.CustomerCode + ":" + obj.CustomerOmitName[0:5]
 
 class ProductOrderForm(forms.ModelForm):
     ProductOrderManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
