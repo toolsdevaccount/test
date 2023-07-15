@@ -138,13 +138,23 @@
                                                         <!-- 手配先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">手配先:</label>
-                                                            <div class="fds-select-container">
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode">
+                                                            <datalist id="Destination">
+                                                            {% for data in DestinationCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="DestinationCode" id="id_DestinationCode" value="{{ form.DestinationCode.value }}">
+    
+
+
+                                                            <!-- <div class="fds-select-container">
                                                                 <select class="fds-select fds-form-input fds-form-input--medium" name="DestinationCode" id="id_DestinationCode">
-                                                                    {% for data in form.DestinationCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
+                                                                {% for data in DestinationCode %}
+                                                                    <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                                {% endfor %}
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                         {% if form.errors.DestinationCode %}
                                                         {% for error in form.errors.DestinationCode %}

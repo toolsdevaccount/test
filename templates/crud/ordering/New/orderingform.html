@@ -138,13 +138,13 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 手配先 -->
                                                         <label class="fds-label-input">手配先:</label>
-                                                        <input type="tel" class="fds-form-input" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" style="width:25%;">
+                                                        <input type="tel" class="fds-form-input" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode">
                                                         <datalist id="Destination">
-                                                            {% for data in form.DestinationCode %}
-                                                                {{ data }}
-                                                            {% endfor %}
-                                                        </datalist> 
-                                                        <output name="DestinationCode" id="id_DestinationCode"></output>
+                                                        {% for data in DestinationCode %}
+                                                            <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                        {% endfor %}
+                                                        </datalist>
+                                                        <input type="hidden" name="DestinationCode" id="id_DestinationCode" value="">
                                                         {% if form.errors.DestinationCode %}
                                                         {% for error in form.errors.DestinationCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -154,13 +154,13 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 仕入先 -->
                                                         <label class="fds-label-input">仕入先:</label>
-                                                        <input type="tel" class="fds-form-input" placeholder="" list="Supplier" name="SupplierCode" id="id_SupplierCode" style="width:25%;">
+                                                        <input type="tel" class="fds-form-input" placeholder="" list="Supplier" name="SupplierCode" id="id_SupplierCode">
                                                         <datalist id="Supplier">
-                                                            {% for data in form.SupplierCode %}
-                                                                {{ data }}
-                                                            {% endfor %}
+                                                        {% for data in SupplierCode %}
+                                                            <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                        {% endfor %}
                                                         </datalist>
-                                                        <output name="SupplierCode" id="id_SupplierCode"></output>
+                                                        <input type="hidden" name="SupplierCode" id="id_SupplierCode" value="">
                                                         {% if form.errors.SupplierCode %}
                                                         {% for error in form.errors.SupplierCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -170,13 +170,13 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 出荷先 -->
                                                         <label class="fds-label-input">出荷先:</label>
-                                                        <input type="tel" class="fds-form-input" placeholder="" list="Shipping" name="ShippingCode" id="id_ShippingCode" style="width:25%;">
+                                                        <input type="tel" class="fds-form-input" placeholder="" list="Shipping" name="ShippingCode" id="id_ShippingCode">
                                                         <datalist id="Shipping">
-                                                            {% for data in form.ShippingCode %}
-                                                                {{ data }}
-                                                            {% endfor %}
+                                                        {% for data in ShippingCode %}
+                                                            <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                        {% endfor %}
                                                         </datalist>
-                                                        <output name="ShippingCode" id="id_ShippingCode"></output>
+                                                        <input type="hidden" name="ShippingCode" id="id_ShippingCode" value="">
                                                         {% if form.errors.ShippingCode %}
                                                         {% for error in form.errors.ShippingCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -190,16 +190,16 @@
                                                         <!-- 得意先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">得意先:</label>
-                                                            <input type="tel" class="fds-form-input" placeholder="" list="Customer" name="CustomeCode" id="id_CustomeCode" style="width:25%;">
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Customer" name="CustomeCode" id="id_CustomeCode">
                                                             <datalist id="Customer">
-                                                                {% for data in form.CustomeCode %}
-                                                                    {{ data }}
-                                                                {% endfor %}
+                                                            {% for data in CustomerCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
                                                             </datalist>
-                                                            <output name="CustomeCode" id="id_CustomeCode"></output>
+                                                            <input type="hidden" name="CustomeCode" id="id_CustomeCode" value="">
                                                         </div>
-                                                        {% if form.errors.CustomeCode %}
-                                                        {% for error in form.errors.CustomeCode %}
+                                                        {% if form.errors.CustomerCode %}
+                                                        {% for error in form.errors.CustomerCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
                                                         {% endfor %}
                                                         {% endif %}   
@@ -208,13 +208,13 @@
                                                         <!-- 依頼先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">依頼先:</label>
-                                                            <input type="tel" class="fds-form-input" placeholder="" list="Request" name="RequestCode" id="id_RequestCode" style="width:25%;">
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Request" name="RequestCode" id="id_RequestCode">
                                                             <datalist id="Request">
-                                                                {% for data in form.RequestCode %}
-                                                                    {{ data }}
-                                                                {% endfor %}
+                                                            {% for data in RequestCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
                                                             </datalist>
-                                                            <output name="RequestCode" id="id_RequestCode"></output>
+                                                            <input type="hidden" name="RequestCode" id="id_RequestCode" value="">
                                                         </div>
                                                         {% if form.errors.RequestCode %}
                                                         {% for error in form.errors.RequestCode %}
@@ -229,13 +229,13 @@
                                                         <!-- 原糸メーカ -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">原糸メーカー:</label>
-                                                            <input type="tel" class="fds-form-input" placeholder="" list="Stain" name="StainShippingCode" id="id_StainShippingCode" style="width:25%;">
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Stain" name="StainShippingCode" id="id_StainShippingCode">
                                                             <datalist id="Stain">
-                                                                {% for data in form.StainShippingCode %}
-                                                                    {{ data }}
-                                                                {% endfor %}
+                                                            {% for data in StainShippingCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
                                                             </datalist>
-                                                            <output name="StainShippingCode" id="id_StainShippingCode"></output>
+                                                            <input type="hidden" name="StainShippingCode" id="id_StainShippingCode" value="">
                                                         </div>
                                                         {% if form.errors.StainShippingCode %}
                                                         {% for error in form.errors.StainShippingCode %}

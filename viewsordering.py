@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
-from .models import OrderingTable, OrderingDetail
+from .models import OrderingTable, OrderingDetail, CustomerSupplier
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
@@ -28,7 +28,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
         # 依頼日大きい順で抽出
         queryset = OrderingTable.objects.order_by('OrderingDate','SlipDiv','OrderNumber').reverse()
         # 削除済除外
-        queryset = queryset.filter(is_Deleted=0)
+        queryset = queryset.filter(is_Deleted=0,Created_id=self.request.user.id)
         query = self.request.GET.get('query')      
         orderdateFrom = self.request.GET.get('orderdateFrom')
         orderdateTo = self.request.GET.get('orderdateTo')
@@ -54,19 +54,25 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     def get(self, request):
         form = OrderingForm(self.request.POST or None, 
                             initial={'OutputDiv': '1',
-                                     'DestinationCode': '1',
-                                     'SupplierCode': '1',
-                                     'ShippingCode': '1',
-                                     'StainShippingCode': '1',
-                                     'CustomeCode': '1',
-                                     'RequestCode':'1',
                                      'OrderingDate':date.today(),
                                      })
         formset = OrderingFormset
-
+        DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
+        SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4)).order_by('CustomerCode')
+        ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
+        CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4)).order_by('CustomerCode')
+        RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
+        StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
+        
         context = {
             'form': form,
             'formset': formset,
+            'DestinationCode': DestinationCode,
+            'SupplierCode':SupplierCode,
+            'ShippingCode':ShippingCode,
+            'CustomerCode':CustomerCode,
+            'RequestCode':RequestCode,
+            'StainShippingCode':StainShippingCode,
         }
 
         return render(request, 'crud/ordering/new/orderingform.html', context)
@@ -111,8 +117,14 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         context = super(orderingUpdateView, self).get_context_data(**kwargs)
-        context.update(dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))))
-        
+        context.update(dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))),
+                       DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                       SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4)).order_by('CustomerCode'),
+                       ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                       CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4)).order_by('CustomerCode'),
+                       RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                       StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                       )
         return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる

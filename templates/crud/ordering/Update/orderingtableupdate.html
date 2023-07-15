@@ -135,7 +135,7 @@
 																<!-- 数量 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
-																		<input type="tel" step="0.1" class="fds-form-input" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
+																		<input type="tel" step="0.1" class="fds-form-input DetailVolume" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
 																		name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value={{ form.DetailVolume.value| intcomma }}>                                   
 																	</div>
 																	{% if form.errors.DetailVolume %}
@@ -253,6 +253,7 @@
 										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
 										{% load static %}
 										<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\datalist.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>

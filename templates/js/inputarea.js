@@ -33,6 +33,12 @@ $(function(){
             var result = item.toString().padStart( 4, '0');
 
             tbl.querySelectorAll('.DetailItemNumber')[num -1].value = result;
+            // 初期値に0を送信
+            tbl.querySelectorAll('.DetailVolume')[num -1].value = 0;
+            tbl.querySelectorAll('.DetailUnitPrice')[num -1].value = 0;
+            tbl.querySelectorAll('.DetailPrice')[num -1].value = 0;
+            tbl.querySelectorAll('.DetailOverPrice')[num -1].value = 0;
+            tbl.querySelectorAll('.DetailSellPrice')[num -1].value = 0;
 
             var SpecifyDeliveryDate = document.getElementsByClassName('SpecifyDeliveryDate');
             var fp = flatpickr(SpecifyDeliveryDate, {

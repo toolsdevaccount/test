@@ -4,9 +4,10 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import prefecture, CustomerSupplier, OrderingTable, OrderingDetail
 
 from django.forms import ModelChoiceField
-
 # バリデーション
 import re
+# 検索機能のために追加
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -76,16 +77,16 @@ class CustomerSupplierForm(forms.ModelForm):
 
 class CustomerSupplierChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
-        return  obj.CustomerOmitName[0:5] + ":" + obj.CustomerCode
-        #return  obj.CustomerCode + ":" + obj.CustomerOmitName
+        #return  obj.CustomerOmitName[0:5] + ":" + obj.CustomerCode
+        return  obj.CustomerCode + ":" + obj.CustomerOmitName[0:5]
 
 class OrderingForm(forms.ModelForm):
-    DestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    SupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    ShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    CustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    RequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    StainShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    #DestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'))
+    #SupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.filter(Q(MasterDiv=3) | Q(MasterDiv=4)).order_by('CustomerCode'),empty_label='')
+    #ShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    #CustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.filter(Q(MasterDiv=2) | Q(MasterDiv=4)).order_by('CustomerCode'),empty_label='')
+    #RequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
+    #StainShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
 
     class Meta:
         model = OrderingTable
@@ -94,20 +95,27 @@ class OrderingForm(forms.ModelForm):
                   'TitleDiv','StockDiv','MarkName','OutputDiv',
                  )
 
+    # 手配先
+    def clean_DestinationCode(self):
+        DestinationCode = self.cleaned_data['DestinationCode']
+        if DestinationCode == None:
+            raise forms.ValidationError(u'このフィールドは必須です。')
+        return DestinationCode
+
     # オーダーナンバー重複チェック
-    def clean_OrderNumber(self):
-        SlipDiv = self.cleaned_data['SlipDiv']
-        OrderNumber = self.cleaned_data['OrderNumber']
-        idcnt = OrderingTable.objects.filter(id__exact = self.instance.pk).count()
-        OrderNumbercnt = OrderingTable.objects.filter(OrderNumber__exact = OrderNumber.zfill(7)).count()
-        if idcnt > 0:
-            OrderNumbercnt = 0           
-        if OrderNumbercnt > 0 and (SlipDiv == "S" or SlipDiv == "B" or SlipDiv == "F" or SlipDiv == "D"):
-            OrderNumbercnt = 0
-        if OrderNumber:
-            if OrderNumbercnt > 0:
-                raise forms.ValidationError(u'オーダーNOが重複しています')
-        return OrderNumber
+    #def clean_OrderNumber(self):
+    #    SlipDiv = self.cleaned_data['SlipDiv']
+    #    OrderNumber = self.cleaned_data['OrderNumber']
+    #    idcnt = OrderingTable.objects.filter(id__exact = self.instance.pk).count()
+    #    OrderNumbercnt = OrderingTable.objects.filter(OrderNumber__exact = OrderNumber.zfill(7)).count()
+    #    if idcnt > 0:
+    #        OrderNumbercnt = 0           
+    #    if OrderNumbercnt > 0 and (SlipDiv == "S" or SlipDiv == "B" or SlipDiv == "F" or SlipDiv == "D"):
+    #        OrderNumbercnt = 0
+    #    if OrderNumber:
+    #        if OrderNumbercnt > 0:
+    #            raise forms.ValidationError(u'オーダーNOが重複しています')
+    #    return OrderNumber
 
     #def clean(self):
     #    cleaned_data = super(OrderingForm, self).clean()
