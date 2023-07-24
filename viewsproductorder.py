@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
-from .models import ProductOrder, ProductOrderDetail
+from .models import ProductOrder, ProductOrderDetail, CustomerSupplier
 from django.contrib.auth.mixins import LoginRequiredMixin
 # ajax
 from django.http import JsonResponse
@@ -66,10 +66,22 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                         })
 
         formset = ProductOrderFormset(self.request.POST or None)
+        ProductOrderApparelCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
+        ProductOrderDestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
+        ProductOrderSupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4)).order_by('CustomerCode')
+        ProductOrderShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
+        ProductOrderCustomeCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4)).order_by('CustomerCode')
+        ProductOrderRequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode')
 
         context = {
             'form': form,
             'formset': formset,
+            'ProductOrderApparelCode': ProductOrderApparelCode,
+            'ProductOrderDestinationCode': ProductOrderDestinationCode,
+            'ProductOrderSupplierCode':ProductOrderSupplierCode,
+            'ProductOrderShippingCode':ProductOrderShippingCode,
+            'ProductOrderCustomeCode':ProductOrderCustomeCode,
+            'ProductOrderRequestCode':ProductOrderRequestCode,
         }
 
         return render(request, 'crud/productorder/new/productorderform.html', context)
@@ -188,7 +200,14 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
                         , [str(pk)])
             colorsize = dictfetchall(cursor)
 
-        context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))))      
+        context.update(dict(formset=ProductOrderFormset(self.request.POST or None, instance=self.get_object(), queryset=ProductOrderDetail.objects.filter(is_Deleted=0))),
+                            ProductOrderApparelCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                            ProductOrderDestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                            ProductOrderSupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4)).order_by('CustomerCode'),
+                            ProductOrderShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                            ProductOrderCustomeCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4)).order_by('CustomerCode'),
+                            ProductOrderRequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode'),
+                        )      
         context.update(list=colorsize) 
 
         return context

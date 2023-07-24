@@ -13,22 +13,3 @@ document.addEventListener ('input', (event)=> {
     }
 
 }, true);
-
-document.getElementById('Destination').addEventListener('load', (e) => {
-    let obj = e.target;
-    let key = obj.value;
-    let a = null;
-    console.log(obj);
-    Array.from(document.getElementById('Destination').children).forEach((opt) => {
-        if(opt.value == key){
-            a = opt.label;
-        }
-    });
-    console.log(a);
-});
-/*
-$(function(){
-    var option =  document.querySelector(`input[type=hidden][name="DestinationCode"]`).value;
-    var list =  document.querySelector(`datalist[id="Destination"]`);
-    console.log(list);
-}); */
