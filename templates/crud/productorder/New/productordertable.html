@@ -10,6 +10,11 @@
 															<tr class="fds-table__tr">
 																<th class="fds-table__th">
 																	<div class="fds-table__th-content fds-table__th-content--text">
+																		<span class="fds-table__th-text">色番</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text">
 																		<span class="fds-table__th-text">カラー</span>
 																	</div>
 																</th>
@@ -67,6 +72,12 @@
 												$.each(response.list, function(index, list) {
 													$('#list').append(														
 														'<tr class="fds-table__tr fds-table__tr--hoverable">' +
+															'<td class="fds-table__td">' +
+																'<div class="fds-table__td-content">' +
+																	'<label class="fds-label-input">' + list.McdColorNumber + '</label>' +										
+																'</div>' +
+																'<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId" name="PodDetailId-' + index + '-PodColorId" id="id_PodDetailId-' + index + '-PodColorId" value='+ list.id + '>' +
+															'</td>' +
 															'<td class="fds-table__td">' +
 																'<div class="fds-table__td-content">' +
 																	'<label class="fds-label-input">' + list.McdColor + '</label>' +										

@@ -115,6 +115,11 @@ class OrderingTable(models.Model):
             (1, "様"),
             (2, "御中"),
     ]
+    Sample = [
+            (0, ""),
+            (1, "量産"),
+            (2, "サンプル"),
+        ]
 
     SlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
     OrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
@@ -135,6 +140,7 @@ class OrderingTable(models.Model):
     StockDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="在庫済区分")
     MarkName = models.CharField(max_length=20,null=False,blank=True,verbose_name="マーク名")
     OutputDiv = models.IntegerField(null=False,blank=True,default=0,choices=Output,verbose_name="出力区分")
+    SampleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Sample,verbose_name="サンプル量産区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
@@ -222,6 +228,7 @@ class Merchandise(models.Model):
 
 class MerchandiseColor(models.Model):
     McdColorId = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdColorId',verbose_name="商品マスタid")
+    McdColorNumber = models.CharField(max_length=20,null=False,blank=True,verbose_name="商品カラー番号")
     McdColor = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="商品カラー")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
@@ -321,6 +328,7 @@ class ProductOrder(models.Model):
     ProductOrderRequestCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderRequestCode',verbose_name="依頼先コード")
     ProductOrderDeliveryDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="納期")
     ProductOrderBrandName = models.CharField(max_length=50,null=False,blank=True,default="",verbose_name="ブランド名")
+    ProductOrderMarkName = models.CharField(max_length=20,null=False,blank=True,verbose_name="マーク名")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")

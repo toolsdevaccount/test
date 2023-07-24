@@ -293,6 +293,18 @@
                                                         {% endif %}
                                                     </div>
                                                 </div>
+                                                <div class="fds-form-label fds-form-label--horizontal">
+                                                    <div class="fds-form-input-message" style="width:50%;">
+                                                        <!-- マーク名 -->
+                                                        <label class="fds-label-input">マーク名:</label>
+                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value={{ object.ProductOrderMarkName }}>
+                                                        {% if form.errors.ProductOrderMarkName %}
+                                                        {% for error in form.errors.ProductOrderMarkName %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                             {% include "crud/productorder/update/productordertableupdate.html" %}

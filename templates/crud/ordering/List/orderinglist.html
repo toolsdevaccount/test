@@ -98,6 +98,15 @@
 								</div>
 							</th>
 							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
+									<span class="fds-table__th-text">
+									区分
+									</span>
+									<span class="fds-icon fds-icon--filter fds-icon--small">
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
 								<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
 									<span class="fds-table__th-text">
 									依頼日
@@ -148,13 +157,13 @@
 									</span>
 								</div>
 							</th>
-							<th class="fds-table__th">
+							<!-- <th class="fds-table__th">
 								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 120px;">
 									<span class="fds-table__th-text">
 										マーク名
 									</span>
 								</div>
-							</th>
+							</th> -->
 							<th class="fds-table__th">
 								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 125px;">
 									<span class="fds-table__th-text">
@@ -167,6 +176,13 @@
 			        <tbody class="fds-table__tbody-hover-button">
 						{% for OrderTable in object_list %}
 						<tr class="fds-table__tr">
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 80px;">
+									<span class="fds-table__td-text">
+										{{ OrderTable.get_SampleDiv_display }}
+									</span>
+								</div>
+							</td>
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 80px;">
 									<span class="fds-table__td-text">
@@ -232,13 +248,13 @@
 									</span>
 								</div>
 							</td>
-							<td class="fds-table__td">
+							<!-- <td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 120px;">
 									<span class="fds-table__td-text">
 										{{ OrderTable.MarkName }}                 
 									</span>
 								</div>
-							</td>
+							</td> -->
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 125px;">
 									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 65px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>

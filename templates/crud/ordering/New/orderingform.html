@@ -51,6 +51,21 @@
                                             <div class="fds-page-detail__main">
                                                 <div class="fds-form-label fds-form-label--horizontal">
                                                     <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 量産区分 -->
+                                                        <div class="fds-page-input-select">
+                                                            <label class="fds-label-input">量産区分:</label>
+                                                            <div class="fds-select-container">
+                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="SampleDiv" id="id_SampleDiv">
+                                                                    {% for data in form.SampleDiv %}
+                                                                    {{ data }}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="fds-form-label fds-form-label--horizontal">
+                                                    <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 出力区分 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">出力区分:</label>

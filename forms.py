@@ -81,18 +81,11 @@ class CustomerSupplierChoiceField(ModelChoiceField):
         return  obj.CustomerCode + ":" + obj.CustomerOmitName[0:5]
 
 class OrderingForm(forms.ModelForm):
-    #DestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'))
-    #SupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.filter(Q(MasterDiv=3) | Q(MasterDiv=4)).order_by('CustomerCode'),empty_label='')
-    #ShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    #CustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.filter(Q(MasterDiv=2) | Q(MasterDiv=4)).order_by('CustomerCode'),empty_label='')
-    #RequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    #StainShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-
     class Meta:
         model = OrderingTable
         fields = ('SlipDiv','OrderNumber','OrderingDate','StainShippingDate','ProductName','OrderingCount','StainPartNumber',
                   'StainMixRatio','DestinationCode','SupplierCode','ShippingCode','CustomeCode','StainShippingCode','RequestCode','SupplierPerson',
-                  'TitleDiv','StockDiv','MarkName','OutputDiv',
+                  'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv',
                  )
 
     # 手配先
