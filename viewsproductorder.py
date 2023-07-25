@@ -31,7 +31,8 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         # 依頼日大きい順で抽出
         queryset = ProductOrder.objects.order_by('ProductOrderOrderingDate','Created_at').reverse()
         # 削除済除外
-        queryset = queryset.filter(is_Deleted=0)
+        #queryset = queryset.filter(is_Deleted=0,Created_id=self.request.user.id)
+        queryset = queryset.filter(is_Deleted=0,ProductOrderManagerCode=self.request.user.id)
         query = self.request.GET.get('query')      
         productorderdateFrom = self.request.GET.get('productorderdateFrom')
         productorderdateTo = self.request.GET.get('productorderdateTo')

@@ -21,12 +21,6 @@ class CustomerSupplierChoiceField(ModelChoiceField):
 
 class ProductOrderForm(forms.ModelForm):
     ProductOrderManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
-    #ProductOrderApparelCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    #ProductOrderDestinationCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    #ProductOrderSupplierCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    #ProductOrderShippingCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    #ProductOrderCustomeCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
-    #ProductOrderRequestCode = CustomerSupplierChoiceField(queryset=CustomerSupplier.objects.all().order_by('CustomerCode'),empty_label='')
 
     class Meta:
         model = ProductOrder
@@ -44,16 +38,16 @@ class ProductOrderForm(forms.ModelForm):
         return McdPartNumber
 
     # オーダーナンバー重複チェック
-    def clean_ProductOrderOrderNumber(self):
-        ProductOrderOrderNumber = self.cleaned_data['ProductOrderOrderNumber']
-        idcnt = ProductOrder.objects.filter(id__exact = self.instance.pk).count()
-        OrderNumbercnt = ProductOrder.objects.filter( ProductOrderOrderNumber__exact = ProductOrderOrderNumber.zfill(7)).count()
-        if idcnt > 0:
-            OrderNumbercnt = 0           
-        if ProductOrderOrderNumber:
-            if OrderNumbercnt > 0:
-                raise forms.ValidationError(u'オーダーNOが重複しています')
-        return ProductOrderOrderNumber
+    #def clean_ProductOrderOrderNumber(self):
+    #    ProductOrderOrderNumber = self.cleaned_data['ProductOrderOrderNumber']
+    #    idcnt = ProductOrder.objects.filter(id__exact = self.instance.pk).count()
+    #    OrderNumbercnt = ProductOrder.objects.filter( ProductOrderOrderNumber__exact = ProductOrderOrderNumber.zfill(7)).count()
+    #    if idcnt > 0:
+    #        OrderNumbercnt = 0           
+    #    if ProductOrderOrderNumber:
+    #        if OrderNumbercnt > 0:
+    #            raise forms.ValidationError(u'オーダーNOが重複しています')
+    #    return ProductOrderOrderNumber
 
 ProductOrderFormset = forms.inlineformset_factory(
     ProductOrder, ProductOrderDetail, 

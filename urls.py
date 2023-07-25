@@ -1,6 +1,6 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise
+from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf
 
 # fileupload import
 from django.conf import settings
@@ -53,7 +53,7 @@ urlpatterns = [
     # 製品発注削除
     path('productorder/delete/<int:pk>/', viewsproductorder.ProductOrderDeleteView.as_view(), name='productorderdelete'),
     # PDF出力
-    #path('ordering/pdf/<int:pk>', viewspopdf.pdf, name='orderingpdf'), 
+    path('productorder/pdf/<int:pk>', viewsProductPdf.pdf, name='productorderpdf'), 
 ]
 
 if settings.DEBUG:

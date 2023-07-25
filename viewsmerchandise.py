@@ -30,8 +30,8 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
         # 商品コード大きい順で抽出
         queryset = Merchandise.objects.order_by('Created_at').reverse()
         # 削除済除外
-        queryset = queryset.filter(is_Deleted=0)
-        query = self.request.GET.get('query')      
+        queryset = queryset.filter(is_Deleted=0,McdManagerCode=self.request.user.id)
+        query = self.request.GET.get('query')
 
         if query:
             queryset = queryset.filter(
