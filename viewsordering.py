@@ -25,10 +25,14 @@ class OrderingListView(LoginRequiredMixin,ListView):
 
     #検索機能
     def get_queryset(self):
-        # 依頼日大きい順で抽出
+        # 依頼日、伝票区分、オーダーNO大きい順で抽出
         queryset = OrderingTable.objects.order_by('OrderingDate','SlipDiv','OrderNumber').reverse()
-        # 削除済除外
-        queryset = queryset.filter(is_Deleted=0,Created_id=self.request.user.id)
+        # 削除済以外、管理者の場合は全レコード表示（削除済以外）
+        if self.request.user.is_superuser == 0:
+            queryset = queryset.filter(is_Deleted=0,Created_id=self.request.user.id)
+        else:
+            queryset = queryset.filter(is_Deleted=0)
+
         query = self.request.GET.get('query')      
         orderdateFrom = self.request.GET.get('orderdateFrom')
         orderdateTo = self.request.GET.get('orderdateTo')
