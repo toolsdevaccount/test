@@ -61,10 +61,11 @@ def set_info_stain(filename):
     return pdf_canvas
 
 def connect(pk):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
-    sql = (' SELECT '
+    sql = (
+        ' SELECT '
                 '  a.SlipDiv,a.OrderNumber,IFNULL(DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),""),a.ProductName,a.OrderingCount,a.StainPartNumber,a.SupplierPerson'
                 ' ,CASE WHEN a.TitleDiv=1 THEN "様" ELSE "御中" END'
                 ' ,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%Y年%m月%d日"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
@@ -81,7 +82,7 @@ def connect(pk):
         ' LEFT JOIN myapp_customersupplier f on a.ShippingCode_id = f.id'
         ' LEFT JOIN myapp_prefecture h on c.PrefecturesCode_id = h.id'
         ' LEFT JOIN myapp_prefecture i on f.PrefecturesCode_id = i.id'
-        ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042") e'
+        ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) e'
         ' LEFT JOIN myapp_prefecture g on e.PrefecturesCode_id = g.id'
         ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted= 0' 
         ' ORDER BY b.DetailItemNumber ASC' 

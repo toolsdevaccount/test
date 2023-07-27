@@ -54,8 +54,8 @@ def set_info(filename):
     return pdf_canvas
 
 def connect(pk):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
             ' SELECT ' 
@@ -82,8 +82,8 @@ def connect(pk):
     return result
 
 def getsize(pk):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
                 ' SELECT '
@@ -105,8 +105,8 @@ def getsize(pk):
     return result
 
 def getcolor(pk):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
             ' select '
@@ -144,16 +144,19 @@ def getcolor(pk):
     return result
 
 def getimage(pk):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
             ' SELECT '
             ' 	 A.uploadPath '
             ' FROM '
             '	myapp_merchandisefileupload A '
+			'	LEFT JOIN '
+            '	myapp_productorder B ON '
+            '		A.McdDtuploadid_id = B.ProductOrderMerchandiseCode '
             ' WHERE '
-            '   A.McdDtuploadid_id = ' + str(pk) +
+            '     B.id = ' + str(pk) +
             ' AND A.is_Deleted = 0 '
             )
     cur.execute(sql)
