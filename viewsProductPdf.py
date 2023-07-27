@@ -68,7 +68,7 @@ def connect(pk):
                 ' LEFT JOIN myapp_merchandise C on A.ProductOrderMerchandiseCode = C.id '
                 ' LEFT JOIN	myapp_customersupplier J on	A.ProductOrderDestinationCode_id = J.id '
                 ' LEFT JOIN	myapp_merchandisedetail G on C.id = G.McdDtid_id '	
-                ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber,EMAIL FROM myapp_customersupplier WHERE CustomerCode = "A00042") H '
+                ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber,EMAIL FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) H '
                 ' LEFT JOIN myapp_prefecture I on H.PrefecturesCode_id = I.id '
             ' WHERE '
                 ' A.id = ' + str(pk)
