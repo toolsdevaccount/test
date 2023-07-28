@@ -54,8 +54,8 @@ def set_info(filename):
     return pdf_canvas
 
 def connect(pk):
-    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
             ' SELECT ' 
@@ -63,8 +63,10 @@ def connect(pk):
                 ' ,CAST(A.ProductOrderMerchandiseCode AS CHAR),B.CustomerName,IFNULL(DATE_FORMAT(A.ProductOrderDeliveryDate,"%Y年%m月%d日"),""),A.ProductOrderBrandName '
                 ' ,FORMAT(C.McdUnitPrice,0),G.McdDtProductName,G.McdDtOrderingCount,G.McdDtStainMixRatio,FORMAT(G.McdDtlPrice,0) '
                 ' ,H.PostCode,H.CustomerName,I.prefecturename,H.Municipalities,H.Address,H.BuildingName,H.PhoneNumber,H.FaxNumber,H.EMAIL '
+                ' ,A.ProductOrderSupplierPerson '
             ' FROM '
-                ' myapp_productorder A LEFT JOIN myapp_customersupplier B on A.ProductOrderApparelCode_id = b.id '
+                ' myapp_productorder A '
+                ' LEFT JOIN myapp_customersupplier B on A.ProductOrderApparelCode_id = b.id '
                 ' LEFT JOIN myapp_merchandise C on A.ProductOrderMerchandiseCode = C.id '
                 ' LEFT JOIN	myapp_customersupplier J on	A.ProductOrderDestinationCode_id = J.id '
                 ' LEFT JOIN	myapp_merchandisedetail G on C.id = G.McdDtid_id '	
@@ -82,8 +84,8 @@ def connect(pk):
     return result
 
 def getsize(pk):
-    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
                 ' SELECT '
@@ -105,8 +107,8 @@ def getsize(pk):
     return result
 
 def getcolor(pk):
-    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
             ' select '
@@ -144,8 +146,8 @@ def getcolor(pk):
     return result
 
 def getimage(pk):
-    #conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
             ' SELECT '
@@ -176,9 +178,9 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     # 発注先
     font_size = 14
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(20, 820, dt[0][1])
-    pdf_canvas.drawString(200, 820, dt[0][2])
-    pdf_canvas.line(20, 810, 240, 810) 
+    pdf_canvas.drawString(20, 820, dt[0][1] + '　' + dt[0][25] + dt[0][2])
+    #pdf_canvas.drawString(200, 820, dt[0][2])
+    pdf_canvas.line(20, 810, 270, 810) 
 
     # 発注日
     font_size = 9
@@ -242,7 +244,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     pdf_canvas.line(300, 650, 300, 620) #中縦
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
     pdf_canvas.drawString(240, 630,'本品番')
-    pdf_canvas.drawString(320,630, dt[0][5])
+    pdf_canvas.drawString(310,630, dt[0][5])
     pdf_canvas.line(390, 650, 390, 560) #中縦
 
     # 商品コード
@@ -399,26 +401,26 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             total = 0
             for k in range(col):
                 if k==0:   
-                    itemNo12 = Paragraph(Vol[0],styleRight)
+                    itemNo12 = Paragraph(f"{int(Vol[0]):,}",styleRight)
                     total += Decimal(Vol[0])
                     itemNo12total += Decimal(Vol[0])
                 if k==1:   
-                    itemNo13 = Paragraph(Vol[1],styleRight)
+                    itemNo13 = Paragraph(f"{int(Vol[0]):,}",styleRight)
                     total += Decimal(Vol[1])
                     itemNo13total += Decimal(Vol[1])
                 if k==2:   
-                    itemNo14 = Paragraph(Vol[2],styleRight)
+                    itemNo14 = Paragraph(f"{int(Vol[0]):,}",styleRight)
                     total += Decimal(Vol[2])
                     itemNo14total += Decimal(Vol[2])
                 if k==3:   
-                    itemNo15 = Paragraph(Vol[3],styleRight)
+                    itemNo15 = Paragraph(f"{int(Vol[0]):,}",styleRight)
                     total += Decimal(Vol[3])
                     itemNo15total += Decimal(Vol[3])
                 if k==4:   
-                    itemNo16 = Paragraph(Vol[4],styleRight)
+                    itemNo16 = Paragraph(f"{int(Vol[0]):,}",styleRight)
                     total += Decimal(Vol[4])
                     itemNo16total += Decimal(Vol[4])
-            detailtotal = Paragraph(str(total),styleRight)
+            detailtotal = Paragraph(f"{int(total):,}",styleRight)
             data += [
                 [itemNo11,itemNo12,itemNo13,itemNo14,itemNo15,itemNo16,detailtotal] ,
             ]
@@ -426,30 +428,30 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             if i==11:
                 # 総合計の計算
                 itemtotal = Decimal(itemNo12total) + Decimal(itemNo13total) + Decimal(itemNo14total) + Decimal(itemNo15total) + Decimal(itemNo16total)
-                itemtotal = Paragraph(str(itemtotal),styleRight)
+                itemtotal = Paragraph(f"{int(itemtotal):,}",styleRight)
                 # 指定した列の右寄せ
                 if Decimal(itemNo12total) != 0:
-                    itemNo12total = Paragraph(str(itemNo12total),styleRight)
+                    itemNo12total = Paragraph(f"{int(itemNo12total):,}",styleRight)
                 else:
                     itemNo12total = ''
 
                 if Decimal(itemNo13total) != 0:
-                    itemNo13total = Paragraph(str(itemNo13total),styleRight)
+                    itemNo13total = Paragraph(f"{int(itemNo13total):,}",styleRight)
                 else:
                     itemNo13total = ''
 
                 if Decimal(itemNo14total) != 0:
-                    itemNo14total = Paragraph(str(itemNo14total),styleRight)
+                    itemNo14total = Paragraph(f"{int(itemNo14total):,}",styleRight)
                 else:
                     itemNo14total = ''
 
                 if Decimal(itemNo15total) != 0:
-                    itemNo15total = Paragraph(str(itemNo15total),styleRight)
+                    itemNo15total = Paragraph(f"{int(itemNo15total):,}",styleRight)
                 else:
                     itemNo15total = ''
 
                 if Decimal(itemNo16total) != 0:
-                    itemNo16total = Paragraph(str(itemNo16total),styleRight)
+                    itemNo16total = Paragraph(f"{int(itemNo16total):,}",styleRight)
                 else:
                     itemNo16total = ''
 
