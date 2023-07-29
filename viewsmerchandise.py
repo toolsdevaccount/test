@@ -54,7 +54,13 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/merchandise/new/merchandiseform.html"
    
     def get(self, request):
-        form = MerchandiseForm(self.request.POST or None)
+        form = MerchandiseForm(self.request.POST or None, 
+                            initial={
+                                    'McdTreatmentCode': '1',
+                                    'McdManagerCode': '1',
+                                    'McdUnitCode':'1',
+                                    'McdUnitCode':'1',
+                                    })
         formset = MerchandiseFormset
         inlinescolor = MerchandiseColorFormset
         inlinessize = MerchandiseSizeFormset

@@ -31,6 +31,16 @@
 				<div class="fds-form-input-message">
 					<label class="fds-label-input">キーワード</label>
 					<input type="search" name="query" id ="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.query }}"/>
+					<label class="fds-label-input">キーワード</label>
+					<input type="search" name="key" id ="key" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.key }}"/>
+					<label class="fds-label-input">キーワード</label>
+					<input type="search" name="word" id ="word" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.word }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="fds-clousure--bottom-section">
+			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
+				<div class="fds-form-input-message">
 					<label class="fds-label-input">依頼日(From)</label>
 					<input type="search" name="orderdateFrom" id="orderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.orderdateFrom }}"/>
 					<label class="fds-label-input">依頼日(To)</label>

@@ -54,16 +54,6 @@
                                                 </div>              
                                                 <div class="fds-form-label fds-form-label--horizontal">
                                                     <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 本品番 -->
-                                                        <label class="fds-label-input">本品番:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdPartNumber" id="id_McdPartNumber" value="{{ object.McdPartNumber }}">
-                                                        {% if form.errors.McdPartNumber %}
-                                                        {% for error in form.errors.McdPartNumber %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 扱い区分 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">扱区分：</label>
@@ -81,9 +71,6 @@
                                                         {% endfor %}
                                                         {% endif %}   
                                                     </div>
-                                                </div>
-                                                <div class="fds-divider fds-divider--dark2"></div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 担当者 -->
                                                         <div class="fds-page-input-select">
@@ -101,6 +88,29 @@
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
                                                         {% endfor %}
                                                         {% endif %}   
+                                                    </div>
+                                                </div>
+                                                <div class="fds-divider fds-divider--dark2"></div>
+                                                <div class="fds-form-label fds-form-label--horizontal">
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 仮品番 -->
+                                                        <label class="fds-label-input">仮品番:</label>
+                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdTempPartNumber" id="id_McdTempPartNumber" value="{{ object.McdTempPartNumber }}">
+                                                        {% if form.errors.McdTempPartNumber %}
+                                                        {% for error in form.errors.McdTempPartNumber %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 本品番 -->
+                                                        <label class="fds-label-input">本品番:</label>
+                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdPartNumber" id="id_McdPartNumber" value="{{ object.McdPartNumber }}">
+                                                        {% if form.errors.McdPartNumber %}
+                                                        {% for error in form.errors.McdPartNumber %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="fds-divider fds-divider--dark2"></div>

@@ -18,7 +18,7 @@ class MerchandiseForm(forms.ModelForm):
     class Meta:
         model = Merchandise
         fields = ('McdTreatmentCode', 'McdPartNumber', 'McdManagerCode', 'McdUnitPrice', 'McdUnitCode', 
-                  'McdSellPrice', 'McdProcessfee', 'McdProcessCode'
+                  'McdSellPrice', 'McdProcessfee', 'McdProcessCode', 'McdTempPartNumber'
                   )
   
 MerchandiseFormset = forms.inlineformset_factory(

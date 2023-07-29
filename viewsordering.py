@@ -34,13 +34,29 @@ class OrderingListView(LoginRequiredMixin,ListView):
             queryset = queryset.filter(is_Deleted=0)
 
         query = self.request.GET.get('query')      
+        key = self.request.GET.get('key')      
+        word = self.request.GET.get('word')      
         orderdateFrom = self.request.GET.get('orderdateFrom')
         orderdateTo = self.request.GET.get('orderdateTo')
 
         if query:
             queryset = queryset.filter(
                  Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(ProductName__contains=query) | Q(MarkName__contains=query) |
-                 Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query) 
+                 Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query) | 
+                 Q(SampleDiv__icontains=query) | Q(RequestCode__CustomerOmitName__icontains=query) 
+            )
+        if key:
+            queryset = queryset.filter(
+                 Q(SlipDiv__contains=key) | Q(OrderNumber__contains=key) | Q(ProductName__contains=key) | Q(MarkName__contains=key) |
+                 Q(DestinationCode__CustomerOmitName__icontains=key) | Q(ShippingCode__CustomerOmitName__icontains=key) |
+                 Q(SampleDiv__icontains=key) | Q(RequestCode__CustomerOmitName__icontains=key) 
+            )
+
+        if word:
+            queryset = queryset.filter(
+                 Q(SlipDiv__contains=word) | Q(OrderNumber__contains=word) | Q(ProductName__contains=word) | Q(MarkName__contains=word) |
+                 Q(DestinationCode__CustomerOmitName__icontains=word) | Q(ShippingCode__CustomerOmitName__icontains=word) | 
+                 Q(SampleDiv__icontains=word) | Q(RequestCode__CustomerOmitName__icontains=word)
             )
 
         if orderdateFrom and orderdateTo:

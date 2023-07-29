@@ -115,12 +115,14 @@ def getcolor(pk):
             '	  color '
             '    ,group_concat(size order by size) key_list ' 
             '    ,group_concat(max_value order by size) value_list '
+            '    ,colorNumber '
             ' from '
             ' ( '
             '  SELECT '
             '	 b.McdColor			AS color '
             '	,c.McdSize			AS size ' 
             '	,max(a.PodVolume) 	AS max_value '
+            '  	,b.McdColorNumber	AS colorNumber '
             '  FROM '
             '	myapp_productorderdetail a '
             '	left join '
@@ -132,10 +134,11 @@ def getcolor(pk):
             ' WHERE '
             '	a.PodDetailId_id = ' + str(pk) +
             '  GROUP BY ' 
-            '	b.McdColor, c.McdSize '
+            '	b.McdColor, c.McdSize, b.McdColorNumber'
             ' ) t '
-            ' group ' 
-            '	by color '
+            ' group by' 
+            '	 color '
+            '   ,colorNumber'
             )
     cur.execute(sql)
     result = cur.fetchall()     
@@ -152,11 +155,16 @@ def getimage(pk):
     sql = (
             ' SELECT '
             ' 	 A.uploadPath '
+            '    ,C.McdTempPartNumber '
+            '    ,B.ProductOrderMarkName '
             ' FROM '
             '	myapp_merchandisefileupload A '
 			'	LEFT JOIN '
             '	myapp_productorder B ON '
             '		A.McdDtuploadid_id = B.ProductOrderMerchandiseCode '
+            '    LEFT JOIN '
+            '    myapp_merchandise C ON '
+            '        A.McdDtuploadid_id = C.id '
             ' WHERE '
             '     B.id = ' + str(pk) +
             ' AND A.is_Deleted = 0 '
@@ -326,39 +334,44 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     l=len(dtsize)
 
     style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
-    itemNo0 = Paragraph('カラー/サイズ',style)
-    itemNo6 = Paragraph('合　計',style)
+    titleNo0 = Paragraph('色番',style)
+    titleNo1 = Paragraph('カラー/サイズ',style)
+    titleNo8 = Paragraph('合　計',style)
 
-    for i in range(5):
+    for i in range(6):
         if i<l: 
             row = dtsize[i]
             if i==0:
-                itemNo1 = Paragraph(row[0],style)
+                titleNo2 = Paragraph(row[0],style)
             if i==1:
-                itemNo2 = Paragraph(row[0],style)
+                titleNo3 = Paragraph(row[0],style)
             if i==2:
-                itemNo3 = Paragraph(row[0],style)
+                titleNo4 = Paragraph(row[0],style)
             if i==3:
-                itemNo4 = Paragraph(row[0],style)
+                titleNo5 = Paragraph(row[0],style)
             if i==4:
-                itemNo5 = Paragraph(row[0],style)
+                titleNo6 = Paragraph(row[0],style)
+            if i==5:
+                titleNo7 = Paragraph(row[0],style)
         else:
             if i==0:
-                itemNo1 = ''
+                titleNo2 = ''
             if i==1:
-                itemNo2 = ''
+                titleNo3 = ''
             if i==2:
-                itemNo3 = ''
+                titleNo4 = ''
             if i==3:
-                itemNo4 = ''
+                titleNo5 = ''
             if i==4:
-                itemNo5 = ''
+                titleNo6 = ''
+            if i==5:
+                titleNo7 = ''
 
     data = [
-        [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6] ,
+        [titleNo0, titleNo1, titleNo2, titleNo3, titleNo4, titleNo5, titleNo6, titleNo7, titleNo8] ,
     ]
 
-    table = Table(data, colWidths=(59*mm, 22*mm, 22*mm, 22*mm, 22*mm, 22*mm, 25*mm), rowHeights=6.5*mm)
+    table = Table(data, colWidths=(15*mm, 39*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
@@ -371,12 +384,13 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     # カラー
     data =[]
     l=len(dtcolor)
-    itemtotal = 0
+    total = 0
     itemNo12total = 0
     itemNo13total = 0
     itemNo14total = 0
     itemNo15total = 0
     itemNo16total = 0
+    itemNo17total = 0
 
     style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
     styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_LEFT)
@@ -387,6 +401,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             row = dtcolor[i]
             itemNo11 = Paragraph(row[0],styleLeft)
             item = row[2]
+            itemNo10 = row[3]
             Vol = item.split(',')
             col = len(Vol)
             itemNo12 = ""
@@ -398,6 +413,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             itemNo14 = ""
             itemNo15 = ""
             itemNo16 = ""
+            itemNo17 = ""
             total = 0
             for k in range(col):
                 if k==0:   
@@ -420,14 +436,18 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
                     itemNo16 = Paragraph(f"{int(Vol[0]):,}",styleRight)
                     total += Decimal(Vol[4])
                     itemNo16total += Decimal(Vol[4])
+                if k==5:   
+                    itemNo17 = Paragraph(f"{int(Vol[0]):,}",styleRight)
+                    total += Decimal(Vol[4])
+                    itemNo17total += Decimal(Vol[4])
             detailtotal = Paragraph(f"{int(total):,}",styleRight)
             data += [
-                [itemNo11,itemNo12,itemNo13,itemNo14,itemNo15,itemNo16,detailtotal] ,
+                [itemNo10, itemNo11,itemNo12,itemNo13,itemNo14,itemNo15,itemNo16,itemNo17,detailtotal] ,
             ]
         else:
             if i==11:
                 # 総合計の計算
-                itemtotal = Decimal(itemNo12total) + Decimal(itemNo13total) + Decimal(itemNo14total) + Decimal(itemNo15total) + Decimal(itemNo16total)
+                itemtotal = Decimal(itemNo12total) + Decimal(itemNo13total) + Decimal(itemNo14total) + Decimal(itemNo15total) + Decimal(itemNo16total) + Decimal(itemNo17total)
                 itemtotal = Paragraph(f"{int(itemtotal):,}",styleRight)
                 # 指定した列の右寄せ
                 if Decimal(itemNo12total) != 0:
@@ -455,15 +475,20 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
                 else:
                     itemNo16total = ''
 
+                if Decimal(itemNo17total) != 0:
+                    itemNo17total = Paragraph(f"{int(itemNo17total):,}",styleRight)
+                else:
+                    itemNo17total = ''
+
                 data += [
-                    [Paragraph('合計',style),itemNo12total,itemNo13total,itemNo14total,itemNo15total,itemNo16total,itemtotal] ,
+                    ['', Paragraph('合計',style),itemNo12total,itemNo13total,itemNo14total,itemNo15total,itemNo16total,itemNo17total ,itemtotal] ,
                 ]
             else:
                 data += [
-                    ['','','','','','',''] ,
+                    ['', '','','','','','','',''] ,
                 ]
 
-    table = Table(data, colWidths=(59*mm, 22*mm, 22*mm, 22*mm, 22*mm, 22*mm, 25*mm), rowHeights=6.5*mm)
+    table = Table(data, colWidths=(15*mm, 39*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
@@ -480,9 +505,21 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
         row = dtimage[i]
         img = './mysite/media/' + row[0]
         if i==0:
-            pdf_canvas.drawImage(img, 12*mm, 35*mm , 10*mm, 10*mm)
+            pdf_canvas.drawImage(img, 12*mm, 5*mm , 25*mm, 25*mm)
         if i==1:
-            pdf_canvas.drawImage(img, 30*mm, 35*mm , 10*mm, 10*mm)
+            pdf_canvas.drawImage(img, 30*mm, 5*mm , 25*mm, 25*mm)
+
+    # 仮品番
+    font_size = 9
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(25, 130,'[仮品番]:')
+    pdf_canvas.drawString(100 ,130, dtimage[0][1])
+
+    # マーク名
+    font_size = 9
+    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.drawString(25, 110,'[マーク名]:')
+    pdf_canvas.drawString(100, 110, dtimage[0][2])
 
     pdf_canvas.rect(20, 10, 550, 140) 
     pdf_canvas.showPage()

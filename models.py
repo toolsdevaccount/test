@@ -207,6 +207,7 @@ class Merchandise(models.Model):
         ]
     #McdCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
     McdTreatmentCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseTreatment,verbose_name="扱区分")
+    McdTempPartNumber = models.CharField(max_length=20,null=False,blank=True,default=0,verbose_name="仮品番")
     McdPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
     McdManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
     McdUnitPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="仕入単価")
@@ -329,6 +330,7 @@ class ProductOrder(models.Model):
     ProductOrderDeliveryDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="納期")
     ProductOrderBrandName = models.CharField(max_length=50,null=False,blank=True,default="",verbose_name="ブランド名")
     ProductOrderMarkName = models.CharField(max_length=20,null=False,blank=True,verbose_name="マーク名")
+    ProductOrderSummary = models.TextField(max_length=1000,null=False,blank=True,verbose_name="備考")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
