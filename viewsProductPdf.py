@@ -153,21 +153,22 @@ def getimage(pk):
     #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
     sql = (
-            ' SELECT '
-            ' 	 A.uploadPath '
-            '    ,C.McdTempPartNumber '
-            '    ,B.ProductOrderMarkName '
-            ' FROM '
-            '	myapp_merchandisefileupload A '
-			'	LEFT JOIN '
-            '	myapp_productorder B ON '
-            '		A.McdDtuploadid_id = B.ProductOrderMerchandiseCode '
-            '    LEFT JOIN '
-            '    myapp_merchandise C ON '
-            '        A.McdDtuploadid_id = C.id '
+            ' SELECT ' 
+            '    A.ProductOrderMarkName '
+            '   ,A.ProductOrderSummary '
+            '   ,B.McdTempPartNumber ' 
+            '	,IFNULL(C.uploadPath,"") ' 
+            ' FROM ' 
+            '	myapp_productorder A '
+            '   LEFT JOIN '
+            '   myapp_merchandise B ON '
+            '       A.ProductOrderMerchandiseCode = B.id '
+			'	LEFT JOIN ' 
+          	'	myapp_merchandisefileupload C ON '
+            '		A.id = C.McdDtuploadid_id '
             ' WHERE '
-            '     B.id = ' + str(pk) +
-            ' AND A.is_Deleted = 0 '
+            '     A.id = ' + str(pk) +
+            ' AND B.is_Deleted = 0 ' 
             )
     cur.execute(sql)
     result = cur.fetchall()     
@@ -503,23 +504,37 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     for i in range(l):
         row = dtimage[i]
-        img = './mysite/media/' + row[0]
-        if i==0:
-            pdf_canvas.drawImage(img, 12*mm, 5*mm , 25*mm, 25*mm)
-        if i==1:
-            pdf_canvas.drawImage(img, 30*mm, 5*mm , 25*mm, 25*mm)
+        if row[3]!="":
+            img = './mysite/media/' + row[3]
+            if i==0:
+                pdf_canvas.drawImage(img, 12*mm, 5*mm , 25*mm, 25*mm)
+            if i==1:
+                pdf_canvas.drawImage(img, 30*mm, 5*mm , 25*mm, 25*mm)
 
-    # 仮品番
-    font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(25, 130,'[仮品番]:')
-    pdf_canvas.drawString(100 ,130, dtimage[0][1])
+    if l > 0:
+        # 仮品番
+        font_size = 9
+        pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+        pdf_canvas.drawString(25, 130,'[仮品番]:')
+        pdf_canvas.drawString(100 ,130, dtimage[0][2])
 
-    # マーク名
-    font_size = 9
+        # マーク名
+        font_size = 9
+        pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+        pdf_canvas.drawString(25, 110,'[マーク名]:')
+        pdf_canvas.drawString(100, 110, dtimage[0][0])
+
+        # 備考
+        font_size = 9
+        pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+        pdf_canvas.drawString(350, 90,'[備考]:')
+        pdf_canvas.drawString(400, 90, dtimage[0][1])
+
+    # 
+    font_size = 14
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(25, 110,'[マーク名]:')
-    pdf_canvas.drawString(100, 110, dtimage[0][2])
+    pdf_canvas.drawString(350, 40,'Signature')
+    pdf_canvas.line(350, 30, 520, 30) 
 
     pdf_canvas.rect(20, 10, 550, 140) 
     pdf_canvas.showPage()

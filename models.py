@@ -207,7 +207,7 @@ class Merchandise(models.Model):
         ]
     #McdCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
     McdTreatmentCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseTreatment,verbose_name="扱区分")
-    McdTempPartNumber = models.CharField(max_length=20,null=False,blank=True,default=0,verbose_name="仮品番")
+    McdTempPartNumber = models.CharField(max_length=20,null=False,blank=True,verbose_name="仮品番")
     McdPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
     McdManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
     McdUnitPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="仕入単価")
