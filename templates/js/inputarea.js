@@ -76,3 +76,11 @@ $('.DeliveryManageDiv').click(function() {
         $(".DeliveryManageDiv").val(0);
     }           
 });
+
+$('.PrintDiv').click(function() {
+    if($(".PrintDiv").prop('checked')){
+        $(".PrintDiv").val(1);
+    } else {
+        $(".PrintDiv").val(0);
+    }           
+});

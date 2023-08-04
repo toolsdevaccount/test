@@ -177,6 +177,7 @@ class OrderingDetail(models.Model):
     SpecifyDeliveryDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="希望納期")
     StainAnswerDeadline = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="回答納期")
     DeliveryManageDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="納期管理済区分")
+    PrintDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="発注書印刷区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
@@ -359,3 +360,36 @@ class ProductOrderDetail(models.Model):
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/productorder/productorderlist.html')
+
+class RequestResult(models.Model):
+    ResultDate = models.DateField(null=False,blank=False,default="2000-01-01",verbose_name="実績日")
+    ShippingDate = models.DateField(null=False,blank=False,default="2000-01-01",verbose_name="出荷日")
+    ShippingVolume = models.DecimalField(max_digits=8,decimal_places=2, null=False,blank=False,default=0.00,verbose_name="出荷数")
+    SlipNumber = models.CharField(max_length=8,null=False,blank=True,verbose_name="伝票番号")
+    ResultSummary = models.TextField(max_length=1000,null=False,blank=True,verbose_name="備考")
+    ResultMoveDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="移動区分")
+    ResultGainDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="目増区分")
+    ResultDecreaseDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="目減区分")
+    InvoiceIssueDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="個別請求書発行日付")
+    InvoiceIssueDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="個別請求書発行区分")
+    InvoiceNUmber = models.CharField(max_length=6,null=False,blank=True,verbose_name="個別請求書NO")
+    SalesTaxRate = models.DecimalField(max_digits=4,decimal_places=2, null=False,blank=False,default=0.00,verbose_name="消費税率")
+    OffsetInputDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="相殺入力区分")
+    PaymentInputDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="支払入力区分")
+    DailyUpdateDate = models.DateField(null=True,blank=True,default="2000-01-01",verbose_name="日次更新日付")
+    DailyUpdateDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="日次更新区分")
+    DeadlineUpdateDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="締次更新区分")
+    MonthlyCustomerDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="得意先月次更新区分")
+    MonthlySupplierDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="仕入先月次更新区分")
+    BacklogOrderDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="生産発注残区分")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+    def __str__(self):
+        return str(self.SlipNumber)
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/requestresult/requestresultlist.html')

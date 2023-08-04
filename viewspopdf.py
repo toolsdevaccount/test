@@ -84,7 +84,7 @@ def connect(pk):
         ' LEFT JOIN myapp_prefecture i on f.PrefecturesCode_id = i.id'
         ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) e'
         ' LEFT JOIN myapp_prefecture g on e.PrefecturesCode_id = g.id'
-        ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted= 0' 
+        ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted = 0 AND b.PrintDiv = 0' 
         ' ORDER BY b.DetailItemNumber ASC' 
         )
     cur.execute(sql)

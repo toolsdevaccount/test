@@ -78,6 +78,11 @@
 																	</div>
 																</th>
 																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
+																		<span class="fds-table__th-text">印</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
 																	<div class="fds-table__th-content fds-table__th-content--icon" style="width: 20px;">
 																		<span class="fds-icon fds-icon--more-vert"></span>
 																	</div>
@@ -186,14 +191,27 @@
 																<!-- 済フラグ -->
 																<td class="fds-table__td fds-table__td--col-fixed">
 																	<div class="fds-table__td-content">
-																	<div class="fds-checkbox fds-checkbox--on-table">
-																		<label class="fds-checkbox__label">
-																			<input type="checkbox" class="fds-checkbox__input DeliveryManageDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
-																			name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" value={{ form.DeliveryManageDiv.value }}>
-																			<span class="fds-checkbox__text">
-																			</span>
-																		</label>
+																		<div class="fds-checkbox fds-checkbox--on-table">
+																			<label class="fds-checkbox__label">
+																				<input type="checkbox" class="fds-checkbox__input DeliveryManageDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
+																				name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" value={{ form.DeliveryManageDiv.value }}>
+																				<span class="fds-checkbox__text">
+																				</span>
+																			</label>
+																		</div>
 																	</div>
+																</td>
+																<!-- 済フラグ -->
+																<td class="fds-table__td fds-table__td--col-fixed">
+																	<div class="fds-table__td-content">
+																		<div class="fds-checkbox fds-checkbox--on-table">
+																			<label class="fds-checkbox__label">
+																				<input type="checkbox" class="fds-checkbox__input PrintDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-PrintDiv" data-name-format="OrderingTableId-%d-PrintDiv" 
+																				name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" value={{ form.PrintDiv.value }}>
+																				<span class="fds-checkbox__text">
+																				</span>
+																			</label>
+																		</div>
 																	</div>
 																</td>
 																<input type="hidden" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" name="OrderingTableId-{{ forloop.counter0 }}-DELETE" id="id_OrderingTableId-{{ forloop.counter0 }}-DELETE">

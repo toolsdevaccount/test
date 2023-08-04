@@ -128,7 +128,8 @@ class OrderingForm(forms.ModelForm):
 OrderingFormset = forms.inlineformset_factory(
     OrderingTable, OrderingDetail, 
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
-            'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','SpecifyDeliveryDate','StainAnswerDeadline','DeliveryManageDiv',
+            'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','SpecifyDeliveryDate','StainAnswerDeadline',
+            'DeliveryManageDiv','PrintDiv',
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )

@@ -21,6 +21,8 @@ from decimal import Decimal
 from django.contrib import messages
 # イメージファイル
 from PIL import Image
+# 文字列折り返し
+import textwrap
 
 def pdf(request,pk):
     try:
@@ -528,7 +530,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
         font_size = 9
         pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
         pdf_canvas.drawString(350, 90,'[備考]:')
-        pdf_canvas.drawString(400, 90, dtimage[0][1])
+        pdf_canvas.drawString(400, 90, textwrap.fill(dtimage[0][1], 12, max_lines=2, placeholder=' ~',))
 
     # 
     font_size = 14
