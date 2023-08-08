@@ -80,10 +80,10 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 伝票区分 -->
                                                         <label class="fds-label-input">オーダーNO:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="SlipDiv" id="id_SlipDiv" maxlength="1" style="width: 10%;" value={{ object.SlipDiv }} readonly>
+                                                        <input type="tel" class="fds-form-input" placeholder="" name="SlipDiv" id="id_SlipDiv" maxlength="1" style="width: 10%;" value={{ object.SlipDiv }} readonly>
                                                         <!-- オーダーNO -->
                                                         <span>-</span>
-                                                        <input type="text" class="fds-form-input" placeholder="" style="width:40%; text-align: right;" name="OrderNumber" id="id_OrderNumber" maxlength="7" value={{ object.OrderNumber }}  readonly>
+                                                        <input type="tel" class="fds-form-input" placeholder="" style="width:40%; text-align: right;" name="OrderNumber" id="id_OrderNumber" maxlength="7" value={{ object.OrderNumber }}  readonly>
                                                         {% if form.errors.OrderNumber %}
                                                         {% for error in form.errors.OrderNumber %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
@@ -93,7 +93,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 依頼日 -->
                                                         <label class="fds-label-input">依頼日:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" value={{ object.OrderingDate }}>
+                                                        <input type="tel" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" value={{ object.OrderingDate }}>
                                                         {% if form.errors.OrderingDate %}
                                                         {% for error in form.errors.OrderingDate %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -125,7 +125,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="fds-divider fds-divider--dark2"></div>
-                                                <div class="fds-form-label fds-form-label--horizontal">   
+                                                <div class="fds-form-label fds-form-label--horizontal">
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 品番 -->
                                                         <label class="fds-label-input">品番:</label>
@@ -153,13 +153,13 @@
                                                         <!-- 手配先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">手配先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="DestinationCode" id="id_DestinationCode">
-                                                                    {% for data in form.DestinationCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" value="{{ object.DestinationCode.CustomerCode }} {{ object.DestinationCode.CustomerOmitName }}">
+                                                            <datalist id="Destination">
+                                                            {% for data in DestinationCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="DestinationCode" id="id_DestinationCode" value={{ form.DestinationCode.value }}>
                                                         </div>
                                                         {% if form.errors.DestinationCode %}
                                                         {% for error in form.errors.DestinationCode %}
@@ -171,13 +171,13 @@
                                                         <!-- 仕入先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">仕入先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="SupplierCode" id="id_SupplierCode">
-                                                                    {% for data in form.SupplierCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Supplier" name="SupplierCode" id="id_SupplierCode" value="{{ object.SupplierCode.CustomerCode }} {{ object.SupplierCode.CustomerOmitName }}">
+                                                            <datalist id="Supplier">
+                                                            {% for data in SupplierCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="SupplierCode" id="id_SupplierCode" value={{ form.SupplierCode.value }}>
                                                         </div>
                                                         {% if form.errors.SupplierCode %}
                                                         {% for error in form.errors.SupplierCode %}
@@ -186,16 +186,15 @@
                                                         {% endif %}   
                                                     </div>
                                                     <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 出荷先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">出荷先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ShippingCode" id="id_ShippingCode">
-                                                                    {% for data in form.ShippingCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Shipping" name="ShippingCode" id="id_ShippingCode" value="{{ object.ShippingCode.CustomerCode }} {{ object.ShippingCode.CustomerOmitName }}">
+                                                            <datalist id="Shipping">
+                                                            {% for data in ShippingCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="ShippingCode" id="id_ShippingCode" value={{ form.ShippingCode.value }}>
                                                         </div>
                                                         {% if form.errors.ShippingCode %}
                                                         {% for error in form.errors.ShippingCode %}
@@ -210,16 +209,16 @@
                                                         <!-- 得意先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">得意先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="CustomeCode" id="id_CustomeCode">
-                                                                    {% for data in form.CustomeCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Customer" name="CustomeCode" id="id_CustomeCode" value="{{ object.CustomeCode.CustomerCode }} {{ object.CustomeCode.CustomerOmitName }}">
+                                                            <datalist id="Customer">
+                                                            {% for data in CustomerCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="CustomeCode" id="id_CustomeCode" value={{ form.CustomeCode.value }}>
                                                         </div>
-                                                        {% if form.errors.CustomeCode %}
-                                                        {% for error in form.errors.CustomeCode %}
+                                                        {% if form.errors.CustomreCode %}
+                                                        {% for error in form.errors.CustomerCode %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
                                                         {% endfor %}
                                                         {% endif %}   
@@ -228,13 +227,13 @@
                                                         <!-- 依頼先 -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">依頼先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="RequestCode" id="id_RequestCode">
-                                                                    {% for data in form.RequestCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Request" name="RequestCode" id="id_RequestCode" value="{{ object.RequestCode.CustomerCode }} {{ object.RequestCode.CustomerOmitName }}">
+                                                            <datalist id="Request">
+                                                            {% for data in RequestCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="RequestCode" id="id_RequestCode" value={{ form.RequestCode.value }}>
                                                         </div>
                                                         {% if form.errors.RequestCode %}
                                                         {% for error in form.errors.RequestCode %}
@@ -242,20 +241,20 @@
                                                         {% endfor %}
                                                         {% endif %}   
                                                     </div>
-                                                </div>    
+                                                </div>
                                                 <div class="fds-divider fds-divider--dark2"></div>
                                                 <div class="fds-form-label fds-form-label--horizontal">
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 原糸メーカ -->
                                                         <div class="fds-page-input-select">
                                                             <label class="fds-label-input">原糸メーカー:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="StainShippingCode" id="id_StainShippingCode">
-                                                                    {% for data in form.StainShippingCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="StainShipping" name="StainShippingCode" id="id_StainShippingCode" value="{{ object.StainShippingCode.CustomerCode }} {{ object.StainShippingCode.CustomerOmitName }}">
+                                                            <datalist id="StainShipping">
+                                                            {% for data in StainShippingCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="StainShippingCode" id="id_StainShippingCode" value={{ form.StainShippingCode.value }}>
                                                         </div>
                                                         {% if form.errors.StainShippingCode %}
                                                         {% for error in form.errors.StainShippingCode %}
@@ -264,7 +263,6 @@
                                                         {% endif %}   
                                                     </div>
                                                     <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 原糸出荷日 -->
                                                         <label class="fds-label-input">原糸出荷日:</label>
                                                         <input type="text" class="fds-form-input" placeholder="" name="StainShippingDate" id="id_StainShippingDate" maxlength="10" value={{ object.StainShippingDate | default_if_none:"" }}>
                                                         {% if form.errors.StainShippingDate %}

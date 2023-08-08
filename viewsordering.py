@@ -21,7 +21,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
     context_object_name = 'object_list'
     queryset = OrderingTable.objects.order_by('OrderingDate','Created_at').reverse()
     template_name = "crud/ordering/list/orderinglist.html"
-    paginate_by = 10
+    paginate_by = 20
 
     #検索機能
     def get_queryset(self):
@@ -184,7 +184,7 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
 
     # バリデーションエラー時
     def form_invalid(self,form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
 
 # 受発注情報削除
 class orderingDeleteView(LoginRequiredMixin,UpdateView):
@@ -196,8 +196,14 @@ class orderingDeleteView(LoginRequiredMixin,UpdateView):
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         context = super(orderingDeleteView, self).get_context_data(**kwargs)
-        context.update(dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))))
-        
+        context.update(dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))),
+                       DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                       SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
+                       ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                       CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
+                       RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                       StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                       )
         return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる

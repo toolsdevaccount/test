@@ -17,7 +17,7 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
     context_object_name = 'object_list'
     queryset = CustomerSupplier.objects.order_by('CustomerCode')
     template_name = "crud/customersupplier/list/customersupplierlist.html"
-    paginate_by = 10
+    paginate_by = 20
 
     #検索機能
     def get_queryset(self):
