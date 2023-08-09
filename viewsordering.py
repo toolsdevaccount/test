@@ -23,24 +23,36 @@ class OrderingListView(LoginRequiredMixin,ListView):
     template_name = "crud/ordering/list/orderinglist.html"
     paginate_by = 20
 
+    def post(self, request, *args, **kwargs):
+        search = [
+            self.request.POST.get('query', None),
+            self.request.POST.get('key', None),
+            self.request.POST.get('word', None),
+            self.request.POST.get('orderdateFrom', None),
+            self.request.POST.get('orderdateTo', None),
+        ]
+        request.session['search'] = search
+        # 検索時にページネーションに関連したエラーを防ぐ
+        self.request.GET = self.request.GET.copy()
+        self.request.GET.clear()
+
+        return self.get(request, *args, **kwargs)
+
     #検索機能
     def get_queryset(self):
-        query = self.request.GET.get('query') 
-        key = self.request.GET.get('key')      
-        word = self.request.GET.get('word')      
-        orderdateFrom = self.request.GET.get('orderdateFrom')
-        orderdateTo = self.request.GET.get('orderdateTo')
+        #query = self.request.GET.get('query') 
+        #key = self.request.GET.get('key')      
+        #word = self.request.GET.get('word')      
+        #orderdateFrom = self.request.GET.get('orderdateFrom')
+        #orderdateTo = self.request.GET.get('orderdateTo')
 
-        if not self.request.session['search']:
-            search = [
-                self.request.GET.get('query', None),
-                self.request.GET.get('key', None),
-                self.request.GET.get('word', None),
-                self.request.GET.get('orderdateFrom', None),
-                self.request.GET.get('orderdateTo', None),
-            ]
-            #セッションに保存
-            self.request.session['search'] = search
+        if self.request.session['search']:
+            search = self.request.session['search']
+            query = search[0]
+            key = search[1]
+            word = search[2]
+            orderdateFrom = search[3]
+            orderdateTo = search[4]
 
         # 依頼日、伝票区分、オーダーNO大きい順で抽出
         queryset = OrderingTable.objects.order_by('OrderingDate','SlipDiv','OrderNumber').reverse()
