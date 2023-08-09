@@ -25,6 +25,23 @@ class OrderingListView(LoginRequiredMixin,ListView):
 
     #検索機能
     def get_queryset(self):
+        query = self.request.GET.get('query') 
+        key = self.request.GET.get('key')      
+        word = self.request.GET.get('word')      
+        orderdateFrom = self.request.GET.get('orderdateFrom')
+        orderdateTo = self.request.GET.get('orderdateTo')
+
+        if not self.request.session['search']:
+            search = [
+                self.request.GET.get('query', None),
+                self.request.GET.get('key', None),
+                self.request.GET.get('word', None),
+                self.request.GET.get('orderdateFrom', None),
+                self.request.GET.get('orderdateTo', None),
+            ]
+            #セッションに保存
+            self.request.session['search'] = search
+
         # 依頼日、伝票区分、オーダーNO大きい順で抽出
         queryset = OrderingTable.objects.order_by('OrderingDate','SlipDiv','OrderNumber').reverse()
         # 削除済以外、管理者の場合は全レコード表示（削除済以外）
@@ -32,12 +49,6 @@ class OrderingListView(LoginRequiredMixin,ListView):
             queryset = queryset.filter(is_Deleted=0,Created_id=self.request.user.id)
         else:
             queryset = queryset.filter(is_Deleted=0)
-
-        query = self.request.GET.get('query')      
-        key = self.request.GET.get('key')      
-        word = self.request.GET.get('word')      
-        orderdateFrom = self.request.GET.get('orderdateFrom')
-        orderdateTo = self.request.GET.get('orderdateTo')
 
         if query:
             queryset = queryset.filter(
@@ -63,6 +74,33 @@ class OrderingListView(LoginRequiredMixin,ListView):
             queryset = queryset.filter(Q(OrderingDate__range=(orderdateFrom,orderdateTo)))
 
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # sessionに値がある場合、その値をセットする。（ページングしてもform値が変わらないように）
+        query = ''
+        key = ''
+        word = ''
+        orderdateFrom = ''
+        orderdateTo = ''
+        if self.request.session['search']:
+            search = self.request.session['search']
+            query = search[0]
+            key = search[1]
+            word = search[2]
+            orderdateFrom = search[3]
+            orderdateTo = search[4]
+
+        default_data = {'query': query,
+                        'key': key,
+                        'word': word,
+                        'orderdateFrom': orderdateFrom,
+                        'orderdateTo': orderdateTo,
+                       }
+        
+        form = OrderingForm(initial=default_data) # 検索フォーム
+        context['search'] = form
+        return context
 
 # 受発注情報登録
 class OrderingCreateView(LoginRequiredMixin,CreateView):
