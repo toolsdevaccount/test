@@ -7,7 +7,7 @@ from django.http import JsonResponse
 # 検索機能のために追加
 from django.db.models import Q
 # forms
-from .formsproductorder import ProductOrderForm, ProductOrderFormset
+from .formsproductorder import ProductOrderForm, ProductOrderFormset, SearchForm
 # Transaction
 from django.db import transaction
 # SQL直接実行
@@ -24,10 +24,39 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
     context_object_name = 'object_list'
     queryset = ProductOrder.objects.order_by('ProductOrderOrderingDate','Created_at').reverse()
     template_name = "crud/productorder/List/productorderlist.html"
-    paginate_by = 10
+    paginate_by = 20
+
+    def post(self, request, *args, **kwargs):
+        search = [
+            self.request.POST.get('query', None),
+            self.request.POST.get('key', None),
+            self.request.POST.get('word', None),
+            self.request.POST.get('productorderdateFrom', None),
+            self.request.POST.get('productorderdateTo', None),
+        ]
+        request.session['posearch'] = search
+        # 検索時にページネーションに関連したエラーを防ぐ
+        self.request.GET = self.request.GET.copy()
+        self.request.GET.clear()
+
+        return self.get(request, *args, **kwargs)
 
     #検索機能
     def get_queryset(self):
+        if 'posearch' in self.request.session:
+            search = self.request.session['posearch']
+            query = search[0]
+            key = search[1]
+            word = search[2]
+            productorderdateFrom = search[3]
+            productorderdateTo = search[4]
+        else:
+            query = self.request.POST.get('query', None)
+            key = self.request.POST.get('key', None)
+            word = self.request.POST.get('word', None)
+            productorderdateFrom = self.request.POST.get('productorderdateFrom', None)
+            productorderdateTo = self.request.POST.get('productorderdateTo', None)
+
         # 依頼日、登録日大きい順で抽出
         queryset = ProductOrder.objects.order_by('ProductOrderOrderingDate','Created_at').reverse()
         # 削除済以外で担当者=ログインユーザ、管理者の場合は全レコード表示（削除済以外）
@@ -35,20 +64,62 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
             queryset = queryset.filter(is_Deleted=0,ProductOrderManagerCode=self.request.user.id)
         else:
             queryset = queryset.filter(is_Deleted=0)
-        query = self.request.GET.get('query')      
-        productorderdateFrom = self.request.GET.get('productorderdateFrom')
-        productorderdateTo = self.request.GET.get('productorderdateTo')
 
         if query:
             queryset = queryset.filter(
                  Q(ProductOrderSlipDiv__contains=query) | Q(ProductOrderOrderNumber__contains=query) | Q(ProductOrderBrandName__contains=query) | 
-                 Q(ProductOrderDestinationCode__CustomerOmitName__icontains=query) | Q(ProductOrderShippingCode__CustomerOmitName__icontains=query) 
+                 Q(ProductOrderDestinationCode__CustomerOmitName__icontains=query) | Q(ProductOrderShippingCode__CustomerOmitName__icontains=query) | 
+                 Q(ProductOrderSupplierCode__CustomerOmitName__icontains=query) | Q(ProductOrderApparelCode__CustomerOmitName__icontains=query) |
+                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=query) | Q(ProductOrderMarkName__contains=query) | Q(ProductOrderBrandName__contains=query) 
+            )
+
+        if key:
+            queryset = queryset.filter(
+                 Q(ProductOrderSlipDiv__contains=key) | Q(ProductOrderOrderNumber__contains=key) | Q(ProductOrderBrandName__contains=key) | 
+                 Q(ProductOrderDestinationCode__CustomerOmitName__icontains=key) | Q(ProductOrderShippingCode__CustomerOmitName__icontains=key) |
+                 Q(ProductOrderSupplierCode__CustomerOmitName__icontains=key) | Q(ProductOrderApparelCode__CustomerOmitName__icontains=key) |
+                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=key) | Q(ProductOrderMarkName__contains=key) | Q(ProductOrderBrandName__contains=key) 
+            )
+
+        if word:
+            queryset = queryset.filter(
+                 Q(ProductOrderSlipDiv__contains=word) | Q(ProductOrderOrderNumber__contains=word) | Q(ProductOrderBrandName__contains=word) | 
+                 Q(ProductOrderDestinationCode__CustomerOmitName__icontains=word) | Q(ProductOrderShippingCode__CustomerOmitName__icontains=word) |
+                 Q(ProductOrderSupplierCode__CustomerOmitName__icontains=word) | Q(ProductOrderApparelCode__CustomerOmitName__icontains=word) |
+                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=word) | Q(ProductOrderMarkName__contains=word) | Q(ProductOrderBrandName__contains=word) 
             )
 
         if productorderdateFrom and productorderdateTo:
-            queryset = queryset.filter(Q(ProductOrderOrderingDate__range=(productorderdateFrom,productorderdateTo)))
+            queryset = queryset.filter(Q(ProductOrderDeliveryDate__range=(productorderdateFrom,productorderdateTo)))
 
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # sessionに値がある場合、その値をセットする。（ページングしてもform値が変わらないように）
+        query = ''
+        key = ''
+        word = ''
+        productorderdateFrom = ''
+        productorderdateTo = ''
+        if 'posearch' in self.request.session:
+            search = self.request.session['posearch']
+            query = search[0]
+            key = search[1]
+            word = search[2]
+            productorderdateFrom = search[3]
+            productorderdateTo = search[4]
+
+        default_data = {'query': query,
+                        'key': key,
+                        'word': word,
+                        'productorderdateFrom': productorderdateFrom,
+                        'productorderdateTo': productorderdateTo,
+                       }
+        
+        form = SearchForm(initial=default_data) # 検索フォーム
+        context['posearch'] = form
+        return context
 
 # 受発注情報登録
 class ProductOrderCreateView(LoginRequiredMixin,CreateView):

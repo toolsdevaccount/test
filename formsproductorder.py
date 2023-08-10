@@ -77,3 +77,24 @@ ProductOrderFormset = forms.inlineformset_factory(
     #            raise forms.ValidationError(u'日付に変換できません')
     #    return ProductOrderOrderingDate
 
+class SearchForm(forms.Form):
+    query = forms.CharField(
+        initial='',
+        required = False, # 必須ではない
+    )
+    key = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )
+    word = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )
+    productorderdateFrom = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )
+    productorderdateTo = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )

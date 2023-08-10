@@ -133,3 +133,25 @@ OrderingFormset = forms.inlineformset_factory(
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
+
+class SearchForm(forms.Form):
+    query = forms.CharField(
+        initial='',
+        required = False, # 必須ではない
+    )
+    key = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )
+    word = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )
+    orderdateFrom = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )
+    orderdateTo = forms.CharField(
+        initial='',
+        required=False,  # 必須ではない
+    )

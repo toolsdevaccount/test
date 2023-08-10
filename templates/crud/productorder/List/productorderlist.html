@@ -17,7 +17,7 @@
             新規登録
         </button>
     </div>
-    <form method="get" id="form">
+    <form method="post" id="form">
 		{% csrf_token %}
 		{% if messages %}
 		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__error" style="width:300px;">
@@ -30,11 +30,21 @@
 			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
 				<div class="fds-form-input-message">
 					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="query" id ="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.query }}"/>
-					<label class="fds-label-input">発注日(From)</label>
-					<input type="search" name="productorderdateFrom" id="productorderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.productorderdateFrom }}"/>
-					<label class="fds-label-input">発注日(To)</label>
-					<input type="search" name="productorderdateTo" id="productorderdateTo" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.productorderdateTo }}"/>
+					<input type="search" name="query" id="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.query.value }}"/>
+					<label class="fds-label-input">キーワード</label>
+					<input type="search" name="key" id="key" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.key.value }}"/>
+					<label class="fds-label-input">キーワード</label>
+					<input type="search" name="word" id="word" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.word.value }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="fds-clousure--bottom-section">
+			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
+				<div class="fds-form-input-message">
+					<label class="fds-label-input">納期(From)</label>
+					<input type="search" name="productorderdateFrom" id="productorderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.productorderdateFrom.value }}"/>
+					<label class="fds-label-input">納期(To)</label>
+					<input type="search" name="productorderdateTo" id="productorderdateTo" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.productorderdateTo.value }}"/>
 					<span><button class="fds-btn fds-btn--primary fds-btn--small" style="width: 100px;" type="submit">
 						検索
 					</button></span>
@@ -49,7 +59,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 	{% load static %}
 	<script>
-		// 発注日(From)検索用
+		// 納期(From)検索用
 		var productorderdateFrom = document.getElementById('productorderdateFrom');
 		var fp = flatpickr(productorderdateFrom, {
 			'locale': 'ja',
@@ -63,7 +73,7 @@
 			}
 		});
 
-		// 発注日(To)検索用
+		// 納期(To)検索用
 		var productorderdateTo = document.getElementById('productorderdateTo');
 		var fp = flatpickr(productorderdateTo, {
 			'locale': 'ja',
@@ -84,8 +94,9 @@
     </div>
   	<div class="fds-table-container">
     	<div class="fds-table">
-      		<div class="fds-table-fixed-container">
-        		<table class="fds-table__inner">
+      		<!-- <div class="fds-table-fixed-container"> -->
+			<div class="fds-table-container" style="height: 50%;">
+				<table class="fds-table__inner">
           			<thead>
             			<tr class="fds-table__tr">
 							<th class="fds-table__th">

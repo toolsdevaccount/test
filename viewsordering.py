@@ -10,7 +10,7 @@ from django.utils import timezone
 import datetime
 from datetime import date
 # forms
-from .forms import OrderingForm,OrderingFormset
+from .forms import OrderingForm,OrderingFormset, SearchForm
 # Transaction
 from django.db import transaction
 
@@ -40,19 +40,19 @@ class OrderingListView(LoginRequiredMixin,ListView):
 
     #検索機能
     def get_queryset(self):
-        #query = self.request.GET.get('query') 
-        #key = self.request.GET.get('key')      
-        #word = self.request.GET.get('word')      
-        #orderdateFrom = self.request.GET.get('orderdateFrom')
-        #orderdateTo = self.request.GET.get('orderdateTo')
-
-        if self.request.session['search']:
+        if 'search' in self.request.session:
             search = self.request.session['search']
             query = search[0]
             key = search[1]
             word = search[2]
             orderdateFrom = search[3]
             orderdateTo = search[4]
+        else:
+            query = self.request.POST.get('query', None)
+            key = self.request.POST.get('key', None)
+            word = self.request.POST.get('word', None)
+            orderdateFrom = self.request.POST.get('orderdateFrom', None)
+            orderdateTo = self.request.POST.get('orderdateTo', None)
 
         # 依頼日、伝票区分、オーダーNO大きい順で抽出
         queryset = OrderingTable.objects.order_by('OrderingDate','SlipDiv','OrderNumber').reverse()
@@ -95,7 +95,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
         word = ''
         orderdateFrom = ''
         orderdateTo = ''
-        if self.request.session['search']:
+        if 'search' in self.request.session:
             search = self.request.session['search']
             query = search[0]
             key = search[1]
@@ -110,7 +110,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
                         'orderdateTo': orderdateTo,
                        }
         
-        form = OrderingForm(initial=default_data) # 検索フォーム
+        form = SearchForm(initial=default_data) # 検索フォーム
         context['search'] = form
         return context
 

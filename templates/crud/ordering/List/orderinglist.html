@@ -30,12 +30,11 @@
 			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
 				<div class="fds-form-input-message">
 					<label class="fds-label-input">キーワード</label>
-					<!-- <input type="search" name="query" id ="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.query }}"/> -->
-					<input type="search" name="query" id ="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.query.value }}"/>
+					<input type="search" name="query" id="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.query.value }}"/>
 					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="key" id ="key" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.key }}"/>
+					<input type="search" name="key" id="key" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.key.value }}"/>
 					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="word" id ="word" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.word }}"/>
+					<input type="search" name="word" id="word" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.word.value }}"/>
 				</div>
 			</div>
 		</div>
@@ -43,9 +42,9 @@
 			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
 				<div class="fds-form-input-message">
 					<label class="fds-label-input">依頼日(From)</label>
-					<input type="search" name="orderdateFrom" id="orderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.orderdateFrom }}"/>
+					<input type="search" name="orderdateFrom" id="orderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.orderdateFrom.value }}"/>
 					<label class="fds-label-input">依頼日(To)</label>
-					<input type="search" name="orderdateTo" id="orderdateTo" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.orderdateTo }}"/>
+					<input type="search" name="orderdateTo" id="orderdateTo" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.orderdateTo.value }}"/>
 					<span><button class="fds-btn fds-btn--primary fds-btn--small" style="width: 100px;" type="submit">
 						検索
 					</button></span>
