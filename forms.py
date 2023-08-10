@@ -155,3 +155,9 @@ class SearchForm(forms.Form):
         initial='',
         required=False,  # 必須ではない
     )
+
+class CustomerSearchForm(forms.Form):
+    query = forms.CharField(
+        initial='',
+        required = False, # 必須ではない
+    )

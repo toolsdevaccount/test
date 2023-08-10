@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.utils import timezone
 import datetime
 # forms
-from .formsmerchandise import MerchandiseForm, MerchandiseFormset, MerchandiseColorFormset, MerchandiseSizeFormset, MerchandisefileFormset
+from .formsmerchandise import MerchandiseForm, MerchandiseFormset, MerchandiseColorFormset, MerchandiseSizeFormset, MerchandisefileFormset, SearchForm
 # Transaction
 from django.db import transaction
 # fileupload
@@ -23,10 +23,27 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
     context_object_name = 'object_list'
     queryset = Merchandise.objects.order_by('Created_at').reverse()
     template_name = "crud/merchandise/list/merchandiselist.html"
-    paginate_by = 10
+    paginate_by = 20
+
+    def post(self, request, *args, **kwargs):
+        search = [
+            self.request.POST.get('query', None),
+        ]
+        request.session['mdsearch'] = search
+        # 検索時にページネーションに関連したエラーを防ぐ
+        self.request.GET = self.request.GET.copy()
+        self.request.GET.clear()
+
+        return self.get(request, *args, **kwargs)
 
     #検索機能
     def get_queryset(self):
+        if 'mdsearch' in self.request.session:
+            search = self.request.session['mdsearch']
+            query = search[0]
+        else:
+            query = self.request.POST.get('query', None)
+
         # 商品コード大きい順で抽出
         queryset = Merchandise.objects.order_by('Created_at').reverse()
         # 削除済以外、管理者の場合は全レコード表示（削除済以外）
@@ -34,14 +51,28 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
             queryset = queryset.filter(is_Deleted=0,McdManagerCode=self.request.user.id)
         else:
             queryset = queryset.filter(is_Deleted=0)
-        query = self.request.GET.get('query')
 
         if query:
             queryset = queryset.filter(
-                Q(McdPartNumber__contains=query) | Q(McdManagerCode__first_name__icontains=query)  
+                Q(id__contains=query) | Q(McdTempPartNumber__contains=query) | Q(McdPartNumber__contains=query) | Q(McdManagerCode__first_name__icontains=query)  
             )
 
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # sessionに値がある場合、その値をセットする。（ページングしてもform値が変わらないように）
+        query = ''
+        if 'mdsearch' in self.request.session:
+            search = self.request.session['mdsearch']
+            query = search[0]
+
+        default_data = {'query': query }
+        
+        form = SearchForm(initial=default_data) # 検索フォーム
+        context['mdsearch'] = form
+
+        return context
 
 # 商品情報登録
 class MerchandiseCreateView(LoginRequiredMixin,CreateView):

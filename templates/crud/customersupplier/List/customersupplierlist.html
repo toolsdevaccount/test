@@ -18,13 +18,13 @@
             新規登録
         </button>
     </div>
-    <form method="get">
+    <form method="post" id="form">
 		{% csrf_token %}
 		<div class="fds-clousure--bottom-section">
 			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
 				<div class="fds-form-input-message">
 					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ request.GET.query }}"/>
+					<input type="search" name="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ cmsearch.query.value }}"/>
 					<span><button class="fds-btn fds-btn--primary fds-btn--small" style="width: 100px;" type="submit">
 						検索
 					</button></span>

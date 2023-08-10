@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView, UpdateView
 from .models import CustomerSupplier
-from .forms import CustomerSupplierForm
+from .forms import CustomerSupplierForm, CustomerSearchForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # 検索機能のために追加
@@ -19,19 +19,51 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
     template_name = "crud/customersupplier/list/customersupplierlist.html"
     paginate_by = 20
 
+    def post(self, request, *args, **kwargs):
+        search = [
+            self.request.POST.get('query', None),
+        ]
+        request.session['cmsearch'] = search
+        # 検索時にページネーションに関連したエラーを防ぐ
+        self.request.GET = self.request.GET.copy()
+        self.request.GET.clear()
+
+        return self.get(request, *args, **kwargs)
+
     #検索機能
     def get_queryset(self):
+        if 'cmsearch' in self.request.session:
+            search = self.request.session['cmsearch']
+            query = search[0]
+        else:
+            query = self.request.POST.get('query', None)
+
         # コード順
         queryset = CustomerSupplier.objects.order_by('CustomerCode')
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
-        query = self.request.GET.get('query')
+
         if query:
             queryset = queryset.filter(
                  Q(CustomerName__contains=query) | Q(Municipalities__contains=query) | Q(CustomerCode__contains=query) | Q(CustomerNameKana__contains=query) |
                  Q(Address__contains=query) | Q(PhoneNumber__contains=query)
             )
+
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # sessionに値がある場合、その値をセットする。（ページングしてもform値が変わらないように）
+        query = ''
+        if 'cmsearch' in self.request.session:
+            search = self.request.session['cmsearch']
+            query = search[0]
+
+        default_data = {'query': query }
+        
+        form = CustomerSearchForm(initial=default_data) # 検索フォーム
+        context['cmsearch'] = form
+        return context
        
 # 得意先仕入先マスター登録
 class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):

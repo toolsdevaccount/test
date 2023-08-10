@@ -44,3 +44,9 @@ MerchandisefileFormset = forms.inlineformset_factory(
     fields=('uploadPath','is_Deleted'),
     extra=0,min_num=1,max_num=3,validate_min=True,can_delete=True
 )
+
+class SearchForm(forms.Form):
+    query = forms.CharField(
+        initial='',
+        required = False, # 必須ではない
+    )

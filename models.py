@@ -146,6 +146,7 @@ class OrderingTable(models.Model):
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
     Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+    #is_Ordered = models.BooleanField(null=False,blank=False,default=False,verbose_name="発注書発行区分")
 
     # ユニーク制約（以下の組み合わせを一意とする）
     #class Meta:
