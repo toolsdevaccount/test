@@ -27,7 +27,7 @@ class ProductOrderForm(forms.ModelForm):
         fields = ('ProductOrderMerchandiseCode', 'ProductOrderOrderingDate', 'ProductOrderManagerCode','ProductOrderSlipDiv', 'ProductOrderOrderNumber',
                   'ProductOrderPartNumber','ProductOrderApparelCode','ProductOrderDestinationCode','ProductOrderSupplierCode','ProductOrderShippingCode',
                   'ProductOrderCustomeCode','ProductOrderRequestCode','ProductOrderDeliveryDate','ProductOrderBrandName','ProductOrderSupplierPerson',
-                  'ProductOrderTitleDiv','ProductOrderMarkName','ProductOrderSummary'
+                  'ProductOrderTitleDiv','ProductOrderMarkName','ProductOrderSummary','is_Ordered'
                   )   
 
     # 商品コード存在チェック

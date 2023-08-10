@@ -32,6 +32,7 @@ def pdf(request,pk):
         #response = HttpResponse(open('./download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
         response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
+        UpdateQuery(pk)
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
         messages.error(request,message) 
@@ -54,6 +55,27 @@ def set_info(filename):
     pdf_canvas.setTitle("製品発注書")
     pdf_canvas.setSubject("製品発注書")
     return pdf_canvas
+
+def UpdateQuery(pk):
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    cur = conn.cursor()
+    sql = (
+           ' UPDATE ' 
+	           ' myapp_productorder '
+	       ' SET ' 	 
+		       ' is_Ordered = true '
+	       ' WHERE '
+		        'id = ' + str(pk) 
+        )
+    cur.execute(sql)
+    result = conn.affected_rows()
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    return result
 
 def connect(pk):
     conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
