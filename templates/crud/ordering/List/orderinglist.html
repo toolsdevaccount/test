@@ -99,6 +99,17 @@
 				<table class="fds-table__inner">
           			<thead>
             			<tr class="fds-table__tr">
+							<th class="fds-table__th fds-table__th--col-fixed" style="width: 60px;">
+                				<div class="fds-table__th-content fds-table__th-content--button">
+									<div class="fds-checkbox">
+										<label class="fds-checkbox__label">
+											<input type="checkbox" class="fds-checkbox__input">
+											<span class="fds-checkbox__text">
+											</span>
+										</label>
+									</div>
+				                </div>
+              				</th>
 							<th class="fds-table__th">
 								<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
 									<span class="fds-table__th-text">
@@ -187,6 +198,23 @@
 			        <tbody class="fds-table__tbody-hover-button">
 						{% for OrderTable in object_list %}
 						<tr class="fds-table__tr">
+							<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">
+								<div class="fds-table__td-content">
+									<div class="fds-checkbox">
+										<label class="fds-checkbox__label">
+											{% if OrderTable.is_Ordered == 1 %}
+											<input type="checkbox" class="fds-checkbox__input" checked>
+											<span class="fds-checkbox__text">
+											</span>
+											{% else %}
+											<input type="checkbox" class="fds-checkbox__input">
+											<span class="fds-checkbox__text">
+											</span>
+											{% endif %}
+										</label>
+									</div>
+								</div>
+							</td>
 							<td class="fds-table__td">
 								<div class="fds-table__td-content" style="width: 80px;">
 									<span class="fds-table__td-text">

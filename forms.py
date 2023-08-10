@@ -85,7 +85,7 @@ class OrderingForm(forms.ModelForm):
         model = OrderingTable
         fields = ('SlipDiv','OrderNumber','OrderingDate','StainShippingDate','ProductName','OrderingCount','StainPartNumber',
                   'StainMixRatio','DestinationCode','SupplierCode','ShippingCode','CustomeCode','StainShippingCode','RequestCode','SupplierPerson',
-                  'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv',
+                  'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv','is_Ordered',
                  )
 
     # 手配先
