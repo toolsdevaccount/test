@@ -1,72 +1,221 @@
 										{% block content %}
 										{% load humanize %}
 										<div class="tab-contents-item">
-											<input type="hidden" name="PodDetailId-TOTAL_FORMS" id="id_PodDetailId-TOTAL_FORMS">
-											{{ formset.management_form }}
 											<div class="fds-table-container" style="height: 85%;">
 												<div class="fds-table">
-													<table class="fds-table__inner" id="tblrowclsz">
+													{{ formset.management_form }}
+													<table class="fds-table__inner" id="tblrow">
 														<thead>
 															<tr class="fds-table__tr">
 																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
 																		<span class="fds-table__th-text">削除</span>
 																	</div>
 																</th>
 																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
+																		<span class="fds-table__th-text">項番</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
+																		<span class="fds-table__th-text">色番</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
 																		<span class="fds-table__th-text">カラー</span>
 																	</div>
 																</th>
 																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text">
-																		<span class="fds-table__th-text">サイズ</span>
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
+																		<span class="fds-table__th-text">仕立</span>
 																	</div>
 																</th>
 																<th class="fds-table__th">
-																	<div class="fds-table__th-content fds-table__th-content--text">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 60px;">
 																		<span class="fds-table__th-text">数量</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																		<span class="fds-table__th-text">仕入単価</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																		<span class="fds-table__th-text">通常単価</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
+																		<span class="fds-table__th-text">UP分単価</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 70px;">
+																		<span class="fds-table__th-text">販売単価</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 150px;">
+																		<span class="fds-table__th-text">摘　要</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
+																		<span class="fds-table__th-text">希望納期</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
+																		<span class="fds-table__th-text">回答納期</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
+																		<span class="fds-table__th-text">済</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 50px;">
+																		<span class="fds-table__th-text">印</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--icon" style="width: 20px;">
+																		<span class="fds-icon fds-icon--more-vert"></span>
 																	</div>
 																</th>
 															</tr>
 														</thead>
 														<tbody id="list">
-															{% for col in list %}
-															<tr class="fds-table__tr fds-table__tr--hoverable">
+															{% for form in formset %}
+															<tr class="fds-table__tr fds-table__tr--hoverable list_var">
 																<!-- 削除 -->
 																<td class="fds-table__td fds-table__td--col-fixed">
 																	<div class="fds-table__td-content">
 																		<div class="fds-checkbox">
 																			<label class="fds-checkbox__label">
-																				<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_PodDetailId-%d-is_Deleted" data-name-format="PodDetailId-%d-is_Deleted" name="PodDetailId-{{ forloop.counter0 }}-is_Deleted" id="id_PodDetailId-{{ forloop.counter0 }}-is_Deleted" value="1" checked>
+																				<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_OrderingTableId-%d-is_Deleted" data-name-format="OrderingTableId-%d-is_Deleted" name="OrderingTableId-{{ forloop.counter0 }}-is_Deleted" id="id_OrderingTableId-{{ forloop.counter0 }}-is_Deleted" value="1" checked>
 																				<span class="fds-checkbox__text">
 																				</span>
 																			</label>
 																		</div>
 																	</div>
-																</td>								
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content">
-																		<label class="fds-label-input">{{ col.McdColor }}</label>										
-																	</div>
-																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId"
-																	name="PodDetailId-{{ forloop.counter0 }}-PodColorId" id="id_PodDetailId-{{ forloop.counter0 }}-PodColorId" value={{ col.podcolorid_id }}>
 																</td>
+																<!-- 項番 -->
 																<td class="fds-table__td">
-																	<div class="fds-table__td-content">
-																		<label class="fds-label-input">{{ col.McdSize }}</label>										
-																	</div>
-																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"
-																	name="PodDetailId-{{ forloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.counter0 }}-PodSizeId" value={{ col.podsizeid_id }}>
-																</td>
-																<td class="fds-table__td">
-																	<div class="fds-table__td-content">
-																		<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume" 
-																		name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value={{ col.PodVolume }}>
+																	<div id="div" class="fds-table__td-content">
+																		<input type="text" class="fds-form-input DetailItemNumber" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+																		name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value={{ form.DetailItemNumber.value }} >
 																	</div>
 																</td>
-																<input type="hidden" data-id-format="id_PodDetailId-%d-DELETE" data-name-format="PodDetailId-%d-DELETE" name="PodDetailId-{{ forloop.counter0 }}-DELETE" id="id_PodDetailId-{{ forloop.counter0 }}-DELETE">
-																<input type="hidden" data-id-format="id_PodDetailId-%d-id" data-name-format="PodDetailId-%d-id" name="PodDetailId-{{ forloop.counter0 }}-id" id="id_PodDetailId-{{ forloop.counter0 }}-id" value={{ col.id }}>
+																<!-- 色番 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input" style="width: 60px;" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
+																		name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value={{ form.DetailColorNumber.value }}>                                          
+																	</div>
+																</td>
+																<!-- カラー -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input" style="width: 100px;" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
+																		name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value={{ form.DetailColor.value }}>                                   
+																	</div>
+																</td>
+																<!-- 仕立 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input" style="width: 40px;" maxlength="1" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
+																		name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value={{ form.DetailTailoring.value }}>                                   
+																	</div>
+																</td>
+																<!-- 数量 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" step="0.1" class="fds-form-input" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
+																		name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value={{ form.DetailVolume.value| intcomma }}>                                   
+																	</div>
+																</td>
+																<!-- 仕入単価 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input DetailUnitPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" value={{ form.DetailUnitPrice.value| intcomma }}>                                   
+																	</div>
+																</td>
+																<!-- 通常単価 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input DetailPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+																		name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);"  value={{ form.DetailPrice.value| intcomma }}>      
+																	</div>
+																</td>
+																<!-- UP分単価 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input DetailOverPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+																		name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value={{ form.DetailOverPrice.value| intcomma }}>                                                                            
+																	</div>
+																</td>
+																<!-- 販売単価 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input DetailSellPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+																		name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value={{ form.DetailSellPrice.value| intcomma }}>                                   
+																	</div>
+																</td>
+																<!-- 摘要 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input" style="width: 150px;" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
+																		name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary">                                   
+																	</div>
+																</td>
+																<!-- 希望納期 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input SpecifyDeliveryDate" style="width: 100px;" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
+																		name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value={{ form.SpecifyDeliveryDate.value | default_if_none:"" }}>                                   
+																	</div>
+																</td>
+																<!-- 回答納期 -->
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input StainAnswerDeadline" style="width: 100px;" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
+																		name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline" value={{ form.StainAnswerDeadline.value | default_if_none:"" }}>                                   
+																	</div>
+																</td>
+																<!-- 済フラグ -->
+																<td class="fds-table__td fds-table__td--col-fixed">
+																	<div class="fds-table__td-content">
+																		<div class="fds-checkbox fds-checkbox--on-table">
+																			<label class="fds-checkbox__label">
+																				<input type="checkbox" class="fds-checkbox__input DeliveryManageDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
+																				name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" value={{ form.DeliveryManageDiv.value }}>
+																				<span class="fds-checkbox__text">
+																				</span>
+																			</label>
+																		</div>
+																	</div>
+																</td>
+																<!-- 済フラグ -->
+																<td class="fds-table__td fds-table__td--col-fixed">
+																	<div class="fds-table__td-content">
+																		<div class="fds-checkbox fds-checkbox--on-table">
+																			<label class="fds-checkbox__label">
+																				<input type="checkbox" class="fds-checkbox__input PrintDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-PrintDiv" data-name-format="OrderingTableId-%d-PrintDiv" 
+																				name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" value={{ form.PrintDiv.value }}>
+																				<span class="fds-checkbox__text">
+																				</span>
+																			</label>
+																		</div>
+																	</div>
+																</td>
+																<input type="hidden" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" name="OrderingTableId-{{ forloop.counter0 }}-DELETE" id="id_OrderingTableId-{{ forloop.counter0 }}-DELETE">
+																<input type="hidden" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" name="OrderingTableId-0-id" id="id_OrderingTableId-0-id" value={{ form.id.value }} >
 															</tr>
 															{% endfor %}
 														</tbody>
@@ -93,30 +242,10 @@
 										<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
 										{% load static %}
-										<script src="{% static '\js\datepickerproductorder.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
-										<script src="{% static '\js\productorder.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
 										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
-										<script>
-											var btn = document.getElementById('modalOpen');
-											var cls = document.getElementById('modalClose');
-											var dlt = document.getElementById('delete');
-											var modal = document.getElementsByClassName('fds-uxhub-preview');
-										
-											btn.addEventListener('click', function() {
-												for(i=0;i<modal.length;i++){
-													modal[i].style.opacity = '1';
-													modal[i].style.visibility = 'visible';
-												}
-											})
-											dlt.addEventListener('click', function() {
-												document.delform.submit();
-											})
-											cls.addEventListener('click', function() {
-												for(i=0;i<modal.length;i++){
-													modal[i].style.opacity = '0';
-													modal[i].style.visibility = 'hidden';
-												}
-											})
-										</script>
+										<script src="{% static '\js\modalordering.js' %}" charset="UTF-8"></script>
 										{% endblock %}
+			
