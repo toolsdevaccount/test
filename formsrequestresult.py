@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import OrderingTable, OrderingDetail, CustomerSupplier
+from .models import OrderingTable, OrderingDetail, CustomerSupplier, RequestResult
 from django.forms import ModelChoiceField
 from datetime import datetime
 
@@ -41,6 +41,14 @@ RequestResultFormset = forms.inlineformset_factory(
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
             'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','SpecifyDeliveryDate','StainAnswerDeadline',
             'DeliveryManageDiv','PrintDiv',
+            ),
+    extra=0,min_num=1,validate_min=True,can_delete=True
+)
+
+RequestRecordFormset = forms.inlineformset_factory(
+    OrderingTable, RequestResult, 
+    fields=('ResultItemNumber','ResultDate','ShippingDate','ShippingVolume','SlipNumber','ResultSummary',
+            'ResultMoveDiv','ResultGainDiv','ResultDecreaseDiv',
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )

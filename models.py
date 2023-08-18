@@ -364,6 +364,9 @@ class ProductOrderDetail(models.Model):
         return reverse('crud/productorder/productorderlist.html')
 
 class RequestResult(models.Model):
+    OrderingId = models.ForeignKey(OrderingTable,on_delete=models.PROTECT,blank=True, null=True,related_name='OrderingId',verbose_name="受発注テーブルid")
+    OrderingDetailId = models.ForeignKey(OrderingDetail,on_delete=models.PROTECT,blank=True, null=True,related_name='OrderingDetailId',verbose_name="受発注明細id")
+    ResultItemNumber = models.CharField(max_length=4,null=False,blank=False,default=0,verbose_name="項番")
     ResultDate = models.DateField(null=False,blank=False,default="2000-01-01",verbose_name="実績日")
     ShippingDate = models.DateField(null=False,blank=False,default="2000-01-01",verbose_name="出荷日")
     ShippingVolume = models.DecimalField(max_digits=8,decimal_places=2, null=False,blank=False,default=0.00,verbose_name="出荷数")

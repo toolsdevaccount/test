@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="fds-page-table__title-box">
                                     <div class="fds-page-table__title">
-                                        編集
+                                        新規登録
                                     </div>
                                     <div class="fds-page-table__search-form">
                                         <button type="button" class="fds-btn fds-btn--basic" onclick="location.href='{% url 'myapp:requestresultlist' %}'" style="width: 100px">
@@ -45,6 +45,7 @@
                                         <ul class="fds-tabs" id="js-tab">
                                             <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
                                             <li class="fds-tabs__item">明細部</li>
+                                            <li class="fds-tabs__item">実績</li>
                                         </ul>
                                         <div class="tab-contents-item active">                     
                                             <div class="fds-page-detail__main">
@@ -311,6 +312,7 @@
                                             </div>
                                         </div>
                                         {% include "crud/requestresult/new/requestresulttable.html" %}
+                                        {% include "crud/requestresult/new/requestresultrecord.html" %}
                                     </div>
                                 </div>
                             </div>
