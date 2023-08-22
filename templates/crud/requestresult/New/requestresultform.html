@@ -45,7 +45,6 @@
                                         <ul class="fds-tabs" id="js-tab">
                                             <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
                                             <li class="fds-tabs__item">明細部</li>
-                                            <li class="fds-tabs__item">実績</li>
                                         </ul>
                                         <div class="tab-contents-item active">                     
                                             <div class="fds-page-detail__main">
@@ -94,7 +93,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 依頼日 -->
                                                         <label class="fds-label-input">依頼日:</label>
-                                                        <input type="tel" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" readonly="true" value={{ object.OrderingDate }}>
+                                                        <input type="tel" class="fds-form-input" placeholder="" name="OrderingDate" id="id_OrderingDate" maxlength="10" value={{ object.OrderingDate }}>
                                                         {% if form.errors.OrderingDate %}
                                                         {% for error in form.errors.OrderingDate %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -312,7 +311,6 @@
                                             </div>
                                         </div>
                                         {% include "crud/requestresult/new/requestresulttable.html" %}
-                                        {% include "crud/requestresult/new/requestresultrecord.html" %}
                                     </div>
                                 </div>
                             </div>

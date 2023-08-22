@@ -46,9 +46,9 @@ RequestResultFormset = forms.inlineformset_factory(
 )
 
 RequestRecordFormset = forms.inlineformset_factory(
-    OrderingTable, RequestResult, 
+    OrderingTable, RequestResult,
     fields=('ResultItemNumber','ResultDate','ShippingDate','ShippingVolume','SlipNumber','ResultSummary',
-            'ResultMoveDiv','ResultGainDiv','ResultDecreaseDiv',
+            'ResultMoveDiv','ResultGainDiv','ResultDecreaseDiv','OrderingDetailId'
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )

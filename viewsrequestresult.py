@@ -120,12 +120,14 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
     model = OrderingTable
     form_class =  RequestResultForm
     formset_class = RequestResultFormset
+    inlinesRecord_class = RequestRecordFormset
     template_name = "crud/requestresult/new/requestresultform.html"
    
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         context = super(RequestResultCreateView, self).get_context_data(**kwargs)
         context.update(dict(formset=RequestResultFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))),
+                       inlinesRecord=RequestRecordFormset(self.request.POST or None, instance=self.get_object(), queryset=RequestResult.objects.filter(is_Deleted=0)),
                        DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                        SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
                        ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
@@ -135,56 +137,24 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
                        )
         return context
 
-    #def get(self, request):
-    #    form = RequestResultForm(self.request.POST or None, 
-    #                        initial={'OutputDiv': '1',
-    #                                 'OrderingDate':date.today(),
-    #                                 'SampleDiv': '1',
-    #                                 })
-    #    formset = RequestResultFormset
-    #    DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-    #    SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
-    #    ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-    #    CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
-    #    RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-    #    StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-        
-    #    context = {
-    #        'form': form,
-    #        'formset': formset,
-    #        'DestinationCode': DestinationCode,
-    #        'SupplierCode':SupplierCode,
-    #        'ShippingCode':ShippingCode,
-    #        'CustomerCode':CustomerCode,
-    #        'RequestCode':RequestCode,
-    #        'StainShippingCode':StainShippingCode,
-    #    }
-
-    #    return render(request, 'crud/requestresult/new/requestresultform.html', context)
-
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
         formset = RequestResultFormset(self.request.POST,instance=post) 
-        if self.request.method == 'POST' and formset.is_valid(): 
-            instances = formset.save(commit=False)
+        inlinesRecord = RequestRecordFormset(self.request.POST,instance=post)
+
+        if self.request.method == 'POST' and inlinesRecord.is_valid(): 
+            instances = inlinesRecord.save(commit=False)
             
-            if form.is_valid():
-                post.OrderNumber = post.OrderNumber.zfill(7)
-                # Created_id,Updated_idフィールドはログインしているユーザidとする
-                post.Created_id = self.request.user.id
-                post.Updated_id = self.request.user.id
-                post.save()
-        
+            if form.is_valid():       
                 for file in instances:
-                    file.DetailItemNumber = file.DetailItemNumber.zfill(4)
                     file.Created_id = self.request.user.id
                     file.Updated_id = self.request.user.id
                     file.save()
         else:
             # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form, formset=formset))
+            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinesRecord=inlinesRecord))
 
         return redirect('myapp:requestresultlist')
 
