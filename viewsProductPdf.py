@@ -143,7 +143,8 @@ def getcolor(pk):
             ' from '
             ' ( '
             '  SELECT '
-            '	 b.McdColor			AS color '
+            '	 a.id			    AS id '
+            '	,b.McdColor			AS color '
             '	,c.McdSize			AS size ' 
             '	,max(a.PodVolume) 	AS max_value '
             '  	,b.McdColorNumber	AS colorNumber '
@@ -163,6 +164,8 @@ def getcolor(pk):
             ' group by' 
             '	 color '
             '   ,colorNumber'
+            ' order by'
+            '    t.id '
             )
     cur.execute(sql)
     result = cur.fetchall()     
@@ -204,31 +207,36 @@ def getimage(pk):
 
 def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     # フォント登録
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiKakuGo-W5'))
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
 
     width, height = A4
 
     # 発注先
     font_size = 14
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 820, dt[0][1] + '　' + dt[0][25] + dt[0][2])
     #pdf_canvas.drawString(200, 820, dt[0][2])
     pdf_canvas.line(20, 810, 270, 810) 
 
     # 発注日
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(450, 820, '発注日: ' + dt[0][6])
 
     # 発注番号
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(450, 800, '発注番号: ' + dt[0][0])
 
     # 自社情報
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(380, 780, dt[0][17])
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+
+    # ロゴ追加
+    img = './mysite/media/image1.jpg'
+    pdf_canvas.drawImage(img, 130*mm, 275*mm , 20*mm, 8*mm)
+
+    #pdf_canvas.drawString(380, 780, dt[0][17])
     pdf_canvas.drawString(380, 760, '〒 ' + dt[0][16])
     pdf_canvas.drawString(380, 740, dt[0][18] + dt[0][19] + dt[0][20] + dt[0][21])
     pdf_canvas.drawString(380, 720, 'TEL: ' + dt[0][22] + '　FAX: ' + dt[0][23])
@@ -236,12 +244,12 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     # title
     font_size = 12
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(260, 680, '製 品 発 注 書')
 
     # メッセージ
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(150, 660,'下記の通り発注いたしますので、ご手配のほどよろしくお願い申し上げます')
 
     # line
@@ -255,27 +263,27 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     # オーダーNO
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 630,'オーダーNO')
     pdf_canvas.drawString(140,630, dt[0][3] + dt[0][4])
     pdf_canvas.line(210, 650, 210, 620) #中縦
 
     # アパレル
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 600,'アパレル')
     pdf_canvas.drawString(140,600, dt[0][8])
 
     # ブランド名
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 570,'ブランド')
     pdf_canvas.drawString(140,570, dt[0][10])
 
     # 本品番
     font_size = 9
     pdf_canvas.line(300, 650, 300, 620) #中縦
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(240, 630,'本品番')
     pdf_canvas.drawString(310,630, dt[0][5])
     pdf_canvas.line(390, 650, 390, 560) #中縦
@@ -283,24 +291,24 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     # 商品コード
     font_size = 9
     pdf_canvas.line(470, 650, 470, 560) #中縦
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(400, 630,'商品コード')
     pdf_canvas.drawString(490, 630, dt[0][7])
 
     # 納期
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(400, 600,'納期')
     pdf_canvas.drawString(490, 600, dt[0][9])
 
     # 仕入単価
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(400, 570,'仕入単価')
     pdf_canvas.drawString(490, 570, dt[0][11])
 
     # 品名、番手、混率、単価、条件
-    style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
+    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
     itemNo0 = Paragraph('品名',style)
     itemNo1 = Paragraph('番手',style)
     itemNo2 = Paragraph('混率',style)
@@ -313,7 +321,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     table = Table(data, colWidths=(55*mm, 30*mm, 55*mm, 35*mm, 19*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
-            ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
+            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
             ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -323,8 +331,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     data =[]
     l=len(dt)
-    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_LEFT)
-    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_RIGHT)
+    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_LEFT)
+    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_RIGHT)
 
     for i in range(6):
         if i<l: 
@@ -345,7 +353,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
         table = Table(data, colWidths=(55*mm, 30*mm, 55*mm, 35*mm, 19*mm), rowHeights=6.5*mm)
         table.setStyle(TableStyle([
-                ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
+                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
                 ('BOX', (0, 0), (-1, -1), 1, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -358,7 +366,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     data =[]
     l=len(dtsize)
 
-    style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
+    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
     titleNo0 = Paragraph('色番',style)
     titleNo1 = Paragraph('カラー/サイズ',style)
     titleNo8 = Paragraph('合　計',style)
@@ -398,7 +406,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     table = Table(data, colWidths=(15*mm, 39*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
-            ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
+            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
             ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -417,9 +425,9 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     itemNo16total = 0
     itemNo17total = 0
 
-    style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
-    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_LEFT)
-    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_RIGHT)
+    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
+    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_LEFT)
+    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_RIGHT)
 
     for i in range(12):
         if i<l:
@@ -446,25 +454,25 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
                     total += Decimal(Vol[0])
                     itemNo12total += Decimal(Vol[0])
                 if k==1:   
-                    itemNo13 = Paragraph(f"{int(Vol[0]):,}",styleRight)
+                    itemNo13 = Paragraph(f"{int(Vol[1]):,}",styleRight)
                     total += Decimal(Vol[1])
                     itemNo13total += Decimal(Vol[1])
                 if k==2:   
-                    itemNo14 = Paragraph(f"{int(Vol[0]):,}",styleRight)
+                    itemNo14 = Paragraph(f"{int(Vol[2]):,}",styleRight)
                     total += Decimal(Vol[2])
                     itemNo14total += Decimal(Vol[2])
                 if k==3:   
-                    itemNo15 = Paragraph(f"{int(Vol[0]):,}",styleRight)
+                    itemNo15 = Paragraph(f"{int(Vol[3]):,}",styleRight)
                     total += Decimal(Vol[3])
                     itemNo15total += Decimal(Vol[3])
                 if k==4:   
-                    itemNo16 = Paragraph(f"{int(Vol[0]):,}",styleRight)
+                    itemNo16 = Paragraph(f"{int(Vol[4]):,}",styleRight)
                     total += Decimal(Vol[4])
                     itemNo16total += Decimal(Vol[4])
                 if k==5:   
-                    itemNo17 = Paragraph(f"{int(Vol[0]):,}",styleRight)
-                    total += Decimal(Vol[4])
-                    itemNo17total += Decimal(Vol[4])
+                    itemNo17 = Paragraph(f"{int(Vol[5]):,}",styleRight)
+                    total += Decimal(Vol[5])
+                    itemNo17total += Decimal(Vol[5])
             detailtotal = Paragraph(f"{int(total):,}",styleRight)
             data += [
                 [itemNo10, itemNo11,itemNo12,itemNo13,itemNo14,itemNo15,itemNo16,itemNo17,detailtotal] ,
@@ -515,7 +523,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     table = Table(data, colWidths=(15*mm, 39*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
-            ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
+            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
             ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -538,25 +546,25 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     if l > 0:
         # 仮品番
         font_size = 9
-        pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
         pdf_canvas.drawString(25, 130,'[仮品番]:')
         pdf_canvas.drawString(100 ,130, dtimage[0][2])
 
         # マーク名
         font_size = 9
-        pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
         pdf_canvas.drawString(25, 110,'[マーク名]:')
         pdf_canvas.drawString(100, 110, dtimage[0][0])
 
         # 備考
         font_size = 9
-        pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
         pdf_canvas.drawString(350, 90,'[備考]:')
         pdf_canvas.drawString(400, 90, textwrap.fill(dtimage[0][1], 12, max_lines=2, placeholder=' ~',))
 
     # 
     font_size = 14
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(350, 40,'Signature')
     pdf_canvas.line(350, 30, 520, 30) 
 

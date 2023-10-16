@@ -96,7 +96,7 @@ def connect(pk):
                 ' ,b.detailsummary,"",e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
                 ' ,e.BuildingName,e.PhoneNumber,e.FaxNumber,d.first_name,d.last_name,d.email,f.CustomerName,f.PostCode,i.prefecturename,f.Municipalities'
                 ' ,f.Address,f.BuildingName,f.PhoneNumber,f.FaxNumber,a.StainMixRatio,a.OutputDiv'
-                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%Y年%m月%d日"),"")'
+                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%Y年%m月%d日"),""), j.CustomerName, k.CustomerName'
         ' FROM '
                 'myapp_orderingtable a '
         ' LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
@@ -105,6 +105,8 @@ def connect(pk):
         ' LEFT JOIN myapp_customersupplier f on a.ShippingCode_id = f.id'
         ' LEFT JOIN myapp_prefecture h on c.PrefecturesCode_id = h.id'
         ' LEFT JOIN myapp_prefecture i on f.PrefecturesCode_id = i.id'
+        ' LEFT JOIN myapp_customersupplier j on a.SupplierCode_id = j.id'
+        ' LEFT JOIN myapp_customersupplier k on a.StainShippingCode_id = k.id'
         ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) e'
         ' LEFT JOIN myapp_prefecture g on e.PrefecturesCode_id = g.id'
         ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted = 0 AND b.PrintDiv = 0' 
@@ -120,28 +122,28 @@ def connect(pk):
 
 def print_string(pdf_canvas,dt):
     # フォント登録
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiKakuGo-W5'))
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
 
     width, height = A4
 
     # 注文日
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(700, 550, '注文日: ' + dt[0][2])
 
     # title
     font_size = 24
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(350, 550, '注　文　書')
 
     # 発注先
     font_size = 11
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(50, 550, dt[0][9] + '　' + dt[0][6] + '　' + dt[0][7])
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.drawString(50, 550, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
 
     # 出荷先
     font_size = 10
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 430, '出荷先: ' + dt[0][34])
     pdf_canvas.drawString(50, 410, '〒 ' + dt[0][35])
     pdf_canvas.drawString(50, 390, dt[0][36] + dt[0][37] + dt[0][38] + dt[0][39])
@@ -150,8 +152,14 @@ def print_string(pdf_canvas,dt):
 
     # 自社情報
     font_size = 10
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(590, 490, dt[0][23] + '　' + dt[0][31] + dt[0][32])
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+
+    # ロゴ追加
+    img = './mysite/media/image1.jpg'
+    pdf_canvas.drawImage(img, 215*mm, 170*mm , 20*mm, 10*mm)
+
+    #pdf_canvas.drawString(590, 490, dt[0][23] + '　' + dt[0][31] + dt[0][32])
+    pdf_canvas.drawString(680, 490, dt[0][31] + dt[0][32])
     pdf_canvas.drawString(590, 470, '〒 ' + dt[0][24])
     pdf_canvas.drawString(590, 450, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
     pdf_canvas.drawString(590, 430, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
@@ -159,12 +167,12 @@ def print_string(pdf_canvas,dt):
 
     # 発注番号
     font_size = 11
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(685, 370, '発注番号: ' + dt[0][0] + dt[0][1])
     pdf_canvas.line(680, 365, 808, 365) 
 
     # 品名、番手、色番、色名、数量、単位、単価、希望納期、回答納期、備考(中央寄せ)
-    style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=8, alignment=TA_CENTER)
+    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_CENTER)
     itemNo0 = Paragraph('品名',style)
     itemNo1 = Paragraph('番手',style)
     itemNo2 = Paragraph('色番',style)
@@ -182,7 +190,7 @@ def print_string(pdf_canvas,dt):
 
     table = Table(data, colWidths=(40*mm, 15*mm, 20*mm, 40*mm, 20*mm, 15*mm, 20*mm, 30*mm, 30*mm, 40*mm), rowHeights=7.5*mm)
     table.setStyle(TableStyle([
-            ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 8),
+            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
             ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -192,8 +200,8 @@ def print_string(pdf_canvas,dt):
 
     data =[]
     l=len(dt)
-    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=8, alignment=TA_LEFT)
-    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=8, alignment=TA_RIGHT)
+    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_LEFT)
+    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_RIGHT)
 
     for i in range(9):
         if i<l: 
@@ -220,7 +228,7 @@ def print_string(pdf_canvas,dt):
 
         table = Table(data, colWidths=(40*mm, 15*mm, 20*mm, 40*mm, 20*mm, 15*mm, 20*mm, 30*mm, 30*mm, 40*mm), rowHeights=7.5*mm)
         table.setStyle(TableStyle([
-                ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 8),
+                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
                 ('BOX', (0, 0), (-1, -1), 1, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -231,17 +239,17 @@ def print_string(pdf_canvas,dt):
 
     # 摘要
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 100, '摘要')
 
     # メッセージ
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 80, '※単価の違いがございましたらお手数ですがご連絡ください。')
 
     # メッセージ
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 60, '　出荷次第、納品書を翌日当社宛に発注番号を必ずご記入の上、ご一報ください。')
 
     pdf_canvas.rect(43, 20, 765, 100) 
@@ -253,13 +261,13 @@ if __name__ == '__main__':
 
 def print_string_StainRequest(pdf_canvas,dt):
     # フォント登録
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiKakuGo-W5'))
+    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
 
     width, height = A4
 
     # title
     font_size = 20
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     if dt[0][43]==2:
         pdf_canvas.drawString(240, 800, '染 付 依 頼 書')
     if dt[0][43]==3:
@@ -267,25 +275,31 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     # 発注番号
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(450, 790, '発注番号: ' + dt[0][0] + dt[0][1])
     #pdf_canvas.line(680, 365, 808, 365) 
 
     # 依頼日
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(450, 770, '依頼日: ' + dt[0][2])
 
     # 発注先
     font_size = 14
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(20, 770, dt[0][9] + '　' + dt[0][6] + '　' + dt[0][7])
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.drawString(20, 770, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
     pdf_canvas.line(20, 760, 240, 760) 
 
     # 自社情報
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(380, 720, dt[0][23] + '　' + dt[0][31] + dt[0][32])
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+
+    # ロゴ追加
+    img = './mysite/media/image1.jpg'
+    pdf_canvas.drawImage(img, 130*mm, 250*mm , 20*mm, 10*mm)
+
+    #pdf_canvas.drawString(380, 720, dt[0][23] + '　' + dt[0][31] + dt[0][32])
+    pdf_canvas.drawString(440, 720, dt[0][31] + dt[0][32])
     pdf_canvas.drawString(380, 700, '〒 ' + dt[0][24])
     pdf_canvas.drawString(380, 680, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
     pdf_canvas.drawString(380, 660, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
@@ -293,7 +307,7 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     # メッセージ
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 620,'下 記 の 通 り 依 頼 い た し ま す 。')
 
     # line
@@ -302,85 +316,86 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     # 原糸メーカー
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 590,'原糸メーカー')
+    pdf_canvas.drawString(90, 590, dt[0][47])
     pdf_canvas.line(20, 580, 570, 580) 
 
     # 原糸出荷
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 560,'原糸出荷')
     pdf_canvas.line(20, 550, 570, 550) 
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(90, 560, dt[0][44])
 
     # 品番
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 530,'品番')
     pdf_canvas.line(20, 520, 570, 520) 
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(90, 530, dt[0][5])
 
     # 品名
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 500,'品名')
     pdf_canvas.line(20, 490, 570, 490) 
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(90, 500, dt[0][3])
 
     # 番手
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 470,'番手')
     pdf_canvas.line(20, 460, 570, 460) 
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(90, 470, dt[0][4])
 
     # 混率
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 440,'混率')
     pdf_canvas.line(20, 430, 570, 430) 
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(90, 440, dt[0][42])
 
     # 希望納期
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(300, 590,'希望納期')
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(370, 590, dt[0][8])
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.drawString(370, 590, dt[0][45])
 
     # 回答納期
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(300, 560,'回答納期')
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
-    pdf_canvas.drawString(370, 560, dt[0][45])
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.drawString(370, 560, dt[0][8])
 
     # 不明
     #font_size = 9
-    #pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    #pdf_canvas.setFont('HeiseiMin-W3', font_size)
     #pdf_canvas.drawString(300, 550,'')
 
     # 仕入単価
     #font_size = 9
-    #pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    #pdf_canvas.setFont('HeiseiMin-W3', font_size)
     #pdf_canvas.drawString(300, 530,'仕入単価')
-    #pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    #pdf_canvas.setFont('HeiseiMin-W3', font_size)
     #pdf_canvas.drawString(370, 530, dt[0][20])
 
     # 出荷先名
     font_size = 9
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(300, 530,'出荷先名')
-    pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(370, 530, dt[0][34])
 
     # 項番、色番、カラー、仕立、数量、摘要
-    style = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_CENTER)
+    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
     itemNo0 = Paragraph('項番',style)
     itemNo1 = Paragraph('色番',style)
     itemNo2 = Paragraph('カラー',style)
@@ -395,7 +410,7 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 20*mm, 20*mm, 60*mm), rowHeights=7.5*mm)
     table.setStyle(TableStyle([
-            ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
+            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
             ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -406,8 +421,8 @@ def print_string_StainRequest(pdf_canvas,dt):
     data =[]
     l=len(dt)
     total=0
-    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_LEFT)
-    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiKakuGo-W5', fontSize=9, alignment=TA_RIGHT)
+    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_LEFT)
+    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_RIGHT)
 
     for i in range(15):
         if i<l: 
@@ -439,7 +454,7 @@ def print_string_StainRequest(pdf_canvas,dt):
 
         table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 20*mm, 20*mm, 60*mm), rowHeights=7.5*mm)
         table.setStyle(TableStyle([
-                ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
+                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
                 ('BOX', (0, 0), (-1, -1), 1, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
