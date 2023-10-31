@@ -2,6 +2,7 @@
 {% block content %}
 <form method="post" id="form">
 {% csrf_token %}
+<div class="row">
     <div class="fds-page-table__main">
         <div class="fds-breadcrumb">
             <div class="fds-breadcrumb__item">
@@ -39,7 +40,7 @@
                     <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
                     <li class="fds-tabs__item">残高情報</li>
                 </ul>
-                <div class="tab-contents-item active">            
+                <div class="tab-contents-item active">                           
                     <div class="fds-page-detail__main">
                         <div class="fds-form-label fds-form-label--horizontal">
                             <!-- コード -->
@@ -55,7 +56,7 @@
                             <!-- 名称 -->
                             <div class="fds-form-input-message" style="width:50%;">
                                 <label class="fds-label-input">名称:</label>
-                                <input type="text" class="fds-form-input" placeholder=""  name="CustomerName" id="id_CustomerName" style="width:500px;" value={{ form.data.CustomerName }}>
+                                <input type="text" class="fds-form-input" placeholder=""  name="CustomerName" id="id_CustomerName" style="width:250px;" value={{ form.data.CustomerName }}>
                                 {% if form.errors.CustomerName %}
                                 {% for error in form.errors.CustomerName %}
                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -75,10 +76,10 @@
                                 {% endfor %}
                                 {% endif %}
                             </div>
-                            <div class="fds-form-input-message" style="width:50%;">
+                            <div class="fds-form-input-message" style="width:25%;">
                                 <!-- カナ名 -->
                                 <label class="fds-label-input">カナ名:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="CustomerNameKana" id="id_CustomerNameKana" style="width:500px;" value={{ form.data.CustomerNameKana }}>
+                                <input type="text" class="fds-form-input" placeholder="" name="CustomerNameKana" id="id_CustomerNameKana" style="width:250px;" value={{ form.data.CustomerNameKana }}>
                                 {% if form.errors.CustomerNameKana %}
                                 {% for error in form.errors.CustomerNameKana %}
                                     <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -252,5 +253,6 @@
             </div>
         </div>
     </div>
+</div>
 </form>
 {% endblock %}

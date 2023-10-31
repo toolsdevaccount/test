@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.lib.pagesizes import A4, portrait, landscape
+from reportlab.lib.pagesizes import B5, A4, portrait, landscape
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import mm
 from reportlab.lib import colors
@@ -47,19 +47,19 @@ def make(pk,filename):
     pdf_canvas.save() # 保存
 
 def set_info(filename):
-    #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(A4))
-    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=landscape(A4))
+    #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(B5))
+    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=landscape(B5))
     pdf_canvas.setAuthor("hpscript")
-    pdf_canvas.setTitle("注文書")
-    pdf_canvas.setSubject("注文書")
+    pdf_canvas.setTitle("発注書")
+    pdf_canvas.setSubject("発注書")
     return pdf_canvas
 
 def set_info_stain(filename):
-    #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=portrait(A4))
-    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(A4))
+    #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=portrait(B5))
+    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(B5))
     pdf_canvas.setAuthor("hpscript")
-    pdf_canvas.setTitle("染色依頼注文書")
-    pdf_canvas.setSubject("染色依頼注文書")
+    pdf_canvas.setTitle("染色依頼書")
+    pdf_canvas.setSubject("染色依頼書")
     return pdf_canvas
 
 def UpdateQuery(pk):
@@ -91,12 +91,12 @@ def connect(pk):
         ' SELECT '
                 '  a.SlipDiv,a.OrderNumber,IFNULL(DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),""),a.ProductName,a.OrderingCount,a.StainPartNumber,a.SupplierPerson'
                 ' ,CASE WHEN a.TitleDiv=1 THEN "様" ELSE "御中" END'
-                ' ,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%Y年%m月%d日"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
+                ' ,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%m/%d"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
                 ' ,c.BuildingName,b.DetailItemNumber,b.DetailColorNumber,b.DetailColor,b.DetailTailoring,FORMAT(b.DetailVolume,2),FORMAT(b.detailunitprice,0)'
                 ' ,b.detailsummary,"",e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
                 ' ,e.BuildingName,e.PhoneNumber,e.FaxNumber,d.first_name,d.last_name,d.email,f.CustomerName,f.PostCode,i.prefecturename,f.Municipalities'
                 ' ,f.Address,f.BuildingName,f.PhoneNumber,f.FaxNumber,a.StainMixRatio,a.OutputDiv'
-                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%Y年%m月%d日"),""), j.CustomerName, k.CustomerName'
+                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%m/%d"),""), j.CustomerName, k.CustomerName'
         ' FROM '
                 'myapp_orderingtable a '
         ' LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
@@ -124,31 +124,30 @@ def print_string(pdf_canvas,dt):
     # フォント登録
     pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
 
-    width, height = A4
+    width, height = B5
 
     # 注文日
-    font_size = 9
+    font_size = 10
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(700, 550, '注文日: ' + dt[0][2])
+    pdf_canvas.drawString(600, 470, dt[0][2])
 
     # title
-    font_size = 24
+    font_size = 20
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(350, 550, '注　文　書')
+    pdf_canvas.drawString(280, 460, '発　注　書')
 
     # 発注先
     font_size = 11
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 550, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
+    pdf_canvas.drawString(20, 470, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
 
     # 出荷先
     font_size = 10
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 430, '出荷先: ' + dt[0][34])
-    pdf_canvas.drawString(50, 410, '〒 ' + dt[0][35])
-    pdf_canvas.drawString(50, 390, dt[0][36] + dt[0][37] + dt[0][38] + dt[0][39])
-    #pdf_canvas.drawString(50, 370, 'TEL: ' + dt[0][40] + '　FAX: ' + dt[0][41])
-    pdf_canvas.drawString(50, 370, 'TEL: ' + dt[0][40])
+    pdf_canvas.drawString(20, 410, '出荷先: ' + dt[0][34])
+    pdf_canvas.drawString(20, 390, '〒 ' + dt[0][35])
+    pdf_canvas.drawString(20, 380, dt[0][36] + dt[0][37] + dt[0][38] + dt[0][39])
+    pdf_canvas.drawString(20, 370, 'TEL: ' + dt[0][40])
 
     # 自社情報
     font_size = 10
@@ -156,23 +155,22 @@ def print_string(pdf_canvas,dt):
 
     # ロゴ追加
     img = './mysite/media/image1.jpg'
-    pdf_canvas.drawImage(img, 215*mm, 170*mm , 20*mm, 10*mm)
+    pdf_canvas.drawImage(img, 180*mm, 152*mm, 38*mm, 10*mm)
+    #pdf_canvas.drawImage(img, 170*mm, 152*mm , 13*mm, 15*mm)
 
-    #pdf_canvas.drawString(590, 490, dt[0][23] + '　' + dt[0][31] + dt[0][32])
-    pdf_canvas.drawString(680, 490, dt[0][31] + dt[0][32])
-    pdf_canvas.drawString(590, 470, '〒 ' + dt[0][24])
-    pdf_canvas.drawString(590, 450, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
-    pdf_canvas.drawString(590, 430, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
-    pdf_canvas.drawString(590, 410, 'E-mail: ' + dt[0][33])
+    pdf_canvas.drawString(620, 440, dt[0][31] + dt[0][32])
+    pdf_canvas.drawString(510, 420, '〒 ' + dt[0][24])
+    pdf_canvas.drawString(510, 410, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
+    pdf_canvas.drawString(510, 400, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
 
-    # 発注番号
-    font_size = 11
+    # オーダーNO
+    font_size = 10
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(685, 370, '発注番号: ' + dt[0][0] + dt[0][1])
-    pdf_canvas.line(680, 365, 808, 365) 
+    pdf_canvas.drawString(580, 370, 'オーダーNO: ' + dt[0][0] + dt[0][1])
+    pdf_canvas.line(580, 365, 690, 365) 
 
     # 品名、番手、色番、色名、数量、単位、単価、希望納期、回答納期、備考(中央寄せ)
-    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_CENTER)
+    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
     itemNo0 = Paragraph('品名',style)
     itemNo1 = Paragraph('番手',style)
     itemNo2 = Paragraph('色番',style)
@@ -188,20 +186,20 @@ def print_string(pdf_canvas,dt):
         [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6, itemNo7, itemNo8, itemNo9],
     ]
 
-    table = Table(data, colWidths=(40*mm, 15*mm, 20*mm, 40*mm, 20*mm, 15*mm, 20*mm, 30*mm, 30*mm, 40*mm), rowHeights=7.5*mm)
+    table = Table(data, colWidths=(30*mm, 15*mm, 20*mm, 30*mm, 20*mm, 12*mm, 20*mm, 20*mm, 20*mm, 50*mm), rowHeights=7.5*mm)
     table.setStyle(TableStyle([
-            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
+            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
             ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
-    table.wrapOn(pdf_canvas, 10*mm, 10*mm)
-    table.drawOn(pdf_canvas, 15*mm, 118.0*mm)
+    table.wrapOn(pdf_canvas, 7*mm, 10*mm)
+    table.drawOn(pdf_canvas, 7*mm, 118.0*mm)
 
     data =[]
     l=len(dt)
-    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_LEFT)
-    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_RIGHT)
+    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_LEFT)
+    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_RIGHT)
 
     for i in range(9):
         if i<l: 
@@ -226,33 +224,38 @@ def print_string(pdf_canvas,dt):
                     ['','','','','','','','','',''],
             ]
 
-        table = Table(data, colWidths=(40*mm, 15*mm, 20*mm, 40*mm, 20*mm, 15*mm, 20*mm, 30*mm, 30*mm, 40*mm), rowHeights=7.5*mm)
+        table = Table(data, colWidths=(30*mm, 15*mm, 20*mm, 30*mm, 20*mm, 12*mm, 20*mm, 20*mm, 20*mm, 50*mm), rowHeights=7.5*mm)
         table.setStyle(TableStyle([
-                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
+                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
                 ('BOX', (0, 0), (-1, -1), 1, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
-                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
             ]))
 
-    table.wrapOn(pdf_canvas, 10*mm, 10*mm)
-    table.drawOn(pdf_canvas, 15*mm, 50.5*mm)
+    table.wrapOn(pdf_canvas, 7*mm, 10*mm)
+    table.drawOn(pdf_canvas, 7*mm, 50.5*mm)
 
     # 摘要
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 100, '摘要')
+    pdf_canvas.drawString(40, 110, '摘要')
 
     # メッセージ
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 80, '※単価の違いがございましたらお手数ですがご連絡ください。')
+    pdf_canvas.drawString(40, 90, '※単価の違いがございましたらお手数ですがご連絡ください。')
 
     # メッセージ
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 60, '　出荷次第、納品書を翌日当社宛に発注番号を必ずご記入の上、ご一報ください。')
+    pdf_canvas.drawString(40, 70, '　出荷次第、納品書を翌日当社宛に発注番号を必ずご記入の上、ご一報ください。')
 
-    pdf_canvas.rect(43, 20, 765, 100) 
+    # ロゴ追加
+    img = './mysite/media/image2.jpg'
+    pdf_canvas.drawImage(img, 100*mm, 2*mm, 38*mm, 10*mm)
+
+#    pdf_canvas.rect(43, 20, 765, 100) 
+    pdf_canvas.rect(20, 50, 672, 80) 
  
     pdf_canvas.showPage()
      
@@ -263,32 +266,25 @@ def print_string_StainRequest(pdf_canvas,dt):
     # フォント登録
     pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
 
-    width, height = A4
+    width, height = B5
 
     # title
-    font_size = 20
+    font_size = 14
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     if dt[0][43]==2:
-        pdf_canvas.drawString(240, 800, '染 付 依 頼 書')
+        pdf_canvas.drawString(200, 670, '染 付 依 頼 書')
     if dt[0][43]==3:
-        pdf_canvas.drawString(180, 800, 'ビ ー カ ー 染 付 依 頼 書')
-
-    # 発注番号
-    font_size = 9
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(450, 790, '発注番号: ' + dt[0][0] + dt[0][1])
-    #pdf_canvas.line(680, 365, 808, 365) 
+        pdf_canvas.drawString(180, 670, 'ビ ー カ ー 染 付 依 頼 書')
 
     # 依頼日
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(450, 770, '依頼日: ' + dt[0][2])
+    pdf_canvas.drawString(380, 670, dt[0][2])
 
     # 発注先
-    font_size = 14
+    font_size = 12
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 770, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
-    pdf_canvas.line(20, 760, 240, 760) 
+    pdf_canvas.drawString(20, 640, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
 
     # 自社情報
     font_size = 9
@@ -296,119 +292,119 @@ def print_string_StainRequest(pdf_canvas,dt):
 
     # ロゴ追加
     img = './mysite/media/image1.jpg'
-    pdf_canvas.drawImage(img, 130*mm, 250*mm , 20*mm, 10*mm)
-
-    #pdf_canvas.drawString(380, 720, dt[0][23] + '　' + dt[0][31] + dt[0][32])
-    pdf_canvas.drawString(440, 720, dt[0][31] + dt[0][32])
-    pdf_canvas.drawString(380, 700, '〒 ' + dt[0][24])
-    pdf_canvas.drawString(380, 680, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
-    pdf_canvas.drawString(380, 660, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
-    pdf_canvas.drawString(380, 640, 'E-mail: ' + dt[0][33])
+    pdf_canvas.drawImage(img, 105*mm, 215*mm , 20*mm, 10*mm)
+    #pdf_canvas.drawImage(img, 180*mm, 152*mm, 38*mm, 10*mm)
+    pdf_canvas.drawString(380, 610, dt[0][31] + dt[0][32])
+    pdf_canvas.drawString(310, 595, '〒 ' + dt[0][24])
+    pdf_canvas.drawString(310, 585, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
+    pdf_canvas.drawString(310, 575, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
 
     # メッセージ
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 620,'下 記 の 通 り 依 頼 い た し ま す 。')
+    pdf_canvas.drawString(20, 575,'下記の通りご依頼致します。')
 
-    # line
-    pdf_canvas.line(20, 610, 570, 610) 
-    pdf_canvas.line(290, 430, 290, 610) 
+    # line 
+    pdf_canvas.line(20, 560, 480, 560) 
+    pdf_canvas.line(250, 380, 250, 560) 
 
     # 原糸メーカー
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 590,'原糸メーカー')
-    pdf_canvas.drawString(90, 590, dt[0][47])
-    pdf_canvas.line(20, 580, 570, 580) 
+    pdf_canvas.drawString(25, 550,'原糸メーカー')
+    pdf_canvas.drawString(90, 535, dt[0][47])
+    pdf_canvas.line(20, 530, 480, 530) 
 
     # 原糸出荷
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 560,'原糸出荷')
-    pdf_canvas.line(20, 550, 570, 550) 
+    pdf_canvas.drawString(25, 520,'原糸出荷')
+    pdf_canvas.line(20, 500, 480, 500) 
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(90, 560, dt[0][44])
+    pdf_canvas.drawString(90, 505, dt[0][44])
 
     # 品番
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 530,'品番')
-    pdf_canvas.line(20, 520, 570, 520) 
+    pdf_canvas.drawString(25, 490,'品番')
+    pdf_canvas.line(20, 470, 480, 470) 
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(90, 530, dt[0][5])
+    pdf_canvas.drawString(90, 475, dt[0][5])
 
     # 品名
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 500,'品名')
-    pdf_canvas.line(20, 490, 570, 490) 
+    pdf_canvas.drawString(25, 460,'品名')
+    pdf_canvas.line(20, 440, 480, 440) 
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(90, 500, dt[0][3])
+    pdf_canvas.drawString(90, 445, dt[0][3])
 
     # 番手
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 470,'番手')
-    pdf_canvas.line(20, 460, 570, 460) 
+    pdf_canvas.drawString(25, 430,'番手')
+    pdf_canvas.line(20, 410, 480, 410) 
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(90, 470, dt[0][4])
+    pdf_canvas.drawString(90, 415, dt[0][4])
 
     # 混率
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 440,'混率')
-    pdf_canvas.line(20, 430, 570, 430) 
+    pdf_canvas.drawString(25, 400,'混率')
+    pdf_canvas.line(20, 380, 480, 380) 
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(90, 440, dt[0][42])
+    pdf_canvas.drawString(90, 385, dt[0][42])
 
-    # 希望納期
+    # オーダーNO
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(300, 590,'希望納期')
+    pdf_canvas.drawString(265, 550,'オーダーNO')
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(370, 590, dt[0][45])
+    pdf_canvas.drawString(330, 535, dt[0][0] + dt[0][1])
 
-    # 回答納期
+    # アパレル
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(300, 560,'回答納期')
+    pdf_canvas.drawString(265, 490,'アパレル')
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(370, 560, dt[0][8])
-
-    # 不明
-    #font_size = 9
-    #pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    #pdf_canvas.drawString(300, 550,'')
-
-    # 仕入単価
-    #font_size = 9
-    #pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    #pdf_canvas.drawString(300, 530,'仕入単価')
-    #pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    #pdf_canvas.drawString(370, 530, dt[0][20])
+    pdf_canvas.drawString(330, 475, dt[0][0] + dt[0][1])
 
     # 出荷先名
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(300, 530,'出荷先名')
+    pdf_canvas.drawString(265, 460,'出荷先名')
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(370, 530, dt[0][34])
+    pdf_canvas.drawString(330, 445, dt[0][34])
+
+    # 出荷先住所
+    font_size = 9
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.drawString(265, 430, dt[0][35] + ' ' + dt[0][36] + dt[0][37] + dt[0][38] + dt[0][39])
+
+    # 出荷先TEL
+    font_size = 9
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+    pdf_canvas.drawString(330, 415, 'TEL:' + dt[0][40])
 
     # 項番、色番、カラー、仕立、数量、摘要
     style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
     itemNo0 = Paragraph('項番',style)
     itemNo1 = Paragraph('色番',style)
-    itemNo2 = Paragraph('カラー',style)
+    itemNo2 = Paragraph('色名',style)
     itemNo3 = Paragraph('仕立',style)
     itemNo4 = Paragraph('数量',style)
     itemNo5 = Paragraph('単価',style)
-    itemNo6 = Paragraph('摘要',style)
+    itemNo7 = Paragraph('希望納期',style)
+    itemNo8 = Paragraph('回答納期',style)
+    itemNo6 = Paragraph('備考',style)
 
     data = [
-        [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6] ,
+        [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo7, itemNo8, itemNo6] ,
     ]
 
-    table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 20*mm, 20*mm, 60*mm), rowHeights=7.5*mm)
+    table = Table(data, colWidths=(15*mm, 15*mm, 20*mm, 15*mm, 15*mm, 15*mm, 20*mm, 20*mm, 27*mm), rowHeights=7.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
             ('BOX', (0, 0), (-1, -1), 1, colors.black),
@@ -416,7 +412,7 @@ def print_string_StainRequest(pdf_canvas,dt):
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 133.0*mm)
+    table.drawOn(pdf_canvas, 7*mm, 120.0*mm)
 
     data =[]
     l=len(dt)
@@ -424,7 +420,7 @@ def print_string_StainRequest(pdf_canvas,dt):
     styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_LEFT)
     styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_RIGHT)
 
-    for i in range(15):
+    for i in range(11):
         if i<l: 
             row = dt[i]
             total += Decimal(row[19])
@@ -437,22 +433,24 @@ def print_string_StainRequest(pdf_canvas,dt):
             DetailItemNumber = Paragraph(row[15],styleRight)
             Volume = Paragraph(row[19],styleRight)
             DetailUnitPrice = Paragraph(row[20],styleRight)
+            StainAnswerDeadline = Paragraph(row[8],styleRight)
+            SpecifyDeliveryDate = Paragraph(row[45],styleRight)
             data += [
-                    [DetailItemNumber, DetailColorNumber, DetailColor, DetailTailoring, Volume, DetailUnitPrice, DetailSummary],
+                    [DetailItemNumber, DetailColorNumber, DetailColor, DetailTailoring, Volume, DetailUnitPrice, StainAnswerDeadline, SpecifyDeliveryDate, DetailSummary],
             ]
         else:
-            if i==14:
+            if i==10:
                 # 指定した列の右寄せ
                 Detailtotal = Paragraph(str(total),styleRight)
                 data += [
-                        ['','','','',Detailtotal,''],
+                        ['','','','',Detailtotal,'','',''],
                 ]
             else:            
                 data += [
-                        ['','','','','',''],
+                        ['','','','','','','',''],
                 ]
 
-        table = Table(data, colWidths=(20*mm, 30*mm, 30*mm, 15*mm, 20*mm, 20*mm, 60*mm), rowHeights=7.5*mm)
+        table = Table(data, colWidths=(15*mm, 15*mm, 20*mm, 15*mm, 15*mm, 15*mm, 20*mm, 20*mm, 27*mm), rowHeights=7.5*mm)
         table.setStyle(TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
                 ('BOX', (0, 0), (-1, -1), 1, colors.black),
@@ -460,8 +458,12 @@ def print_string_StainRequest(pdf_canvas,dt):
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ]))
 
+    # ロゴ追加
+    img = './mysite/media/image2.jpg'
+    pdf_canvas.drawImage(img, 65*mm, 10*mm, 38*mm, 10*mm)
+
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 20.5*mm)
+    table.drawOn(pdf_canvas, 7*mm, 37.5*mm)
 
     pdf_canvas.showPage()
      

@@ -87,9 +87,10 @@ def connect(pk):
                 ' ,CAST(A.ProductOrderMerchandiseCode AS CHAR),B.CustomerName,IFNULL(DATE_FORMAT(A.ProductOrderDeliveryDate,"%Y年%m月%d日"),""),A.ProductOrderBrandName '
                 ' ,FORMAT(C.McdUnitPrice,0),G.McdDtProductName,G.McdDtOrderingCount,G.McdDtStainMixRatio,FORMAT(G.McdDtlPrice,0) '
                 ' ,H.PostCode,H.CustomerName,I.prefecturename,H.Municipalities,H.Address,H.BuildingName,H.PhoneNumber,H.FaxNumber,H.EMAIL '
-                ' ,A.ProductOrderSupplierPerson '
+                ' ,A.ProductOrderSupplierPerson, k.first_name, k.last_name'
             ' FROM '
                 ' myapp_productorder A '
+                ' LEFT JOIN auth_user k on A.ManagerCode = k.id'
                 ' LEFT JOIN myapp_customersupplier B on A.ProductOrderApparelCode_id = b.id '
                 ' LEFT JOIN myapp_merchandise C on A.ProductOrderMerchandiseCode = C.id '
                 ' LEFT JOIN	myapp_customersupplier J on	A.ProductOrderDestinationCode_id = J.id '
@@ -212,21 +213,21 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     width, height = A4
 
     # 発注先
-    font_size = 14
+    font_size = 12
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(20, 820, dt[0][1] + '　' + dt[0][25] + dt[0][2])
+    pdf_canvas.drawString(20, 790, dt[0][1] + '　' + dt[0][25] + dt[0][2])
     #pdf_canvas.drawString(200, 820, dt[0][2])
-    pdf_canvas.line(20, 810, 270, 810) 
+    pdf_canvas.line(20, 780, 240, 780) 
 
     # 発注日
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(450, 820, '発注日: ' + dt[0][6])
+    pdf_canvas.drawString(480, 820, dt[0][6])
 
     # 発注番号
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(450, 800, '発注番号: ' + dt[0][0])
+    pdf_canvas.drawString(480, 800, 'No' + dt[0][0])
 
     # 自社情報
     font_size = 9
@@ -234,18 +235,16 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     # ロゴ追加
     img = './mysite/media/image1.jpg'
-    pdf_canvas.drawImage(img, 130*mm, 275*mm , 20*mm, 8*mm)
-
-    #pdf_canvas.drawString(380, 780, dt[0][17])
-    pdf_canvas.drawString(380, 760, '〒 ' + dt[0][16])
-    pdf_canvas.drawString(380, 740, dt[0][18] + dt[0][19] + dt[0][20] + dt[0][21])
-    pdf_canvas.drawString(380, 720, 'TEL: ' + dt[0][22] + '　FAX: ' + dt[0][23])
-    pdf_canvas.drawString(380, 700, 'E-mail: ' + dt[0][24])
+    pdf_canvas.drawImage(img, 135*mm, 265*mm , 30*mm, 10*mm)
+    pdf_canvas.drawString(480, 760, dt[0][26] + dt[0][27])
+    pdf_canvas.drawString(380, 740, '〒 ' + dt[0][16])
+    pdf_canvas.drawString(380, 720, dt[0][18] + dt[0][19] + dt[0][20] + dt[0][21])
+    pdf_canvas.drawString(380, 700, 'TEL: ' + dt[0][22] + '　FAX: ' + dt[0][23])
 
     # title
-    font_size = 12
+    font_size = 14
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(260, 680, '製 品 発 注 書')
+    pdf_canvas.drawString(260, 680, '製品発注書')
 
     # メッセージ
     font_size = 9
@@ -254,58 +253,58 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     # line
     pdf_canvas.line(20, 650, 570, 650)  #上
-    pdf_canvas.line(20, 650, 20, 560)   #左
-    pdf_canvas.line(20, 560, 570, 560)  #下 
-    pdf_canvas.line(570,650, 570, 560)  #右 
-    pdf_canvas.line(120, 650, 120, 560) #中縦
-    pdf_canvas.line(20, 620, 570, 620)  #中横
-    pdf_canvas.line(20, 590, 570, 590)  #中横
+    pdf_canvas.line(20, 650, 20, 590)   #左
+    pdf_canvas.line(20, 590, 570, 590)  #下 
+    pdf_canvas.line(570,650, 570, 590)  #右 
+    pdf_canvas.line(120, 650, 120, 590) #中縦
+    pdf_canvas.line(20, 630, 570, 630)  #中横
+    pdf_canvas.line(20, 610, 570, 610)  #中横
 
     # オーダーNO
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 630,'オーダーNO')
-    pdf_canvas.drawString(140,630, dt[0][3] + dt[0][4])
-    pdf_canvas.line(210, 650, 210, 620) #中縦
+    pdf_canvas.drawString(50, 635,'オーダーNO')
+    pdf_canvas.drawString(140,635, dt[0][3] + dt[0][4])
+    pdf_canvas.line(210, 650, 210, 630) #中縦
 
     # アパレル
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 600,'アパレル')
-    pdf_canvas.drawString(140,600, dt[0][8])
+    pdf_canvas.drawString(50, 615,'アパレル')
+    pdf_canvas.drawString(140,615, dt[0][8])
 
     # ブランド名
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(50, 570,'ブランド')
-    pdf_canvas.drawString(140,570, dt[0][10])
+    pdf_canvas.drawString(50, 595,'ブランド')
+    pdf_canvas.drawString(140,595, dt[0][10])
 
     # 本品番
     font_size = 9
-    pdf_canvas.line(300, 650, 300, 620) #中縦
+    pdf_canvas.line(300, 650, 300, 630) #中縦
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(240, 630,'本品番')
-    pdf_canvas.drawString(310,630, dt[0][5])
-    pdf_canvas.line(390, 650, 390, 560) #中縦
+    pdf_canvas.drawString(240, 635,'本品番')
+    pdf_canvas.drawString(310,635, dt[0][5])
+    pdf_canvas.line(390, 650, 390, 590) #中縦
 
     # 商品コード
     font_size = 9
-    pdf_canvas.line(470, 650, 470, 560) #中縦
+    pdf_canvas.line(470, 650, 470, 590) #中縦
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(400, 630,'商品コード')
-    pdf_canvas.drawString(490, 630, dt[0][7])
+    pdf_canvas.drawString(400, 635,'商品コード')
+    pdf_canvas.drawString(490, 635, dt[0][7])
 
     # 納期
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(400, 600,'納期')
-    pdf_canvas.drawString(490, 600, dt[0][9])
+    pdf_canvas.drawString(400, 615,'納期')
+    pdf_canvas.drawString(490, 615, dt[0][9])
 
     # 仕入単価
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(400, 570,'仕入単価')
-    pdf_canvas.drawString(490, 570, dt[0][11])
+    pdf_canvas.drawString(400, 595,'仕入単価')
+    pdf_canvas.drawString(490, 595, dt[0][11])
 
     # 品名、番手、混率、単価、条件
     style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
@@ -327,7 +326,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 185.0*mm)
+    #table.drawOn(pdf_canvas, 7*mm, 185.0*mm)
+    table.drawOn(pdf_canvas, 7*mm, 198.0*mm)
 
     data =[]
     l=len(dt)
@@ -360,7 +360,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             ]))
 
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 146.0*mm)
+    #table.drawOn(pdf_canvas, 7*mm, 146.0*mm)
+    table.drawOn(pdf_canvas, 7*mm, 159.0*mm)
 
     # サイズ
     data =[]
@@ -412,7 +413,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 135.0*mm)
+    #table.drawOn(pdf_canvas, 7*mm, 135.0*mm)
+    table.drawOn(pdf_canvas, 7*mm, 150.0*mm)
 
     # カラー
     data =[]
@@ -529,7 +531,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    table.drawOn(pdf_canvas, 7*mm, 57*mm)
+    #table.drawOn(pdf_canvas, 7*mm, 57*mm)
+    table.drawOn(pdf_canvas, 7*mm, 72*mm)
 
     # イメージ(画像ファイルを挿入)
     l=len(dtimage)
@@ -539,36 +542,42 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
         if row[3]!="":
             img = './mysite/media/' + row[3]
             if i==0:
-                pdf_canvas.drawImage(img, 12*mm, 5*mm , 25*mm, 25*mm)
+                pdf_canvas.drawImage(img, 11*mm, 28*mm , 25*mm, 25*mm)
             if i==1:
-                pdf_canvas.drawImage(img, 30*mm, 5*mm , 25*mm, 25*mm)
+                pdf_canvas.drawImage(img, 30*mm, 28*mm , 25*mm, 25*mm)
 
     if l > 0:
         # 仮品番
         font_size = 9
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(25, 130,'[仮品番]:')
-        pdf_canvas.drawString(100 ,130, dtimage[0][2])
+        pdf_canvas.drawString(25, 170,'[仮品番]:')
+        pdf_canvas.drawString(80 ,170, dtimage[0][2])
 
         # マーク名
         font_size = 9
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(25, 110,'[マーク名]:')
-        pdf_canvas.drawString(100, 110, dtimage[0][0])
+        pdf_canvas.drawString(200, 170,'[マーク名]:')
+        pdf_canvas.drawString(280, 170, dtimage[0][0])
 
         # 備考
         font_size = 9
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(350, 90,'[備考]:')
-        pdf_canvas.drawString(400, 90, textwrap.fill(dtimage[0][1], 12, max_lines=2, placeholder=' ~',))
+        pdf_canvas.drawString(25, 160,'[備考]:')
+        pdf_canvas.drawString(80, 160, textwrap.fill(dtimage[0][1], 12, max_lines=2, placeholder=' ~',))
 
     # 
     font_size = 14
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(350, 40,'Signature')
-    pdf_canvas.line(350, 30, 520, 30) 
+    pdf_canvas.drawString(350, 105,'Signature')
+    pdf_canvas.line(350, 100, 520, 100) 
 
-    pdf_canvas.rect(20, 10, 550, 140) 
+    #pdf_canvas.rect(20, 10, 550, 140) 
+    pdf_canvas.rect(20, 70, 550, 120) 
+
+    # ロゴ追加
+    img = './mysite/media/image2.jpg'
+    pdf_canvas.drawImage(img, 85*mm, 10*mm, 38*mm, 10*mm)
+
     pdf_canvas.showPage()
      
 if __name__ == '__main__':
