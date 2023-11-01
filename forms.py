@@ -81,11 +81,12 @@ class CustomerSupplierChoiceField(ModelChoiceField):
         return  obj.CustomerCode + ":" + obj.CustomerOmitName[0:5]
 
 class OrderingForm(forms.ModelForm):
+    ManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
     class Meta:
         model = OrderingTable
         fields = ('SlipDiv','OrderNumber','OrderingDate','StainShippingDate','ProductName','OrderingCount','StainPartNumber',
                   'StainMixRatio','DestinationCode','SupplierCode','ShippingCode','CustomeCode','StainShippingCode','RequestCode','SupplierPerson',
-                  'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv','is_Ordered',
+                  'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv','is_Ordered','ManagerCode','ApparelCode',
                  )
 
     # 手配先
@@ -129,7 +130,7 @@ OrderingFormset = forms.inlineformset_factory(
     OrderingTable, OrderingDetail, 
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
             'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','SpecifyDeliveryDate','StainAnswerDeadline',
-            'DeliveryManageDiv','PrintDiv',
+            'DeliveryManageDiv','PrintDiv','DetailUnitDiv',
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )

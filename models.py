@@ -135,6 +135,10 @@ class OrderingTable(models.Model):
     CustomeCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='CustomeCode',verbose_name="得意先コード")
     RequestCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='RequestCode',verbose_name="依頼先コード")
     StainShippingCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='StainShippingCode',verbose_name="原糸メーカーコード")
+    #2023-11-01追加
+    ApparelCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ApparelCode',verbose_name="アパレルコード",default=1)
+    ManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
+
     SupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
     TitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Title,verbose_name="敬称区分")
     StockDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="在庫済区分")
@@ -164,6 +168,12 @@ class OrderingTable(models.Model):
         return reverse('crud/ordering/orderinglist.html')
 
 class OrderingDetail(models.Model):
+    #2023-11-01 追加
+    Unit = [
+            (0, ""),
+            (1, "㎏"),
+            (2, "本"),
+        ]
     OrderingTableId = models.ForeignKey(OrderingTable,on_delete=models.PROTECT,blank=True, null=True,related_name='OrderingTableId',verbose_name="受発注テーブルid")
     DetailItemNumber = models.CharField(max_length=4,null=False,blank=False,default=0,verbose_name="項番")
     DetailColorNumber = models.CharField(max_length=6,null=False,blank=True,default=0,verbose_name="色番")
@@ -184,6 +194,8 @@ class OrderingDetail(models.Model):
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
     Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+    #2023-11-01 追加
+    DetailUnitDiv = models.IntegerField(null=False,blank=True,default=0,choices=Unit,verbose_name="敬称区分")
 
     def __str__(self):
         return str(self.DetailItemNumber)

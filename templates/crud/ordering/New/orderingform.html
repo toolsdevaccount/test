@@ -63,6 +63,24 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- 担当者 -->
+                                                        <div class="fds-page-input-select">
+                                                            <label class="fds-label-input">担当者：</label>
+                                                            <div class="fds-select-container">
+                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ManagerCode" id="id_ManagerCode">
+                                                                    {% for data in form.ManagerCode %}
+                                                                    {{ data }}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        {% if form.errors.ManagerCode %}
+                                                        {% for error in form.errors.ManagerCode %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}   
+                                                    </div>                       
                                                 </div>
                                                 <div class="fds-form-label fds-form-label--horizontal">
                                                     <div class="fds-form-input-message" style="width:25%;">
@@ -237,6 +255,26 @@
                                                         {% endfor %}
                                                         {% endif %}   
                                                     </div>
+
+                                                    <div class="fds-form-input-message" style="width:25%;">
+                                                        <!-- アパレル -->
+                                                        <div class="fds-page-input-select">
+                                                            <label class="fds-label-input">アパレル:</label>
+                                                            <input type="tel" class="fds-form-input" placeholder="" list="Apparel" name="ApparelCode" id="id_ApparelCode"  value="A00000 未登録">
+                                                            <datalist id="Apparel">
+                                                            {% for data in ApparelCode %}
+                                                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                                                            {% endfor %}
+                                                            </datalist>
+                                                            <input type="hidden" name="ApparelCode" id="id_ApparelCode" value=1>
+                                                        </div>
+                                                        {% if form.errors.ApparelCode %}
+                                                        {% for error in form.errors.ApparelCode %}
+                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                                                        {% endfor %}
+                                                        {% endif %}   
+                                                    </div>
+
                                                 </div>
                                                 <div class="fds-divider fds-divider--dark2"></div>
                                                 <div class="fds-form-label fds-form-label--horizontal">

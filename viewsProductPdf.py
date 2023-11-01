@@ -83,20 +83,94 @@ def connect(pk):
     cur = conn.cursor()
     sql = (
             ' SELECT ' 
-                '  CAST(A.id AS CHAR),J.CustomerName, CASE WHEN A.ProductOrderTitleDiv=1 THEN "様" ELSE "御中" END ,A.ProductOrderSlipDiv,A.ProductOrderOrderNumber,A.ProductOrderPartNumber,IFNULL(DATE_FORMAT(A.ProductOrderOrderingDate,"%Y年%m月%d日"),"") '
-                ' ,CAST(A.ProductOrderMerchandiseCode AS CHAR),B.CustomerName,IFNULL(DATE_FORMAT(A.ProductOrderDeliveryDate,"%Y年%m月%d日"),""),A.ProductOrderBrandName '
-                ' ,FORMAT(C.McdUnitPrice,0),G.McdDtProductName,G.McdDtOrderingCount,G.McdDtStainMixRatio,FORMAT(G.McdDtlPrice,0) '
-                ' ,H.PostCode,H.CustomerName,I.prefecturename,H.Municipalities,H.Address,H.BuildingName,H.PhoneNumber,H.FaxNumber,H.EMAIL '
-                ' ,A.ProductOrderSupplierPerson, k.first_name, k.last_name'
+            '    CAST(A.id AS CHAR)'
+            '   ,J.CustomerName'
+            '   ,CASE WHEN A.ProductOrderTitleDiv=1 THEN "様" ELSE "御中" END '
+            '   ,A.ProductOrderSlipDiv '
+            '   ,A.ProductOrderOrderNumber' 
+            '   ,A.ProductOrderPartNumber '
+            '   ,IFNULL(DATE_FORMAT(A.ProductOrderOrderingDate,"%Y年%m月%d日"),"") '
+            '   ,CAST(A.ProductOrderMerchandiseCode AS CHAR) '
+            '   ,B.CustomerName,IFNULL(DATE_FORMAT(A.ProductOrderDeliveryDate,"%Y年%m月%d日"),"") '
+            '   ,A.ProductOrderBrandName '
+            '   ,FORMAT(C.McdUnitPrice,0) '
+            '   ,G.McdDtProductName '
+            '   ,G.McdDtOrderingCount '
+            '   ,G.McdDtStainMixRatio '
+            '   ,FORMAT(G.McdDtlPrice,0) '
+            '   ,H.PostCode '
+            '   ,H.CustomerName ' 
+            '   ,I.prefecturename '
+            '   ,H.Municipalities '
+            '   ,H.Address '
+            '   ,H.BuildingName '
+            '   ,H.PhoneNumber '
+            '   ,H.FaxNumber '
+            '   ,H.EMAIL '
+            '   ,A.ProductOrderSupplierPerson '
+            '   ,k.first_name '
+            '   ,k.last_name '
+            '   ,CASE C.McdUnitcode '
+            '       WHEN 1 THEN "￥" '
+            '                WHEN 2 THEN "US$" '
+            '                WHEN 3 THEN "US$" '
+            '                WHEN 4 THEN "US$" '
+            '                WHEN 5 THEN "US$" '
+            '                WHEN 6 THEN "US$" '
+            '                WHEN 7 THEN "US$" '
+            '       ELSE "" '
+            '   END '
+            '   ,CASE C.McdUnitcode '
+            '       WHEN 1 THEN "" '
+            '       WHEN 2 THEN "　FOB東京" '
+            '       WHEN 3 THEN "　FOB上海" '
+            '       WHEN 4 THEN "　CIF東京" '
+            '       WHEN 5 THEN "　CIF上海" '
+            '       WHEN 6 THEN "　CMT東京" '
+            '       WHEN 7 THEN "　CMT上海" '
+            '       ELSE "" '
+            '   END '
+            '   ,CASE G.McdDtUnitCode '
+            '       WHEN 1 THEN "￥" '
+            '       WHEN 2 THEN "US$" '
+            '       WHEN 3 THEN "US$" '
+            '       WHEN 4 THEN "US$" '
+            '       WHEN 5 THEN "US$" '
+            '       WHEN 6 THEN "US$" '
+            '       WHEN 7 THEN "US$" '
+            '       ELSE "" '
+            '   END '
+            '   ,CASE G.McdDtUnitCode '
+            '       WHEN 1 THEN "" '
+            '       WHEN 2 THEN "FOB東京" '
+            '       WHEN 3 THEN "FOB上海" '
+            '       WHEN 4 THEN "CIF東京" '
+            '       WHEN 5 THEN "CIF上海" '
+            '       WHEN 6 THEN "CMT東京" '
+            '       WHEN 7 THEN "CMT上海" '
+            '       ELSE "" '
+            '   END '
             ' FROM '
-                ' myapp_productorder A '
-                ' LEFT JOIN auth_user k on A.ManagerCode = k.id'
-                ' LEFT JOIN myapp_customersupplier B on A.ProductOrderApparelCode_id = b.id '
-                ' LEFT JOIN myapp_merchandise C on A.ProductOrderMerchandiseCode = C.id '
-                ' LEFT JOIN	myapp_customersupplier J on	A.ProductOrderDestinationCode_id = J.id '
-                ' LEFT JOIN	myapp_merchandisedetail G on C.id = G.McdDtid_id '	
-                ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber,EMAIL FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) H '
-                ' LEFT JOIN myapp_prefecture I on H.PrefecturesCode_id = I.id '
+            '   myapp_productorder A '
+            '   LEFT JOIN ' 
+            '   auth_user k on '
+            '       A.ManagerCode = k.id'
+            '   LEFT JOIN '
+            '   myapp_customersupplier B on '
+            '       A.ProductOrderApparelCode_id = b.id '
+            '   LEFT JOIN '
+            '   myapp_merchandise C on '
+            '       A.ProductOrderMerchandiseCode = C.id '
+            '   LEFT JOIN '
+            '  	myapp_customersupplier J on	'
+            '      A.ProductOrderDestinationCode_id = J.id '
+            '   LEFT JOIN '
+            '   myapp_merchandisedetail G on '
+            '       C.id = G.McdDtid_id '	
+            '   ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber,EMAIL FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) H '
+            '   LEFT JOIN '
+            '   myapp_prefecture I on '
+            '       H.PrefecturesCode_id = I.id '
             ' WHERE '
                 ' A.id = ' + str(pk)
             )
@@ -249,7 +323,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     # メッセージ
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(150, 660,'下記の通り発注いたしますので、ご手配のほどよろしくお願い申し上げます')
+    pdf_canvas.drawString(150, 660,'下記の通り発注いたしますので、御手配のほどよろしくお願い申し上げます')
 
     # line
     pdf_canvas.line(20, 650, 570, 650)  #上
@@ -304,7 +378,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(400, 595,'仕入単価')
-    pdf_canvas.drawString(490, 595, dt[0][11])
+    pdf_canvas.drawString(490, 595, dt[0][28] + dt[0][11] + dt[0][29])
 
     # 品名、番手、混率、単価、条件
     style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
@@ -341,10 +415,11 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             ProductName = Paragraph(row[12],styleLeft)
             OrderingCount = Paragraph(row[13],styleLeft)
             StainMixRatio = Paragraph(row[14],styleLeft)
+            UnitDiv = Paragraph(row[31],styleLeft)
             # 指定した列の右寄せ
-            DtlPrice = Paragraph(row[15],styleRight)
+            DtlPrice = Paragraph(row[30] + row[15],styleRight)
             data += [
-                    [ProductName, OrderingCount, StainMixRatio, DtlPrice, ''],
+                    [ProductName, OrderingCount, StainMixRatio, DtlPrice, UnitDiv],
             ]
         else:
             data += [

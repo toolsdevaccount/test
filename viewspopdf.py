@@ -89,28 +89,76 @@ def connect(pk):
     cur = conn.cursor()
     sql = (
         ' SELECT '
-                '  a.SlipDiv,a.OrderNumber,IFNULL(DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),""),a.ProductName,a.OrderingCount,a.StainPartNumber,a.SupplierPerson'
-                ' ,CASE WHEN a.TitleDiv=1 THEN "様" ELSE "御中" END'
-                ' ,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%m/%d"),""),c.CustomerName,c.PostCode,h.prefecturename,c.Municipalities,c.Address'
-                ' ,c.BuildingName,b.DetailItemNumber,b.DetailColorNumber,b.DetailColor,b.DetailTailoring,FORMAT(b.DetailVolume,2),FORMAT(b.detailunitprice,0)'
-                ' ,b.detailsummary,"",e.CustomerName,e.PostCode,g.prefecturename,e.Municipalities,e.Address'
-                ' ,e.BuildingName,e.PhoneNumber,e.FaxNumber,d.first_name,d.last_name,d.email,f.CustomerName,f.PostCode,i.prefecturename,f.Municipalities'
-                ' ,f.Address,f.BuildingName,f.PhoneNumber,f.FaxNumber,a.StainMixRatio,a.OutputDiv'
-                ' ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),""),IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%m/%d"),""), j.CustomerName, k.CustomerName'
+        '    a.SlipDiv '
+        '   ,a.OrderNumber '
+        '   ,IFNULL(DATE_FORMAT(a.OrderingDate,"%Y年%m月%d日"),"") '
+        '   ,a.ProductName '
+        '   ,a.OrderingCount '
+        '   ,a.StainPartNumber '
+        '   ,a.SupplierPerson'
+        '   ,CASE WHEN a.TitleDiv=1 THEN "様" ELSE "御中" END'
+        '   ,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%m/%d"),"") '
+        '   ,c.CustomerName '
+        '   ,c.PostCode '
+        '   ,h.prefecturename '
+        '   ,c.Municipalities '
+        '   ,c.Address'
+        '   ,c.BuildingName '
+        '   ,b.DetailItemNumber '
+        '   ,b.DetailColorNumber '
+        '   ,b.DetailColor '
+        '   ,b.DetailTailoring '
+        '   ,FORMAT(b.DetailVolume,2) '
+        '   ,FORMAT(b.detailunitprice,0)'
+        '   ,b.detailsummary '
+        '   ,"" '
+        '   ,e.CustomerName '
+        '   ,e.PostCode '
+        '   ,g.prefecturename '
+        '   ,e.Municipalities '
+        '   ,e.Address'
+        '   ,e.BuildingName '
+        '   ,e.PhoneNumber '
+        '   ,e.FaxNumber '
+        '   ,d.first_name '
+        '   ,d.last_name '
+        '   ,d.email '
+        '   ,f.CustomerName '
+        '   ,f.PostCode '
+        '   ,i.prefecturename '
+        '   ,f.Municipalities'
+        '   ,f.Address '
+        '   ,f.BuildingName '
+        '   ,f.PhoneNumber '
+        '   ,f.FaxNumber '
+        '   ,a.StainMixRatio '
+        '   ,a.OutputDiv'
+        '   ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),"") '
+        '   ,IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%m/%d"),"") '
+        '   ,j.CustomerName '
+        '   ,k.CustomerName'
+        '   ,CASE b.DetailUnitDiv ' 
+        '       WHEN 1 THEN "㎏" '
+        '       WHEN 2 THEN "本" '
+        '       ELSE "" '
+        '    END '
+        '   ,l.CustomerName'
         ' FROM '
-                'myapp_orderingtable a '
-        ' LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
-        ' LEFT JOIN myapp_customersupplier c on a.RequestCode_id = c.id'
-        ' LEFT JOIN auth_user d on c.ManagerCode = d.id'
-        ' LEFT JOIN myapp_customersupplier f on a.ShippingCode_id = f.id'
-        ' LEFT JOIN myapp_prefecture h on c.PrefecturesCode_id = h.id'
-        ' LEFT JOIN myapp_prefecture i on f.PrefecturesCode_id = i.id'
-        ' LEFT JOIN myapp_customersupplier j on a.SupplierCode_id = j.id'
-        ' LEFT JOIN myapp_customersupplier k on a.StainShippingCode_id = k.id'
-        ' ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) e'
-        ' LEFT JOIN myapp_prefecture g on e.PrefecturesCode_id = g.id'
+        '   myapp_orderingtable a '
+        '   LEFT JOIN myapp_orderingdetail b on a.id = b.OrderingTableId_id'
+        '   LEFT JOIN myapp_customersupplier c on a.RequestCode_id = c.id'
+        '   LEFT JOIN auth_user d on a.ManagerCode = d.id'
+        '   LEFT JOIN myapp_customersupplier f on a.ShippingCode_id = f.id'
+        '   LEFT JOIN myapp_prefecture h on c.PrefecturesCode_id = h.id'
+        '   LEFT JOIN myapp_prefecture i on f.PrefecturesCode_id = i.id'
+        '   LEFT JOIN myapp_customersupplier j on a.SupplierCode_id = j.id'
+        '   LEFT JOIN myapp_customersupplier k on a.StainShippingCode_id = k.id'
+        '   LEFT JOIN myapp_customersupplier l on a.ApparelCode_id = l.id'
+        '   ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) e'
+        '   LEFT JOIN myapp_prefecture g on e.PrefecturesCode_id = g.id'
         ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted = 0 AND b.PrintDiv = 0' 
-        ' ORDER BY b.DetailItemNumber ASC' 
+        ' ORDER BY '
+        '   b.DetailItemNumber ASC' 
         )
     cur.execute(sql)
     result = cur.fetchall()     
@@ -200,6 +248,7 @@ def print_string(pdf_canvas,dt):
     l=len(dt)
     styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_LEFT)
     styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_RIGHT)
+    styleCenter = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
 
     for i in range(9):
         if i<l: 
@@ -210,6 +259,8 @@ def print_string(pdf_canvas,dt):
             DetailColorNumber = Paragraph(row[16],styleLeft)
             DetailColor = Paragraph(row[17],styleLeft)
             DetailSummary = Paragraph(row[21],styleLeft)
+            # 指定した列の中央寄せ
+            UnitDiv = Paragraph(row[48],styleCenter)
             # 指定した列の右寄せ
             Volume = Paragraph(row[19],styleRight)
             UnitPrice = Paragraph(row[20],styleRight)
@@ -217,7 +268,7 @@ def print_string(pdf_canvas,dt):
             SpecifyDeliveryDate = Paragraph(row[45],styleRight)
 
             data += [
-                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, ' ', UnitPrice, SpecifyDeliveryDate, StainAnswerDeadline, DetailSummary],
+                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, UnitDiv, UnitPrice, SpecifyDeliveryDate, StainAnswerDeadline, DetailSummary],
             ]
         else:
             data += [
@@ -367,7 +418,7 @@ def print_string_StainRequest(pdf_canvas,dt):
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(265, 490,'アパレル')
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(330, 475, dt[0][0] + dt[0][1])
+    pdf_canvas.drawString(330, 475, dt[0][49])
 
     # 出荷先名
     font_size = 9
