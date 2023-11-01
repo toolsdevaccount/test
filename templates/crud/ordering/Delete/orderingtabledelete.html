@@ -113,35 +113,35 @@
 																<td class="fds-table__td">
 																	<div id="div" class="fds-table__td-content">
 																		<input type="text" class="fds-form-input DetailItemNumber" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-																		name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value={{ form.DetailItemNumber.value }} >
+																		name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value }}" >
 																	</div>
 																</td>
 																<!-- 色番 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input" style="width: 60px;" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
-																		name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value={{ form.DetailColorNumber.value }}>                                          
+																		name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value="{{ form.DetailColorNumber.value }}">                                          
 																	</div>
 																</td>
 																<!-- カラー -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input" style="width: 100px;" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
-																		name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value={{ form.DetailColor.value }}>                                   
+																		name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value="{{ form.DetailColor.value }}">                                   
 																	</div>
 																</td>
 																<!-- 仕立 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input" style="width: 40px;" maxlength="1" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
-																		name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value={{ form.DetailTailoring.value }}>                                   
+																		name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value="{{ form.DetailTailoring.value }}">                                   
 																	</div>
 																</td>
 																<!-- 数量 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" step="0.1" class="fds-form-input" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-																		name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value={{ form.DetailVolume.value| intcomma }}>                                   
+																		name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="{{ form.DetailVolume.value| intcomma }}">                                   
 																	</div>
 																</td>
 																<!-- 単位 -->
@@ -165,28 +165,28 @@
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input DetailUnitPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" value={{ form.DetailUnitPrice.value| intcomma }}>                                   
+																		name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" value="{{ form.DetailUnitPrice.value| intcomma }}">                                   
 																	</div>
 																</td>
 																<!-- 通常単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input DetailPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-																		name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);"  value={{ form.DetailPrice.value| intcomma }}>      
+																		name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);"  value="{{ form.DetailPrice.value| intcomma }}">      
 																	</div>
 																</td>
 																<!-- UP分単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input DetailOverPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-																		name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value={{ form.DetailOverPrice.value| intcomma }}>                                                                            
+																		name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="{{ form.DetailOverPrice.value| intcomma }}">                                                                            
 																	</div>
 																</td>
 																<!-- 販売単価 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input DetailSellPrice" style="width: 60px; text-align: right;" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-																		name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value={{ form.DetailSellPrice.value| intcomma }}>                                   
+																		name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="{{ form.DetailSellPrice.value| intcomma }}">                                   
 																	</div>
 																</td>
 																<!-- 摘要 -->
@@ -200,14 +200,14 @@
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input SpecifyDeliveryDate" style="width: 100px;" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
-																		name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value={{ form.SpecifyDeliveryDate.value | default_if_none:"" }}>                                   
+																		name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value="{{ form.SpecifyDeliveryDate.value | default_if_none:"" }}">                                   
 																	</div>
 																</td>
 																<!-- 回答納期 -->
 																<td class="fds-table__td">
 																	<div class="fds-table__td-content">
 																		<input type="text" class="fds-form-input StainAnswerDeadline" style="width: 100px;" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
-																		name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline" value={{ form.StainAnswerDeadline.value | default_if_none:"" }}>                                   
+																		name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline" value="{{ form.StainAnswerDeadline.value | default_if_none:"" }}">                                   
 																	</div>
 																</td>
 																<!-- 済フラグ -->
@@ -216,7 +216,7 @@
 																		<div class="fds-checkbox fds-checkbox--on-table">
 																			<label class="fds-checkbox__label">
 																				<input type="checkbox" class="fds-checkbox__input DeliveryManageDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
-																				name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" value={{ form.DeliveryManageDiv.value }}>
+																				name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" value="{{ form.DeliveryManageDiv.value }}">
 																				<span class="fds-checkbox__text">
 																				</span>
 																			</label>
@@ -229,7 +229,7 @@
 																		<div class="fds-checkbox fds-checkbox--on-table">
 																			<label class="fds-checkbox__label">
 																				<input type="checkbox" class="fds-checkbox__input PrintDiv"  style="width: 50px;" data-id-format="id_OrderingTableId-%d-PrintDiv" data-name-format="OrderingTableId-%d-PrintDiv" 
-																				name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" value={{ form.PrintDiv.value }}>
+																				name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" value="{{ form.PrintDiv.value }}">
 																				<span class="fds-checkbox__text">
 																				</span>
 																			</label>
@@ -237,7 +237,7 @@
 																	</div>
 																</td>
 																<input type="hidden" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" name="OrderingTableId-{{ forloop.counter0 }}-DELETE" id="id_OrderingTableId-{{ forloop.counter0 }}-DELETE">
-																<input type="hidden" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" name="OrderingTableId-0-id" id="id_OrderingTableId-0-id" value={{ form.id.value }} >
+																<input type="hidden" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" name="OrderingTableId-0-id" id="id_OrderingTableId-0-id" value="{{ form.id.value }}" >
 															</tr>
 															{% endfor %}
 														</tbody>
