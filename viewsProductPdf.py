@@ -29,8 +29,9 @@ def pdf(request,pk):
         strtime = timezone.now() + datetime.timedelta(hours=9)
         filename = "ProductOrder_" + strtime.strftime('%Y%m%d%H%M%S')
         make(pk,filename)
+        response = HttpResponse(open('./mysite/media/save/' + filename + '.pdf','rb').read(), content_type='application/pdf')
         #response = HttpResponse(open('./download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
-        response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
+        #response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
         UpdateQuery(pk)
     except Exception as e:
@@ -49,8 +50,9 @@ def make(pk,filename):
     pdf_canvas.save() # 保存
 
 def set_info(filename):
+    pdf_canvas = canvas.Canvas("./mysite/media/save/{0}.pdf".format(filename),pagesize=portrait(A4))
     #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(A4))
-    pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(A4))
+    #pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(A4))
     pdf_canvas.setAuthor("hpscript")
     pdf_canvas.setTitle("製品発注書")
     pdf_canvas.setSubject("製品発注書")

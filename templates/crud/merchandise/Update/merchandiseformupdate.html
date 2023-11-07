@@ -111,7 +111,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 仕入単価 -->
                                                         <label class="fds-label-input">仕入単価:</label>
-                                                        <input type="text" class="fds-form-input McdUnitPrice" placeholder="" style="text-align: right;" name="McdUnitPrice" id="id_McdUnitPrice" onchange="comma(this);" value={{ object.McdUnitPrice|intcomma }}>
+                                                        <input type="text" class="fds-form-input McdUnitPrice" placeholder="" style="text-align: right;" name="McdUnitPrice" id="id_McdUnitPrice" onchange="comma(this);" value="{{ object.McdUnitPrice|intcomma }}">
                                                         {% if form.errors.McdUnitPrice %}
                                                         {% for error in form.errors.McdUnitPrice %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -142,7 +142,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 販売単価 -->
                                                         <label class="fds-label-input">販売単価:</label>
-                                                        <input type="text" class="fds-form-input McdSellPrice" placeholder="" style="text-align: right;" name="McdSellPrice" id="id_McdSellPrice" onchange="comma(this);" value={{ object.McdSellPrice|intcomma }}>
+                                                        <input type="text" class="fds-form-input McdSellPrice" placeholder="" style="text-align: right;" name="McdSellPrice" id="id_McdSellPrice" onchange="comma(this);" value="{{ object.McdSellPrice|intcomma }}">
                                                         {% if form.errors.McdSellPrice %}
                                                         {% for error in form.errors.McdSellPrice %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
@@ -155,7 +155,7 @@
                                                     <div class="fds-form-input-message" style="width:25%;">
                                                         <!-- 加工賃 -->
                                                         <label class="fds-label-input">加工賃:</label>
-                                                        <input type="text" class="fds-form-input McdProcessfee" placeholder="" style="text-align: right;" name="McdProcessfee" id="id_McdProcessfee" onchange="comma(this);" value={{ object.McdProcessfee|intcomma }}>
+                                                        <input type="text" class="fds-form-input McdProcessfee" placeholder="" style="text-align: right;" name="McdProcessfee" id="id_McdProcessfee" onchange="comma(this);" value="{{ object.McdProcessfee|intcomma }}">
                                                         {% if form.errors.McdProcessfee %}
                                                         {% for error in form.errors.McdProcessfee %}
                                                             <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>

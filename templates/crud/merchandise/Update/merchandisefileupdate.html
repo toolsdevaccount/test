@@ -90,8 +90,8 @@
 																		</div>
 																	</td>
 																	{% if form.id.value %}
-																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value={{ form.id.value }}>
-																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-McdDtuploadid" data-name-format="McdDtuploadid-%d-McdDtuploadid" name="McdDtuploadid-0-McdDtuploadid" id="id_McdDtuploadid-0-McdDtuploadid" value={{ form.McdDtuploadid.value }}>
+																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value="{{ form.id.value }}">
+																	<input type="hidden" data-id-format="id_McdDtuploadid-%d-McdDtuploadid" data-name-format="McdDtuploadid-%d-McdDtuploadid" name="McdDtuploadid-0-McdDtuploadid" id="id_McdDtuploadid-0-McdDtuploadid" value="{{ form.McdDtuploadid.value }}">
 																	{% endif %}
 																</tr>
 																{% endfor %}
