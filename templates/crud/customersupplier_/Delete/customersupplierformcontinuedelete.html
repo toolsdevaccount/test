@@ -1,0 +1,128 @@
+{% block content %}
+{% load humanize %}
+<div class="tab-contents-item">
+    <!-- <div class="fds-panel fds-panel--plain" style="width: 100%;"> -->
+        <div class="fds-page-detail__main">
+            <div class="fds-form-label fds-form-label--horizontal">
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 入金予定区分 -->
+                    <div class="fds-page-input-select">
+                        <label class="fds-label-input">入金予定区分:</label>
+                        <div class="fds-select-container">
+                            <select class="fds-select fds-form-input fds-form-input--medium" name="ExDepositDiv" id="id_ExDepositDiv">
+                                {% for data in form.ExDepositDiv %}
+                                {{ data }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 入金予定月 -->
+                    <div class="fds-page-input-select">
+                        <label class="fds-label-input">入金予定月:</label>
+                        <div class="fds-select-container">
+                            <select class="fds-select fds-form-input fds-form-input--medium" name="ExDepositMonth" id="id_ExDepositMonth">
+                                {% for data in form.ExDepositMonth %}
+                                {{ data }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 入金予定日 -->
+                    <div class="fds-page-input-select">
+                        <label class="fds-label-input">入金予定日:</label>
+                        <div class="fds-select-container">
+                            <select class="fds-select fds-form-input fds-form-input--medium" name="ExDepositDate" id="id_ExDepositDate">
+                                {% for data in form.ClosingDate %}
+                                {{ data }}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fds-divider fds-divider--dark2"></div>
+            <div class="fds-form-label fds-form-label--horizontal">
+                <!-- E-MAIL -->
+                <div class="fds-form-input-message" style="width:50%;">
+                    <label class="fds-label-input">E-MAIL:</label>
+                    <input type="text" class="fds-form-input" placeholder="" name="EMAIL" id="id_EMAIL" style="width:500px;" value="{{ object.EMAIL }}">
+                    {% if form.errors.EMAIL %}
+                    {% for error in form.errors.EMAIL %}
+                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="fds-divider fds-divider--dark2"></div>
+            <div class="fds-form-label fds-form-label--horizontal">
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 前回請求残 -->
+                    <label class="fds-label-input">前回請求残:</label>
+                    <input type="text" class="fds-form-input LastClaimBalance" maxlength="10" placeholder="" name="LastClaimBalance" id="id_LastClaimBalance" style="text-align: right;" value="{{ object.LastClaimBalance|intcomma }}">
+                    {% if form.errors.LastClaimBalance %}
+                    {% for error in form.errors.LastClaimBalance %}
+                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="fds-divider fds-divider--dark2"></div>
+            <div class="fds-form-label fds-form-label--horizontal">
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 前月売掛残 -->
+                    <label class="fds-label-input">前月売掛残:</label>
+                    <input type="text" class="fds-form-input LastReceivable" maxlength="10" placeholder="" name="LastReceivable" id="id_LastReceivable" style="text-align: right;" value="{{ object.LastReceivable|intcomma }}">
+                    {% if form.errors.LastReceivable %}
+                    {% for error in form.errors.LastReceivable %}
+                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 前月買掛残 -->
+                    <label class="fds-label-input">前月買掛残:</label>
+                    <input type="text" class="fds-form-input LastPayable" maxlength="10" placeholder="" name="LastPayable" id="id_LastPayable" style="text-align: right;" value="{{ object.LastPayable|intcomma }}">
+                    {% if form.errors.LastPayable %}
+                    {% for error in form.errors.LastPayable %}
+                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="fds-divider fds-divider--dark2"></div>
+            <div class="fds-form-label fds-form-label--horizontal">
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 前年売上実績 -->
+                    <label class="fds-label-input">前年売上実績:</label>
+                    <input type="text" class="fds-form-input LastProceeds" maxlength="10" placeholder="" name="LastProceeds" id="id_LastProceeds" style="text-align: right;" value="{{ object.LastProceeds|intcomma }}">
+                    {% if form.errors.LastProceeds %}
+                    {% for error in form.errors.LastProceeds %}
+                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="fds-form-input-message" style="width:25%;">
+                    <!-- 当年売上目標 -->
+                    <label class="fds-label-input">当年売上目標:</label>
+                    <input type="text" class="fds-form-input ProceedsTarget" maxlength="10" placeholder="" name="ProceedsTarget" id="id_ProceedsTarget" style="text-align: right;" value="{{ object.ProceedsTarget|intcomma }}">
+                    {% if form.errors.ProceedsTarget %}
+                    {% for error in form.errors.ProceedsTarget %}
+                        <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    <!-- </div> -->
+</div>
+{% endblock %}
+{% block extrajs %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
+{% load static %}
+<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
+{% endblock %}

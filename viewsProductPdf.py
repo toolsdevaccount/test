@@ -28,11 +28,9 @@ def pdf(request,pk):
     try:
         strtime = timezone.now() + datetime.timedelta(hours=9)
         filename = "ProductOrder_" + strtime.strftime('%Y%m%d%H%M%S')
-        make(pk,filename)
-        response = HttpResponse(open('./mysite/media/save/' + filename + '.pdf','rb').read(), content_type='application/pdf')
-        #response = HttpResponse(open('./download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
-        #response = HttpResponse(open('./mysite/download/' + filename + '.pdf','rb').read(), content_type='application/pdf')
+        response = HttpResponse(status=200, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
+        make(pk,response)
         UpdateQuery(pk)
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
@@ -40,19 +38,17 @@ def pdf(request,pk):
         return redirect("myapp:productorderlist")
     return response
 
-def make(pk,filename):
+def make(pk,response):
     dt = connect(pk)
     dtsize = getsize(pk)
     dtcolor = getcolor(pk)
     dtimage = getimage(pk)
-    pdf_canvas = set_info(filename) # キャンバス名
+    pdf_canvas = set_info(response) # キャンバス名
     print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage)
     pdf_canvas.save() # 保存
 
-def set_info(filename):
-    pdf_canvas = canvas.Canvas("./mysite/media/save/{0}.pdf".format(filename),pagesize=portrait(A4))
-    #pdf_canvas = canvas.Canvas("./download/{0}.pdf".format(filename),pagesize=landscape(A4))
-    #pdf_canvas = canvas.Canvas("./mysite/download/{0}.pdf".format(filename),pagesize=portrait(A4))
+def set_info(response):
+    pdf_canvas = canvas.Canvas(response,pagesize=portrait(A4))
     pdf_canvas.setAuthor("hpscript")
     pdf_canvas.setTitle("製品発注書")
     pdf_canvas.setSubject("製品発注書")
@@ -288,20 +284,21 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
 
     width, height = A4
 
+    # 線の太さ
+    pdf_canvas.setLineWidth(0.25)
+
     # 発注先
     font_size = 12
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(20, 790, dt[0][1] + '　' + dt[0][25] + dt[0][2])
-    #pdf_canvas.drawString(200, 820, dt[0][2])
-    pdf_canvas.line(20, 780, 240, 780) 
 
     # 発注日
-    font_size = 9
+    font_size = 11
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(480, 820, dt[0][6])
 
     # 発注番号
-    font_size = 9
+    font_size = 10
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(480, 800, 'No' + dt[0][0])
 
@@ -310,17 +307,19 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
 
     # ロゴ追加
-    img = './mysite/media/image1.jpg'
-    pdf_canvas.drawImage(img, 135*mm, 265*mm , 30*mm, 10*mm)
-    pdf_canvas.drawString(480, 760, dt[0][26] + dt[0][27])
-    pdf_canvas.drawString(380, 740, '〒 ' + dt[0][16])
-    pdf_canvas.drawString(380, 720, dt[0][18] + dt[0][19] + dt[0][20] + dt[0][21])
-    pdf_canvas.drawString(380, 700, 'TEL: ' + dt[0][22] + '　FAX: ' + dt[0][23])
+    #img = './mysite/myapp/templates/image/image1.jpg'
+    img = './static/image/image1.jpg'
+    pdf_canvas.drawImage(img, 145*mm, 261*mm , 20*mm, 5*mm)
+
+    pdf_canvas.drawString(470, 740, dt[0][26] + dt[0][27])
+    pdf_canvas.drawString(410, 730, '〒 ' + dt[0][16])
+    pdf_canvas.drawString(410, 720, dt[0][18] + dt[0][19] + dt[0][20] + dt[0][21])
+    pdf_canvas.drawString(410, 710, 'TEL: ' + dt[0][22] + '　FAX: ' + dt[0][23])
 
     # title
-    font_size = 14
+    font_size = 16
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(260, 680, '製品発注書')
+    pdf_canvas.drawString(260, 690, '製品発注書')
 
     # メッセージ
     font_size = 9
@@ -340,20 +339,20 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 635,'オーダーNO')
-    pdf_canvas.drawString(140,635, dt[0][3] + dt[0][4])
+    pdf_canvas.drawString(130,635, dt[0][3] + dt[0][4])
     pdf_canvas.line(210, 650, 210, 630) #中縦
 
     # アパレル
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 615,'アパレル')
-    pdf_canvas.drawString(140,615, dt[0][8])
+    pdf_canvas.drawString(130,615, dt[0][8])
 
     # ブランド名
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(50, 595,'ブランド')
-    pdf_canvas.drawString(140,595, dt[0][10])
+    pdf_canvas.drawString(130,595, dt[0][10])
 
     # 本品番
     font_size = 9
@@ -368,19 +367,19 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     pdf_canvas.line(470, 650, 470, 590) #中縦
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(400, 635,'商品コード')
-    pdf_canvas.drawString(490, 635, dt[0][7])
+    pdf_canvas.drawString(480, 635, dt[0][7])
 
     # 納期
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(400, 615,'納期')
-    pdf_canvas.drawString(490, 615, dt[0][9])
+    pdf_canvas.drawString(480, 615, dt[0][9])
 
     # 仕入単価
     font_size = 9
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
     pdf_canvas.drawString(400, 595,'仕入単価')
-    pdf_canvas.drawString(490, 595, dt[0][28] + dt[0][11] + dt[0][29])
+    pdf_canvas.drawString(480, 595, dt[0][28] + dt[0][11] + dt[0][29])
 
     # 品名、番手、混率、単価、条件
     style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
@@ -397,12 +396,11 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     table = Table(data, colWidths=(55*mm, 30*mm, 55*mm, 35*mm, 19*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
-            ('BOX', (0, 0), (-1, -1), 1, colors.black),
-            ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
+            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    #table.drawOn(pdf_canvas, 7*mm, 185.0*mm)
     table.drawOn(pdf_canvas, 7*mm, 198.0*mm)
 
     data =[]
@@ -431,13 +429,12 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
         table = Table(data, colWidths=(55*mm, 30*mm, 55*mm, 35*mm, 19*mm), rowHeights=6.5*mm)
         table.setStyle(TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
-                ('BOX', (0, 0), (-1, -1), 1, colors.black),
-                ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
-                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+                ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
             ]))
 
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    #table.drawOn(pdf_canvas, 7*mm, 146.0*mm)
     table.drawOn(pdf_canvas, 7*mm, 159.0*mm)
 
     # サイズ
@@ -485,12 +482,11 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     table = Table(data, colWidths=(15*mm, 39*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
-            ('BOX', (0, 0), (-1, -1), 1, colors.black),
-            ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
+            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    #table.drawOn(pdf_canvas, 7*mm, 135.0*mm)
     table.drawOn(pdf_canvas, 7*mm, 150.0*mm)
 
     # カラー
@@ -603,12 +599,11 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     table = Table(data, colWidths=(15*mm, 39*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm, 20*mm), rowHeights=6.5*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
-            ('BOX', (0, 0), (-1, -1), 1, colors.black),
-            ('INNERGRID', (0, 0), (-1, -1), 1, colors.black),
-            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
         ]))
     table.wrapOn(pdf_canvas, 7*mm, 10*mm)
-    #table.drawOn(pdf_canvas, 7*mm, 57*mm)
     table.drawOn(pdf_canvas, 7*mm, 72*mm)
 
     # イメージ(画像ファイルを挿入)
@@ -617,7 +612,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     for i in range(l):
         row = dtimage[i]
         if row[3]!="":
-            img = './mysite/media/' + row[3]
+            #img = './mysite/media/' + row[3]
+            img = './media/' + row[3]
             if i==0:
                 pdf_canvas.drawImage(img, 11*mm, 28*mm , 25*mm, 25*mm)
             if i==1:
@@ -648,12 +644,12 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     pdf_canvas.drawString(350, 105,'Signature')
     pdf_canvas.line(350, 100, 520, 100) 
 
-    #pdf_canvas.rect(20, 10, 550, 140) 
     pdf_canvas.rect(20, 70, 550, 120) 
 
     # ロゴ追加
-    img = './mysite/media/image2.jpg'
-    pdf_canvas.drawImage(img, 85*mm, 10*mm, 38*mm, 10*mm)
+    #img = './mysite/myapp/templates/image/image2.jpg'
+    img = './static/image/image2.jpg'
+    pdf_canvas.drawImage(img, 85*mm, 10*mm, 38*mm, 7*mm)
 
     pdf_canvas.showPage()
      

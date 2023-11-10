@@ -1,0 +1,30 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'myapp:list' %}">得意先仕入先マスタ一覧</a></li>
+            <li class="breadcrumb-item active" aria-current="page">得意先仕入先新規登録</li>
+        </ol>
+    </nav>
+    <form method="post" class="form-inline" id="form">{% csrf_token %}
+        <div class="card" style="width:100%;">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                  <li class="nav-item"><a class="nav-link active" href="#">基本情報</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#">残高情報</a></li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="form-inline">
+                    <label for="id_CustomerCode">コード：</label>
+                    <input type="text" class="form-control" name="CustomerCode" id="id_CustomerCode" value="{{ form.data.CustomerCode }}">
+                    <label for="text3a">名称:</label>
+                    <input type="text" class="form-control" name="CustomerName" id="id_CustomerName" value="{{ form.data.CustomerName }}">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
