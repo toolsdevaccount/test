@@ -1,15 +1,15 @@
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import redirect
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
-from reportlab.lib.pagesizes import B5, A4, portrait, landscape
+from reportlab.lib.pagesizes import B5, portrait, landscape
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle, ParagraphStyle
-from reportlab.lib.enums import TA_JUSTIFY, TA_RIGHT, TA_CENTER, TA_LEFT
+from reportlab.lib.enums import TA_RIGHT, TA_CENTER, TA_LEFT
 # MySQL
 import MySQLdb
 #from django.db import transaction
@@ -47,6 +47,7 @@ def make(pk,response):
         print_string_StainRequest(pdf_canvas,dt)
     pdf_canvas.save() # 保存
 
+#発注書
 def set_info(response):
     pdf_canvas = canvas.Canvas(response,pagesize=landscape(B5))
     pdf_canvas.setAuthor("hpscript")
@@ -54,6 +55,7 @@ def set_info(response):
     pdf_canvas.setSubject("発注書")
     return pdf_canvas
 
+#染色依頼書
 def set_info_stain(response):
     pdf_canvas = canvas.Canvas(response,pagesize=portrait(B5))
     pdf_canvas.setAuthor("hpscript")
@@ -168,157 +170,158 @@ def connect(pk):
     return result
 
 def print_string(pdf_canvas,dt):
-    # フォント登録
-    pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
+    for j in range(2):
+        # フォント登録
+        pdfmetrics.registerFont(UnicodeCIDFont('HeiseiMin-W3'))
 
-    width, height = B5
+        width, height = B5
 
-    # 線の太さ
-    pdf_canvas.setLineWidth(0.25)
+        # 線の太さ
+        pdf_canvas.setLineWidth(0.25)
 
-    # 注文日
-    font_size = 11
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(555, 430, dt[0][2])
+        # 注文日
+        font_size = 11
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(555, 430, dt[0][2])
 
-    # title
-    font_size = 16
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(308, 420, '発　　注　　書')
+        # title
+        font_size = 16
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(308, 420, '発　　注　　書')
 
-    # 発注先
-    font_size = 12
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(80, 420, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
+        # 発注先
+        font_size = 12
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(80, 410, dt[0][46] + '　' + dt[0][6] + '　' + dt[0][7])
 
-    # 出荷先
-    font_size = 9
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(70, 350, '出荷先: ' + dt[0][34])
-    pdf_canvas.drawString(70, 340, '〒 ' + dt[0][35])
-    pdf_canvas.drawString(70, 330, dt[0][36] + dt[0][37] + dt[0][38] + dt[0][39])
-    pdf_canvas.drawString(70, 320, 'TEL: ' + dt[0][40])
+        # 出荷先
+        font_size = 9
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(70, 360, '出荷先: ' + dt[0][34])
+        pdf_canvas.drawString(70, 350, '〒 ' + dt[0][35])
+        pdf_canvas.drawString(70, 340, dt[0][36] + dt[0][37] + dt[0][38] + dt[0][39])
+        pdf_canvas.drawString(70, 330, 'TEL: ' + dt[0][40])
 
-    # 自社情報
-    font_size = 9
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        # 自社情報
+        font_size = 9
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
 
-    # ロゴ追加
-    #img = './mysite/myapp/templates/image/image1.jpg'
-    img = './static/image/image1.jpg'
-    pdf_canvas.drawImage(img, 173*mm, 135*mm , 20*mm, 5*mm)
+        # ロゴ追加
+        img = './mysite/myapp/templates/image/image1.jpg'
+        #img = './static/image/image1.jpg'
+        pdf_canvas.drawImage(img, 173*mm, 134*mm , 20*mm, 5*mm)
 
-    pdf_canvas.drawString(560, 380, dt[0][31] + dt[0][32])
-    pdf_canvas.drawString(490, 370, '〒 ' + dt[0][24])
-    pdf_canvas.drawString(490, 360, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
-    pdf_canvas.drawString(490, 350, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
+        pdf_canvas.drawString(560, 380, dt[0][31] + dt[0][32])
+        pdf_canvas.drawString(490, 370, '〒 ' + dt[0][24])
+        pdf_canvas.drawString(490, 360, dt[0][25] + dt[0][26] + dt[0][27] + dt[0][28])
+        pdf_canvas.drawString(490, 350, 'TEL: ' + dt[0][29] + '　FAX: ' + dt[0][30])
 
-    # オーダーNO
-    font_size = 10
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(530, 325, 'オーダーNO: ')
+        # オーダーNO
+        font_size = 10
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(530, 325, 'オーダーNO: ')
 
-    font_size = 11
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(590, 325, dt[0][0] + dt[0][1])
+        font_size = 11
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(590, 325, dt[0][0] + dt[0][1])
 
-    pdf_canvas.line(530, 320, 645, 320) 
+        pdf_canvas.line(530, 320, 645, 320) 
 
-    # 品名、番手、色番、色名、数量、単位、単価、希望納期、回答納期、備考(中央寄せ)
-    style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_CENTER)
-    itemNo0 = Paragraph('品名',style)
-    itemNo1 = Paragraph('番手',style)
-    itemNo2 = Paragraph('色番',style)
-    itemNo3 = Paragraph('色名',style)
-    itemNo4 = Paragraph('数量',style)
-    itemNo5 = Paragraph('単位',style)
-    itemNo6 = Paragraph('単価',style)
-    itemNo7 = Paragraph('希望納期',style)
-    itemNo8 = Paragraph('回答納期',style)
-    itemNo9 = Paragraph('備考',style)
+        # 品名、番手、色番、色名、数量、単位、単価、希望納期、回答納期、備考(中央寄せ)
+        style = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_CENTER)
+        itemNo0 = Paragraph('品　名',style)
+        itemNo1 = Paragraph('番手',style)
+        itemNo2 = Paragraph('色番',style)
+        itemNo3 = Paragraph('色　名',style)
+        itemNo4 = Paragraph('数量',style)
+        itemNo5 = Paragraph('単位',style)
+        itemNo6 = Paragraph('単価',style)
+        itemNo7 = Paragraph('希望納期',style)
+        itemNo8 = Paragraph('回答納期',style)
+        itemNo9 = Paragraph('備　考',style)
 
-    data = [
-        [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6, itemNo7, itemNo8, itemNo9],
-    ]
-
-    table = Table(data, colWidths=(30*mm, 15*mm, 15*mm, 30*mm, 15*mm, 12*mm, 15*mm, 18*mm, 18*mm, 40*mm), rowHeights=7*mm)
-    table.setStyle(TableStyle([
-            ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
-            ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
-            ('INNERGRID', (0, 0), (-1, -1), 0.25,  colors.black),
-            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ]))
-    table.wrapOn(pdf_canvas, 22.5*mm, 10*mm)
-    table.drawOn(pdf_canvas, 22.5*mm, 103.0*mm)
-
-    data =[]
-    l=len(dt)
-    styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_LEFT)
-    styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_RIGHT)
-    styleCenter = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_CENTER)
-
-    for i in range(9):
-        if i<l: 
-            row = dt[i]
-            # 指定した列の左寄せ
-            ProductName = Paragraph(row[3],styleLeft)
-            OrderingCount = Paragraph(row[4],styleLeft)
-            DetailColorNumber = Paragraph(row[16],styleLeft)
-            DetailColor = Paragraph(row[17],styleLeft)
-            DetailSummary = Paragraph(row[21],styleLeft)
-            # 指定した列の中央寄せ
-            UnitDiv = Paragraph(row[48],styleCenter)
-            # 指定した列の右寄せ
-            Volume = Paragraph(row[19],styleRight)
-            UnitPrice = Paragraph(row[20],styleRight)
-            StainAnswerDeadline = Paragraph(row[8],styleCenter)
-            SpecifyDeliveryDate = Paragraph(row[45],styleCenter)
-
-            data += [
-                    [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, UnitDiv, UnitPrice, SpecifyDeliveryDate, StainAnswerDeadline, DetailSummary],
-            ]
-        else:
-            data += [
-                    ['','','','','','','','','',''],
-            ]
+        data = [
+            [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6, itemNo7, itemNo8, itemNo9],
+        ]
 
         table = Table(data, colWidths=(30*mm, 15*mm, 15*mm, 30*mm, 15*mm, 12*mm, 15*mm, 18*mm, 18*mm, 40*mm), rowHeights=7*mm)
         table.setStyle(TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
                 ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
-                ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ('INNERGRID', (0, 0), (-1, -1), 0.25,  colors.black),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ]))
+        table.wrapOn(pdf_canvas, 22.5*mm, 10*mm)
+        table.drawOn(pdf_canvas, 22.5*mm, 103.0*mm)
 
-    table.wrapOn(pdf_canvas, 22.5*mm, 10*mm)
-    table.drawOn(pdf_canvas, 22.5*mm, 40.0*mm)
+        data =[]
+        l=len(dt)
+        styleLeft = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_LEFT)
+        styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_RIGHT)
+        styleCenter = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_CENTER)
 
-    # 摘要
-    font_size = 9
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(65, 90, '摘要')
+        for i in range(9):
+            if i<l: 
+                row = dt[i]
+                # 指定した列の左寄せ
+                ProductName = Paragraph(row[3],styleLeft)
+                OrderingCount = Paragraph(row[4],styleLeft)
+                DetailColorNumber = Paragraph(row[16],styleLeft)
+                DetailColor = Paragraph(row[17],styleLeft)
+                DetailSummary = Paragraph(row[21],styleLeft)
+                # 指定した列の中央寄せ
+                UnitDiv = Paragraph(row[48],styleCenter)
+                # 指定した列の右寄せ
+                Volume = Paragraph(row[19],styleRight)
+                UnitPrice = Paragraph(row[20],styleRight)
+                StainAnswerDeadline = Paragraph(row[8],styleCenter)
+                SpecifyDeliveryDate = Paragraph(row[45],styleCenter)
 
-    # メッセージ
-    font_size = 9
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(65, 80, '※単価の違いがございましたらお手数ですがご連絡ください。')
+                data += [
+                        [ProductName, OrderingCount, DetailColorNumber, DetailColor, Volume, UnitDiv, UnitPrice, SpecifyDeliveryDate, StainAnswerDeadline, DetailSummary],
+                ]
+            else:
+                data += [
+                        ['','','','','','','','','',''],
+                ]
 
-    # メッセージ
-    font_size = 9
-    pdf_canvas.setFont('HeiseiMin-W3', font_size)
-    pdf_canvas.drawString(65, 70, '　出荷次第、納品書を翌日当社宛に発注番号を必ずご記入の上、ご一報ください。')
+            table = Table(data, colWidths=(30*mm, 15*mm, 15*mm, 30*mm, 15*mm, 12*mm, 15*mm, 18*mm, 18*mm, 40*mm), rowHeights=7*mm)
+            table.setStyle(TableStyle([
+                    ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
+                    ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+                    ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ]))
 
-    # ロゴ追加
-    #img = './mysite/myapp/templates/image/image2.jpg'
-    img = './static/image/image2.jpg'
-    pdf_canvas.drawImage(img, 110*mm, 8*mm, 32*mm, 7*mm)
+        table.wrapOn(pdf_canvas, 22.5*mm, 10*mm)
+        table.drawOn(pdf_canvas, 22.5*mm, 40.0*mm)
 
-    pdf_canvas.rect(63, 60, 591, 45) 
- 
-    pdf_canvas.showPage()
-     
-if __name__ == '__main__':
-    make()
+        # 摘要
+        font_size = 9
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(65, 90, '摘要')
+
+        # メッセージ
+        font_size = 9
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(70, 80, '※単価の違いがございましたらお手数ですがご連絡ください。')
+
+        # メッセージ
+        font_size = 9
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(70, 70, '　出荷次第、オーダーNoを記入した納品書を翌日当社宛にご連絡ください。')
+
+        # ロゴ追加
+        img = './mysite/myapp/templates/image/image2.jpg'
+        #img = './static/image/image2.jpg'
+        pdf_canvas.drawImage(img, 110*mm, 8*mm, 32*mm, 7*mm)
+
+        pdf_canvas.rect(63, 60, 591, 45) 
+    
+        pdf_canvas.showPage()
+        
+    if __name__ == '__main__':
+        make()
 
 def print_string_StainRequest(pdf_canvas,dt):
     # フォント登録
