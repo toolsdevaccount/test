@@ -2199,7 +2199,7 @@
  }
  
  .fds-select-container {
-   position: relative !important; 
+   position: relative !important;
    min-width: 160px;
  }
  
@@ -6628,5 +6628,3 @@ input[type="tel"]{
 input[type="text"]{
   ime-mode: active;
 }
-
-/* 追加 select の横幅を統一 */

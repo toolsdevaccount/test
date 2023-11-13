@@ -1,0 +1,122 @@
+										{% block content %}
+										{% load humanize %}
+										<div class="tab-contents-item">
+											<input type="hidden" name="PodDetailId-TOTAL_FORMS" id="id_PodDetailId-TOTAL_FORMS">
+											{{ formset.management_form }}
+											<div class="fds-table-container" style="height: 85%;">
+												<div class="fds-table">
+													<table class="fds-table__inner" id="tblrowclsz">
+														<thead>
+															<tr class="fds-table__tr">
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text">
+																		<span class="fds-table__th-text">削除</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text">
+																		<span class="fds-table__th-text">カラー</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text">
+																		<span class="fds-table__th-text">サイズ</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text">
+																		<span class="fds-table__th-text">数量</span>
+																	</div>
+																</th>
+															</tr>
+														</thead>
+														<tbody id="list">
+															{% for col in list %}
+															<tr class="fds-table__tr fds-table__tr--hoverable">
+																<!-- 削除 -->
+																<td class="fds-table__td fds-table__td--col-fixed">
+																	<div class="fds-table__td-content">
+																		<div class="fds-checkbox">
+																			<label class="fds-checkbox__label">
+																				<input type="checkbox" class="fds-checkbox__input DELETE" style="width: 50px;" data-id-format="id_PodDetailId-%d-is_Deleted" data-name-format="PodDetailId-%d-is_Deleted" name="PodDetailId-{{ forloop.counter0 }}-is_Deleted" id="id_PodDetailId-{{ forloop.counter0 }}-is_Deleted" value="1" checked>
+																				<span class="fds-checkbox__text">
+																				</span>
+																			</label>
+																		</div>
+																	</div>
+																</td>								
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<label class="fds-label-input">{{ col.McdColor }}</label>										
+																	</div>
+																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodColorId" data-name-format="PodDetailId-%d-PodColorId"
+																	name="PodDetailId-{{ forloop.counter0 }}-PodColorId" id="id_PodDetailId-{{ forloop.counter0 }}-PodColorId" value="{{ col.podcolorid_id }}">
+																</td>
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<label class="fds-label-input">{{ col.McdSize }}</label>										
+																	</div>
+																	<input type="hidden"  data-id-format="id_PodDetailId-%d-PodSizeId" data-name-format="PodDetailId-%d-PodSizeId"
+																	name="PodDetailId-{{ forloop.counter0 }}-PodSizeId" id="id_PodDetailId-{{ forloop.counter0 }}-PodSizeId" value="{{ col.podsizeid_id }}">
+																</td>
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input" style="text-align: right;" data-id-format="id_PodDetailId-%d-PodVolume" data-name-format="PodDetailId-%d-PodVolume" 
+																		name="PodDetailId-{{ forloop.counter0 }}-PodVolume" id="id_PodDetailId-{{ forloop.counter0 }}-PodVolume" value="{{ col.PodVolume }}">
+																	</div>
+																</td>
+																<input type="hidden" data-id-format="id_PodDetailId-%d-DELETE" data-name-format="PodDetailId-%d-DELETE" name="PodDetailId-{{ forloop.counter0 }}-DELETE" id="id_PodDetailId-{{ forloop.counter0 }}-DELETE">
+																<input type="hidden" data-id-format="id_PodDetailId-%d-id" data-name-format="PodDetailId-%d-id" name="PodDetailId-{{ forloop.counter0 }}-id" id="id_PodDetailId-{{ forloop.counter0 }}-id" value="{{ col.id }}">
+															</tr>
+															{% endfor %}
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										<div class="fds-uxhub-preview" id="modal">
+											<div class="fds-dialog">
+											<div class="fds-dialog__title"></div>
+											<div class="fds-dialog__body">削除してよろしいですか</div>
+											<div class="fds-dialog__footer">
+												<button type="button" class="fds-btn fds-btn--cancel" id="modalClose">中止</button>
+												<button type="button" class="fds-btn fds-btn--error" id="delete">削除</button>
+											</div>
+											</div>
+										</div>
+										{% endblock %}
+										{% block extrajs %}
+										<!-- Datepicker 追加-->
+										<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+										<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+										<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+										<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+										<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
+										{% load static %}
+										<script src="{% static '\js\datepickerproductorder.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\productorder.js' %}" charset="UTF-8"></script>
+										<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
+										<script>
+											var btn = document.getElementById('modalOpen');
+											var cls = document.getElementById('modalClose');
+											var dlt = document.getElementById('delete');
+											var modal = document.getElementsByClassName('fds-uxhub-preview');
+										
+											btn.addEventListener('click', function() {
+												for(i=0;i<modal.length;i++){
+													modal[i].style.opacity = '1';
+													modal[i].style.visibility = 'visible';
+												}
+											})
+											dlt.addEventListener('click', function() {
+												document.delform.submit();
+											})
+											cls.addEventListener('click', function() {
+												for(i=0;i<modal.length;i++){
+													modal[i].style.opacity = '0';
+													modal[i].style.visibility = 'hidden';
+												}
+											})
+										</script>
+										{% endblock %}

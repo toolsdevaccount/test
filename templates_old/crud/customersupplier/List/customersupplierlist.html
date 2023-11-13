@@ -1,0 +1,207 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<!-- <div class="fds-layout-body"> -->
+    <div class="fds-breadcrumb">
+        <div class="fds-breadcrumb__item">
+            <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">HOME</a>
+        </div>
+        <div class="fds-breadcrumb__item">
+            <a href="#" class="fds-breadcrumb__link">得意先仕入先マスタ一覧</a>
+        </div>
+    </div>
+    <div class="fds-closure">
+        <div class="fds-clousure--top-section">
+            <div class="fds-clousure--top-section-text">
+            </div>
+            <button class="fds-btn fds-btn--primary fds-btn--small" style="width: 200px" onclick="location.href='{% url 'myapp:new' %}'">
+            <span class="fds-icon fds-icon--add-white"></span>
+            新規登録
+        </button>
+    </div>
+    <form method="post" id="form">
+		{% csrf_token %}
+		<div class="fds-clousure--bottom-section">
+			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
+				<div class="fds-form-input-message">
+					<label class="fds-label-input">キーワード</label>
+					<input type="search" name="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ cmsearch.query.value }}"/>
+					<span><button class="fds-btn fds-btn--primary fds-btn--small" style="width: 100px;" type="submit">
+						検索
+					</button></span>
+				</div>
+			</div>
+		</div>
+    </form>
+	<div class="fds-table-controller">
+        <div class="fds-page-table__title">
+        </div>
+    </div>
+  	<div class="fds-table-container">
+    	<div class="fds-table">
+      		<!-- <div class="fds-table-fixed-container"> -->
+			<div class="fds-table-container" style="height: 50%;">
+				<table class="fds-table__inner">
+          			<thead>
+            			<tr class="fds-table__tr">
+              				<th class="fds-table__th fds-table__th--col-fixed" style="width: 60px;">
+                				<div class="fds-table__th-content fds-table__th-content--button">
+									<div class="fds-checkbox">
+										<label class="fds-checkbox__label">
+											<input type="checkbox" class="fds-checkbox__input">
+											<span class="fds-checkbox__text">
+											</span>
+										</label>
+									</div>
+				                </div>
+              				</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
+									<span class="fds-table__th-text">
+									コード
+									</span>
+									<span class="fds-icon fds-icon--filter fds-icon--small">
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
+									<span class="fds-table__th-text">
+										名称
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+				                <div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 100px;">
+				                  <span class="fds-table__th-text">
+                    				郵便番号
+				                  </span>
+                				</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 100px;">
+									<span class="fds-table__th-text">
+										都道府県
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered"	style="width: 150px;">
+									<span class="fds-table__th-text">
+										市区町村
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 200px;">
+									<span class="fds-table__th-text">
+										番地
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
+									<span class="fds-table__th-text">
+										電話番号
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 80px;">
+									<span class="fds-table__th-text">
+									</span>
+								</div>
+							</th>
+							<th class="fds-table__th">
+								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 100px;">
+									<span class="fds-table__th-text">
+										アクション
+									</span>
+								</div>
+							</th>
+			            </tr>
+					</thead>
+			        <tbody class="fds-table__tbody-hover-button">
+						{% for customersupplier in object_list %}
+						<tr class="fds-table__tr">
+							<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">
+								<div class="fds-table__td-content">
+									<div class="fds-checkbox">
+										<label class="fds-checkbox__label">
+											<input type="checkbox" class="fds-checkbox__input">
+											<span class="fds-checkbox__text">
+											</span>
+										</label>
+									</div>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 100px;">
+									<span class="fds-table__td-text">
+										{{ customersupplier.CustomerCode }}
+									</span>
+								</div>
+							</td>
+				            <td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 200px;">
+									<span class="fds-table__td-text">
+										{{ customersupplier.CustomerName }}
+									</span>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 100px;">
+									<span class="fds-table__td-text">
+										{{ customersupplier.PostCode }}                 
+									</span>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 100px;">
+									<span class="fds-table__td-text">
+										{{ customersupplier.PrefecturesCode.prefecturename }}                 
+									</span>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 150px;">
+									<span class="fds-table__td-text">
+										{{ customersupplier.Municipalities }}                 
+									</span>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 200px;">
+									<span class="fds-table__td-text">
+										{{ customersupplier.Address }}                 
+									</span>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 150px;">
+									<span class="fds-table__td-text">
+										{{ customersupplier.PhoneNumber }}                 
+									</span>
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 80px;">
+								</div>
+							</td>
+							<td class="fds-table__td">
+								<div class="fds-table__td-content" style="width: 100px;">
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button></span>
+									<span><button type="button" class="fds-btn-origin fds-btn-origin--error fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>
+								</div>
+							</td>
+			            </tr>
+            			{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+  	</div>
+	<div class="fds-pagination">
+		{% include "crud/pagination.html" %}
+	</div>
+<!-- </div> -->
+{% endblock %}

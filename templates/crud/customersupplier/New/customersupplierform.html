@@ -1,258 +1,133 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-<form method="post" id="form">
-{% csrf_token %}
-<div class="row">
-    <div class="fds-page-table__main">
-        <div class="fds-breadcrumb">
-            <div class="fds-breadcrumb__item">
-                <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">
-                    HOME
-                </a>
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'myapp:list' %}">得意先仕入先マスタ一覧</a></li>
+            <li class="breadcrumb-item active" aria-current="page">得意先仕入先新規登録</li>
+        </ol>
+    </nav>
+    <form method="post" class="" id="form">{% csrf_token %}
+        <div class="card" style="width:100%;">
+            <div class="card-header">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">基本情報</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">残高情報</a>
+                    </li>
+                  </ul>
             </div>
-            <div class="fds-breadcrumb__item">
-                <a href="{% url 'myapp:list' %}" class="fds-breadcrumb__link">
-                    得意先仕入先一覧・検索
-                </a>
-            </div>
-            <div class="fds-breadcrumb__item">
-                <span class="fds-breadcrumb__link">
-                    得意先仕入先新規登録
-                </span>
-            </div>
-        </div>
-        <div class="fds-page-table__title-box">
-            <div class="fds-page-table__title">
-                新規登録
-            </div>
-            <div class="fds-page-table__search-form">
-                <button type="button" class="fds-btn fds-btn--basic" onclick="location.href='{% url 'myapp:list' %}'" style="width: 100px">
-                    キャンセル
-                </button>
-                <button type="submit" class="fds-btn fds-btn--primary" style="width: 100px">
-                    登録
-                </button>
-            </div>
-        </div>
-        <div class="fds-panel fds-panel--plain" style="width: 100%;">
-            <div class="wrap-tab">
-                <ul class="fds-tabs" id="js-tab">
-                    <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
-                    <li class="fds-tabs__item">残高情報</li>
-                </ul>
-                <div class="tab-contents-item active">                           
-                    <div class="fds-page-detail__main">
-                        <div class="fds-form-label fds-form-label--horizontal">
-                            <!-- コード -->
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <label class="fds-label-input">コード:</label>
-                                <input type="tel" class="fds-form-input" placeholder="" name="CustomerCode" id="id_CustomerCode" value="{{ form.data.CustomerCode }}">
-                                {% if form.errors.CustomerCode %}
-                                {% for error in form.errors.CustomerCode %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_CustomerCode">コード：</label>
+                                <input type="text" class="form-control" name="CustomerCode" id="id_CustomerCode" value="{{ form.data.CustomerCode }}">
                             </div>
-                            <!-- 名称 -->
-                            <div class="fds-form-input-message" style="width:50%;">
-                                <label class="fds-label-input">名称:</label>
-                                <input type="text" class="fds-form-input" placeholder=""  name="CustomerName" id="id_CustomerName" style="width:250px;" value="{{ form.data.CustomerName }}">
-                                {% if form.errors.CustomerName %}
-                                {% for error in form.errors.CustomerName %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="form-group col-sm-6">
+                                <label for="id_CustomerName">名　称：</label>
+                                <input type="text" class="form-control" name="CustomerName" id="id_CustomerName" value="{{ form.data.CustomerName }}">
                             </div>
                         </div>
-                        <div class="fds-divider fds-divider--dark2"></div>
-                        <div class="fds-form-label fds-form-label--horizontal">
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 略名 -->
-                                <label class="fds-label-input">略名:</label>
-                                <input type="text" class="fds-form-input" placeholder=""  name="CustomerOmitName" id="id_CustomerOmitName" value="{{ form.data.CustomerOmitName }}">
-                                {% if form.errors.CustomerOmitName %}
-                                {% for error in form.errors.CustomerOmitName %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_CustomerOmitName">略　名：</label>
+                                <input type="text" class="form-control" name="CustomerOmitName" id="id_CustomerOmitName" value="{{ form.data.CustomerOmitName }}">
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- カナ名 -->
-                                <label class="fds-label-input">カナ名:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="CustomerNameKana" id="id_CustomerNameKana" value="{{ form.data.CustomerNameKana }}">
-                                {% if form.errors.CustomerNameKana %}
-                                {% for error in form.errors.CustomerNameKana %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="form-group col-sm-4">
+                                <label for="id_CustomerNameKana">カナ名：</label>
+                                <input type="text" class="form-control" name="CustomerNameKana" id="id_CustomerNameKana" value="{{ form.data.CustomerNameKana }}">
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 部署名 -->
-                                <label class="fds-label-input">部署名:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="Department" id="id_Department" value="{{ form.data.Department }}">
-                                {% if form.errors.Department %}
-                                {% for error in form.errors.Department %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="form-group col-sm-2">
+                                <label for="id_Department">部署名：</label>
+                                <input type="text" class="form-control" name="Department" id="id_Department" value="{{ form.data.Department }}">
                             </div>
                         </div>
-                        <div class="fds-divider fds-divider--dark2"></div>
-                        <div class="fds-form-label fds-form-label--horizontal">
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 郵便番号 -->
-                                <label class="fds-label-input">郵便番号:</label>
-                                <input type="tel" class="fds-form-input" placeholder="" name="PostCode" id="id_PostCode" value="{{ form.data.PostCode }}">
-                                {% if form.errors.PostCode %}
-                                {% for error in form.errors.PostCode %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_PostCode">郵便番号：</label>
+                                <input type="text" class="form-control" name="PostCode" id="id_PostCode" value="{{ form.data.PostCode }}">
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 都道府県 -->
-                                <div class="fds-page-input-select">
-                                    <label class="fds-label-input">都道府県:</label>
-                                    <div class="fds-select-container">
-                                        <select class="fds-select fds-form-input fds-form-input--medium" name="PrefecturesCode" id="id_PrefecturesCode" value="{{ form.data.PrefecturesCode }}">
-                                            {% for data in form.PrefecturesCode %}
-                                            {{ data }}
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                {% if form.errors.PrefecturesCode %}
-                                {% for error in form.errors.PrefecturesCode %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="form-group col-sm-2">
+                                <label for="id_PrefecturesCode">都道府県：</label>
+                                <select class="custom-select" name="PrefecturesCode" id="id_PrefecturesCode" value="{{ form.data.PrefecturesCode }}">
+                                    {% for data in form.PrefecturesCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="fds-divider fds-divider--dark2"></div>
-                        <div class="fds-form-label fds-form-label--horizontal">
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 市区町村 -->
-                                <label class="fds-label-input">市区町村:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="Municipalities" id="id_Municipalities" value="{{ form.data.Municipalities }}">
-                                {% if form.errors.Municipalities %}
-                                {% for error in form.errors.Municipalities %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_Municipalities">市区町村：</label>
+                                <input type="text" class="form-control" name="Municipalities" id="id_Municipalities" value="{{ form.data.Municipalities }}">
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 番地 -->
-                                <label class="fds-label-input">番地:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="Address" id="id_Address" value="{{ form.data.Address }}">
-                                {% if form.errors.Address %}
-                                {% for error in form.errors.Address %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="form-group col-sm-4">
+                                <label for="id_Address">番地：</label>
+                                <input type="text" class="form-control" name="Address" id="id_Address" value="{{ form.data.Address }}">
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 建物名 -->
-                                <label class="fds-label-input">建物名:</label>
-                                <input type="text" class="fds-form-input" placeholder="" name="BuildingName" id="id_BuildingName" value="{{ form.data.BuildingName }}">
-                                {% if form.errors.BuildingName %}
-                                {% for error in form.errors.BuildingName %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="form-group col-sm-4">
+                                <label for="id_BuildingName">建物名：</label>
+                                <input type="text" class="form-control" name="BuildingName" id="id_BuildingName" value="{{ form.data.BuildingName }}">
                             </div>
                         </div>
-                        <div class="fds-divider fds-divider--dark2"></div>
-                        <div class="fds-form-label fds-form-label--horizontal">
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 電話番号 -->
-                                <label class="fds-label-input">電話番号:</label>
-                                <input type="tel" class="fds-form-input" placeholder="" name="PhoneNumber" id="id_PhoneNumber" value="{{ form.data.PhoneNumber }}">
-                                {% if form.errors.PhoneNumber %}
-                                {% for error in form.errors.PhoneNumber %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_PhoneNumber">電話番号：</label>
+                                <input type="text" class="form-control" name="PhoneNumber" id="id_PhoneNumber" value="{{ form.data.PhoneNumber }}">
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- FAX番号 -->
-                                <label class="fds-label-input">FAX番号:</label>
-                                <input type="tel" class="fds-form-input" placeholder="" name="FaxNumber" id="id_FaxNumber" value="{{ form.data.FaxNumber }}">
-                                {% if form.errors.FaxNumber %}
-                                {% for error in form.errors.FaxNumber %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="form-group col-sm-2">
+                                <label for="id_FaxNumber">FAX番号：</label>
+                                <input type="text" class="form-control" name="FaxNumber" id="id_FaxNumber" value="{{ form.data.FaxNumber }}">
                             </div>
                         </div>
-                        <!-- マスター区分 -->
-                        <div class="fds-divider fds-divider--dark2"></div>
-                        <div class="fds-form-label fds-form-label--horizontal">
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <div class="fds-page-input-select">
-                                    <label class="fds-label-input">マスター区分:</label>
-                                    <div class="fds-select-container">
-                                        <select class="fds-select fds-form-input fds-form-input--medium" name="MasterDiv" id="id_MasterDiv">
-                                            {% for data in form.MasterDiv %}
-                                            {{ data }}
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_MasterDiv">マスター区分：</label>
+                                <select class="custom-select" name="MasterDiv" id="id_MasterDiv">
+                                    {% for data in form.MasterDiv %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 締日 -->
-                                <div class="fds-page-input-select">
-                                    <label class="fds-label-input">締日:</label>
-                                    <div class="fds-select-container">
-                                        <select class="fds-select fds-form-input fds-form-input--medium" name="ClosingDate" id="id_ClosingDate">
-                                            {% for data in form.ClosingDate %}
-                                            {{ data }}
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="form-group col-sm-2">
+                                <label for="id_ClosingDate">締日：</label>
+                                <select class="custom-select" name="ClosingDate" id="id_ClosingDate">
+                                    {% for data in form.ClosingDate %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="fds-divider fds-divider--dark2"></div>
-                        <div class="fds-form-label fds-form-label--horizontal">
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 担当者 -->
-                                <div class="fds-page-input-select">
-                                    <label class="fds-label-input">担当者：</label>
-                                    <div class="fds-select-container">
-                                        <select class="fds-select fds-form-input fds-form-input--medium" name="ManagerCode" id="id_ManagerCode">
-                                            {% for data in form.ManagerCode %}
-                                            {{ data }}
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                {% if form.errors.ManagerCode %}
-                                {% for error in form.errors.ManagerCode %}
-                                    <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                {% endfor %}
-                                {% endif %}   
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_ManagerCode">担当者：</label>
+                                <select class="custom-select" name="ManagerCode" id="id_ManagerCode">
+                                    {% for data in form.ManagerCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
                             </div>
-                            <div class="fds-form-input-message" style="width:25%;">
-                                <!-- 相殺出力区分 -->
-                                <div class="fds-page-input-select">
-                                    <label class="fds-label-input">相殺出力区分:</label>
-                                    <div class="fds-select-container">
-                                        <select class="fds-select fds-form-input fds-form-input--medium" name="OffsetDiv" id="id_OffsetDiv">
-                                            {% for data in form.OffsetDiv %}
-                                            {{ data }}
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="form-group col-sm-2">
+                                <label for="id_OffsetDiv">相殺出力区分:</label>
+                                <select class="custom-select" name="OffsetDiv" id="id_OffsetDiv">
+                                    {% for data in form.OffsetDiv %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% include "crud/customersupplier/new/customersupplierformcontinue.html" %}
+                <div class="tab-pane" id="item2" role="tabpanel" aria-labelledby="item2-tab">
+                    {% include "crud/customersupplier/new/customersupplierformcontinue.html" %}
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
-</form>
 {% endblock %}

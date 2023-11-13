@@ -1,0 +1,119 @@
+{% block content %}
+{% load humanize %}
+										<div class="tab-contents-item">
+											<div class="fds-table-actions">
+												<button type="button" id="add" class="fds-btn fds-btn--primary fds-btn--tiny list_add" style="width: 60px">追加</button>
+											</div>
+											<input type="hidden" name="McdDtid-TOTAL_FORMS" id="id_McdDtid-TOTAL_FORMS">
+											<div class="fds-table-container">
+												<div class="fds-table" style="height: 50vh;">
+													{{ formset.management_form }}	
+													<table class="fds-table__inner" id="tblrow">
+														<thead>
+															<tr class="fds-table__tr">
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
+																		<span class="fds-table__th-text">品名</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 150px;">
+																		<span class="fds-table__th-text">番手</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
+																		<span class="fds-table__th-text">混率</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
+																		<span class="fds-table__th-text">単価</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
+																		<span class="fds-table__th-text">単位</span>
+																	</div>
+																</th>
+																<th class="fds-table__th">
+																	<div class="fds-table__th-content fds-table__th-content--icon" style="width: 60px;">
+																		<span class="fds-icon fds-icon--more-vert"></span>
+																	</div>
+																</th>
+															</tr>
+														</thead>
+														<tbody id="list">
+															{% for form in formset %}	
+															<tr class="fds-table__tr fds-table__tr--hoverable list_var">
+																<td class="fds-table__td">
+																	<div id="div" class="fds-table__td-content">
+																		<input type="text" class="fds-form-input McdDtProductName" style="width: 200px;" data-id-format="id_McdDtid-%d-McdDtProductName" data-name-format="McdDtid-%d-McdDtProductName"
+																		name="McdDtid-0-McdDtProductName" id="id_McdDtid-0-McdDtProductName" value="{{ form.McdDtProductName.value | default_if_none:'' }}">
+																	</div>
+																	{% if form.errors.McdDtProductName %}
+																	{% for error in form.errors.McdDtProductName %}
+																		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+																	{% endfor %}
+																	{% endif %}
+																</td>
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input"  style="width: 150px;" data-id-format="id_McdDtid-%d-McdDtOrderingCount" data-name-format="McdDtid-%d-McdDtOrderingCount"
+																		name="McdDtid-0-McdDtOrderingCount" id="id_McdDtid-0-McdDtOrderingCount" value="{{ form.McdDtOrderingCount.value | default_if_none:'' }}">                                          
+																	</div>
+																	{% if form.errors.McdDtOrderingCount %}
+																	{% for error in form.errors.McdDtOrderingCount %}
+																		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+																	{% endfor %}
+																	{% endif %}
+																</td>
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" class="fds-form-input" style="width: 200px;" data-id-format="id_McdDtid-%d-McdDtStainMixRatio" data-name-format="McdDtid-%d-McdDtStainMixRatio" 
+																		name="McdDtid-0-McdDtStainMixRatio" id="id_McdDtid-0-McdDtStainMixRatio" value="{{ form.McdDtStainMixRatio.value | default_if_none:'' }}">                                   
+																	</div>
+																	{% if form.errors.McdDtStainMixRatio %}
+																	{% for error in form.errors.McdDtStainMixRatio %}
+																		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+																	{% endfor %}
+																	{% endif %}
+																</td>
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<input type="text" step="0.1" class="fds-form-input McdDtlPrice" style="width: 80px; text-align: right;" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
+																		name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" data-empty-val="false" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value }}">                                   
+																	</div>
+																	{% if form.errors.McdDtlPrice %}
+																	{% for error in form.errors.McdDtlPrice %}
+																		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
+																	{% endfor %}
+																	{% endif %}															
+																</td>
+																<td class="fds-table__td">
+																	<div class="fds-table__td-content">
+																		<div class="fds-select-container">
+																			<select class="fds-select fds-form-input fds-form-input--medium" data-id-format="id_McdDtid-%d-McdDtUnitCode" data-name-format="McdDtid-%d-McdDtUnitCode" name="McdDtid-0-McdDtUnitCode" id="id_McdDtid-0-McdDtUnitCode">
+																				{% for data in form.McdDtUnitCode %}
+																				{{ data }}
+																				{% endfor %}
+																			</select>
+																		</div>
+																	</div>
+																	{% if form.errors.McdDtUnitCode %}
+																	{% for error in form.errors.McdDtUnitCode %}
+																		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
+																	{% endfor %}
+																	{% endif %}
+																</td>
+																<td class="fds-table__td">
+																	<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny list_del" style="width: 60px;">削除</button>
+																</td>
+															</tr>
+															{% endfor %}
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+										{% endblock %}

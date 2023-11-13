@@ -1,143 +1,92 @@
 {% load static %}{% csrf_token %}
 <!doctype html>
-<html lang="ja">
+<html lang="ja" >
 	<head>
-		<meta charset='utf-8' />
-		<meta name='viewport' content='width=device-width,initial-scale=1'>       
-		<link rel="stylesheet" href="{% static '\css\style.css' %}">
 		<title>カノン販売管理システム</title>
+		<link rel="canonical" href="https://getbootstrap.jp/docs/5.3/examples/dashboard/">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="{% static '\css\dashboard.css' %}">
 	</head>
 	<body>
-		<div class="fds-page-table-list">
-			<div class="fds-three-pane__side-nav">
-				<div class="fds-three-pane__top">
-					<div class="fds-header">
-						<div class="fds-header__title">
-							<span class="fds-header__title-text">
-								カノン販売管理システム
-							</span>
+		<a id="skippy" class="sr-only sr-only-focusable" href="#content">
+			<div class="container">
+				<span class="skiplink-text">Skip to main content</span>
+			</div>
+		</a>
+		<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+			<span class="navbar-text">カノン販売管理システム</span>
+			<button class="navbar-toggler" type="button"
+				data-toggle="collapse"
+				data-target="#Navber"
+				aria-controls="Navber"
+				aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="Navber">
+				<ul class="navbar-nav mr-auto">	
+					<li class="nav-item dropdown">
+						<a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						受発注管理業務
+						</a>
+						<div class="dropdown-menu mt-0">
+							<a class="dropdown-item" href="{% url 'myapp:orderinglist' %}">受発注一覧</a>
+							<a class="dropdown-item" href="{% url 'myapp:productorderlist' %}">製品受発注一覧</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'myapp:requestresultlist' %}">受発注実績一覧</a>
 						</div>
-						<div class="fds-header__ctrl">
-							<div class="fds-header__item">
-								{% if user.is_authenticated %}
-									<span><a href="{% url 'logout' %}">{{ user.first_name|add:user.last_name }} </a></span>
-								{% else %}
-									<span><a href="{% url 'login' %}">ログイン</a></span>
-								{% endif %}
-								</ul>
-							</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						マスター管理
+						</a>
+						<div class="dropdown-menu mt-0">
+							<a class="dropdown-item" href="{% url 'myapp:list' %}">得意先仕入先マスタ</a>
+							<a class="dropdown-item" href="{% url 'myapp:merchandiselist' %}">商品マスタ</a>
 						</div>
-					</div>
-					<div class="fds-three-pane-left">
-						<div class="fds-drawer" id="fds-drawer">
-							<div class="fds-drawer__block fds-drawer__block--ctrl">
-							</div>
-							<div class="fds-drawer__block">
-								<div class="fds-drawer__block-title">
-									<span class="fds-drawer__block-title-text">受発注業務</span>
-								</div>
-							</div>
-							<div class="fds-drawer__block fds-drawer__block--hoverble">
-								<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:orderinglist' %}">受発注一覧</a></span>
-								</div>
-							</div>
-							<div class="fds-drawer__block fds-drawer__block--hoverble">
-								<div class="fds-drawer__block-text">
-									<span class="fds-icon fds-icon--folder-blue"></span>
-									<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:productorderlist' %}">製品受発注一覧</a></span>
-								</div>
-							</div>
-							<div class="fds-drawer__block fds-drawer__block--hoverble">
-								<div class="fds-drawer__block-text">
-									<span class="fds-icon fds-icon--folder-blue"></span>
-									<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:requestresultlist' %}">受発注実績一覧</a></span>
-								</div>
-							</div>
-							<div class="fds-drawer__block fds-drawer__block--hoverble">
-								<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text">メニュータイトル</span>
-								</div>
-							</div>
-
-							<div class="fds-drawer__block">
-								<div class="fds-drawer__block-title">
-									<span class="fds-drawer__block-text-text">マスター管理</span>
-								</div>
-							</div>
-							<div class="fds-drawer__block fds-drawer__block--hoverble">
-								<div class="fds-drawer__block-text">
-									<span class="fds-icon fds-icon--folder-blue"></span>
-									<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:list' %}">得意先仕入先マスタ</a></span>
-								</div>
-							</div>
-							<div class="fds-drawer__block fds-drawer__block--hoverble">
-								<div class="fds-drawer__block-text">
-									<span class="fds-icon fds-icon--folder-blue"></span>
-									<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:merchandiselist' %}">商品マスタ</a></span>
-								</div>
-							</div>
-							<div class="fds-drawer__block fds-drawer__block--hoverble">
-								<div class="fds-drawer__block-text">
-									<span class="fds-icon fds-icon--folder-blue"></span>
-									<span class="fds-drawer__block-text-text">メニュータイトル</span>
-								</div>
-							</div>
-								<div class="fds-drawer__block">
-							<div class="fds-drawer__block-title">
-								<span class="fds-drawer__block-text-text">ユーザー管理</span>
-							</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						ユーザー管理
+						</a>
+						<div class="dropdown-menu mt-0">
+							<a class="dropdown-item" href="{% url 'myapp:signup' %}">アカウント登録</a>
+							<a class="dropdown-item" href="{% url 'password_change_form' %}">パスワード変更</a>
+							<a class="dropdown-item" href="{% url 'password_reset' %}">パスワードリセット</a>
 						</div>
-						<div class="fds-drawer__block fds-drawer__block--hoverble">
-							<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text"><a href="{% url 'myapp:signup' %}">アカウント登録</a></span>
-							</div>
-						</div>
-						<div class="fds-drawer__block fds-drawer__block--hoverble">
-							<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text"><a href="{% url 'password_change_form' %}">パスワード変更</a></span>
-							</div>
-						</div>
-						<div class="fds-drawer__block fds-drawer__block--hoverble">
-							<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text"><a href="{% url 'password_reset' %}">パスワードリセット</a></span>
-							</div>
-						</div>
-						<!-- <div class="fds-drawer__block">
-							<div class="fds-drawer__block-title">
-								<span class="fds-drawer__block-text-text">カテゴリータイトル</span>
-							</div>
-						</div>
-						<div class="fds-drawer__block fds-drawer__block--hoverble">
-							<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text"><a href="#">メニュータイトル</a></span>
-							</div>
-						</div>
-						<div class="fds-drawer__block fds-drawer__block--hoverble">
-							<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text"><a href="#">メニュータイトル</a></span>
-							</div>
-						</div>
-						<div class="fds-drawer__block fds-drawer__block--hoverble">
-							<div class="fds-drawer__block-text">
-								<span class="fds-icon fds-icon--folder-blue"></span>
-								<span class="fds-drawer__block-text-text">メニュータイトル</span>
-							</div>
-						</div> -->
-					</div>
-					<div class="fds-layout-body">
+					</li>
+				</ul>
+			</div>
+			<ul class="navbar-nav px-3">
+				<li class="nav-item text-nowrap">
+					{% if user.is_authenticated %}
+					<span><a class="nav-link" href="{% url 'logout' %}">{{ user.first_name|add:user.last_name }}</a></span>
+					{% else %}
+					<span><a class="nav-link" href="{% url 'login' %}">ログイン</a></span>
+					{% endif %}
+				</li>
+			</ul>
+		</nav> 
+		<div class="container-fluid">
+			<div class="row">
+				<main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
+					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
 						{% block content %}
 						{% endblock %}
 					</div>
-				</div>
+				</main>
 			</div>
 		</div>
+		<!-- Icons -->
+		<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+		<script>
+			feather.replace()
+		</script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script>
+			window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')
+		</script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+		<!-- <script src="/docs/4.3/assets/js/vendor/anchor.min.js"></script> -->
 	</body>
 </html>
