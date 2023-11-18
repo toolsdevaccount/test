@@ -1,312 +1,138 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-    <div class="fds-breadcrumb">
-        <div class="fds-breadcrumb__item">
-            <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">HOME</a>
-        </div>
-        <div class="fds-breadcrumb__item">
-            <a href="#" class="fds-breadcrumb__link">製品発注情報一覧</a>
-        </div>
-    </div>
-    <div class="fds-closure">
-        <div class="fds-clousure--top-section">
-            <div class="fds-clousure--top-section-text">
-            </div>
-            <button class="fds-btn fds-btn--primary fds-btn--small" style="width: 200px" onclick="location.href='{% url 'myapp:productordernew' %}'">
-            <span class="fds-icon fds-icon--add-white"></span>
-            新規登録
-        </button>
-    </div>
-    <form method="post" id="form">
-		{% csrf_token %}
-		{% if messages %}
-		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__error" style="width:300px;">
-			{% for message in messages %}
-				  {{ message }}
-		  </div>
-			{% endfor %}
-		{% endif %}
-		<div class="fds-clousure--bottom-section">
-			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
-				<div class="fds-form-input-message">
-					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="query" id="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.query.value }}"/>
-					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="key" id="key" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.key.value }}"/>
-					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="word" id="word" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.word.value }}"/>
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">製品受発注情報一覧</li>
+		</ol>
+	</nav>
+	<div class="form-group">
+		<form method="post" id="form">{% csrf_token %}
+			<div class="form-row">
+				<div class="form-group col-sm-2">
+					<input type="search" name="query" id="query" class="form-control" placeholder="キーワード" value="{{ posearch.query.value }}"/>
 				</div>
-			</div>
-		</div>
-		<div class="fds-clousure--bottom-section">
-			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
-				<div class="fds-form-input-message">
-					<label class="fds-label-input">納期(From)</label>
-					<input type="search" name="productorderdateFrom" id="productorderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.productorderdateFrom.value }}"/>
-					<label class="fds-label-input">納期(To)</label>
-					<input type="search" name="productorderdateTo" id="productorderdateTo" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ posearch.productorderdateTo.value }}"/>
-					<span><button class="fds-btn fds-btn--primary fds-btn--small" style="width: 100px;" type="submit">
+				<div class="form-group col-sm-2">
+					<input type="search" name="key" id="key" class="form-control" placeholder="キーワード" value="{{ posearch.key.value }}"/>
+				</div>
+				<div class="form-group col-sm-2">
+					<input type="search" name="word" id="word" class="form-control" placeholder="キーワード" value="{{ posearch.word.value }}"/>
+				</div>
+				<div class="form-group col-sm-2">
+					<input type="search" name="productorderdateFrom" id="productorderdateFrom" class="form-control" placeholder="納期(From)" value="{{ posearch.productorderdateFrom.value }}"/>
+				</div>
+				<div class="form-group col-sm-2">
+					<input type="search" name="productorderdateTo" id="productorderdateTo" class="form-control" placeholder="納期(To)" value="{{ posearch.productorderdateTo.value }}"/>
+				</div>
+				<div class="text-right">
+					<label class="sr-only">検索</label>
+					<button class="btn btn-primary" type="submit">
 						検索
-					</button></span>
+					</button>
 				</div>
 			</div>
+		</form>
+		{% block extrajs %}
+		<!-- Datepicker 追加-->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+		{% load static %}
+		<script>
+			// 納期(From)検索用
+			var productorderdateFrom = document.getElementById('productorderdateFrom');
+			var fp = flatpickr(productorderdateFrom, {
+				'locale': 'ja',
+				allowInput: true,
+				// onCloseは入力フォームが閉じられた時に発火する
+				onClose: (selectedDates, dateStr, instance) => {
+					if (selectedDates.length === 1) {
+						// プロパティにユーザーが選択した日付を代入
+						this.dateProps = selectedDates[0];
+					}
+				}
+			});
+	
+			// 納期(To)検索用
+			var productorderdateTo = document.getElementById('productorderdateTo');
+			var fp = flatpickr(productorderdateTo, {
+				'locale': 'ja',
+				allowInput: true,
+				// onCloseは入力フォームが閉じられた時に発火する
+				onClose: (selectedDates, dateStr, instance) => {
+					if (selectedDates.length === 1) {
+						// プロパティにユーザーが選択した日付を代入
+						this.dateProps = selectedDates[0];
+					}
+				}
+			});
+		</script>
+		{% endblock %}  
+		{% if messages %}
+		{% for message in messages %}
+		<div class="invalid-feedback">{{ message }}</div>
+		{% endfor %}
+		{% endif %}
+		<div class="text-right">
+			<button class="btn btn-primary mb-2" onclick="location.href='{% url 'myapp:productordernew' %}'">新規登録</button>
 		</div>
-    </form>
-	{% block extrajs %}
-	<!-- Datepicker 追加-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-	{% load static %}
-	<script>
-		// 納期(From)検索用
-		var productorderdateFrom = document.getElementById('productorderdateFrom');
-		var fp = flatpickr(productorderdateFrom, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
-
-		// 納期(To)検索用
-		var productorderdateTo = document.getElementById('productorderdateTo');
-		var fp = flatpickr(productorderdateTo, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
-	</script>
-	{% endblock %}  
-	<div class="fds-table-controller">
-        <div class="fds-page-table__title">
-        </div>
-    </div>
-  	<div class="fds-table-container">
-    	<div class="fds-table">
-      		<!-- <div class="fds-table-fixed-container"> -->
-			<div class="fds-table-container" style="height: 50%;">
-				<table class="fds-table__inner">
-          			<thead>
-            			<tr class="fds-table__tr">
-							<th class="fds-table__th fds-table__th--col-fixed" style="width: 50px;">
-                				<div class="fds-table__th-content fds-table__th-content--button">
-									<div class="fds-checkbox">
-										<label class="fds-checkbox__label">
-											<input type="checkbox" class="fds-checkbox__input">
-											<span class="fds-checkbox__text">
-											</span>
-										</label>
-									</div>
-				                </div>
-              				</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 100px;">
-									<span class="fds-table__th-text">
-										発注番号
-									</span>
-									<span class="fds-icon fds-icon--filter fds-icon--small">
-									</span>
+		<div class="table-responsive table-container">
+			<div class="table-sticky-container">
+				<table class="table table-sticky table-sm">
+					<thead class="thead-dark">
+						<tr>
+							<th class="fixed">
+								<div class="form-check">
+									<input class="form-check-input position-static" type="checkbox">
 								</div>
 							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
-									<span class="fds-table__th-text">
-										発注日
-									</span>
-									<span class="fds-icon fds-icon--filter fds-icon--small">
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
-									<span class="fds-table__th-text">
-										納期
-									</span>
-									<span class="fds-icon fds-icon--filter fds-icon--small">
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 90px;">
-									<span class="fds-table__th-text">
-										オーダーNO
-									</span>
-								</div>
-							</th>
-							<!-- <th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
-									<span class="fds-table__th-text">
-										商品コード
-									</span>
-								</div>
-							</th> -->
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 120px;">
-									<span class="fds-table__th-text">
-										本品番
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 120px;">
-									<span class="fds-table__th-text">
-										仕入先名
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-				                <div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 100px;">
-				                	<span class="fds-table__th-text">
-                    					アパレル名
-				                	</span>
-                				</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 120px;">
-									<span class="fds-table__th-text">
-										マーク名
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 120px;">
-									<span class="fds-table__th-text">
-										ブランド名
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 125px;">
-									<span class="fds-table__th-text">
-										アクション
-									</span>
-								<div>
-							</th>
-			            </tr>
+							<th>発注番号</th>
+							<th>発注日</th>
+							<th>納期</th>
+							<th>オーダーNO</th>
+							<th>商品コード</th>
+							<th>本品番</th>
+							<th>仕入先名</th>
+							<th>アパレル名</th>
+							<th>マーク名</th>
+							<th>ブランド名</th>
+							<th>アクション</th>
+						</tr>
 					</thead>
-			        <tbody class="fds-table__tbody-hover-button">
+					<tbody>
 						{% for ProductOrder in object_list %}
-						<tr class="fds-table__tr">
-							<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">
-								<div class="fds-table__td-content">
-									<div class="fds-checkbox">
-										<label class="fds-checkbox__label">
-											{% if ProductOrder.is_Ordered == 1 %}
-											<input type="checkbox" class="fds-checkbox__input" checked>
-											<span class="fds-checkbox__text">
-											</span>
-											{% else %}
-											<input type="checkbox" class="fds-checkbox__input">
-											<span class="fds-checkbox__text">
-											</span>
-											{% endif %}
-										</label>
-									</div>
+						<tr>
+							<td>
+								<div class="form-check">
+									{% if OrderTable.is_Ordered == 1 %}
+									<input class="form-check-input position-static" type="checkbox" checked>
+									{% else %}
+									<input class="form-check-input position-static" type="checkbox">
+									{% endif %}
 								</div>
 							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 80px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.id }}
-									</span>
-								</div>
+							<td>{{ ProductOrder.id }}</td>
+							<td>{{ ProductOrder.ProductOrderOrderingDate }}</td>
+							<td>{{ ProductOrder.ProductOrderDeliveryDate }}</td>
+							<td><span>{{ ProductOrder.ProductOrderSlipDiv }}</span><span>{{ ProductOrder.ProductOrderOrderNumber }}</span></td>
+							<td>{{ ProductOrder.ProductOrderMerchandiseCode }}</td>
+							<td>{{ ProductOrder.ProductOrderPartNumber }}</td>
+							<td>{{ ProductOrder.ProductOrderSupplierCode.CustomerOmitName }}</td>
+							<td>{{ ProductOrder.ProductOrderApparelCode.CustomerOmitName }}</td>
+							<td>{{ ProductOrder.ProductOrderMarkName }}</td>
+							<td>{{ ProductOrder.ProductOrderBrandName }}</td>
+							<td>
+								<span><button type="button" class="btn btn-outline-success btn-sm" onclick="location.href='{% url 'myapp:productorderpdf' pk=ProductOrder.id %}'">発注書</button></span>
+								<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:productorderedit' pk=ProductOrder.id %}'">詳細</button></span>
+								<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:productorderdelete' pk=ProductOrder.id %}'">削除</button></span>
 							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderOrderingDate }}
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderDeliveryDate }}
-									</span>
-								</div>
-							</td>
-				            <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 90px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderSlipDiv }}
-									</span>
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderOrderNumber }}
-									</span>
-								</div>
-							</td>
-							<!-- <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 150px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderMerchandiseCode }}
-									</span>
-								</div>
-							</td> -->
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderPartNumber }}
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 100px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderSupplierCode.CustomerOmitName }}                 
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 100px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderApparelCode.CustomerOmitName }}                 
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderMarkName }}                 
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ ProductOrder.ProductOrderBrandName }}                 
-									</span>
-								</div>
-							</td>
-							<!-- <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-								</div>
-							</td> -->
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 125px;">
-									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 65px;" onclick="location.href='{% url 'myapp:productorderpdf' pk=ProductOrder.id %}'">発注書</button></span>
-									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:productorderedit' pk=ProductOrder.id %}'">詳細</button></span>
-									<span><button type="button" class="fds-btn-origin fds-btn-origin--error fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:productorderdelete' pk=ProductOrder.id %}'">削除</button></span>
-								</div>
-							</td>
-			            </tr>
-            			{% endfor %}
+						</tr>
+						{% endfor %}
 					</tbody>
 				</table>
 			</div>
 		</div>
-  	</div>
-	<div class="fds-pagination">
-		{% include "crud/pagination.html" %}
 	</div>
-	{% endblock %}
+</div>
+{% endblock %}

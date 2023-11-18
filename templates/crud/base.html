@@ -14,7 +14,7 @@
 			</div>
 		</a>
 		<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-			<span class="navbar-text">カノン販売管理システム</span>
+			<span class="navbar-text"><p class="font-small">カノン販売管理システム</p></span>
 			<button class="navbar-toggler" type="button"
 				data-toggle="collapse"
 				data-target="#Navber"
@@ -26,33 +26,35 @@
 			<div class="collapse navbar-collapse" id="Navber">
 				<ul class="navbar-nav mr-auto">	
 					<li class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						受発注管理業務
+						<p class="font-small"><a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							受発注管理業務
 						</a>
+						</p>
 						<div class="dropdown-menu mt-0">
-							<a class="dropdown-item" href="{% url 'myapp:orderinglist' %}">受発注一覧</a>
-							<a class="dropdown-item" href="{% url 'myapp:productorderlist' %}">製品受発注一覧</a>
+							<a class="dropdown-item" href="{% url 'myapp:orderinglist' %}"><p class="font-small">受発注一覧</p></a>
+							<a class="dropdown-item" href="{% url 'myapp:productorderlist' %}"><p class="font-small">製品受発注一覧</p></a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'myapp:requestresultlist' %}">受発注実績一覧</a>
+							<a class="dropdown-item" href="{% url 'myapp:requestresultlist' %}"><p class="font-small">受発注実績一覧</p></a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						マスター管理
+						<p class="font-small"><a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							マスター管理
 						</a>
+						</p>
 						<div class="dropdown-menu mt-0">
-							<a class="dropdown-item" href="{% url 'myapp:list' %}">得意先仕入先マスタ</a>
-							<a class="dropdown-item" href="{% url 'myapp:merchandiselist' %}">商品マスタ</a>
+							<a class="dropdown-item" href="{% url 'myapp:list' %}"><p class="font-small">得意先仕入先マスタ</p></a>
+							<a class="dropdown-item" href="{% url 'myapp:merchandiselist' %}"><p class="font-small">商品マスタ</p></a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						ユーザー管理
-						</a>
+						<p class="font-small"><a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							ユーザー管理
+						</a></p>
 						<div class="dropdown-menu mt-0">
-							<a class="dropdown-item" href="{% url 'myapp:signup' %}">アカウント登録</a>
-							<a class="dropdown-item" href="{% url 'password_change_form' %}">パスワード変更</a>
-							<a class="dropdown-item" href="{% url 'password_reset' %}">パスワードリセット</a>
+							<a class="dropdown-item" href="{% url 'myapp:signup' %}"><p class="font-small">アカウント登録</p></a>
+							<a class="dropdown-item" href="{% url 'password_change_form' %}"><p class="font-small">パスワード変更</p></a>
+							<a class="dropdown-item" href="{% url 'password_reset' %}"><p class="font-small">パスワードリセット</p></a>
 						</div>
 					</li>
 				</ul>
@@ -82,11 +84,10 @@
 		<script>
 			feather.replace()
 		</script>
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 		<script>
 			window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')
 		</script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-		<!-- <script src="/docs/4.3/assets/js/vendor/anchor.min.js"></script> -->
 	</body>
 </html>

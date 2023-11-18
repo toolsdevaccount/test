@@ -1,64 +1,61 @@
-											{% block content %}
-											{% load humanize %}
-											<div class="tab-contents-item">
-												<div class="fds-table-actions">
-													<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny addcolor" style="width: 60px">追加</button>
-												</div>
-												<input type="hidden" name="McdColorId-TOTAL_FORMS" id="id_McdColorId-TOTAL_FORMS">
-												<div class="fds-table-container">
-													<div class="fds-table" style="width: 70%; height: 50vh;">
-														{{ inlinescolor.management_form }}	
-														<table class="fds-table__inner" id="tblrowcolor">
-															<thead>
-																<tr class="fds-table__tr">
-																	<th class="fds-table__th">
-																		<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
-																			<span class="fds-table__th-text">色番</span>
-																		</div>
-																	</th>
-																	<th class="fds-table__th">
-																		<div class="fds-table__th-content fds-table__th-content--text" style="width: 200px;">
-																			<span class="fds-table__th-text">カラー</span>
-																		</div>
-																	</th>
-																</tr>
-															</thead>
-															<tbody id="listcolor">
-																{% for form in inlinescolor %}	
-																<tr class="fds-table__tr fds-table__tr--hoverable colorarea">
-																	<td class="fds-table__td">
-																		<div id="div" class="fds-table__td-content">
-																			<input type="text" class="fds-form-input McdColorNumber" style="width: 200px;" data-id-format="id_McdColorId-%d-McdColorNumber" data-name-format="McdColorId-%d-McdColorNumber"
-																			name="McdColorId-0-McdColorNumber" id="id_McdColorId-0-McdColorNumber" value="{{ form.McdColorNumber.value | default:'' }}" >
-																			{% if form.errors.McdColorNumber %}
-																			{% for error in form.errors.McdColorNumber %}
-																				<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-																			{% endfor %}
-																			{% endif %}
-																		</div>
-																	</td>
-																	<td class="fds-table__td">
-																		<div id="div" class="fds-table__td-content">
-																			<input type="text" class="fds-form-input McdColor" style="width: 200px;" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
-																			name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default:'' }}" >
-																			{% if form.errors.McdColor %}
-																			{% for error in form.errors.McdColor %}
-																				<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-																			{% endfor %}
-																			{% endif %}
-																		</div>
-																	</td>
-																	<td class="fds-table__td">
-																		<div id="div" class="fds-table__td-content">
-																			<button type="button" class="fds-btn fds-btn--primary fds-btn--tiny delcolor" style="width: 60px;">削除</button>
-																		</div>
-																	</td>
-																</tr>
-																{% endfor %}
-															</tbody>
-														</table>
-													</div>
-												</div>
-											</div>
-											{% endblock %}
+{% block content %}
+{% load humanize %}
+<div class="container-fluid">
+	<div class="form-group">
+		<div class="text-left">
+			<button type="button" id="add" class="btn btn-primary addcolor">追加</button>
+		</div>
+		<input type="hidden" name="McdColorId-TOTAL_FORMS" id="id_McdColorId-TOTAL_FORMS">
+		<div class="table-responsive table-container">
+			<div class="table-sticky-container">
+				{{ inlinescolor.management_form }}	
+				<table class="table table-sticky table-sm" id="tblrowcolor" style="width:50%;">
+					<thead>
+						<tr>
+							<th scope="col" class="text-center" style="width: 5%">色番</th>
+							<th scope="col" class="text-center" style="width: 5%">カラー</th>
+							<th scope="col" class="text-center" style="width: 2%">　</th>
+						</tr>
+					</thead>
+					<tbody id="listcolor">
+						{% for form in inlinescolor %}
+						<tr class="colorarea">
+							<td>
+								<div id="div" class="fds-table__td-content">
+									{% if form.errors.McdColorNumber %}
+									{% for error in form.errors.McdColorNumber %}
+										<input type="text" class="form-control is-invalid McdColorNumber" data-id-format="id_McdColorId-%d-McdColorNumber" data-name-format="McdColorId-%d-McdColorNumber"
+										name="McdColorId-0-McdColorNumber" id="id_McdColorId-0-McdColorNumber" value="{{ form.McdColorNumber.value | default:'' }}">
+										<div class="invalid-feedback">{{ error }}</div>
+									{% endfor %}
+									{% else %}
+										<input type="text" class="form-control McdColorNumber" data-id-format="id_McdColorId-%d-McdColorNumber" data-name-format="McdColorId-%d-McdColorNumber"
+										name="McdColorId-0-McdColorNumber" id="id_McdColorId-0-McdColorNumber" value="{{ form.McdColorNumber.value | default:'' }}">
+									{% endif %}	
+								</div>
+							</td>
+							<td>
+								{% if form.errors.McdColor %}
+								{% for error in form.errors.McdColor %}
+									<input type="text" class="form-control is-invalid McdColor" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
+									name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default:'' }}">                                          
+									<div class="invalid-feedback">{{ error }}</div>
+								{% endfor %}
+								{% else %}
+									<input type="text" class="form-control McdColor" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
+									name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default:'' }}">                                          
+								{% endif %}	
+							</td>
+							<td>
+								<span class="delcolor"><button type="button" class="btn btn-outline-danger btn-sm">削除</button></span>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
 	

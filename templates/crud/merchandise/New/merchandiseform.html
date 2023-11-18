@@ -1,194 +1,197 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-                        <form method="post" id="form" enctype="multipart/form-data">
-                        {% csrf_token %}
-                            <div class="fds-page-table__main">
-                                <div class="fds-breadcrumb">
-                                    <div class="fds-breadcrumb__item">
-                                        <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">
-                                            HOME
-                                        </a>
-                                    </div>
-                                    <div class="fds-breadcrumb__item">
-                                        <a href="{% url 'myapp:merchandiselist' %}" class="fds-breadcrumb__link">
-                                            商品一覧・検索
-                                        </a>
-                                    </div>
-                                    <div class="fds-breadcrumb__item">
-                                        <span class="fds-breadcrumb__link">
-                                            商品新規登録
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="fds-page-table__title-box">
-                                    <div class="fds-page-table__title">
-                                        新規登録
-                                    </div>
-                                    <div class="fds-page-table__search-form">
-                                        <button type="button" class="fds-btn fds-btn--basic" onclick="location.href='{% url 'myapp:merchandiselist' %}'" style="width: 100px">
-                                            キャンセル
-                                        </button>
-                                        <button type="submit" class="fds-btn fds-btn--primary" style="width: 100px">
-                                            登録
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="fds-panel fds-panel--plain" style="width: 100%; height: 70vh;">
-                                    <div class="wrap-tab">
-                                        <ul class="fds-tabs" id="js-tab">
-                                            <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
-                                            <li class="fds-tabs__item">商品明細</li>
-                                            <li class="fds-tabs__item">カラー</li>
-                                            <li class="fds-tabs__item">サイズ</li>
-                                            <li class="fds-tabs__item">画像添付</li>
-                                        </ul>
-                                        <div class="tab-contents-item active">
-                                            <div class="fds-page-detail__main">
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 扱い区分 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">扱区分：</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="McdTreatmentCode" id="id_McdTreatmentCode">
-                                                                    {% for data in form.McdTreatmentCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.McdTreatmentCode %}
-                                                        {% for error in form.errors.McdTreatmentCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 担当者 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">担当者：</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="McdManagerCode" id="id_McdManagerCode">
-                                                                    {% for data in form.McdManagerCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.McdManagerCode %}
-                                                        {% for error in form.errors.McdManagerCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                </div>
-                                                <div class="fds-divider fds-divider--dark2"></div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 仮品番 -->
-                                                        <label class="fds-label-input">仮品番:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdTempPartNumber" id="id_McdTempPartNumber" maxlength="20" value="{{ form.data.McdTempPartNumber }}">
-                                                        {% if form.errors.McdTempPartNumber %}
-                                                        {% for error in form.errors.McdTempPartNumber %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 本品番 -->
-                                                        <label class="fds-label-input">本品番:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  name="McdPartNumber" id="id_McdPartNumber" maxlength="20" value="{{ form.data.McdPartNumber }}">
-                                                        {% if form.errors.McdPartNumber %}
-                                                        {% for error in form.errors.McdPartNumber %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="fds-divider fds-divider--dark2"></div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 仕入単価 -->
-                                                        <label class="fds-label-input">仕入単価:</label>
-                                                        <input type="text" class="fds-form-input McdUnitPrice" placeholder="" style="text-align: right;" name="McdUnitPrice" id="id_McdUnitPrice" onchange="comma(this);" value="{{ form.data.McdUnitPrice|default:"0" }}">
-                                                        {% if form.errors.McdUnitPrice %}
-                                                        {% for error in form.errors.McdUnitPrice %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 仕入単位 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">仕入単位：</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="McdUnitCode" id="id_McdUnitCode">
-                                                                    {% for data in form.McdUnitCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.McdUnitCode %}
-                                                        {% for error in form.errors.McdUnitCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                </div>
-                                                <div class="fds-divider fds-divider--dark2"></div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 販売単価 -->
-                                                        <label class="fds-label-input">販売単価:</label>
-                                                        <input type="text" class="fds-form-input McdSellPrice" placeholder="" style="text-align: right;" name="McdSellPrice" id="id_McdSellPrice" onchange="comma(this);" value="{{ form.data.McdSellPrice|default:"0" }}">
-                                                        {% if form.errors.McdSellPrice %}
-                                                        {% for error in form.errors.McdSellPrice %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="fds-divider fds-divider--dark2"></div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 加工賃 -->
-                                                        <label class="fds-label-input">加工賃:</label>
-                                                        <input type="text" class="fds-form-input McdProcessfee" placeholder="" style="text-align: right;" name="McdProcessfee" id="id_McdProcessfee" onchange="comma(this);" value="{{ form.data.McdProcessfee|default:"0" }}">
-                                                        {% if form.errors.McdProcessfee %}
-                                                        {% for error in form.errors.McdProcessfee %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 加工単位 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">加工単位：</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="McdProcessCode" id="id_McdProcessCode">
-                                                                    {% for data in form.McdProcessCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.McdProcessCode %}
-                                                        {% for error in form.errors.McdProcessCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% include "crud/merchandise/new/merchandisetable.html" %}
-                                        {% include "crud/merchandise/new/merchandisecolor.html" %}
-                                        {% include "crud/merchandise/new/merchandisesize.html" %}
-                                        {% include "crud/merchandise/new/merchandisefile.html" %}
-                                    </div>
-                                </div>
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'myapp:merchandiselist' %}">商品情報一覧・検索</a></li>
+            <li class="breadcrumb-item active" aria-current="page">商品新規登録</li>
+        </ol>
+    </nav>
+	<div class="form-group">
+        <form method="post" id="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                <a class="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">基本情報</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">商品明細</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="item3-tab" data-toggle="tab" href="#item3" role="tab" aria-controls="item3" aria-selected="false">カラー</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="item4-tab" data-toggle="tab" href="#item4" role="tab" aria-controls="item4" aria-selected="false">サイズ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="item5-tab" data-toggle="tab" href="#item5" role="tab" aria-controls="item5" aria-selected="false">画像添付</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdTreatmentCode">扱区分</label>
+                                {% if form.errors.McdTreatmentCode %}
+                                {% for error in form.errors.McdTreatmentCode %}
+                                <select class="custom-select is-invalid" name="McdTreatmentCode" id="id_McdTreatmentCode">
+                                    {% for data in form.McdTreatmentCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <select class="custom-select" name="McdTreatmentCode" id="id_McdTreatmentCode">
+                                    {% for data in form.McdTreatmentCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
                             </div>
-                        </form>
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdManagerCode">担当者</label>
+                                {% if form.errors.McdManagerCode %}
+                                {% for error in form.errors.McdManagerCode %}
+                                <select class="custom-select is-invalid" name="McdManagerCode" id="id_McdManagerCode">
+                                    {% for data in form.McdManagerCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <select class="custom-select" name="McdManagerCode" id="id_McdManagerCode">
+                                    {% for data in form.McdManagerCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdTempPartNumber">仮品番</label>
+                                {% if form.errors.McdTempPartNumber %}
+                                {% for error in form.errors.McdTempPartNumber %}
+                                <input type="tel" class="form-control is-invalid" name="McdTempPartNumber" id="id_McdTempPartNumber" value="{{ form.data.McdTempPartNumber }}">
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <input type="tel" class="form-control" name="McdTempPartNumber" id="id_McdTempPartNumber" value="{{ form.data.McdTempPartNumber }}">
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdPartNumber">本品番</label>
+                                {% if form.errors.McdPartNumber %}
+                                {% for error in form.errors.McdPartNumber %}
+                                <input type="tel" class="form-control is-invalid" name="McdPartNumber" id="id_McdPartNumber" value="{{ form.data.McdPartNumber }}">
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <input type="tel" class="form-control" name="McdPartNumber" id="id_McdPartNumber" value="{{ form.data.McdPartNumber }}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_ProductName">仕入単価</label>
+                                {% if form.errors.ProductName %}
+                                {% for error in form.errors.ProductName %}
+                                <input type="text" class="form-control is-invalid McdUnitPrice" name="McdUnitPrice" id="id_McdUnitPrice" style="text-align: right;" onchange="comma(this);" value="{{ form.data.McdUnitPrice|default:"0" }}">
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <input type="text" class="form-control McdUnitPrice" name="McdUnitPrice" id="id_McdUnitPrice" style="text-align: right;" onchange="comma(this);" value="{{ form.data.McdUnitPrice|default:"0" }}">
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdUnitCode">仕入単位</label>
+                                {% if form.errors.McdUnitCode %}
+                                {% for error in form.errors.McdUnitCode %}
+                                <select class="custom-select is-invalid" name="McdUnitCode" id="id_McdUnitCode">
+                                    {% for data in form.McdUnitCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <select class="custom-select" name="McdUnitCode" id="id_McdUnitCode">
+                                    {% for data in form.McdUnitCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdSellPrice">販売単価</label>
+                                {% if form.errors.McdSellPrice %}
+                                {% for error in form.errors.McdSellPrice %}
+                                <input type="tel" class="form-control is-invalid McdSellPrice" name="McdSellPrice" id="id_McdSellPrice" style="text-align: right;" onchange="comma(this);" value="{{ form.data.McdSellPrice|default:"0" }}">
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <input type="tel" class="form-control McdSellPrice" name="McdSellPrice" id="id_McdSellPrice" style="text-align: right;" onchange="comma(this);" value="{{ form.data.McdSellPrice|default:"0" }}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdProcessfee">加工賃</label>
+                                {% if form.errors.McdProcessfee %}
+                                {% for error in form.errors.McdProcessfee %}
+                                <input type="tel" class="form-control is-invalid McdProcessfee" name="McdProcessfee" id="id_McdProcessfee" style="text-align: right;" onchange="comma(this);" value="{{ form.data.McdProcessfee|default:"0" }}">
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <input type="tel" class="form-control McdProcessfee" name="McdProcessfee" id="id_McdProcessfee" style="text-align: right;" onchange="comma(this);" value="{{ form.data.McdProcessfee|default:"0" }}">
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label for="id_McdProcessCode">加工単位</label>
+                                {% if form.errors.McdProcessCode %}
+                                {% for error in form.errors.McdProcessCode %}
+                                <select class="custom-select is-invalid" name="McdProcessCode" id="id_McdProcessCode">
+                                    {% for data in form.McdProcessCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% else %}
+                                <select class="custom-select" name="McdProcessCode" id="id_McdProcessCode">
+                                    {% for data in form.McdProcessCode %}
+                                    {{ data }}
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="item2" role="tabpanel" aria-labelledby="item2-tab">
+                    {% include "crud/merchandise/new/merchandisetable.html" %}
+                </div>
+                <div class="tab-pane" id="item3" role="tabpanel" aria-labelledby="item3-tab">
+                    {% include "crud/merchandise/new/merchandisecolor.html" %}
+                </div>
+                <div class="tab-pane" id="item4" role="tabpanel" aria-labelledby="item4-tab">
+                    {% include "crud/merchandise/new/merchandisesize.html" %}
+                </div>
+                <div class="tab-pane" id="item5" role="tabpanel" aria-labelledby="item5-tab">
+                    {% include "crud/merchandise/new/merchandisefile.html" %}
+                </div>
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary">登録</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'myapp:merchandiselist' %}'">キャンセル</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
-

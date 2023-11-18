@@ -1,307 +1,354 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-                        <form method="post" id="form" name="delform">
-                            {% csrf_token %}
-                            <div class="fds-page-table__main">
-                                <div class="fds-breadcrumb">
-                                    <div class="fds-breadcrumb__item">
-                                        <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">
-                                            HOME
-                                        </a>
-                                    </div>
-                                    <div class="fds-breadcrumb__item">
-                                        <a href="{% url 'myapp:productorderlist' %}" class="fds-breadcrumb__link">
-                                            製品発注情報一覧・検索
-                                        </a>
-                                    </div>
-                                    <div class="fds-breadcrumb__item">
-                                        <span class="fds-breadcrumb__link">
-                                            製品発注情報削除
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="fds-page-table__title-box">
-                                    <div class="fds-page-table__title">
-                                        製品発注削除
-                                    </div>
-                                    <div class="fds-page-table__search-form">
-                                        <button type="button" class="fds-btn fds-btn--basic" onclick="location.href='{% url 'myapp:productorderlist' %}'" style="width: 100px">
-                                            キャンセル
-                                        </button>
-                                        <button type="button" id="modalOpen" class="fds-btn fds-btn--error" style="width: 100px;">
-                                            削除
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="fds-panel fds-panel--plain" style="width: 100%; height: 90%;">
-                                    <div class="wrap-tab">
-                                        <ul class="fds-tabs" id="js-tab">
-                                            <li class="fds-tabs__item fds-tabs__item--active">基本情報</li>
-                                            <li class="fds-tabs__item">カラー/サイズ</li>
-                                        </ul>
-                                        <div class="tab-contents-item active">
-                                            <div class="fds-form-input-message" style="width:30%;">
-                                            {% if form.non_field_errors %}
-                                                {% for error in form.non_field_errors %}
-                                                <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                {% endfor %}
-                                            {% endif %}
-                                            </div>
-                                            <div class="fds-page-detail__main">
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 伝票区分 -->
-                                                        <label class="fds-label-input">オーダーNO:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" style="width:8%;" value="{{ object.ProductOrderSlipDiv }}">
-                                                        <!-- オーダーNO -->
-                                                        <span>-</span>
-                                                        <input type="text" class="fds-form-input" placeholder="" style="text-align: right; width:40%;" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value="{{ object.ProductOrderOrderNumber }}">
-                                                        {% if form.errors.ProductOrderOrderNumber %}
-                                                        {% for error in form.errors.ProductOrderOrderNumber %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" style="width:100%;" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 発注日 -->
-                                                        <label class="fds-label-input">発注日:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" maxlength="10" value="{{ object.ProductOrderOrderingDate }}">
-                                                        {% if form.errors.ProductOrderOrderingDate %}
-                                                        {% for error in form.errors.ProductOrderOrderingDate %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 担当者 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">担当者：</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderManagerCode" id="id_ProductOrderManagerCode">
-                                                                    {% for data in form.ProductOrderManagerCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.ProductOrderManagerCode %}
-                                                        {% for error in form.errors.ProductOrderManagerCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>                       
-                                                </div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 商品コード -->
-                                                        <label class="fds-label-input">商品コード:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  maxlength="5" style="text-align: right;" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}">
-                                                        <!-- <span><button class="fds-btn fds-btn--primary fds-btn--small" id="button" style="width: 60px;" type="button">
-                                                            GET
-                                                        </button></span> -->
-                                   
-                                                        {% if form.errors.ProductOrderMerchandiseCode %}
-                                                        {% for error in form.errors.ProductOrderMerchandiseCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 本品番 -->
-                                                        <label class="fds-label-input">本品番:</label>
-                                                        <input type="text" class="fds-form-input" placeholder=""  maxlength="20" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value="{{ object.ProductOrderPartNumber }}">
-                                                        {% if form.errors.ProductOrderPartNumber %}
-                                                        {% for error in form.errors.ProductOrderPartNumber %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <label class="fds-label-input">納期:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderDeliveryDate" id="id_ProductOrderDeliveryDate" maxlength="10" value="{{ object.ProductOrderDeliveryDate }}">
-                                                        {% if form.errors.ProductOrderDeliveryDate %}
-                                                        {% for error in form.errors.ProductOrderDeliveryDate %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 手配先 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">手配先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode">
-                                                                    {% for data in form.ProductOrderDestinationCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.ProductOrderDestinationCode %}
-                                                        {% for error in form.errors.ProductOrderDestinationCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 仕入先 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">仕入先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode">
-                                                                    {% for data in form.ProductOrderSupplierCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.ProductOrderSupplierCode %}
-                                                        {% for error in form.errors.ProductOrderSupplierCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 出荷先 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">出荷先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode">
-                                                                    {% for data in form.ProductOrderShippingCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.ProductOrderShippingCode %}
-                                                        {% for error in form.errors.ProductOrderShippingCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                </div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 得意先 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">得意先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode">
-                                                                    {% for data in form.ProductOrderCustomeCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.ProductOrderCustomeCode %}
-                                                        {% for error in form.errors.ProductOrderCustomeCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 依頼先 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">依頼先:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode">
-                                                                    {% for data in form.ProductOrderRequestCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.ProductOrderRequestCode %}
-                                                        {% for error in form.errors.ProductOrderRequestCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- アパレルコード -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">アパレル:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode">
-                                                                    {% for data in form.ProductOrderApparelCode %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        {% if form.errors.ProductOrderApparelCode %}
-                                                        {% for error in form.errors.ProductOrderApparelCode %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}   
-                                                    </div>
-                                                </div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 仕入先担当者名 -->
-                                                        <label class="fds-label-input">仕入先担当:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderSupplierPerson" id="id_ProductOrderSupplierPerson" value="{{ form.data.ProductOrderSupplierPerson }}">
-                                                        {% if form.errors.ProductOrderSupplierPerson %}
-                                                        {% for error in form.errors.ProductOrderSupplierPerson %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:25%;">
-                                                        <!-- 敬称区分 -->
-                                                        <div class="fds-page-input-select">
-                                                            <label class="fds-label-input">敬称:</label>
-                                                            <div class="fds-select-container">
-                                                                <select class="fds-select fds-form-input fds-form-input--medium" name="ProductOrderTitleDiv" id="id_ProductOrderTitleDiv">
-                                                                    {% for data in form.ProductOrderTitleDiv %}
-                                                                    {{ data }}
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="fds-form-input-message" style="width:50%;">
-                                                        <!-- ブランド名 -->
-                                                        <label class="fds-label-input">ブランド名:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderBrandName" id="id_ProductOrderBrandName" value="{{ object.ProductOrderBrandName }}">
-                                                        {% if form.errors.ProductOrderBrandName %}
-                                                        {% for error in form.errors.ProductOrderBrandName %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:50%;">
-                                                        <!-- マーク名 -->
-                                                        <label class="fds-label-input">マーク名:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value="{{ object.ProductOrderMarkName }}">
-                                                        {% if form.errors.ProductOrderMarkName %}
-                                                        {% for error in form.errors.ProductOrderMarkName %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="fds-form-label fds-form-label--horizontal">
-                                                    <div class="fds-form-input-message" style="width:100%;">
-                                                        <!-- 摘要 -->
-                                                        <label class="fds-label-input">摘要:</label>
-                                                        <input type="text" class="fds-form-input" placeholder="" name="ProductOrderSummary" id="id_ProductOrderSummary" style="width:65%;" value="{{ object.ProductOrderSummary }}">
-                                                        {% if form.errors.ProductOrderSummary %}
-                                                        {% for error in form.errors.ProductOrderSummary %}
-                                                            <div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__warn" >{{ error }}</div>
-                                                        {% endfor %}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            {% include "crud/productorder/Delete/productordertabledelete.html" %}
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        {% endblock %}
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'myapp:productorderlist' %}">製品発注情報一覧・検索</a></li>
+            <li class="breadcrumb-item active" aria-current="page">製品発注情報削除</li>
+        </ol>
+    </nav>
+    <form method="post" id="form" name="delform">
+    {% csrf_token %}
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                    <a class="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">基本情報</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">カラー/サイズ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="item1" role="tabpanel" aria-labelledby="item1-tab">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-sm-1">
+                            <label for="id_ProductOrderSlipDiv">伝票区分</label>
+                            <input type="text" class="form-control" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" value="{{ object.ProductOrderSlipDiv }}" readonly>
+                        </div>
+                        <div class="form-group col-sm-1">
+                            <label for="id_OrderNumber">オーダーNO</label>
+                            {% if form.errors.OrderNumber %}
+                            {% for error in form.errors.OrderNumber %}
+                            <input type="text" class="form-control is-invalid" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);"  value="{{ object.ProductOrderOrderNumber }}" readonly>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);"  value="{{ object.ProductOrderOrderNumber }}" readonly>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderOrderingDate">発注日</label>
+                            {% if form.errors.ProductOrderOrderingDate %}
+                            {% for error in form.errors.ProductOrderOrderingDate %}
+                            <input type="tel" class="form-control is-invalid" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" value="{{ object.ProductOrderOrderingDate }}">
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" value="{{ object.ProductOrderOrderingDate }}">
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderManagerCode">担当者</label>
+                            {% if form.errors.ProductOrderManagerCode %}
+                            {% for error in form.errors.ProductOrderManagerCode %}
+                            <select class="custom-select is-invalid" name="ProductOrderManagerCode" id="id_ProductOrderManagerCode">
+                                {% for data in form.ProductOrderManagerCode %}
+                                {{ data }}
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <select class="custom-select" name="ProductOrderManagerCode" id="id_ProductOrderManagerCode">
+                                {% for data in form.ProductOrderManagerCode %}
+                                {{ data }}
+                                {% endfor %}
+                            </select>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderMerchandiseCode">商品コード</label>
+                            {% if form.errors.ProductOrderMerchandiseCode %}
+                            {% for error in form.errors.ProductOrderMerchandiseCode %}
+                            <input type="text" class="form-control is-invalid" maxlength="5" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" maxlength="5" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderPartNumber">本品番</label>
+                            {% if form.errors.ProductOrderPartNumber %}
+                            {% for error in form.errors.ProductOrderPartNumber %}
+                            <input type="text" class="form-control is-invalid" maxlength="16" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value="{{ object.ProductOrderPartNumber }}" readonly>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" maxlength="16" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value="{{ object.ProductOrderPartNumber }}" readonly>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderDeliveryDate">納期</label>
+                            {% if form.errors.ProductOrderOrderingDate %}
+                            {% for error in form.errors.ProductOrderOrderingDate %}
+                            <input type="tel" class="form-control is-invalid" name="ProductOrderDeliveryDate" id="id_ProductOrderDeliveryDate" value="{{ object.ProductOrderDeliveryDate }}">
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" name="ProductOrderDeliveryDate" id="id_ProductOrderDeliveryDate" value="{{ object.ProductOrderDeliveryDate }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderDestinationCode">手配先</label>
+                            {% if form.errors.ProductOrderDestinationCode %}
+                            {% for error in form.errors.ProductOrderDestinationCode %}
+                            <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderDestination" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode" value="{{ object.ProductOrderDestinationCode.CustomerCode }} {{ object.ProductOrderDestinationCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderDestination">
+                            {% for data in ProductOrderDestinationCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" placeholder="" list="ProductOrderDestination" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode" value="{{ object.ProductOrderDestinationCode.CustomerCode }} {{ object.ProductOrderDestinationCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderDestination">
+                            {% for data in ProductOrderDestinationCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <input type="hidden" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode" value="{{ form.ProductOrderDestinationCode.value }}">
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderSupplierCode">仕入先</label>
+                            {% if form.errors.ProductOrderSupplierCode %}
+                            {% for error in form.errors.SupplierCode %}
+                            <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderSupplier" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode" value="{{ object.ProductOrderSupplierCode.CustomerCode }} {{ object.ProductOrderSupplierCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderSupplier">
+                            {% for data in ProductOrderSupplierCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" placeholder="" list="ProductOrderSupplier" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode" value="{{ object.ProductOrderSupplierCode.CustomerCode }} {{ object.ProductOrderSupplierCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderSupplier">
+                            {% for data in ProductOrderSupplierCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <input type="hidden" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode" value="{{ form.ProductOrderSupplierCode.value }}">
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderShippingCode">出荷先</label>
+                            {% if form.errors.ProductOrderShippingCode %}
+                            {% for error in form.errors.ProductOrderShippingCode %}
+                            <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderShipping" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode" value="{{ object.ProductOrderShippingCode.CustomerCode }} {{ object.ProductOrderShippingCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderShipping">
+                            {% for data in ProductOrderShippingCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" placeholder="" list="ProductOrderShipping" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode" value="{{ object.ProductOrderShippingCode.CustomerCode }} {{ object.ProductOrderShippingCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderShipping">
+                            {% for data in ProductOrderShippingCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <input type="hidden" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode" value="{{ form.ProductOrderShippingCode.value }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderCustomeCode">得意先</label>
+                            {% if form.errors.ProductOrderCustomeCode %}
+                            {% for error in form.errors.ProductOrderCustomeCode %}
+                            <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderCustome" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode" value="{{ object.ProductOrderCustomeCode.CustomerCode }} {{ object.ProductOrderCustomeCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderCustome">
+                            {% for data in ProductOrderCustomeCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" placeholder="" list="ProductOrderCustome" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode" value="{{ object.ProductOrderCustomeCode.CustomerCode }} {{ object.ProductOrderCustomeCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderCustome">
+                            {% for data in ProductOrderCustomeCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <input type="hidden" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode" value="{{ form.ProductOrderCustomeCode.value }}">
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderRequestCode">依頼先</label>
+                            {% if form.errors.ProductOrderRequestCode %}
+                            {% for error in form.errors.ProductOrderRequestCode %}
+                            <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderRequest" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode" value="{{ object.ProductOrderRequestCode.CustomerCode }} {{ object.ProductOrderRequestCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderRequest">
+                            {% for data in ProductOrderRequestCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" placeholder="" list="ProductOrderRequest" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode" value="{{ object.ProductOrderRequestCode.CustomerCode }} {{ object.ProductOrderRequestCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderRequest">
+                            {% for data in ProductOrderRequestCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <input type="hidden" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode" value="{{ form.ProductOrderRequestCode.value }}">
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderApparelCode">アパレル</label>
+                            {% if form.errors.ProductOrderApparelCode %}
+                            {% for error in form.errors.ProductOrderApparelCode %}
+                            <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderApparel" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode" value="{{ object.ProductOrderApparelCode.CustomerCode }} {{ object.ProductOrderApparelCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderApparel">
+                            {% for data in ProductOrderApparelCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" placeholder="" list="ProductOrderApparel" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode" value="{{ object.ProductOrderApparelCode.CustomerCode }} {{ object.ProductOrderApparelCode.CustomerOmitName }}" readonly>
+                            <datalist id="ProductOrderApparel">
+                            {% for data in ProductOrderApparelCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <input type="hidden" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode" value="{{ form.ProductOrderApparelCode.value }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderSupplierPerson">仕入担当</label>
+                            {% if form.errors.ProductOrderSupplierPerson %}
+                            {% for error in form.errors.ProductOrderSupplierPerson %}
+                            <input type="text" class="form-control is-invalid" name="ProductOrderSupplierPerson" id="id_ProductOrderSupplierPerson" value="{{ form.ProductOrderSupplierPerson.value }}" readonly>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" name="ProductOrderSupplierPerson" id="id_ProductOrderSupplierPerson" value="{{ form.ProductOrderSupplierPerson.value }}">
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderTitleDiv">敬称</label>
+                            {% if form.errors.ProductOrderTitleDiv %}
+                            {% for error in form.errors.ProductOrderTitleDiv %}
+                            <select class="custom-select is-invalid" name="ProductOrderTitleDiv" id="id_ProductOrderTitleDiv">
+                                {% for data in form.ProductOrderTitleDiv %}
+                                {{ data }}
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <select class="custom-select" name="ProductOrderTitleDiv" id="id_ProductOrderTitleDiv">
+                                {% for data in form.ProductOrderTitleDiv %}
+                                {{ data }}
+                                {% endfor %}
+                            </select>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderBrandName">ブランド名</label>
+                            {% if form.errors.ProductOrderBrandName %}
+                            {% for error in form.errors.ProductOrderBrandName %}
+                            <input type="text" class="form-control is-invalid" name="ProductOrderBrandName" id="id_ProductOrderBrandName" value="{{ object.ProductOrderBrandName }}" readonly>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" name="ProductOrderBrandName" id="id_ProductOrderBrandName" value="{{ object.ProductOrderBrandName }}" readonly>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="id_ProductOrderMarkName">マーク名</label>
+                            {% if form.errors.ProductOrderMarkName %}
+                            {% for error in form.errors.ProductOrderMarkName %}
+                            <input type="text" class="form-control is-invalid" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value="{{ object.ProductOrderMarkName }}" readonly>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value="{{ object.ProductOrderMarkName }}" readonly>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="id_ProductOrderSummary">摘要</label>
+                            {% if form.errors.ProductOrderSummary %}
+                            {% for error in form.errors.ProductOrderSummary %}
+                            <input type="text" class="form-control is-invalid" name="ProductOrderSummary" id="id_ProductOrderSummary" value="{{ object.ProductOrderSummary }}" readonly>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" name="ProductOrderSummary" id="id_ProductOrderSummary" value="{{ object.ProductOrderSummary }}" readonly>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="item2" role="tabpanel" aria-labelledby="item2-tab">
+                {% include "crud/productorder/Delete/productordertableDelete.html" %}
+            </div>
+            <div class="text-right">
+                <button type="button" id="modalOpen" class="btn btn-danger" data-toggle="modal" data-target="#modal">削除</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'myapp:productorderlist' %}'">キャンセル</button>  
+            </div>
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="label1">削除</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            削除してよろしいですか
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="delete" class="btn btn-danger">削除</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">中止</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% load static %}
+            <script>
+                var dlt = document.getElementById('delete');
+                var modal = document.getElementsByClassName('fds-uxhub-preview');
+            
+                dlt.addEventListener('click', function() {
+           
+                    document.delform.submit();
+                })
+            </script>
+        </div>
+    </form>
+</div>
+{% endblock %}

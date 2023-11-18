@@ -1,7 +1,7 @@
 var btn = document.getElementById('modalOpen');
 var cls = document.getElementById('modalClose');
 var dlt = document.getElementById('delete');
-var modal = document.getElementsByClassName('fds-uxhub-preview');
+var modal = document.getElementsByClassName('modal fade');
 
 btn.addEventListener('click', function() {
     for(i=0;i<modal.length;i++){
@@ -9,6 +9,7 @@ btn.addEventListener('click', function() {
         modal[i].style.visibility = 'visible';
     }
 })
+
 dlt.addEventListener('click', function() {
     // submit前にカンマをはずす
     var DetailUnitPrice = removeComma($(".DetailUnitPrice").val());

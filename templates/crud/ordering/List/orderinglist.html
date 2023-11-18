@@ -1,314 +1,139 @@
 {% extends 'crud/base.html' %}
 {% block content %}
-    <div class="fds-breadcrumb">
-        <div class="fds-breadcrumb__item">
-            <a href="{% url 'myapp:index' %}" class="fds-breadcrumb__link">HOME</a>
-        </div>
-        <div class="fds-breadcrumb__item">
-            <a href="#" class="fds-breadcrumb__link">受発注情報一覧</a>
-        </div>
-    </div>
-    <div class="fds-closure">
-        <div class="fds-clousure--top-section">
-            <div class="fds-clousure--top-section-text">
-            </div>
-            <button class="fds-btn fds-btn--primary fds-btn--small" style="width: 200px" onclick="location.href='{% url 'myapp:orderingnew' %}'">
-            <span class="fds-icon fds-icon--add-white"></span>
-            新規登録
-        </button>
-    </div>
-    <form method="post" id="form">
-		{% csrf_token %}
-		{% if messages %}
-		<div class="fds-text fds-form--helper-message fds-form--helper-massage-with-icon fds-form--helper-massage-with-icon__error" style="width:300px;">
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">受発注情報一覧</li>
+		</ol>
+	</nav>
+	<div class="form-group">
+		<form method="post" id="form">{% csrf_token %}
+			{% if messages %}
+			<div class="invalid-feedback">
 			{% for message in messages %}
-				  {{ message }}
-		  </div>
+				{{ message }}
+			</div>
 			{% endfor %}
-		{% endif %}
-		<div class="fds-clousure--bottom-section">
-			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
-				<div class="fds-form-input-message">
-					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="query" id="query" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.query.value }}"/>
-					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="key" id="key" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.key.value }}"/>
-					<label class="fds-label-input">キーワード</label>
-					<input type="search" name="word" id="word" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.word.value }}"/>
+			{% endif %}
+			<div class="form-row">
+				<div class="form-group col-sm-2">
+					<input type="search" name="query" id="query" class="form-control" placeholder="キーワード" value="{{ search.query.value }}"/>
 				</div>
-			</div>
-		</div>
-		<div class="fds-clousure--bottom-section">
-			<div class="fds-form-label fds-form-label--horizontal" style="width:100%;">
-				<div class="fds-form-input-message">
-					<label class="fds-label-input">依頼日(From)</label>
-					<input type="search" name="orderdateFrom" id="orderdateFrom" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.orderdateFrom.value }}"/>
-					<label class="fds-label-input">依頼日(To)</label>
-					<input type="search" name="orderdateTo" id="orderdateTo" class="fds-form-input fds-form-input--medium" style="width:200px;" value="{{ search.orderdateTo.value }}"/>
-					<span><button class="fds-btn fds-btn--primary fds-btn--small" style="width: 100px;" type="submit">
+				<div class="form-group col-sm-2">
+					<input type="search" name="key" id="key" class="form-control" placeholder="キーワード" value="{{ search.key.value }}"/>
+				</div>
+				<div class="form-group col-sm-2">
+					<input type="search" name="word" id="word" class="form-control" placeholder="キーワード" value="{{ search.word.value }}"/>
+				</div>
+				<div class="form-group col-sm-2">
+					<input type="search" name="orderdateFrom" id="orderdateFrom" class="form-control" placeholder="依頼日(From)" value="{{ search.orderdateFrom.value }}"/>
+				</div>
+				<div class="form-group col-sm-2">
+					<input type="search" name="orderdateTo" id="orderdateTo" class="form-control" placeholder="依頼日(To)" value="{{ search.orderdateTo.value }}"/>
+				</div>
+				<div class="text-right">
+					<label class="sr-only">検索</label>
+					<button class="btn btn-primary" type="submit">
 						検索
-					</button></span>
+					</button>
 				</div>
 			</div>
+		</form>
+		<div class="text-right">
+			<button class="btn btn-primary mb-2" onclick="location.href='{% url 'myapp:orderingnew' %}'">新規登録</button>
 		</div>
-    </form>
-	{% block extrajs %}
-	<!-- Datepicker 追加-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-	{% load static %}
-	<script>
-		// 依頼日(From)検索用
-		var orderdateFrom = document.getElementById('orderdateFrom');
-		var fp = flatpickr(orderdateFrom, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
-
-		// 依頼日(To)検索用
-		var orderdateTo = document.getElementById('orderdateTo');
-		var fp = flatpickr(orderdateTo, {
-			'locale': 'ja',
-			allowInput: true,
-			// onCloseは入力フォームが閉じられた時に発火する
-			onClose: (selectedDates, dateStr, instance) => {
-				if (selectedDates.length === 1) {
-					// プロパティにユーザーが選択した日付を代入
-					this.dateProps = selectedDates[0];
-				}
-			}
-		});
-	</script>
-	{% endblock %}  
-	<div class="fds-table-controller">
-        <div class="fds-page-table__title">
-        </div>
-    </div>
-  	<div class="fds-table-container">
-    	<div class="fds-table">
-      		<!-- <div class="fds-table-fixed-container"> -->
-			<div class="fds-table-container" style="height: 50%;">
-				<table class="fds-table__inner">
-          			<thead>
-            			<tr class="fds-table__tr">
-							<th class="fds-table__th fds-table__th--col-fixed" style="width: 60px;">
-                				<div class="fds-table__th-content fds-table__th-content--button">
-									<div class="fds-checkbox">
-										<label class="fds-checkbox__label">
-											<input type="checkbox" class="fds-checkbox__input">
-											<span class="fds-checkbox__text">
-											</span>
-										</label>
-									</div>
-				                </div>
-              				</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
-									<span class="fds-table__th-text">
-									区分
-									</span>
-									<span class="fds-icon fds-icon--filter fds-icon--small">
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 80px;">
-									<span class="fds-table__th-text">
-									区分
-									</span>
-									<span class="fds-icon fds-icon--filter fds-icon--small">
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
-									<span class="fds-table__th-text">
-									依頼日
-									</span>
-									<span class="fds-icon fds-icon--filter fds-icon--small">
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text" style="width: 120px;">
-									<span class="fds-table__th-text">
-										オーダーNO
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
-									<span class="fds-table__th-text">
-										手配先
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
-									<span class="fds-table__th-text">
-										商品名
-									</span>
-								</div>
-							</th>
-							<!-- <th class="fds-table__th">
-				                <div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 100px;">
-				                  <span class="fds-table__th-text">
-                    				番手
-				                  </span>
-                				</div>
-							</th> -->
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 120px;">
-									<span class="fds-table__th-text">
-										出荷先
-									</span>
-								</div>
-							</th>
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--text fds-table__th-text--filtered" style="width: 150px;">
-									<span class="fds-table__th-text">
-										依頼先
-									</span>
-								</div>
-							</th>
-							<!-- <th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 120px;">
-									<span class="fds-table__th-text">
-										マーク名
-									</span>
-								</div>
-							</th> -->
-							<th class="fds-table__th">
-								<div class="fds-table__th-content fds-table__th-content--icon" style="width: 125px;">
-									<span class="fds-table__th-text">
-										アクション
-									</span>
-								<div>
-							</th>
-			            </tr>
-					</thead>
-			        <tbody class="fds-table__tbody-hover-button">
-						{% for OrderTable in object_list %}
-						<tr class="fds-table__tr">
-							<td class="fds-table__td fds-table__td--col-fixed" style="width: 50px;">
-								<div class="fds-table__td-content">
-									<div class="fds-checkbox">
-										<label class="fds-checkbox__label">
-											{% if OrderTable.is_Ordered == 1 %}
-											<input type="checkbox" class="fds-checkbox__input" checked>
-											<span class="fds-checkbox__text">
-											</span>
-											{% else %}
-											<input type="checkbox" class="fds-checkbox__input">
-											<span class="fds-checkbox__text">
-											</span>
-											{% endif %}
-										</label>
-									</div>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 80px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.get_SampleDiv_display }}
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 80px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.get_OutputDiv_display }}
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.OrderingDate }}
-									</span>
-								</div>
-							</td>
-				            <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.SlipDiv }}
-									</span>
-									<span class="fds-table__td-text">
-										{{ OrderTable.OrderNumber }}
-									</span>
-									<span class="fds-table__td-text">
-										{{ OrderTable.StartItemNumber }}
-									</span>
-									<span class="fds-table__td-text">
-										{{ OrderTable.EndItemNumber }}
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 150px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.DestinationCode.CustomerOmitName }}
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 150px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.ProductName }}
-									</span>
-								</div>
-							</td>
-							<!-- <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 100px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.OrderingCount }}                 
-									</span>
-								</div>
-							</td> -->
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.ShippingCode.CustomerOmitName }}                 
-									</span>
-								</div>
-							</td>
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 150px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.RequestCode.CustomerOmitName }}
-									</span>
-								</div>
-							</td>
-							<!-- <td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 120px;">
-									<span class="fds-table__td-text">
-										{{ OrderTable.MarkName }}                 
-									</span>
-								</div>
-							</td> -->
-							<td class="fds-table__td">
-								<div class="fds-table__td-content" style="width: 125px;">
-									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 65px;" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>
-									<span><button type="button" class="fds-btn-origin fds-btn-origin--primary fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button></span>
-									<span><button type="button" class="fds-btn-origin fds-btn-origin--error fds-btn-origin--tiny" style="width: 50px;" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button></span>
-								</div>
-							</td>
-			            </tr>
-            			{% endfor %}
-					</tbody>
-				</table>
-			</div>
-		</div>
-  	</div>
-	<div class="fds-pagination">
-		{% include "crud/pagination.html" %}
 	</div>
-	{% endblock %}
+	<div class="table-responsive table-container">
+		<div class="table-sticky-container">
+			<table class="table table-sticky table-sm">
+				<thead class="thead-dark">
+					<tr>
+						<th class="fixed">
+							<div class="form-check">
+								<input class="form-check-input position-static" type="checkbox">
+							</div>
+						</th>
+						<th >区分</th>
+						<th>区分</th>
+						<th>依頼日</th>
+						<th>オーダーNO</th>
+						<th>手配先</th>
+						<th>商品名</th>
+						<th>出荷先</th>
+						<th>依頼先</th>
+						<th>アクション</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for OrderTable in object_list %}
+					<tr>
+						<td>
+							<div class="form-check">
+								{% if OrderTable.is_Ordered == 1 %}
+								<input class="form-check-input position-static" type="checkbox" checked>
+								{% else %}
+								<input class="form-check-input position-static" type="checkbox">
+								{% endif %}
+							</div>
+						</td>
+						<td>{{ OrderTable.get_SampleDiv_display }}</td>
+						<td>{{ OrderTable.get_OutputDiv_display }}</td>
+						<td>{{ OrderTable.OrderingDate }}</td>
+						<td><span>{{ OrderTable.SlipDiv }}</span><span>{{ OrderTable.OrderNumber }}</span></td>
+						<td>{{ OrderTable.DestinationCode.CustomerOmitName }}</td>
+						<td>{{ OrderTable.ProductName }}</td>
+						<td>{{ OrderTable.ShippingCode.CustomerOmitName }}</td>
+						<td>{{ OrderTable.RequestCode.CustomerOmitName }}</td>
+						<td>
+							<span><button type="button" class="btn btn-outline-success btn-sm" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>
+							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button></span>
+							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button></span>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{% block extrajs %}
+<!-- Datepicker 追加-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+{% load static %}
+<script>
+	// 依頼日(From)検索用
+	var orderdateFrom = document.getElementById('orderdateFrom');
+	var fp = flatpickr(orderdateFrom, {
+		'locale': 'ja',
+		allowInput: true,
+		// onCloseは入力フォームが閉じられた時に発火する
+		onClose: (selectedDates, dateStr, instance) => {
+			if (selectedDates.length === 1) {
+				// プロパティにユーザーが選択した日付を代入
+				this.dateProps = selectedDates[0];
+			}
+		}
+	});
+
+	// 依頼日(To)検索用
+	var orderdateTo = document.getElementById('orderdateTo');
+	var fp = flatpickr(orderdateTo, {
+		'locale': 'ja',
+		allowInput: true,
+		// onCloseは入力フォームが閉じられた時に発火する
+		onClose: (selectedDates, dateStr, instance) => {
+			if (selectedDates.length === 1) {
+				// プロパティにユーザーが選択した日付を代入
+				this.dateProps = selectedDates[0];
+			}
+		}
+	});
+</script>
+{% endblock %}  
+<!-- <div class="fds-pagination">
+	{% include "crud/pagination.html" %}
+</div> -->
+{% endblock %}

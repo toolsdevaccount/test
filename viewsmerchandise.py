@@ -90,7 +90,7 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
                                     'McdTreatmentCode': '1',
                                     'McdManagerCode': '1',
                                     'McdUnitCode':'1',
-                                    'McdUnitCode':'1',
+                                    'McdProcessCode':'1',
                                     })
         formset = MerchandiseFormset
         inlinescolor = MerchandiseColorFormset
