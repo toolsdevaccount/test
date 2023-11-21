@@ -29,23 +29,23 @@
 			<table class="table table-sticky table-sm">
 				<thead class="thead-dark">
 					<tr>
-						<th class="fixed">商品コード</th>
-						<th>扱区分</th>
-						<th>仮品番</th>
-						<th>本品番</th>
-						<th>担当者</th>
-						<th>アクション</th>
+						<th scope="col" class="text-center fixed">商品コード</th>
+						<th scope="col" class="text-center">扱区分</th>
+						<th scope="col" class="text-center">仮品番</th>
+						<th scope="col" class="text-center">本品番</th>
+						<th scope="col" class="text-center">担当者</th>
+						<th scope="col" class="text-center">アクション</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for merchandise in object_list %}
 					<tr>
-						<td>{{ merchandise.id }}</td>
+						<td class="text-right">{{ merchandise.id }}</td>
 						<td>{{ merchandise.get_McdTreatmentCode_display }}</td>
 						<td>{{ merchandise.McdTempPartNumber }}</td>
 						<td>{{ merchandise.McdPartNumber }}</td>
 						<td>{{ merchandise.McdManagerCode.first_name|add:merchandise.McdManagerCode.last_name }}</td>
-						<td>
+						<td class="text-center">
 							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:merchandiseedit' pk=merchandise.id %}'">詳細</button></span>
 							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:merchandisedelete' pk=merchandise.id %}'">削除</button></span>
 						</td>
@@ -54,6 +54,11 @@
 				</tbody>
 			</table>
 		</div>
+	</div>
+	<div class="col-6 offset-3 justify-content-center">
+		{% if is_paginated %}
+			{% include "crud/pagination.html" %}
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

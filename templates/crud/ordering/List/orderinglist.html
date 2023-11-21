@@ -49,26 +49,26 @@
 			<table class="table table-sticky table-sm">
 				<thead class="thead-dark">
 					<tr>
-						<th class="fixed">
+						<th scope="col" class="text-center fixed">
 							<div class="form-check">
 								<input class="form-check-input position-static" type="checkbox">
 							</div>
 						</th>
-						<th >区分</th>
-						<th>区分</th>
-						<th>依頼日</th>
-						<th>オーダーNO</th>
-						<th>手配先</th>
-						<th>商品名</th>
-						<th>出荷先</th>
-						<th>依頼先</th>
-						<th>アクション</th>
+						<th scope="col" class="text-center">区分</th>
+						<th scope="col" class="text-center">区分</th>
+						<th scope="col" class="text-center">依頼日</th>
+						<th scope="col" class="text-center">オーダーNO</th>
+						<th scope="col" class="text-center">手配先</th>
+						<th scope="col" class="text-center">商品名</th>
+						<th scope="col" class="text-center">出荷先</th>
+						<th scope="col" class="text-center">依頼先</th>
+						<th scope="col" class="text-center">アクション</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for OrderTable in object_list %}
 					<tr>
-						<td>
+						<td class="text-center">
 							<div class="form-check">
 								{% if OrderTable.is_Ordered == 1 %}
 								<input class="form-check-input position-static" type="checkbox" checked>
@@ -85,7 +85,7 @@
 						<td>{{ OrderTable.ProductName }}</td>
 						<td>{{ OrderTable.ShippingCode.CustomerOmitName }}</td>
 						<td>{{ OrderTable.RequestCode.CustomerOmitName }}</td>
-						<td>
+						<td class="text-center">
 							<span><button type="button" class="btn btn-outline-success btn-sm" onclick="location.href='{% url 'myapp:orderingpdf' pk=OrderTable.id %}'">発注書</button></span>
 							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:orderingedit' pk=OrderTable.id %}'">詳細</button></span>
 							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button></span>
@@ -96,7 +96,11 @@
 			</table>
 		</div>
 	</div>
+	{% if is_paginated %}
+		{% include "crud/pagination.html" %}
+	{% endif %}
 </div>
+{% endblock %}
 {% block extrajs %}
 <!-- Datepicker 追加-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -132,8 +136,4 @@
 		}
 	});
 </script>
-{% endblock %}  
-<!-- <div class="fds-pagination">
-	{% include "crud/pagination.html" %}
-</div> -->
 {% endblock %}

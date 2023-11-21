@@ -1,29 +1,31 @@
-    <div class="fds-pagination-string">
-    {# ページの表示 #}
-    {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ページ<br>   
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 py-2">
+            <nav aria-label="ページ送り">
+                <div class="text-center">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="#">{{ i }} <span class="sr-only">(現位置)</span></a>
+                                </li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
     </div>
-    {% if page_obj.has_previous %}      
-    <button class="fds-btn fds-btn--icon fds-btn--icon-center fds-btn--icon-only fds-btn--text fds-btn--round" onclick="location.href='?page={{ page_obj.previous_page_number }}'">
-        <span class="fds-icon fds-pagination__left-carret fds-pagination__carret"></span>
-    </button>
-    {% else %}
-    <button class="fds-btn fds-btn--icon fds-btn--icon-center fds-btn--icon-only fds-btn--text fds-btn--round">
-        <span class="fds-icon fds-pagination__left-carret fds-pagination__carret--disabled"></span>
-    </button>
-    {% endif %}
-    {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-        <div class="fds-pagination__number fds-pagination__number--active">{{ num }}</div>
-        {% else %}
-        <a class="fds-pagination__number fds-pagination__number--active" href="?page={{ num }}">{{ num }}</a>
-        {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-    <button class="fds-btn fds-btn--icon fds-btn--icon-center fds-btn--icon-only fds-btn--text fds-btn--round" onclick="location.href='?page={{ page_obj.next_page_number }}'">
-        <span class="fds-icon fds-pagination__right-carret"></span>    
-    </button>
-    {% else %}
-    <button class="fds-btn fds-btn--icon fds-btn--icon-center fds-btn--icon-only fds-btn--text fds-btn--round">
-        <span class="fds-icon fds-pagination__right-carret--disabled"></span>
-    </button>
-    {% endif %}
+</div>

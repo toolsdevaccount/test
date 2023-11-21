@@ -29,20 +29,20 @@
 			<table class="table table-sticky table-sm">
 				<thead class="thead-dark">
 					<tr>
-						<th class="fixed">コード</th>
-						<th>名称</th>
-						<th>郵便番号</th>
-						<th>都道府県</th>
-						<th>市区町村</th>
-						<th>番地</th>
-						<th>電話番号</th>
-						<th>アクション</th>
+						<th scope="col" class="text-center fixed">コード</th>
+						<th scope="col" class="text-center">名称</th>
+						<th scope="col" class="text-center">郵便番号</th>
+						<th scope="col" class="text-center">都道府県</th>
+						<th scope="col" class="text-center">市区町村</th>
+						<th scope="col" class="text-center">番地</th>
+						<th scope="col" class="text-center">電話番号</th>
+						<th scope="col" class="text-center">アクション</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for customersupplier in object_list %}
 					<tr>
-						<td>{{ customersupplier.CustomerCode }}</td>
+						<td class="text-right">{{ customersupplier.CustomerCode }}</td>
 						<td>{{ customersupplier.CustomerName }}</td>
 						<td>{{ customersupplier.PostCode }}</td>
 						<td>{{ customersupplier.PrefecturesCode.prefecturename }}</td>
@@ -60,8 +60,9 @@
 		</div>
 	</div>
 </div>
-	<!-- 
-	<div class="fds-pagination">
+<div class="col-6 offset-3 justify-content-center">
+	{% if is_paginated %}
 		{% include "crud/pagination.html" %}
-	</div> -->
+	{% endif %}
+</div>
 {% endblock %}

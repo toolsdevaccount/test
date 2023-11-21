@@ -35,7 +35,7 @@
 						{% for form in formset %}
 						<tr class="list_var">
 							<input type="hidden" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" name="OrderingTableId-0-id" id="id_OrderingTableId-0-id" value="{{ form.id.value }}" >
-							<td>
+							<td class="text-center">
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input" data-id-format="id_OrderingTableId-%d-DELETE" data-name-format="OrderingTableId-%d-DELETE" id="id_OrderingTableId-0-DELETE" name="OrderingTableId-0-DELETE">
 								</div>
@@ -185,7 +185,7 @@
 								<input type="text" class="form-control" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
 								name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" value="{{ form.DetailSummary.value | default_if_none:"" }}">                                   
 							</td>
-							<td>
+							<td class="text-center">
 								<div class="form-check">
 									{% if form.DeliveryManageDiv.value == 1 %}
 									<input type="checkbox" class="form-check-input DeliveryManageDiv" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
@@ -196,7 +196,7 @@
 									{% endif %}
 								</div>
 							</td>
-							<td>
+							<td class="text-center">
 								<div class="form-check">
 									{% if form.PrintDiv.value == 1 %}
 									<input type="checkbox" class="form-check-input PrintDiv" data-id-format="id_OrderingTableId-%d-PrintDiv" data-name-format="OrderingTableId-%d-PrintDiv" 
@@ -214,23 +214,23 @@
 						{% endfor %}
 					</tbody>
 				</table>
+				{% endblock %}
+				{% block extrajs %}
+				<!-- Datepicker 追加-->
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+				<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+				<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+				<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+				<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
+				{% load static %}
+				<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
+				<script src="{% static '\js\datalist.js' %}" charset="UTF-8"></script>
+				<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
+				<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
+				<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
+				<script src="{% static '\js\enter.js' %}" charset="UTF-8"></script>
+				{% endblock %}
 			</div>
 		</div>
 	</div>
 </div>
-{% endblock %}
-{% block extrajs %}
-<!-- Datepicker 追加-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery.add-input-area@4.11.0/dist/jquery.add-input-area.min.js" integrity="sha256-yOwGvcRp3I8/XWkeARhJkgdfLREQygbFA5W2bUpM2FY=" crossorigin="anonymous"></script>
-{% load static %}
-<script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
-<script src="{% static '\js\datalist.js' %}" charset="UTF-8"></script>
-<script src="{% static '\js\datepicker.js' %}" charset="UTF-8"></script>
-<script src="{% static '\js\inputarea.js' %}" charset="UTF-8"></script>
-<script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
-<script src="{% static '\js\enter.js' %}" charset="UTF-8"></script>
-{% endblock %}

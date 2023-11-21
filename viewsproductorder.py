@@ -61,7 +61,10 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         queryset = ProductOrder.objects.order_by('ProductOrderOrderingDate','Created_at').reverse()
         # 削除済以外で担当者=ログインユーザ、管理者の場合は全レコード表示（削除済以外）
         if self.request.user.is_superuser == 0:
-            queryset = queryset.filter(is_Deleted=0,ProductOrderManagerCode=self.request.user.id)
+            # ログインユーザのみ一覧表示
+            # queryset = queryset.filter(is_Deleted=0,ProductOrderManagerCode=self.request.user.id)
+            # 全ユーザ表示
+            queryset = queryset.filter(is_Deleted=0)
         else:
             queryset = queryset.filter(is_Deleted=0)
 

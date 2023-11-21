@@ -52,6 +52,7 @@
 									name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default_if_none:'' }}">                                          
 								{% endif %}	
 							</td>
+							<input type="hidden" data-id-format="id_McdColorId-%d-id" data-name-format="McdColorId-%d-id" name="McdColorId-0-id" id="id_McdColorId-0-id" value="{{ form.id.value }}">
 							<td>
 								<span class="delcolor"><button type="button" class="btn btn-outline-danger btn-sm">削除</button></span>
 							</td>
@@ -63,5 +64,4 @@
 		</div>
 	</div>
 </div>
-
 {% endblock %}

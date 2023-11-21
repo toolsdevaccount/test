@@ -15,22 +15,22 @@
 							<th scope="col" class="text-center" style="width:15%">ファイル</th>
 							<th scope="col" class="text-center" style="width:5%">クリア</th>
 							<th scope="col" class="text-center" style="width:15%">ファイル添付</th>
-							<th scope="col" class="text-center" style="width:5%">Dummy</th>
+							<th scope="col" class="text-center" style="width:5%"></th>
 							<th scope="col" class="text-center" style="width:2%">　</th>
 						</tr>
 					</thead>
 					<tbody id="listfile">
 						{% for form in inlinesfile %}
 						<tr class="filearea">
-							<td>
+							<td class="text-center">
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input" data-id-format="id_McdDtuploadid-%d-DELETE" data-name-format="McdDtuploadid-%d-DELETE" id="id_McdDtuploadid-0-DELETE" name="McdDtuploadid-0-DELETE">
 								</div>
 							</td>
-							<td>
-								<a href="/media/{{ form.uploadPath.value }}" target="_blank" rel="noopener noreferrer" style="color: black;">{{ form.uploadPath.value | default_if_none:'' }}</a>
+							<td class="text-center">
+								<a href="/media/{{ form.uploadPath.value }}" target="_blank" rel="noopener noreferrer">{{ form.uploadPath.value | default_if_none:'' }}</a>
 							</td>
-							<td>
+							<td class="text-center">
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input" data-id-format="McdDtuploadid-%d-uploadPath-clear_id" data-name-format="McdDtuploadid-%d-uploadPath-clear" name="McdDtuploadid-0-uploadPath-clear" id="McdDtuploadid-0-uploadPath-clear_id">
 								</div>
@@ -49,12 +49,16 @@
 							</td>
 							<td>
 								<div class="form-check">
-									<input type="checkbox" class="form-check-input" data-id-format="id_McdDtuploadid-%d-is_Deleted" data-name-format="McdDtuploadid-%d-is_Deleted" name="McdDtuploadid-0-is_Deleted" id="id_McdDtuploadid-0-is_Deleted">
+									<input type="checkbox" style="display:none" class="form-check-input" data-id-format="id_McdDtuploadid-%d-is_Deleted" data-name-format="McdDtuploadid-%d-is_Deleted" name="McdDtuploadid-0-is_Deleted" id="id_McdDtuploadid-0-is_Deleted">
 								</div>
 							</td>
 							<td>
 								<span class="delfile"><button type="button" class="btn btn-outline-danger btn-sm">削除</button></span>
 							</td>
+							{% if form.id.value %}
+							<input type="hidden" data-id-format="id_McdDtuploadid-%d-id" data-name-format="McdDtuploadid-%d-id" id="id_McdDtuploadid-0-id" name="McdDtuploadid-0-id"  value="{{ form.id.value }}">
+							<input type="hidden" data-id-format="id_McdDtuploadid-%d-McdDtuploadid" data-name-format="McdDtuploadid-%d-McdDtuploadid" name="McdDtuploadid-0-McdDtuploadid" id="id_McdDtuploadid-0-McdDtuploadid" value="{{ form.McdDtuploadid.value }}">
+							{% endif %}
 						</tr>
 						{% endfor %}
 					</tbody>

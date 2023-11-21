@@ -48,7 +48,10 @@ class MerchandiseListView(LoginRequiredMixin,ListView):
         queryset = Merchandise.objects.order_by('Created_at').reverse()
         # 削除済以外、管理者の場合は全レコード表示（削除済以外）
         if self.request.user.is_superuser == 0:
-            queryset = queryset.filter(is_Deleted=0,McdManagerCode=self.request.user.id)
+            # ログインユーザのみ一覧表示
+            #queryset = queryset.filter(is_Deleted=0,McdManagerCode=self.request.user.id)
+            # 全ユーザ表示
+            queryset = queryset.filter(is_Deleted=0)
         else:
             queryset = queryset.filter(is_Deleted=0)
 

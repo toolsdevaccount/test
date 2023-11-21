@@ -313,9 +313,9 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     # ロゴ追加
     img = './mysite/myapp/templates/image/image1.jpg'
     #img = './static/image/image1.jpg'
-    pdf_canvas.drawImage(img, 132*mm, 257*mm , 20*mm, 5*mm)
+    pdf_canvas.drawImage(img, 132*mm, 259*mm , 20*mm, 5*mm)
 
-    pdf_canvas.drawString(435, 728, dt[0][26] + dt[0][27])
+    pdf_canvas.drawString(435, 734, dt[0][26] + dt[0][27])
     pdf_canvas.drawString(375, 720, '〒 ' + dt[0][16])
     pdf_canvas.drawString(375, 710, dt[0][18] + dt[0][19] + dt[0][20] + dt[0][21])
     pdf_canvas.drawString(375, 700, 'TEL: ' + dt[0][22] + '　FAX: ' + dt[0][23])

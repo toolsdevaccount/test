@@ -82,28 +82,28 @@
 				<table class="table table-sticky table-sm">
 					<thead class="thead-dark">
 						<tr>
-							<th class="fixed">
+							<th scope="col" class="text-center fixed">
 								<div class="form-check">
 									<input class="form-check-input position-static" type="checkbox">
 								</div>
 							</th>
-							<th>発注番号</th>
-							<th>発注日</th>
-							<th>納期</th>
-							<th>オーダーNO</th>
-							<th>商品コード</th>
-							<th>本品番</th>
-							<th>仕入先名</th>
-							<th>アパレル名</th>
-							<th>マーク名</th>
-							<th>ブランド名</th>
-							<th>アクション</th>
+							<th scope="col" class="text-center">発注番号</th>
+							<th scope="col" class="text-center">発注日</th>
+							<th scope="col" class="text-center">納期</th>
+							<th scope="col" class="text-center">オーダーNO</th>
+							<th scope="col" class="text-center">商品コード</th>
+							<th scope="col" class="text-center">本品番</th>
+							<th scope="col" class="text-center">仕入先名</th>
+							<th scope="col" class="text-center">アパレル名</th>
+							<th scope="col" class="text-center">マーク名</th>
+							<th scope="col" class="text-center">ブランド名</th>
+							<th scope="col" class="text-center">アクション</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for ProductOrder in object_list %}
 						<tr>
-							<td>
+							<td class="text-center">
 								<div class="form-check">
 									{% if OrderTable.is_Ordered == 1 %}
 									<input class="form-check-input position-static" type="checkbox" checked>
@@ -112,17 +112,17 @@
 									{% endif %}
 								</div>
 							</td>
-							<td>{{ ProductOrder.id }}</td>
-							<td>{{ ProductOrder.ProductOrderOrderingDate }}</td>
-							<td>{{ ProductOrder.ProductOrderDeliveryDate }}</td>
+							<td class="text-right">{{ ProductOrder.id }}</td>
+							<td class="text-right">{{ ProductOrder.ProductOrderOrderingDate }}</td>
+							<td class="text-right">{{ ProductOrder.ProductOrderDeliveryDate }}</td>
 							<td><span>{{ ProductOrder.ProductOrderSlipDiv }}</span><span>{{ ProductOrder.ProductOrderOrderNumber }}</span></td>
-							<td>{{ ProductOrder.ProductOrderMerchandiseCode }}</td>
+							<td class="text-right">{{ ProductOrder.ProductOrderMerchandiseCode }}</td>
 							<td>{{ ProductOrder.ProductOrderPartNumber }}</td>
 							<td>{{ ProductOrder.ProductOrderSupplierCode.CustomerOmitName }}</td>
 							<td>{{ ProductOrder.ProductOrderApparelCode.CustomerOmitName }}</td>
 							<td>{{ ProductOrder.ProductOrderMarkName }}</td>
 							<td>{{ ProductOrder.ProductOrderBrandName }}</td>
-							<td>
+							<td class="text-center">
 								<span><button type="button" class="btn btn-outline-success btn-sm" onclick="location.href='{% url 'myapp:productorderpdf' pk=ProductOrder.id %}'">発注書</button></span>
 								<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:productorderedit' pk=ProductOrder.id %}'">詳細</button></span>
 								<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:productorderdelete' pk=ProductOrder.id %}'">削除</button></span>
@@ -133,6 +133,11 @@
 				</table>
 			</div>
 		</div>
+	</div>
+	<div class="col-6 offset-3 justify-content-center">
+		{% if is_paginated %}
+			{% include "crud/pagination.html" %}
+		{% endif %}
 	</div>
 </div>
 {% endblock %}
