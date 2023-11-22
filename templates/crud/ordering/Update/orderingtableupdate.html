@@ -94,12 +94,12 @@
 							{% if form.errors.DetailVolume %}
 							{% for error in form.errors.DetailVolume %}
 								<input type="tel" step="0.1" class="form-control is-invalid DetailVolume text-right" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume"
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value| intcomma }}">                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
 								<input type="tel" step="0.1" class="form-control DetailVolume text-right" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value| intcomma }}">                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
 							{% endif %}
 							</td>
 							<td>

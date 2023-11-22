@@ -1,4 +1,5 @@
 {% block content %}
+{% load humanize %}
 <div class="container-fluid">
 	<div class="form-group">
 		<div class="text-left">
@@ -86,12 +87,12 @@
 							{% if form.errors.DetailVolume %}
 							{% for error in form.errors.DetailVolume %}
 								<input type="tel" step="0.1" class="form-control is-invalid DetailVolume text-right" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume"
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value }}">                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
 								<input type="tel" step="0.1" class="form-control DetailVolume text-right" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="{{ form.DetailVolume.value | default:'0.0' }}" data-empty-val="false">                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="{{ form.DetailVolume.value | intcomma }}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
@@ -164,12 +165,12 @@
 							<td>
 							{% if form.errors.StainAnswerDeadline %}
 							{% for error in form.errors.StainAnswerDeadline %}
-								<input type="tel" class="form-control is-invalid StainAnswerDeadline" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
+								<input type="tel" class="form-control is-invalid StainAnswerDeadline" autocomplete="off" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
 								name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline" value="{{ form.StainAnswerDeadline.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control StainAnswerDeadline" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
+								<input type="tel" class="form-control StainAnswerDeadline" autocomplete="off" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
 								name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline">                                   
 							{% endif %}
 							</td>
