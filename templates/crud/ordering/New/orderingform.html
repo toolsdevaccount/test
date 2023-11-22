@@ -170,14 +170,14 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" value="A00000 未登録">
-                                <datalist id="Destination">
+                                    <input type="tel" class="form-control" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" value="A00000 未登録">
+                                    <datalist id="Destination">
                                 {% for data in DestinationCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
                                 {% endfor %}
-                                </datalist>
-                                <input type="hidden" name="DestinationCode" id="id_DestinationCode" value=1>
+                                    </datalist>
                                 {% endif %}
+                                <input type="hidden" name="DestinationCode" id="id_DestinationCode" value=1>
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_SupplierCode">仕入先</label>

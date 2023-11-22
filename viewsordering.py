@@ -69,7 +69,7 @@ class OrderingListView(LoginRequiredMixin,ListView):
             queryset = queryset.filter(
                  Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(ProductName__contains=query) | Q(MarkName__contains=query) |
                  Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query) | 
-                 Q(SampleDiv__icontains=query) | Q(RequestCode__CustomerOmitName__icontains=query) 
+                 Q(SampleDiv__icontains=query) | Q(RequestCode__CustomerOmitName__icontains=query)
             )
         if key:
             queryset = queryset.filter(
@@ -124,34 +124,19 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     formset_class = OrderingFormset
     template_name = "crud/ordering/new/orderingform.html"
    
-    def get(self, request):
-        form = OrderingForm(self.request.POST or None, 
-                            initial={'OutputDiv': '1',
-                                     'OrderingDate':date.today(),
-                                     'SampleDiv': '1',
-                                     })
-        formset = OrderingFormset
-        DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-        SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
-        ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-        CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
-        RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-        StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-        ApparelCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-        
-        context = {
-            'form': form,
-            'formset': formset,
-            'DestinationCode': DestinationCode,
-            'SupplierCode':SupplierCode,
-            'ShippingCode':ShippingCode,
-            'CustomerCode':CustomerCode,
-            'RequestCode':RequestCode,
-            'StainShippingCode':StainShippingCode,
-            'ApparelCode':ApparelCode,
-        }
-
-        return render(request, 'crud/ordering/new/orderingform.html', context)
+    # get_context_dataをオーバーライド
+    def get_context_data(self, **kwargs):
+        context = super(OrderingCreateView, self).get_context_data(**kwargs)
+        context.update(dict(formset=OrderingFormset(self.request.POST or None)),
+                DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
+                ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
+                RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                ApparelCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
+                )
+        return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
@@ -180,8 +165,18 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
         return redirect('myapp:orderinglist')
 
     # バリデーションエラー時
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+    def form_invalid(self,form):
+        context = self.get_context_data(form=form)
+        context["DestinationCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["SupplierCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
+        context["ShippingCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["CustomerCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
+        context["RequestCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["StainShippingCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["ApparelCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+
+        #return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        return self.render_to_response(context)
 
 # 受発注情報編集
 class orderingUpdateView(LoginRequiredMixin,UpdateView):
@@ -240,7 +235,18 @@ class orderingUpdateView(LoginRequiredMixin,UpdateView):
 
     # バリデーションエラー時
     def form_invalid(self,form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
+        context = self.get_context_data(form=form)
+        #context["formset"] = dict(formset=OrderingFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0)))
+        context["DestinationCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["SupplierCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
+        context["ShippingCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["CustomerCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
+        context["RequestCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["StainShippingCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["ApparelCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+
+        return self.render_to_response(context)
+
 
 # 受発注情報削除
 class orderingDeleteView(LoginRequiredMixin,UpdateView):

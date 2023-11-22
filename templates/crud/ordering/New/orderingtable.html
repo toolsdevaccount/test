@@ -14,7 +14,7 @@
 							<th scope="col" class="text-center" style="width: 5%">項番</th>
 							<th scope="col" class="text-center" style="width: 5%">色番</th>
 							<th scope="col" class="text-center" style="width: 8%">カラー</th>
-							<th scope="col" class="text-center" style="width: 2%">仕立</th>
+							<th scope="col" class="text-center" style="width: 4%">仕立</th>
 							<th scope="col" class="text-center" style="width: 5%">数量</th>
 							<th scope="col" class="text-center" style="width: 5%">単位</th>
 							<th scope="col" class="text-center" style="width: 5%">仕入単価</th>
@@ -37,12 +37,12 @@
 								{% if form.errors.DetailItemNumber %}
 								{% for error in form.errors.DetailItemNumber %}
 									<input type="tel" class="form-control is-invalid DetailItemNumber" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-									name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="0001" onchange="ItemNumber(this);">
+									name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value | default:'0001' }}" onchange="ItemNumber(this);">
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 									<input type="tel" class="form-control DetailItemNumber" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-									name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="0001" onchange="ItemNumber(this);">
+									name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value | default:'0001' }}" onchange="ItemNumber(this);">
 								{% endif %}
 								</div>
 							</td>
@@ -91,7 +91,7 @@
 							{% endfor %}
 							{% else %}
 								<input type="tel" step="0.1" class="form-control DetailVolume text-right" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="0.0" data-empty-val="false">                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="{{ form.DetailVolume.value | default:'0.0' }}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
@@ -110,7 +110,7 @@
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailUnitPrice text-right" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" value="0" data-empty-val="false">                                   
+								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" value="{{ form.DetailUnitPrice.value | default:'0'}}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
@@ -122,7 +122,7 @@
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailPrice text-right" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" value="0" data-empty-val="false">
+								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" value="{{ form.DetailPrice.value | default:'0' }}" data-empty-val="false">
 							{% endif %}
 							</td>
 							<td>
@@ -134,7 +134,7 @@
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailOverPrice text-right" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="0" data-empty-val="false">
+								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="{{ form.DetailOverPrice.value | default:'0' }}" data-empty-val="false">
 							{% endif %}
 							</td>
 							<td>
@@ -146,18 +146,18 @@
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailSellPrice text-right" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="0" data-empty-val="false">                                   
+								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="{{ form.DetailSellPrice.value | default:'0' }}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.SpecifyDeliveryDate %}
 							{% for error in form.errors.SpecifyDeliveryDate %}
-								<input type="tel" class="form-control is-invalid SpecifyDeliveryDate" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
-								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate"  value="{{ form.SpecifyDeliveryDate.value }}">                                   
+								<input type="tel" class="form-control is-invalid SpecifyDeliveryDate" autocomplete="off" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
+								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value="{{ form.SpecifyDeliveryDate.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control SpecifyDeliveryDate" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
+								<input type="tel" class="form-control SpecifyDeliveryDate" autocomplete="off" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
 								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate">                                   
 							{% endif %}
 							</td>
@@ -175,7 +175,7 @@
 							</td>
 							<td>
 								<input type="text" class="form-control" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
-								name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" value="{{ form.DetailSummary.value | default:'' }}">                                   
+								name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" value="{{ form.DetailSummary.value | default_if_none:"" }}">                                   
 							</td>
 							<td>
 								<div class="form-check">
