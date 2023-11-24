@@ -27,12 +27,12 @@
 								<div id="div" class="fds-table__td-content">
 								{% if form.errors.McdDtProductName %}
 								{% for error in form.errors.McdDtProductName %}
-									<input type="tel" class="form-control is-invalid McdDtProductName" data-id-format="id_McdDtid-%d-McdDtProductName" data-name-format="McdDtid-%d-McdDtProductName"
+									<input type="tel" class="form-control is-invalid McdDtProductName" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtProductName" data-name-format="McdDtid-%d-McdDtProductName"
 									name="McdDtid-0-McdDtProductName" id="id_McdDtid-0-McdDtProductName" value="{{ form.McdDtProductName.value | default_if_none:'' }}">
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
-									<input type="tel" class="form-control McdDtProductName" data-id-format="id_McdDtid-%d-McdDtProductName" data-name-format="McdDtid-%d-McdDtProductName"
+									<input type="tel" class="form-control McdDtProductName" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtProductName" data-name-format="McdDtid-%d-McdDtProductName"
 									name="McdDtid-0-McdDtProductName" id="id_McdDtid-0-McdDtProductName" value="{{ form.McdDtProductName.value | default_if_none:'' }}">
 								{% endif %}
 								</div>
@@ -40,36 +40,36 @@
 							<td>
 							{% if form.errors.McdDtOrderingCount %}
 							{% for error in form.errors.McdDtOrderingCount %}
-								<input type="text" class="form-control is-invalid" data-id-format="id_McdDtid-%d-McdDtOrderingCount" data-name-format="McdDtid-%d-McdDtOrderingCount"
+								<input type="text" class="form-control is-invalid" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtOrderingCount" data-name-format="McdDtid-%d-McdDtOrderingCount"
 								name="McdDtid-0-McdDtOrderingCount" id="id_McdDtid-0-McdDtOrderingCount" value="{{ form.McdDtOrderingCount.value | default_if_none:'' }}">                                          
 								<div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="text" class="form-control" data-id-format="id_McdDtid-%d-McdDtOrderingCount" data-name-format="McdDtid-%d-McdDtOrderingCount"
+								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtOrderingCount" data-name-format="McdDtid-%d-McdDtOrderingCount"
 								name="McdDtid-0-McdDtOrderingCount" id="id_McdDtid-0-McdDtOrderingCount" value="{{ form.McdDtOrderingCount.value | default_if_none:'' }}">                                          
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.McdDtStainMixRatio %}
 							{% for error in form.errors.McdDtStainMixRatio %}
-								<input type="text" class="form-control is-invalid" data-id-format="id_McdDtid-%d-McdDtStainMixRatio" data-name-format="McdDtid-%d-McdDtStainMixRatio" 
+								<input type="text" class="form-control is-invalid" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtStainMixRatio" data-name-format="McdDtid-%d-McdDtStainMixRatio" 
 								name="McdDtid-0-McdDtStainMixRatio" id="id_McdDtid-0-McdDtStainMixRatio" value="{{ form.McdDtStainMixRatio.value | default_if_none:'' }}">                                   
 								<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
-								<input type="text" class="form-control" data-id-format="id_McdDtid-%d-McdDtStainMixRatio" data-name-format="McdDtid-%d-McdDtStainMixRatio" 
+								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtStainMixRatio" data-name-format="McdDtid-%d-McdDtStainMixRatio" 
 								name="McdDtid-0-McdDtStainMixRatio" id="id_McdDtid-0-McdDtStainMixRatio" value="{{ form.McdDtStainMixRatio.value | default_if_none:'' }}">                                   
 								{% endif %}
 							</td>
 							<td>
 								{% if form.errors.McdDtlPrice %}
 								{% for error in form.errors.McdDtlPrice %}
-									<input type="text" class="form-control is-invalid McdDtlPrice" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
+									<input type="text" class="form-control is-invalid McdDtlPrice" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
 									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" style="text-align: right;" data-empty-val="false" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value }}">                                   
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
-									<input type="text" class="form-control McdDtlPrice" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
+									<input type="text" class="form-control McdDtlPrice" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
 									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" data-empty-val="false"  style="text-align: right;" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value }}">                                   
 								{% endif %}
 							</td>

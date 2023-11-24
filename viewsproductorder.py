@@ -73,7 +73,8 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
                  Q(ProductOrderSlipDiv__contains=query) | Q(ProductOrderOrderNumber__contains=query) | Q(ProductOrderBrandName__contains=query) | 
                  Q(ProductOrderDestinationCode__CustomerOmitName__icontains=query) | Q(ProductOrderShippingCode__CustomerOmitName__icontains=query) | 
                  Q(ProductOrderSupplierCode__CustomerOmitName__icontains=query) | Q(ProductOrderApparelCode__CustomerOmitName__icontains=query) |
-                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=query) | Q(ProductOrderMarkName__contains=query) | Q(ProductOrderBrandName__contains=query) 
+                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=query) | Q(ProductOrderMarkName__contains=query) | 
+                 Q(ProductOrderBrandName__contains=query) | Q(ProductOrderManagerCode__first_name__icontains=query)
             )
 
         if key:
@@ -81,7 +82,8 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
                  Q(ProductOrderSlipDiv__contains=key) | Q(ProductOrderOrderNumber__contains=key) | Q(ProductOrderBrandName__contains=key) | 
                  Q(ProductOrderDestinationCode__CustomerOmitName__icontains=key) | Q(ProductOrderShippingCode__CustomerOmitName__icontains=key) |
                  Q(ProductOrderSupplierCode__CustomerOmitName__icontains=key) | Q(ProductOrderApparelCode__CustomerOmitName__icontains=key) |
-                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=key) | Q(ProductOrderMarkName__contains=key) | Q(ProductOrderBrandName__contains=key) 
+                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=key) | Q(ProductOrderMarkName__contains=key) | 
+                 Q(ProductOrderBrandName__contains=key) | Q(ProductOrderManagerCode__first_name__icontains=key)
             )
 
         if word:
@@ -89,7 +91,8 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
                  Q(ProductOrderSlipDiv__contains=word) | Q(ProductOrderOrderNumber__contains=word) | Q(ProductOrderBrandName__contains=word) | 
                  Q(ProductOrderDestinationCode__CustomerOmitName__icontains=word) | Q(ProductOrderShippingCode__CustomerOmitName__icontains=word) |
                  Q(ProductOrderSupplierCode__CustomerOmitName__icontains=word) | Q(ProductOrderApparelCode__CustomerOmitName__icontains=word) |
-                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=word) | Q(ProductOrderMarkName__contains=word) | Q(ProductOrderBrandName__contains=word) 
+                 Q(ProductOrderApparelCode__CustomerOmitName__icontains=word) | Q(ProductOrderMarkName__contains=word) | 
+                 Q(ProductOrderBrandName__contains=word) | Q(ProductOrderManagerCode__first_name__icontains=word) 
             )
 
         if productorderdateFrom and productorderdateTo:

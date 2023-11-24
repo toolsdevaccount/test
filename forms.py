@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from .models import prefecture, CustomerSupplier, OrderingTable, OrderingDetail
+from .models import prefecture, CustomerSupplier, OrderingTable, OrderingDetail, DivSampleClass, DivOutputClass
 
 from django.forms import ModelChoiceField
 # バリデーション
@@ -23,6 +23,14 @@ class ManagerChoiceField(ModelChoiceField):
 class PrefectureChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
         return  obj.prefecturename
+
+class DivSampleClassChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return  obj.divname
+
+class DivOutputClassChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return  obj.outputdivname
 
 class CustomerSupplierForm(forms.ModelForm):
     ManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
@@ -82,6 +90,9 @@ class CustomerSupplierChoiceField(ModelChoiceField):
 
 class OrderingForm(forms.ModelForm):
     ManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
+    SampleDiv = DivSampleClassChoiceField(queryset=DivSampleClass.objects.all(),empty_label='')
+    OutputDiv = DivOutputClassChoiceField(queryset=DivOutputClass.objects.all(),empty_label='')
+
     class Meta:
         model = OrderingTable
         fields = ('SlipDiv','OrderNumber','OrderingDate','StainShippingDate','ProductName','OrderingCount','StainPartNumber',

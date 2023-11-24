@@ -12,7 +12,7 @@
 			<div class="form-row align-items-center">
 				<div class="col-auto">
 					<label class="sr-only" for="text5a">キーワード</label>
-					<input type="search" name="query" class="form-control mb-2" value="{{ cmsearch.query.value }}" placeholder="キーワード"/>
+					<input type="search" name="query" class="form-control mb-2" autocomplete="new-password" value="{{ cmsearch.query.value }}" placeholder="キーワード"/>
 				</div>
 				<div class="col-auto">
 					<button class="btn btn-primary mb-2" type="submit">
@@ -36,6 +36,7 @@
 						<th scope="col" class="text-center">市区町村</th>
 						<th scope="col" class="text-center">番地</th>
 						<th scope="col" class="text-center">電話番号</th>
+						<th scope="col" class="text-center">担当者名</th>
 						<th scope="col" class="text-center">アクション</th>
 					</tr>
 				</thead>
@@ -49,6 +50,7 @@
 						<td>{{ customersupplier.Municipalities }}</td>
 						<td>{{ customersupplier.Address }}</td>
 						<td>{{ customersupplier.PhoneNumber }}</td>
+						<td>{{ customersupplier.ManagerCode.first_name|add:customersupplier.ManagerCode.last_name }}</td>
 						<td>
 							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button></span>
 							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>

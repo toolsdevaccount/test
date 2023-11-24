@@ -133,7 +133,7 @@ def connect(pk):
         '   ,f.PhoneNumber '
         '   ,f.FaxNumber '
         '   ,a.StainMixRatio '
-        '   ,a.OutputDiv'
+        '   ,a.OutputDiv_id'
         '   ,IFNULL(DATE_FORMAT(a.StainShippingDate,"%Y年%m月%d日"),"") '
         '   ,IFNULL(DATE_FORMAT(b.SpecifyDeliveryDate,"%m/%d"),"") '
         '   ,j.CustomerName '

@@ -46,7 +46,7 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
         if query:
             queryset = queryset.filter(
                  Q(CustomerName__contains=query) | Q(Municipalities__contains=query) | Q(CustomerCode__contains=query) | Q(CustomerNameKana__contains=query) |
-                 Q(Address__contains=query) | Q(PhoneNumber__contains=query) | Q(PrefecturesCode__prefecturename__icontains=query)
+                 Q(Address__contains=query) | Q(PhoneNumber__contains=query) | Q(PrefecturesCode__prefecturename__icontains=query)| Q(ManagerCode__first_name__icontains=query)
             )
 
         return queryset

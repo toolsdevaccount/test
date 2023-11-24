@@ -22,6 +22,28 @@ class prefecture(models.Model):
     def get_absolute_url(self):
         return reverse('crud/customersupplier/customersupplierlist.html')
 
+#2023-11-24 追加（リストから検索するため）
+class DivSampleClass(models.Model):
+    divcode = models.CharField(max_length=2,null=False,blank=True,verbose_name="区分コード")
+    divname = models.CharField(max_length=255,null=False,blank=True,verbose_name="名称")
+
+    def __str__(self):
+        return str(self.divcode)
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/ordering/list/corderinglist.html')
+
+#2023-11-24 追加（リストから検索するため）
+class DivOutputClass(models.Model):
+    outputdivcode = models.CharField(max_length=2,null=False,blank=True,verbose_name="出力区分コード")
+    outputdivname = models.CharField(max_length=255,null=False,blank=True,verbose_name="出力区分名称")
+
+    def __str__(self):
+        return str(self.outputdivcode)
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/ordering/list/corderinglist.html')
+
 class CustomerSupplier(models.Model):
     Closing = [
             (0, ""),
@@ -70,7 +92,6 @@ class CustomerSupplier(models.Model):
     CustomerNameKana = models.CharField(max_length=30,null=False,blank=True,verbose_name="カナ")
     Department = models.CharField(max_length=20,null=False,blank=True,default="",verbose_name="部署名")
     PostCode = models.CharField(max_length=8,null=False,blank=True,verbose_name="郵便番号")
-    #PrefecturesCode = models.IntegerField(default=0,null=False,choices=prefecture,verbose_name="都道府県コード")
     PrefecturesCode = models.ForeignKey(prefecture,on_delete=models.PROTECT,related_name='PrefecturesCode',null=False,default=1,verbose_name="都道府県コード")
     Municipalities = models.CharField(max_length=24,null=False,blank=True,verbose_name="市区町村")
     Address = models.CharField(max_length=24,null=False,blank=True,verbose_name="番地")
@@ -103,23 +124,11 @@ class CustomerSupplier(models.Model):
         return reverse('crud/customersupplier/customersupplierlist.html')
 
 class OrderingTable(models.Model):
-    Output = [
-            (0, ""),
-            (1, "通常"),
-            (2, "染色"),
-            (3, "ビーカー染色"),
-            (9, "その他"),
-        ]
     Title = [
             (0, ""),
             (1, "様"),
             (2, "御中"),
     ]
-    Sample = [
-            (0, ""),
-            (1, "量産"),
-            (2, "サンプル"),
-        ]
 
     SlipDiv = models.CharField(max_length=1,null=False,blank=False,verbose_name="伝票区分")
     OrderNumber = models.CharField(max_length=7,null=False,blank=False,default=0,verbose_name="オーダーNO")
@@ -135,16 +144,15 @@ class OrderingTable(models.Model):
     CustomeCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='CustomeCode',verbose_name="得意先コード")
     RequestCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='RequestCode',verbose_name="依頼先コード")
     StainShippingCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='StainShippingCode',verbose_name="原糸メーカーコード")
-    #2023-11-01追加
     ApparelCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ApparelCode',verbose_name="アパレルコード",default=1)
     ManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
-
     SupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
     TitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Title,verbose_name="敬称区分")
     StockDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="在庫済区分")
     MarkName = models.CharField(max_length=20,null=False,blank=True,verbose_name="マーク名")
-    OutputDiv = models.IntegerField(null=False,blank=True,default=0,choices=Output,verbose_name="出力区分")
-    SampleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Sample,verbose_name="サンプル量産区分")
+    #OutputDiv = models.IntegerField(null=False,blank=True,default=0,choices=Output,verbose_name="出力区分")
+    OutputDiv = models.ForeignKey(DivOutputClass,on_delete=models.PROTECT,related_name='OutputDivCode',null=False,default=0,verbose_name="出力区分")
+    SampleDiv = models.ForeignKey(DivSampleClass,on_delete=models.PROTECT,related_name='DivCode_div',null=False,default=0,verbose_name="サンプル量産区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")

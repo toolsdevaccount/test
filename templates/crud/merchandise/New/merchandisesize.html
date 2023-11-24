@@ -23,12 +23,12 @@
 								<div id="div">
 								{% if form.errors.McdSize %}
 								{% for error in form.errors.McdSize %}
-									<input type="tel" class="form-control is-invalid McdSize" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"
+									<input type="tel" class="form-control is-invalid McdSize" autocomplete="new-password" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"
 									name="McdSizeId-0-McdSize" id="id_McdSizeId-0-McdSize" value="{{ form.McdSize.value | default:'' }}">
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
-									<input type="tel" class="form-control McdSize" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"
+									<input type="tel" class="form-control McdSize" autocomplete="new-password" data-id-format="id_McdSizeId-%d-McdSize" data-name-format="McdSizeId-%d-McdSize"
 									name="McdSizeId-0-McdSize" id="id_McdSizeId-0-McdSize" value="{{ form.McdSize.value | default:'' }}">
 								{% endif %}	
 								</div>

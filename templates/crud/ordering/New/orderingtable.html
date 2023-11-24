@@ -37,12 +37,12 @@
 								<div id="div" class="fds-table__td-content">
 								{% if form.errors.DetailItemNumber %}
 								{% for error in form.errors.DetailItemNumber %}
-									<input type="tel" class="form-control is-invalid DetailItemNumber" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+									<input type="tel" class="form-control is-invalid DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
 									name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value | default:'0001' }}" onchange="ItemNumber(this);">
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
-									<input type="tel" class="form-control DetailItemNumber" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+									<input type="tel" class="form-control DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
 									name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value | default:'0001' }}" onchange="ItemNumber(this);">
 								{% endif %}
 								</div>
@@ -50,48 +50,48 @@
 							<td>
 							{% if form.errors.DetailColorNumber %}
 							{% for error in form.errors.DetailColorNumber %}
-								<input type="text" class="form-control is-invalid" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
+								<input type="text" class="form-control is-invalid" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
 								name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value="{{ form.DetailColorNumber.value | default:'' }}">                                          
 								<div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="text" class="form-control" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
+								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
 								name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value="{{ form.DetailColorNumber.value | default:'' }}">
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailColor %}
 							{% for error in form.errors.DetailColor %}
-								<input type="text" class="form-control is-invalid" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
+								<input type="text" class="form-control is-invalid" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
 								name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value="{{ form.DetailColor.value | default:'' }}">                                   
 								<div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="text" class="form-control" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
+								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
 								name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value="{{ form.DetailColor.value | default:'' }}">                                   
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailTailoring %}
 							{% for error in form.errors.DetailTailoring %}
-								<input type="text" class="form-control is-invalid" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
+								<input type="text" class="form-control is-invalid" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
 								name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value="{{ form.DetailTailoring.value | default:'' }}">                                   
 								<div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="text" class="form-control" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
+								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
 								name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value="{{ form.DetailTailoring.value | default:'' }}">                                   
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailVolume %}
 							{% for error in form.errors.DetailVolume %}
-								<input type="tel" step="0.1" class="form-control is-invalid DetailVolume text-right" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume"
+								<input type="tel" step="0.1" class="form-control is-invalid DetailVolume text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume"
 								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" step="0.1" class="form-control DetailVolume text-right" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
+								<input type="tel" step="0.1" class="form-control DetailVolume text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
 								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="{{ form.DetailVolume.value | intcomma }}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
@@ -105,82 +105,82 @@
 							<td>
 							{% if form.errors.DetailUnitPrice %}
 							{% for error in form.errors.DetailUnitPrice %}
-								<input type="tel" class="form-control is-invalid DetailUnitPrice text-right" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+								<input type="tel" class="form-control is-invalid DetailUnitPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
 								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" data-empty-val="false" value="{{ form.DetailUnitPrice.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control DetailUnitPrice text-right" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
+								<input type="tel" class="form-control DetailUnitPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
 								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" value="{{ form.DetailUnitPrice.value | default:'0'}}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailPrice %}
 							{% for error in form.errors.DetailPrice %}
-								<input type="tel" class="form-control is-invalid DetailPrice text-right" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+								<input type="tel" class="form-control is-invalid DetailPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
 								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" data-empty-val="false" value="{{ form.DetailPrice.value }}">
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control DetailPrice text-right" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
+								<input type="tel" class="form-control DetailPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
 								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" value="{{ form.DetailPrice.value | default:'0' }}" data-empty-val="false">
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailOverPrice %}
 							{% for error in form.errors.DetailOverPrice %}
-								<input type="tel" class="form-control is-invalid DetailOverPrice text-right" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+								<input type="tel" class="form-control is-invalid DetailOverPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
 								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" data-empty-val="false" value="{{ form.DetailOverPrice.value }}">
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control DetailOverPrice text-right" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
+								<input type="tel" class="form-control DetailOverPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
 								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="{{ form.DetailOverPrice.value | default:'0' }}" data-empty-val="false">
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailOverPrice %}
 							{% for error in form.errors.DetailOverPrice %}
-								<input type="tel" class="form-control is-invalid DetailSellPrice text-right" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+								<input type="tel" class="form-control is-invalid DetailSellPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
 								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" data-empty-val="false" value="{{ form.DetailSellPrice.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control DetailSellPrice text-right" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
+								<input type="tel" class="form-control DetailSellPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
 								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="{{ form.DetailSellPrice.value | default:'0' }}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.SpecifyDeliveryDate %}
 							{% for error in form.errors.SpecifyDeliveryDate %}
-								<input type="tel" class="form-control is-invalid SpecifyDeliveryDate" autocomplete="off" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
+								<input type="tel" class="form-control is-invalid SpecifyDeliveryDate" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
 								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value="{{ form.SpecifyDeliveryDate.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control SpecifyDeliveryDate" autocomplete="off" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
+								<input type="tel" class="form-control SpecifyDeliveryDate" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
 								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate">                                   
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.StainAnswerDeadline %}
 							{% for error in form.errors.StainAnswerDeadline %}
-								<input type="tel" class="form-control is-invalid StainAnswerDeadline" autocomplete="off" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
+								<input type="tel" class="form-control is-invalid StainAnswerDeadline" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
 								name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline" value="{{ form.StainAnswerDeadline.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
-								<input type="tel" class="form-control StainAnswerDeadline" autocomplete="off" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
+								<input type="tel" class="form-control StainAnswerDeadline" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
 								name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline">                                   
 							{% endif %}
 							</td>
 							<td>
-								<input type="text" class="form-control" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
+								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
 								name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" value="{{ form.DetailSummary.value | default_if_none:"" }}">                                   
 							</td>
 							<td>
 								<div class="form-check">
-									<input type="checkbox" class="form-check-input DeliveryManageDiv " data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
+									<input type="checkbox" class="form-check-input DeliveryManageDiv" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
 									name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" >
 								</div>
 							</td>

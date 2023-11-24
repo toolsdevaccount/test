@@ -30,12 +30,12 @@
 								<div id="div" class="fds-table__td-content">
 									{% if form.errors.McdColorNumber %}
 									{% for error in form.errors.McdColorNumber %}
-										<input type="text" class="form-control is-invalid McdColorNumber" data-id-format="id_McdColorId-%d-McdColorNumber" data-name-format="McdColorId-%d-McdColorNumber"
+										<input type="text" class="form-control is-invalid McdColorNumber" autocomplete="new-password" data-id-format="id_McdColorId-%d-McdColorNumber" data-name-format="McdColorId-%d-McdColorNumber"
 										name="McdColorId-0-McdColorNumber" id="id_McdColorId-0-McdColorNumber" value="{{ form.McdColorNumber.value | default_if_none:'' }}">
 										<div class="invalid-feedback">{{ error }}</div>
 									{% endfor %}
 									{% else %}
-										<input type="text" class="form-control McdColorNumber" data-id-format="id_McdColorId-%d-McdColorNumber" data-name-format="McdColorId-%d-McdColorNumber"
+										<input type="text" class="form-control McdColorNumber" autocomplete="new-password" data-id-format="id_McdColorId-%d-McdColorNumber" data-name-format="McdColorId-%d-McdColorNumber"
 										name="McdColorId-0-McdColorNumber" id="id_McdColorId-0-McdColorNumber" value="{{ form.McdColorNumber.value | default_if_none:'' }}">
 									{% endif %}	
 								</div>
@@ -43,12 +43,12 @@
 							<td>
 								{% if form.errors.McdColor %}
 								{% for error in form.errors.McdColor %}
-									<input type="text" class="form-control is-invalid McdColor" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
+									<input type="text" class="form-control is-invalid McdColor" autocomplete="new-password" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
 									name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default_if_none:'' }}">                                          
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
-									<input type="text" class="form-control McdColor" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
+									<input type="text" class="form-control McdColor" autocomplete="new-password" data-id-format="id_McdColorId-%d-McdColor" data-name-format="McdColorId-%d-McdColor"
 									name="McdColorId-0-McdColor" id="id_McdColorId-0-McdColor" value="{{ form.McdColor.value | default_if_none:'' }}">                                          
 								{% endif %}	
 							</td>

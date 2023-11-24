@@ -26,57 +26,57 @@
                                 <label for="id_CustomerCode">コード</label>
                                 {% if form.errors.CustomerCode %}
                                 {% for error in form.errors.CustomerCode %}
-                                <input type="text" class="form-control is-invalid" name="CustomerCode" id="id_CustomerCode" value="{{ object.CustomerCode }}" readonly>
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="CustomerCode" id="id_CustomerCode" value="{{ object.CustomerCode }}" readonly>
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="CustomerCode" id="id_CustomerCode" value="{{ object.CustomerCode }}" readonly>
+                                <input type="text" class="form-control" autocomplete="new-password" name="CustomerCode" id="id_CustomerCode" value="{{ object.CustomerCode }}" readonly>
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-6">
-                                <label for="id_CustomerName">名　称</label>
+                                <label for="id_CustomerName">名称</label>
                                 {% if form.errors.CustomerName %}
                                 {% for error in form.errors.CustomerName %}
-                                <input type="text" class="form-control is-invalid" name="CustomerName" id="id_CustomerName" value="{{ object.CustomerName }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="CustomerName" id="id_CustomerName" value="{{ object.CustomerName }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="CustomerName" id="id_CustomerName" value="{{ object.CustomerName }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="CustomerName" id="id_CustomerName" value="{{ object.CustomerName }}">
                                 {% endif %}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-sm-2">
-                                <label for="id_CustomerOmitName">略　名</label>
+                                <label for="id_CustomerOmitName">略名</label>
                                 {% if form.errors.CustomerOmitName %}
                                 {% for error in form.errors.CustomerOmitName %}
-                                <input type="text" class="form-control is-invalid" name="CustomerOmitName" id="id_CustomerOmitName" value="{{ object.CustomerOmitName }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="CustomerOmitName" id="id_CustomerOmitName" value="{{ object.CustomerOmitName }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="CustomerOmitName" id="id_CustomerOmitName" value="{{ object.CustomerOmitName }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="CustomerOmitName" id="id_CustomerOmitName" value="{{ object.CustomerOmitName }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="id_CustomerNameKana">カナ名</label>
                                 {% if form.errors.CustomerNameKana %}
                                 {% for error in form.errors.CustomerNameKana %}
-                                <input type="text" class="form-control is-invalid" name="CustomerNameKana" id="id_CustomerNameKana" value="{{ object.CustomerNameKana }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="CustomerNameKana" id="id_CustomerNameKana" value="{{ object.CustomerNameKana }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="CustomerNameKana" id="id_CustomerNameKana" value="{{ object.CustomerNameKana }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="CustomerNameKana" id="id_CustomerNameKana" value="{{ object.CustomerNameKana }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_Department">部署名</label>
                                 {% if form.errors.Department %}
                                 {% for error in form.errors.Department %}
-                                <input type="text" class="form-control is-invalid" name="Department" id="id_Department" value="{{ object.Department }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="Department" id="id_Department" value="{{ object.Department }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="Department" id="id_Department" value="{{ object.Department }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="Department" id="id_Department" value="{{ object.Department }}">
                                 {% endif %}
                             </div>
                         </div>
@@ -85,11 +85,11 @@
                                 <label for="id_PostCode">郵便番号</label>
                                 {% if form.errors.PostCode %}
                                 {% for error in form.errors.PostCode %}
-                                <input type="text" class="form-control is-invalid" name="PostCode" id="id_PostCode" value="{{ object.PostCode }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="PostCode" id="id_PostCode" value="{{ object.PostCode }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="PostCode" id="id_PostCode" value="{{ object.PostCode }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="PostCode" id="id_PostCode" value="{{ object.PostCode }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
@@ -117,33 +117,33 @@
                                 <label for="id_Municipalities">市区町村</label>
                                 {% if form.errors.Municipalities %}
                                 {% for error in form.errors.Municipalities %}
-                                <input type="text" class="form-control is-invalid" name="Municipalities" id="id_Municipalities" value="{{ object.Municipalities }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="Municipalities" id="id_Municipalities" value="{{ object.Municipalities }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="Municipalities" id="id_Municipalities" value="{{ object.Municipalities }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="Municipalities" id="id_Municipalities" value="{{ object.Municipalities }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="id_Address">番地</label>
                                 {% if form.errors.Address %}
                                 {% for error in form.errors.Address %}
-                                <input type="text" class="form-control is-invalid" name="Address" id="id_Address" value="{{ object.Address }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="Address" id="id_Address" value="{{ object.Address }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="Address" id="id_Address" value="{{ object.Address }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="Address" id="id_Address" value="{{ object.Address }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="id_BuildingName">建物名</label>
                                 {% if form.errors.BuildingName %}
                                 {% for error in form.errors.BuildingName %}
-                                <input type="text" class="form-control is-invalid" name="BuildingName" id="id_BuildingName" value="{{ object.BuildingName }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="BuildingName" id="id_BuildingName" value="{{ object.BuildingName }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="BuildingName" id="id_BuildingName" value="{{ object.BuildingName }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="BuildingName" id="id_BuildingName" value="{{ object.BuildingName }}">
                                 {% endif %}
                             </div>
                         </div>
@@ -152,22 +152,22 @@
                                 <label for="id_PhoneNumber">電話番号</label>
                                 {% if form.errors.PhoneNumber %}
                                 {% for error in form.errors.PhoneNumber %}
-                                <input type="text" class="form-control is-invalid" name="PhoneNumber" id="id_PhoneNumber" value="{{ object.PhoneNumber }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="PhoneNumber" id="id_PhoneNumber" value="{{ object.PhoneNumber }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="PhoneNumber" id="id_PhoneNumber" value="{{ object.PhoneNumber }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="PhoneNumber" id="id_PhoneNumber" value="{{ object.PhoneNumber }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_FaxNumber">FAX番号</label>
                                 {% if form.errors.FaxNumber %}
                                 {% for error in form.errors.FaxNumber %}
-                                <input type="text" class="form-control is-invalid" name="FaxNumber" id="id_FaxNumber" value="{{ object.FaxNumber }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="FaxNumber" id="id_FaxNumber" value="{{ object.FaxNumber }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="FaxNumber" id="id_FaxNumber" value="{{ object.FaxNumber }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="FaxNumber" id="id_FaxNumber" value="{{ object.FaxNumber }}">
                                 {% endif %}
                             </div>
                         </div>

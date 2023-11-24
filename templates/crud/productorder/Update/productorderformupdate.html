@@ -26,17 +26,17 @@
                             <div class="form-group row">
                                 <div class="col-sm-3">
                                     <label for="id_ProductOrderSlipDiv">伝票区分</label>
-                                    <input type="text" class="form-control" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" value="{{ object.ProductOrderSlipDiv }}" readonly>
+                                    <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" value="{{ object.ProductOrderSlipDiv }}" readonly>
                                 </div>
                                 <div class="col-sm-5">
                                     <label for="id_OrderNumber">オーダーNO</label>
                                     {% if form.errors.OrderNumber %}
                                     {% for error in form.errors.OrderNumber %}
-                                    <input type="text" class="form-control is-invalid" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);"  value="{{ object.ProductOrderOrderNumber }}" readonly>
+                                    <input type="text" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);"  value="{{ object.ProductOrderOrderNumber }}" readonly>
                                     <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                     {% else %}
-                                    <input type="text" class="form-control" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);"  value="{{ object.ProductOrderOrderNumber }}" readonly>
+                                    <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);"  value="{{ object.ProductOrderOrderNumber }}" readonly>
                                     {% endif %}
                                 </div>
                             </div>
@@ -46,11 +46,11 @@
                                 <label for="id_ProductOrderOrderingDate">発注日</label>
                                 {% if form.errors.ProductOrderOrderingDate %}
                                 {% for error in form.errors.ProductOrderOrderingDate %}
-                                <input type="tel" class="form-control is-invalid" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" value="{{ object.ProductOrderOrderingDate }}">
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" value="{{ object.ProductOrderOrderingDate }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" value="{{ object.ProductOrderOrderingDate }}">
+                                <input type="tel" class="form-control" autocomplete="new-password" name="ProductOrderOrderingDate" id="id_ProductOrderOrderingDate" value="{{ object.ProductOrderOrderingDate }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
@@ -78,33 +78,33 @@
                                 <label for="id_ProductOrderMerchandiseCode">商品コード</label>
                                 {% if form.errors.ProductOrderMerchandiseCode %}
                                 {% for error in form.errors.ProductOrderMerchandiseCode %}
-                                <input type="text" class="form-control is-invalid" maxlength="5" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
+                                <input type="text" class="form-control is-invalid" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" maxlength="5" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
+                                <input type="text" class="form-control" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_ProductOrderPartNumber">本品番</label>
                                 {% if form.errors.ProductOrderPartNumber %}
                                 {% for error in form.errors.ProductOrderPartNumber %}
-                                <input type="text" class="form-control is-invalid" maxlength="16" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value="{{ object.ProductOrderPartNumber }}" readonly>
+                                <input type="text" class="form-control is-invalid" maxlength="16" autocomplete="new-password" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value="{{ object.ProductOrderPartNumber }}" readonly>
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" maxlength="16" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value="{{ object.ProductOrderPartNumber }}" readonly>
+                                <input type="text" class="form-control" maxlength="16" autocomplete="new-password" name="ProductOrderPartNumber" id="id_ProductOrderPartNumber" value="{{ object.ProductOrderPartNumber }}" readonly>
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_ProductOrderDeliveryDate">納期</label>
                                 {% if form.errors.ProductOrderOrderingDate %}
                                 {% for error in form.errors.ProductOrderOrderingDate %}
-                                <input type="tel" class="form-control is-invalid" name="ProductOrderDeliveryDate" id="id_ProductOrderDeliveryDate" value="{{ object.ProductOrderDeliveryDate }}">
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderDeliveryDate" id="id_ProductOrderDeliveryDate" value="{{ object.ProductOrderDeliveryDate }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" name="ProductOrderDeliveryDate" id="id_ProductOrderDeliveryDate" value="{{ object.ProductOrderDeliveryDate }}">
+                                <input type="tel" class="form-control" autocomplete="new-password" name="ProductOrderDeliveryDate" id="id_ProductOrderDeliveryDate" value="{{ object.ProductOrderDeliveryDate }}">
                                 {% endif %}
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                                 <label for="id_ProductOrderDestinationCode">手配先</label>
                                 {% if form.errors.ProductOrderDestinationCode %}
                                 {% for error in form.errors.ProductOrderDestinationCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderDestination" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode" value="{{ object.ProductOrderDestinationCode.CustomerCode }} {{ object.ProductOrderDestinationCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderDestination" autocomplete="new-password" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode" value="{{ object.ProductOrderDestinationCode.CustomerCode }} {{ object.ProductOrderDestinationCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderDestination">
                                 {% for data in ProductOrderDestinationCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -122,7 +122,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="ProductOrderDestination" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode" value="{{ object.ProductOrderDestinationCode.CustomerCode }} {{ object.ProductOrderDestinationCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="ProductOrderDestination" autocomplete="new-password" name="ProductOrderDestinationCode" id="id_ProductOrderDestinationCode" value="{{ object.ProductOrderDestinationCode.CustomerCode }} {{ object.ProductOrderDestinationCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderDestination">
                                 {% for data in ProductOrderDestinationCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -135,7 +135,7 @@
                                 <label for="id_ProductOrderSupplierCode">仕入先</label>
                                 {% if form.errors.ProductOrderSupplierCode %}
                                 {% for error in form.errors.SupplierCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderSupplier" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode" value="{{ object.ProductOrderSupplierCode.CustomerCode }} {{ object.ProductOrderSupplierCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderSupplier" autocomplete="new-password" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode" value="{{ object.ProductOrderSupplierCode.CustomerCode }} {{ object.ProductOrderSupplierCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderSupplier">
                                 {% for data in ProductOrderSupplierCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -144,7 +144,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="ProductOrderSupplier" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode" value="{{ object.ProductOrderSupplierCode.CustomerCode }} {{ object.ProductOrderSupplierCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="ProductOrderSupplier" autocomplete="new-password" name="ProductOrderSupplierCode" id="id_ProductOrderSupplierCode" value="{{ object.ProductOrderSupplierCode.CustomerCode }} {{ object.ProductOrderSupplierCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderSupplier">
                                 {% for data in ProductOrderSupplierCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -157,7 +157,7 @@
                                 <label for="id_ProductOrderShippingCode">出荷先</label>
                                 {% if form.errors.ProductOrderShippingCode %}
                                 {% for error in form.errors.ProductOrderShippingCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderShipping" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode" value="{{ object.ProductOrderShippingCode.CustomerCode }} {{ object.ProductOrderShippingCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderShipping" autocomplete="new-password" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode" value="{{ object.ProductOrderShippingCode.CustomerCode }} {{ object.ProductOrderShippingCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderShipping">
                                 {% for data in ProductOrderShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -166,7 +166,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="ProductOrderShipping" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode" value="{{ object.ProductOrderShippingCode.CustomerCode }} {{ object.ProductOrderShippingCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="ProductOrderShipping" autocomplete="new-password" name="ProductOrderShippingCode" id="id_ProductOrderShippingCode" value="{{ object.ProductOrderShippingCode.CustomerCode }} {{ object.ProductOrderShippingCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderShipping">
                                 {% for data in ProductOrderShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -181,7 +181,7 @@
                                 <label for="id_ProductOrderCustomeCode">得意先</label>
                                 {% if form.errors.ProductOrderCustomeCode %}
                                 {% for error in form.errors.ProductOrderCustomeCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderCustome" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode" value="{{ object.ProductOrderCustomeCode.CustomerCode }} {{ object.ProductOrderCustomeCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderCustome" autocomplete="new-password" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode" value="{{ object.ProductOrderCustomeCode.CustomerCode }} {{ object.ProductOrderCustomeCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderCustome">
                                 {% for data in ProductOrderCustomeCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -190,7 +190,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="ProductOrderCustome" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode" value="{{ object.ProductOrderCustomeCode.CustomerCode }} {{ object.ProductOrderCustomeCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="ProductOrderCustome" autocomplete="new-password" name="ProductOrderCustomeCode" id="id_ProductOrderCustomeCode" value="{{ object.ProductOrderCustomeCode.CustomerCode }} {{ object.ProductOrderCustomeCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderCustome">
                                 {% for data in ProductOrderCustomeCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -203,7 +203,7 @@
                                 <label for="id_ProductOrderRequestCode">依頼先</label>
                                 {% if form.errors.ProductOrderRequestCode %}
                                 {% for error in form.errors.ProductOrderRequestCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderRequest" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode" value="{{ object.ProductOrderRequestCode.CustomerCode }} {{ object.ProductOrderRequestCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderRequest" autocomplete="new-password" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode" value="{{ object.ProductOrderRequestCode.CustomerCode }} {{ object.ProductOrderRequestCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderRequest">
                                 {% for data in ProductOrderRequestCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -212,7 +212,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="ProductOrderRequest" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode" value="{{ object.ProductOrderRequestCode.CustomerCode }} {{ object.ProductOrderRequestCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="ProductOrderRequest" autocomplete="new-password" name="ProductOrderRequestCode" id="id_ProductOrderRequestCode" value="{{ object.ProductOrderRequestCode.CustomerCode }} {{ object.ProductOrderRequestCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderRequest">
                                 {% for data in ProductOrderRequestCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -225,7 +225,7 @@
                                 <label for="id_ProductOrderApparelCode">アパレル</label>
                                 {% if form.errors.ProductOrderApparelCode %}
                                 {% for error in form.errors.ProductOrderApparelCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderApparel" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode" value="{{ object.ProductOrderApparelCode.CustomerCode }} {{ object.ProductOrderApparelCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="ProductOrderApparel" autocomplete="new-password" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode" value="{{ object.ProductOrderApparelCode.CustomerCode }} {{ object.ProductOrderApparelCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderApparel">
                                 {% for data in ProductOrderApparelCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -234,7 +234,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="ProductOrderApparel" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode" value="{{ object.ProductOrderApparelCode.CustomerCode }} {{ object.ProductOrderApparelCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="ProductOrderApparel" autocomplete="new-password" name="ProductOrderApparelCode" id="id_ProductOrderApparelCode" value="{{ object.ProductOrderApparelCode.CustomerCode }} {{ object.ProductOrderApparelCode.CustomerOmitName }}">
                                 <datalist id="ProductOrderApparel">
                                 {% for data in ProductOrderApparelCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -249,11 +249,11 @@
                                 <label for="id_ProductOrderSupplierPerson">仕入担当</label>
                                 {% if form.errors.ProductOrderSupplierPerson %}
                                 {% for error in form.errors.ProductOrderSupplierPerson %}
-                                <input type="text" class="form-control is-invalid" name="ProductOrderSupplierPerson" id="id_ProductOrderSupplierPerson" value="{{ form.ProductOrderSupplierPerson.value }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderSupplierPerson" id="id_ProductOrderSupplierPerson" value="{{ form.ProductOrderSupplierPerson.value }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="ProductOrderSupplierPerson" id="id_ProductOrderSupplierPerson" value="{{ form.ProductOrderSupplierPerson.value }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderSupplierPerson" id="id_ProductOrderSupplierPerson" value="{{ form.ProductOrderSupplierPerson.value }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
@@ -279,11 +279,11 @@
                                 <label for="id_ProductOrderBrandName">ブランド名</label>
                                 {% if form.errors.ProductOrderBrandName %}
                                 {% for error in form.errors.ProductOrderBrandName %}
-                                <input type="text" class="form-control is-invalid" name="ProductOrderBrandName" id="id_ProductOrderBrandName" value="{{ object.ProductOrderBrandName }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderBrandName" id="id_ProductOrderBrandName" value="{{ object.ProductOrderBrandName }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="ProductOrderBrandName" id="id_ProductOrderBrandName" value="{{ object.ProductOrderBrandName }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderBrandName" id="id_ProductOrderBrandName" value="{{ object.ProductOrderBrandName }}">
                                 {% endif %}
                             </div>
                         </div>
@@ -292,22 +292,22 @@
                                 <label for="id_ProductOrderMarkName">マーク名</label>
                                 {% if form.errors.ProductOrderMarkName %}
                                 {% for error in form.errors.ProductOrderMarkName %}
-                                <input type="text" class="form-control is-invalid" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value="{{ object.ProductOrderMarkName }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value="{{ object.ProductOrderMarkName }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value="{{ object.ProductOrderMarkName }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderMarkName" id="id_ProductOrderMarkName" value="{{ object.ProductOrderMarkName }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="id_ProductOrderSummary">摘要</label>
                                 {% if form.errors.ProductOrderSummary %}
                                 {% for error in form.errors.ProductOrderSummary %}
-                                <input type="text" class="form-control is-invalid" name="ProductOrderSummary" id="id_ProductOrderSummary" value="{{ object.ProductOrderSummary }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderSummary" id="id_ProductOrderSummary" value="{{ object.ProductOrderSummary }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" name="ProductOrderSummary" id="id_ProductOrderSummary" value="{{ object.ProductOrderSummary }}"">
+                                <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderSummary" id="id_ProductOrderSummary" value="{{ object.ProductOrderSummary }}"">
                                 {% endif %}
                             </div>
                         </div>

@@ -5,6 +5,11 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
 			<li class="breadcrumb-item active" aria-current="page">受発注情報一覧</li>
+			<div class="container">
+				<div class="text-right">
+					<button class="btn btn-primary btn-sm" onclick="location.href='{% url 'myapp:orderingnew' %}'">新規登録</button>
+				</div>	
+			</div>	
 		</ol>
 	</nav>
 	<div class="form-group">
@@ -18,19 +23,21 @@
 			{% endif %}
 			<div class="form-row">
 				<div class="form-group col-sm-2">
-					<input type="search" name="query" id="query" class="form-control" placeholder="キーワード" value="{{ search.query.value }}"/>
+					<input type="search" name="query" id="query" class="form-control" autocomplete="new-password" placeholder="キーワード" value="{{ search.query.value }}"/>
 				</div>
 				<div class="form-group col-sm-2">
-					<input type="search" name="key" id="key" class="form-control" placeholder="キーワード" value="{{ search.key.value }}"/>
+					<input type="search" name="key" id="key" class="form-control" autocomplete="new-password" placeholder="キーワード" value="{{ search.key.value }}"/>
 				</div>
 				<div class="form-group col-sm-2">
-					<input type="search" name="word" id="word" class="form-control" placeholder="キーワード" value="{{ search.word.value }}"/>
+					<input type="search" name="word" id="word" class="form-control" autocomplete="new-password" placeholder="キーワード" value="{{ search.word.value }}"/>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-sm-2">
+					<input type="search" name="orderdateFrom" id="orderdateFrom" class="form-control" autocomplete="new-password" placeholder="依頼日(From)" value="{{ search.orderdateFrom.value }}"/>
 				</div>
 				<div class="form-group col-sm-2">
-					<input type="search" name="orderdateFrom" id="orderdateFrom" class="form-control" placeholder="依頼日(From)" value="{{ search.orderdateFrom.value }}"/>
-				</div>
-				<div class="form-group col-sm-2">
-					<input type="search" name="orderdateTo" id="orderdateTo" class="form-control" placeholder="依頼日(To)" value="{{ search.orderdateTo.value }}"/>
+					<input type="search" name="orderdateTo" id="orderdateTo" class="form-control" autocomplete="new-password" placeholder="依頼日(To)" value="{{ search.orderdateTo.value }}"/>
 				</div>
 				<div class="text-right">
 					<label class="sr-only">検索</label>
@@ -40,9 +47,45 @@
 				</div>
 			</div>
 		</form>
-		<div class="text-right">
+		{% block extrajs %}
+		<!-- Datepicker 追加-->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+		{% load static %}
+		<script>
+			// 依頼日(From)検索用
+			var orderdateFrom = document.getElementById('orderdateFrom');
+			var fp = flatpickr(orderdateFrom, {
+				'locale': 'ja',
+				allowInput: true,
+				// onCloseは入力フォームが閉じられた時に発火する
+				onClose: (selectedDates, dateStr, instance) => {
+					if (selectedDates.length === 1) {
+						// プロパティにユーザーが選択した日付を代入
+						this.dateProps = selectedDates[0];
+					}
+				}
+			});
+
+			// 依頼日(To)検索用
+			var orderdateTo = document.getElementById('orderdateTo');
+			var fp = flatpickr(orderdateTo, {
+				'locale': 'ja',
+				allowInput: true,
+				// onCloseは入力フォームが閉じられた時に発火する
+				onClose: (selectedDates, dateStr, instance) => {
+					if (selectedDates.length === 1) {
+						// プロパティにユーザーが選択した日付を代入
+						this.dateProps = selectedDates[0];
+					}
+				}
+			});
+		</script>
+		{% endblock %}
+		<!-- <div class="text-right">
 			<button class="btn btn-primary mb-2" onclick="location.href='{% url 'myapp:orderingnew' %}'">新規登録</button>
-		</div>
+		</div> -->
 	</div>
 	<div class="table-responsive table-container">
 		<div class="table-sticky-container">
@@ -57,6 +100,7 @@
 						<th scope="col" class="text-center">区分</th>
 						<th scope="col" class="text-center">区分</th>
 						<th scope="col" class="text-center">依頼日</th>
+						<th scope="col" class="text-center">担当者</th>
 						<th scope="col" class="text-center">オーダーNO</th>
 						<th scope="col" class="text-center">手配先</th>
 						<th scope="col" class="text-center">商品名</th>
@@ -77,9 +121,12 @@
 								{% endif %}
 							</div>
 						</td>
-						<td>{{ OrderTable.get_SampleDiv_display }}</td>
-						<td>{{ OrderTable.get_OutputDiv_display }}</td>
+						<!-- <td>{{ OrderTable.get_SampleDiv_display }}</td> -->
+						<!-- <td>{{ OrderTable.get_OutputDiv_display }}</td> -->
+						<td>{{ OrderTable.SampleDiv.divname }}</td>
+						<td>{{ OrderTable.OutputDiv.outputdivname }}</td>
 						<td>{{ OrderTable.OrderingDate }}</td>
+						<td>{{ OrderTable.ManagerCode.first_name|add:OrderTable.ManagerCode.last_name }}</td>
 						<td><span>{{ OrderTable.SlipDiv }}</span><span>{{ OrderTable.OrderNumber }}</span></td>
 						<td>{{ OrderTable.DestinationCode.CustomerOmitName }}</td>
 						<td>{{ OrderTable.ProductName }}</td>
@@ -100,40 +147,4 @@
 		{% include "crud/pagination.html" %}
 	{% endif %}
 </div>
-{% endblock %}
-{% block extrajs %}
-<!-- Datepicker 追加-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
-{% load static %}
-<script>
-	// 依頼日(From)検索用
-	var orderdateFrom = document.getElementById('orderdateFrom');
-	var fp = flatpickr(orderdateFrom, {
-		'locale': 'ja',
-		allowInput: true,
-		// onCloseは入力フォームが閉じられた時に発火する
-		onClose: (selectedDates, dateStr, instance) => {
-			if (selectedDates.length === 1) {
-				// プロパティにユーザーが選択した日付を代入
-				this.dateProps = selectedDates[0];
-			}
-		}
-	});
-
-	// 依頼日(To)検索用
-	var orderdateTo = document.getElementById('orderdateTo');
-	var fp = flatpickr(orderdateTo, {
-		'locale': 'ja',
-		allowInput: true,
-		// onCloseは入力フォームが閉じられた時に発火する
-		onClose: (selectedDates, dateStr, instance) => {
-			if (selectedDates.length === 1) {
-				// プロパティにユーザーが選択した日付を代入
-				this.dateProps = selectedDates[0];
-			}
-		}
-	});
-</script>
 {% endblock %}
