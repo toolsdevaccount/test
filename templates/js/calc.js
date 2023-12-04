@@ -86,6 +86,14 @@ function ItemNumber(obj)
     detail(obj).querySelectorAll(".DetailItemNumber")[0].value = Result;
 }
 
+function ResultItemNumber(obj)
+{		
+    var item = detail(obj).querySelectorAll(".ResultItemNumber")[0].value;
+    var Result = item.toString().padStart( 4, '0'); 
+    alert(Result);
+    detail(obj).querySelectorAll(".ResultItemNumber")[0].value = Result;
+}
+
 const input = document.querySelector('input')
 
 input.checked = true

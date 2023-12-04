@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import OrderingTable, OrderingDetail, CustomerSupplier, RequestResult
+from .models import OrderingTable, OrderingDetail, RequestResult, DivSampleClass, DivOutputClass
 from django.forms import ModelChoiceField
 from datetime import datetime
 
@@ -17,7 +17,18 @@ class CustomerSupplierChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
         return  obj.CustomerCode + ":" + obj.CustomerOmitName[0:5]
 
+class DivSampleClassChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return  obj.divname
+
+class DivOutputClassChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return  obj.outputdivname
+
 class RequestResultForm(forms.ModelForm):
+    ManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
+    SampleDiv = DivSampleClassChoiceField(queryset=DivSampleClass.objects.all(),empty_label='')
+    OutputDiv = DivOutputClassChoiceField(queryset=DivOutputClass.objects.all(),empty_label='')
     #def __init__(self, *args, **kwargs):
     #    super().__init__(*args, **kwargs)
     #    self.fields['SampleDiv'].widget.attrs['readonly'] = 'readonly'
@@ -26,7 +37,7 @@ class RequestResultForm(forms.ModelForm):
         model = OrderingTable
         fields = ('SlipDiv','OrderNumber','OrderingDate','StainShippingDate','ProductName','OrderingCount','StainPartNumber',
                   'StainMixRatio','DestinationCode','SupplierCode','ShippingCode','CustomeCode','StainShippingCode','RequestCode','SupplierPerson',
-                  'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv','is_Ordered',
+                  'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv','is_Ordered','ManagerCode',
                  )
 
     # 手配先
@@ -40,18 +51,26 @@ RequestResultFormset = forms.inlineformset_factory(
     OrderingTable, OrderingDetail, 
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
             'DetailSellPrice','DetailPrice','DetailOverPrice','DetailSummary','SpecifyDeliveryDate','StainAnswerDeadline',
-            'DeliveryManageDiv','PrintDiv',
+            'DeliveryManageDiv','PrintDiv','DetailUnitDiv',
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
 
 RequestRecordFormset = forms.inlineformset_factory(
-    OrderingTable, RequestResult,
+    OrderingTable, RequestResult, 
     fields=('ResultItemNumber','ResultDate','ShippingDate','ShippingVolume','SlipNumber','ResultSummary',
             'ResultMoveDiv','ResultGainDiv','ResultDecreaseDiv','OrderingDetailId'
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
+
+#RequestRecordFormset = forms.inlineformset_factory(
+#    OrderingTable, RequestResult,
+#    fields=('ResultItemNumber','ResultDate','ShippingDate','ShippingVolume','SlipNumber','ResultSummary',
+#            'ResultMoveDiv','ResultGainDiv','ResultDecreaseDiv','OrderingDetailId'
+#            ),
+#    extra=0,min_num=1,validate_min=True,can_delete=True
+#)
 
 class SearchForm(forms.Form):
     query = forms.CharField(

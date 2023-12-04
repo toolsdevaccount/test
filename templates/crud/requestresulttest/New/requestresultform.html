@@ -13,10 +13,10 @@
             {% csrf_token %}
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">基本情報</a>
+                <a class="nav-link active" id="item1-tab" data-toggle="tab" href="#item1" role="tab" aria-controls="item1" aria-selected="true">基本情報</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">明細部</a>
+                <a class="nav-link" id="item2-tab" data-toggle="tab" href="#item2" role="tab" aria-controls="item2" aria-selected="false">明細部</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -25,10 +25,9 @@
                         <div class="form-row">
                             <div class="form-group col-sm-2">
                                 <label for="id_SampleDiv">量産区分</label>
-                                <input type="hidden" name="SampleDiv" id="id_SampleDiv" value="{{ object.SampleDiv }}">
                                 {% if form.errors.SampleDiv %}
                                 {% for error in form.errors.SampleDiv %}
-                                <select class="custom-select is-invalid" name="SampleDiv" id="id_SampleDiv" value="{{ object.SampleDiv }}" disabled>
+                                <select class="custom-select is-invalid" name="SampleDiv" id="id_SampleDiv" value="{{ object.SlipDiv }}" disabled>
                                     {% for data in form.SampleDiv %}
                                     {{ data }}
                                     {% endfor %}
@@ -36,7 +35,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <select class="custom-select" name="SampleDiv" id="id_SampleDiv" value="{{ object.SampleDiv }}" disabled>
+                                <select class="custom-select" name="SampleDiv" id="id_SampleDiv" value="{{ object.SlipDiv }}" disabled>
                                     {% for data in form.SampleDiv %}
                                     {{ data }}
                                     {% endfor %}
@@ -45,7 +44,6 @@
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_OutputDiv">出力区分</label>
-                                <input type="hidden" name="OutputDiv" id="id_OutputDiv" value="{{ object.OutputDiv }}">
                                 {% if form.errors.OutputDiv %}
                                 {% for error in form.errors.OutputDiv %}
                                 <select class="custom-select is-invalid" name="OutputDiv" id="id_OutputDiv" value="{{ object.OutputDiv }}" disabled>
@@ -65,10 +63,9 @@
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_ManagerCode">担当者</label>
-                                <input type="hidden" name="ManagerCode" id="id_ManagerCode" value="{{ object.ManagerCode }}">
                                 {% if form.errors.ManagerCode %}
                                 {% for error in form.errors.ManagerCode %}
-                                <select class="custom-select is-invalid" name="ManagerCode" id="id_ManagerCode" value="{{ object.ManagerCode }}" readonly>
+                                <select class="custom-select is-invalid" name="ManagerCode" id="id_ManagerCode" value="{{ object.ManagerCode }}" disabled>
                                     {% for data in form.ManagerCode %}
                                     {{ data }}
                                     {% endfor %}
@@ -76,7 +73,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <select class="custom-select" name="ManagerCode" id="id_ManagerCode" value="{{ object.ManagerCode }}" readonly>
+                                <select class="custom-select" name="ManagerCode" id="id_ManagerCode" value="{{ object.ManagerCode }}" disabled>
                                     {% for data in form.ManagerCode %}
                                     {{ data }}
                                     {% endfor %}
@@ -343,7 +340,6 @@
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_TitleDiv">敬称</label>
-                                <input type="hidden" name="TitleDiv" id="id_TitleDiv" value="{{ object.TitleDiv }}">
                                 {% if form.errors.TitleDiv %}
                                 {% for error in form.errors.TitleDiv %}
                                 <select class="custom-select is-invalid" name="TitleDiv" id="id_TitleDiv" value="{{ object.TitleDiv }}" disabled>
@@ -365,11 +361,11 @@
                                 <label for="id_MarkName">マーク名</label>
                                 {% if form.errors.MarkName %}
                                 {% for error in form.errors.MarkName %}
-                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="MarkName" id="id_MarkName" value="{{ object.MarkName }}" disabled>
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="MarkName" id="id_MarkName" value="{{ object.MarkName }}" readonly>
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" autocomplete="new-password" name="MarkName" id="id_MarkName" value="{{ object.MarkName }}" disabled>
+                                <input type="tel" class="form-control" autocomplete="new-password" name="MarkName" id="id_MarkName" value="{{ object.MarkName }}" readonly>
                                 {% endif %}
                             </div>
                         </div>

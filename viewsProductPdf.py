@@ -269,10 +269,11 @@ def getimage(pk):
             '       A.ProductOrderMerchandiseCode = B.id '
 			'	LEFT JOIN ' 
           	'	myapp_merchandisefileupload C ON '
-            '		A.id = C.McdDtuploadid_id '
+            '		B.id = C.McdDtuploadid_id '
             ' WHERE '
             '     A.id = ' + str(pk) +
-            ' AND B.is_Deleted = 0 ' 
+            ' AND B.is_Deleted = 0 '
+            ' AND C.is_Deleted = 0 ' 
             )
     cur.execute(sql)
     result = cur.fetchall()     

@@ -5,7 +5,8 @@
 		<input type="hidden" name="OrderingTableId-TOTAL_FORMS" id="OrderingTableId-TOTAL_FORMS">
 		{{ formset.management_form }}	
 		<div class="table-responsive table-container">
-			<div class="table-sticky-container-small">
+			<!-- <div class="table-sticky-container"> -->
+			<div class="">
 				<table class="table table-sticky table-sm">
 					<thead>
 						<tr>
@@ -29,7 +30,7 @@
 					<tbody>
 						{% for form in formset %}
 						<tr class="list_var">
-							<input type="hidden" class="form-control OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.id.value }}">
+							<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.id.value }}">
 							<td>
 								<div id="div" class="fds-table__td-content">
 									<input type="tel" class="form-control DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
@@ -124,7 +125,8 @@
 		</div>
 		<input type="hidden" name="OrderingId-TOTAL_FORMS" id="OrderingId-TOTAL_FORMS">
 		<div class="table-responsive table-container">	
-			<div class="table-sticky-container-small">
+			<!-- <div class="table-sticky-container"> -->
+			<div class="">
 				{{ inlinesRecord.management_form }}	
 				<table class="table table-sticky table-sm" id="tblrow">
 					<thead>
@@ -144,21 +146,19 @@
 					<tbody id="list">
 						{% for form in inlinesRecord %}
 						<tr class="list_var">
-							<div id="detail">
-								<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" data-empty-val="false" value="{{ form.OrderingDetailId.value }}">
+								<!-- <input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.OrderingDetailId.value }}"> -->
 								<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">
-							</div>
 							<td>
 								<div id="div" class="fds-table__td-content">
 								{% if form.errors.ResultItemNumber %}
 								{% for error in form.errors.ResultItemNumber %}
 									<input type="tel" class="form-control is-invalid ResultItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingId-%d-ResultItemNumber" data-name-format="OrderingId-%d-ResultItemNumber"
-									name="OrderingId-0-ResultItemNumber" id="id_OrderingId-0-ResultItemNumber" value="{{ form.ResultItemNumber.value  | default:'0001' }}">
+									name="OrderingId-0-ResultItemNumber" id="id_OrderingId-0-ResultItemNumber" onchange="ResultItemNumber(this);" value="{{ form.ResultItemNumber.value  | default:'0001' }}">
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 									<input type="tel" class="form-control ResultItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingId-%d-ResultItemNumber" data-name-format="OrderingId-%d-ResultItemNumber"
-									name="OrderingId-0-ResultItemNumber" id="id_OrderingId-0-ResultItemNumber" value="{{ form.ResultItemNumber.value  | default:'0001' }}">
+									name="OrderingId-0-ResultItemNumber" id="id_OrderingId-0-ResultItemNumber" onchange="ResultItemNumber(this);" value="{{ form.ResultItemNumber.value  | default:'0001' }}">
 								{% endif %}
 								</div>
 							</td>
@@ -264,37 +264,3 @@
 <script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 <script src="{% static '\js\enter.js' %}" charset="UTF-8"></script>
 {% endblock %}
-<script>
-	$('.DetailItemNumber').on('click', function(){
-	$('#detail').empty();
-	var idx=$(this).closest('tr').prop('rowIndex');
-	var id = document.querySelectorAll(".OrderingDetailId")[idx-1].value
-	// Ajax通信を開始
-	$.ajax({
-		url: "{% url 'myapp:exec' %}",
-		method: "GET",
-		// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
-		dataType: 'json',
-		// リクエストパラメータ「?param=明細id」
-		data: {
-			param: id,
-		},
-		timeout: 5000,
-	})
-	.done(function(response) {
-		// 通信成功時の処理を記述
-		$.each(response.list, function(index, list) {
-			console.log(list.id);
-
-			$('#detail').append(
-				'<input type="hidden" class="OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + index + '-OrderingDetailId" id="id_OrderingId-' + index + '-OrderingDetailId" data-empty-val="false" value='+ list.id + '>' +
-				'<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">'
-			);
-		});
-	})
-	.fail(function() {
-		// 通信失敗時の処理を記述
-		$('#resultGET').text('GET処理失敗.');
-	});
-	})
-</script>

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.views.generic import ListView,CreateView,UpdateView
+from django.views.generic import ListView, CreateView, UpdateView
 from .models import OrderingTable, OrderingDetail, CustomerSupplier, RequestResult
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -14,13 +14,17 @@ from datetime import date
 from .formsrequestresult import RequestResultForm, RequestResultFormset, RequestRecordFormset, SearchForm
 # Transaction
 from django.db import transaction
+# SQL直接実行
+from django.db import connection
+# ajax
+from django.http import JsonResponse
 
 # 受発注一覧/検索
 class RequestResultListView(LoginRequiredMixin,ListView):
     model = OrderingTable
     form_class = RequestResultForm
     context_object_name = 'object_list'
-    queryset = OrderingTable.objects.order_by('OrderingDate','Created_at').reverse()
+    queryset = OrderingDetail.objects.select_related()
     template_name = "crud/requestresult/list/requestresultlist.html"
     paginate_by = 20
 
@@ -32,7 +36,7 @@ class RequestResultListView(LoginRequiredMixin,ListView):
             self.request.POST.get('orderdateFrom', None),
             self.request.POST.get('orderdateTo', None),
         ]
-        request.session['search'] = search
+        request.session['rqsearch'] = search
         # 検索時にページネーションに関連したエラーを防ぐ
         self.request.GET = self.request.GET.copy()
         self.request.GET.clear()
@@ -41,8 +45,8 @@ class RequestResultListView(LoginRequiredMixin,ListView):
 
     #検索機能
     def get_queryset(self):
-        if 'search' in self.request.session:
-            search = self.request.session['search']
+        if 'rqsearch' in self.request.session:
+            search = self.request.session['rqsearch']
             query = search[0]
             key = search[1]
             word = search[2]
@@ -59,7 +63,9 @@ class RequestResultListView(LoginRequiredMixin,ListView):
         queryset = OrderingTable.objects.order_by('OrderingDate','SlipDiv','OrderNumber').reverse()
         # 削除済以外、管理者の場合は全レコード表示（削除済以外）
         if self.request.user.is_superuser == 0:
-            queryset = queryset.filter(is_Deleted=0,Created_id=self.request.user.id)
+            #queryset = queryset.filter(is_Deleted=0,Created_id=self.request.user.id)
+            # 全ユーザ表示
+            queryset = queryset.filter(is_Deleted=0)
         else:
             queryset = queryset.filter(is_Deleted=0)
 
@@ -67,20 +73,23 @@ class RequestResultListView(LoginRequiredMixin,ListView):
             queryset = queryset.filter(
                  Q(SlipDiv__contains=query) | Q(OrderNumber__contains=query) | Q(ProductName__contains=query) | Q(MarkName__contains=query) |
                  Q(DestinationCode__CustomerOmitName__icontains=query) | Q(ShippingCode__CustomerOmitName__icontains=query) | 
-                 Q(SampleDiv__icontains=query) | Q(RequestCode__CustomerOmitName__icontains=query) 
+                 Q(SampleDiv__divname__icontains=query) | Q(RequestCode__CustomerOmitName__icontains=query) |
+                 Q(OutputDiv__outputdivname__icontains=query) 
             )
         if key:
             queryset = queryset.filter(
                  Q(SlipDiv__contains=key) | Q(OrderNumber__contains=key) | Q(ProductName__contains=key) | Q(MarkName__contains=key) |
                  Q(DestinationCode__CustomerOmitName__icontains=key) | Q(ShippingCode__CustomerOmitName__icontains=key) |
-                 Q(SampleDiv__icontains=key) | Q(RequestCode__CustomerOmitName__icontains=key) 
+                 Q(SampleDiv__divname__icontains=key) | Q(RequestCode__CustomerOmitName__icontains=key) |
+                 Q(OutputDiv__outputdivname__icontains=key) 
             )
 
         if word:
             queryset = queryset.filter(
                  Q(SlipDiv__contains=word) | Q(OrderNumber__contains=word) | Q(ProductName__contains=word) | Q(MarkName__contains=word) |
                  Q(DestinationCode__CustomerOmitName__icontains=word) | Q(ShippingCode__CustomerOmitName__icontains=word) | 
-                 Q(SampleDiv__icontains=word) | Q(RequestCode__CustomerOmitName__icontains=word)
+                 Q(SampleDiv__divname__icontains=word) | Q(RequestCode__CustomerOmitName__icontains=word) |
+                 Q(OutputDiv__outputdivname__icontains=word) 
             )
 
         if orderdateFrom and orderdateTo:
@@ -96,8 +105,8 @@ class RequestResultListView(LoginRequiredMixin,ListView):
         word = ''
         orderdateFrom = ''
         orderdateTo = ''
-        if 'search' in self.request.session:
-            search = self.request.session['search']
+        if 'rqsearch' in self.request.session:
+            search = self.request.session['rqsearch']
             query = search[0]
             key = search[1]
             word = search[2]
@@ -112,7 +121,7 @@ class RequestResultListView(LoginRequiredMixin,ListView):
                        }
         
         form = SearchForm(initial=default_data) # 検索フォーム
-        context['search'] = form
+        context['rqsearch'] = form
         return context
 
 # 受発注情報登録
@@ -127,7 +136,8 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self, **kwargs):
         context = super(RequestResultCreateView, self).get_context_data(**kwargs)
         context.update(dict(formset=RequestResultFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))),
-                       inlinesRecord=RequestRecordFormset(self.request.POST or None, instance=self.get_object(), queryset=RequestResult.objects.filter(is_Deleted=0)),
+                       #inlinesRecord=RequestRecordFormset(self.request.POST or None, instance=self.get_object(), queryset=RequestResult.objects.filter(is_Deleted=0)),
+                       inlinesRecord=RequestRecordFormset(self.request.POST or None),
                        DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                        SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
                        ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
@@ -136,6 +146,39 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
                        StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                        )
         return context
+
+    def exec_ajax(request):
+        if request.method == 'GET':  # GETの処理
+            param = request.GET.get("param")  # GETパラメータ
+            # カラーとサイズを取得する
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+            # カラーとサイズを取得するSQL
+            with connection.cursor() as cursor:
+                cursor.execute(
+                                " select "
+                                    " id                    AS id, "
+                                    " DetailItemNumber      AS ResultItemNumber, "
+                                    " SpecifyDeliveryDate   AS ResultDate, "
+                                    " StainAnswerDeadline   AS ShippingDate "
+                                " from " 
+                                    " myapp_orderingdetail "
+                                " where "
+                                "     id = %s "
+                            , [str(param)])
+                detail = dictfetchall(cursor)
+
+            context = {
+                'list': detail,
+            }
+
+            return JsonResponse(context)
+
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
