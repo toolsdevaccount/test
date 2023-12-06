@@ -15,6 +15,8 @@ $(function(){
             tbl.querySelectorAll('.ResultItemNumber')[num -1].value = result;
 
             var id = document.getElementsByClassName('OrderingDetailId')[num -2].value;
+
+            //tbl.querySelectorAll('.OrderingDetailId')[num -1].value = id;
             console.log(id);
 
             var ShippingDate = document.getElementsByClassName('ShippingDate');

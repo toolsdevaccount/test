@@ -28,8 +28,9 @@
 					</thead>
 					<tbody>
 						{% for form in formset %}
-						<tr class="list_var">
-							<input type="hidden" class="form-control OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.id.value }}">
+						<tr class="list_formset">
+							<!-- <input type="hidden" class="form-control OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.id.value }}">  -->
+							<input type="hidden" class="form-control OrderingId" data-id-format="id_OrderingTableId-%d-OrderingId" data-name-format="OrderingTableId-%d-OrderingId" name="OrderingTableId-0-OrderingId" id="id_OrderingTableId-0-OrderingId" value="{{ form.id.value }}"> 
 							<td>
 								<div id="div" class="fds-table__td-content">
 									<input type="tel" class="form-control DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
@@ -117,7 +118,6 @@
 			</div>
 		</div>		
 	</div>
-
 	<div class="form-group">
 		<div class="text-left">
 			<button type="button" id="add" class="btn btn-primary list_add">追加</button>
@@ -145,7 +145,7 @@
 						{% for form in inlinesRecord %}
 						<tr class="list_var">
 							<div id="detail">
-								<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" data-empty-val="false" value="{{ form.OrderingDetailId.value }}">
+								<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.OrderingDetailId.value }}">
 								<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">
 							</div>
 							<td>
@@ -268,7 +268,10 @@
 	$('.DetailItemNumber').on('click', function(){
 	$('#detail').empty();
 	var idx=$(this).closest('tr').prop('rowIndex');
-	var id = document.querySelectorAll(".OrderingDetailId")[idx-1].value
+	var id = document.querySelectorAll(".OrderingId")[idx-1].value
+	//var id = document.querySelectorAll(".OrderingDetailId")[idx-1].value
+	//var item=$(this).closest('tr')[0];
+	//console.log(id);
 	// Ajax通信を開始
 	$.ajax({
 		url: "{% url 'myapp:exec' %}",
