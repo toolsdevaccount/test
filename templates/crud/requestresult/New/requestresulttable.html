@@ -28,7 +28,8 @@
 					</thead>
 					<tbody>
 						{% for form in formset %}
-						<tr class="list_formset">
+						<tr onclick="Click_Sub(this)">
+						<!-- <tr class="list_formset"> -->
 							<!-- <input type="hidden" class="form-control OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.id.value }}">  -->
 							<input type="hidden" class="form-control OrderingId" data-id-format="id_OrderingTableId-%d-OrderingId" data-name-format="OrderingTableId-%d-OrderingId" name="OrderingTableId-0-OrderingId" id="id_OrderingTableId-0-OrderingId" value="{{ form.id.value }}"> 
 							<td>
@@ -298,4 +299,17 @@
 		$('#resultGET').text('GET処理失敗.');
 	});
 	})
+</script>
+<script>
+	function Click_Sub(obj) {
+		// 背景色を黄色に設定
+		var bg_color_tmp = "rgb(255, 255, 0)";
+		if(obj.style.backgroundColor==bg_color_tmp) {
+					// 背景色が黄色の場合は白色にする
+			obj.style.backgroundColor='#ffffff';
+		} else {
+					// 背景色が黄色以外の場合（白色）は黄色にする
+			obj.style.backgroundColor=bg_color_tmp;
+		}
+	}
 </script>
