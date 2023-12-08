@@ -11,13 +11,15 @@ $(function(){
             var item = tbl.querySelectorAll('.ResultItemNumber')[num -2].value;
                 item = parseInt(item ,10) +1;
             var result = item.toString().padStart( 4, '0');
-
             tbl.querySelectorAll('.ResultItemNumber')[num -1].value = result;
 
-            var id = document.getElementsByClassName('OrderingDetailId')[num -2].value;
+            $('#detail').append(
+				'<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-' + [num -1] + '-DELETE" id="id_OrderingId-' + [num -1] + '-DELETE">' +
+				'<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + [num -1] + '-OrderingDetailId" id="id_OrderingId-' + [num -1] + '-OrderingDetailId" value="">'
+			);
 
-            //tbl.querySelectorAll('.OrderingDetailId')[num -1].value = id;
-            console.log(id);
+            var id = document.getElementById('id_OrderingId-' + [num -2] + '-OrderingDetailId').value;
+            document.getElementById('id_OrderingId-' + [num -1] + '-OrderingDetailId').value = id;
 
             var ShippingDate = document.getElementsByClassName('ShippingDate');
             var fp = flatpickr(ShippingDate, {

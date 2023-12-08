@@ -129,12 +129,13 @@
 				<table class="table table-sticky table-sm" id="tblrow">
 					<thead>
 						<tr>
+							<th scope="col" class="text-center" style="width: 2%"></th>
 							<th scope="col" class="text-center" style="width: 5%">項番</th>
-							<th scope="col" class="text-center" style="width: 10%">実績日</th>
-							<th scope="col" class="text-center" style="width: 10%">出荷日</th>
-							<th scope="col" class="text-center" style="width: 4%">出荷数</th>
-							<th scope="col" class="text-center" style="width: 5%">伝票番号</th>
-							<th scope="col" class="text-center" style="width: 15%">摘　　要</th>
+							<th scope="col" class="text-center" style="width: 15%">実績日</th>
+							<th scope="col" class="text-center" style="width: 15%">出荷日</th>
+							<th scope="col" class="text-center" style="width: 13%">出荷数</th>
+							<th scope="col" class="text-center" style="width: 10%">伝票番号</th>
+							<th scope="col" class="text-center" style="width: 20%">摘　　要</th>
 							<th scope="col" class="text-center" style="width: 5%">移動</th>
 							<th scope="col" class="text-center" style="width: 5%">目増</th>
 							<th scope="col" class="text-center" style="width: 5%">目減</th>
@@ -145,8 +146,10 @@
 						{% for form in inlinesRecord %}
 						<tr class="list_var">
 							<div id="detail">
-								<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.OrderingDetailId.value }}">
-								<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">
+								<td>
+									<!-- <input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">
+									<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.OrderingDetailId.value }}"> -->
+								</td>
 							</div>
 							<td>
 								<div id="div" class="fds-table__td-content">
@@ -166,24 +169,24 @@
 								{% if form.errors.ResultDate %}
 								{% for error in form.errors.ResultDate %}
 									<input type="tel" class="form-control is-invalid ResultDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultDate" data-name-format="OrderingId-%d-ResultDate" 
-									name="OrderingId-0-ResultDate" id="id_OrderingId-0-ResultDate" value="{{ form.ResultDate.value }}">                                   
+									name="OrderingId-0-ResultDate" id="id_OrderingId-0-ResultDate" value="{{ form.data.ResultDate }}">                                   
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 									<input type="tel" class="form-control ResultDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultDate" data-name-format="OrderingId-%d-ResultDate" 
-									name="OrderingId-0-ResultDate" id="id_OrderingId-0-ResultDate" value="{{ form.ResultDate.value }}">                                   
+									name="OrderingId-0-ResultDate" id="id_OrderingId-0-ResultDate" value="{{ form.data.ResultDate }}">                                   
 								{% endif %}
 							</td>
 							<td>
 								{% if form.errors.ShippingDate %}
 								{% for error in form.errors.ShippingDate %}
 									<input type="tel" class="form-control is-invalid ShippingDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingDate" data-name-format="OrderingId-%d-ShippingDate" 
-									name="OrderingId-0-ShippingDate" id="id_OrderingId-0-ShippingDate" value="{{ form.ShippingDate.value }}">                                   
+									name="OrderingId-0-ShippingDate" id="id_OrderingId-0-ShippingDate" value="{{ form.data.ShippingDate }}">                                   
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 									<input type="tel" class="form-control ShippingDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingDate" data-name-format="OrderingId-%d-ShippingDate" 
-									name="OrderingId-0-ShippingDate" id="id_OrderingId-0-ShippingDate" value="{{ form.ShippingDate.value }}">                                   
+									name="OrderingId-0-ShippingDate" id="id_OrderingId-0-ShippingDate" value="{{ form.data.ShippingDate }}">                                   
 								{% endif %}
 							</td>
 							<td>
@@ -269,9 +272,6 @@
 	$('#detail').empty();
 	var idx=$(this).closest('tr').prop('rowIndex');
 	var id = document.querySelectorAll(".OrderingId")[idx-1].value
-	//var id = document.querySelectorAll(".OrderingDetailId")[idx-1].value
-	//var item=$(this).closest('tr')[0];
-	//console.log(id);
 	// Ajax通信を開始
 	$.ajax({
 		url: "{% url 'myapp:exec' %}",
@@ -287,11 +287,9 @@
 	.done(function(response) {
 		// 通信成功時の処理を記述
 		$.each(response.list, function(index, list) {
-			console.log(list.id);
-
 			$('#detail').append(
-				'<input type="hidden" class="OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + index + '-OrderingDetailId" id="id_OrderingId-' + index + '-OrderingDetailId" data-empty-val="false" value='+ list.id + '>' +
-				'<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">'
+				'<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-' + index + '-DELETE" id="id_OrderingId-' + index + '-DELETE">' +
+				'<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + index + '-OrderingDetailId" id="id_OrderingId-' + index + '-OrderingDetailId" value="' + list.id + '">'
 			);
 		});
 	})
