@@ -1,6 +1,11 @@
 {% extends 'crud/base.html' %}
 {% block content %}
 <div class="container-fluid">
+    {% for key, errors in form.errors.items %}
+    {% for error in errors %}
+        {{ error }}
+    {% endfor %}
+    {% endfor %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>

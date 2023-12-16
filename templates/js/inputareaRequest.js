@@ -1,7 +1,9 @@
 $(function(){
-    $('#form').submit(function() {  	 // フォームを送信する直前 tableの行数を取得
-        var row = tblrow.rows.length -1; //表題分差引く
-        $('[name=OrderingId-TOTAL_FORMS]').val(row); // 行数を書き換えてPOST
+    $('#form').submit(function() {  	                    //フォームを送信する直前 tableの行数を取得
+		var row = detailtblrow.rows.length -1;              //表題分差引く
+        $('[name=OrderingTableId-TOTAL_FORMS]').val(row);   // 行数を書き換えてPOST
+        var row = tblrow.rows.length -1;                    //表題分差引く
+        $('[name=OrderingId-TOTAL_FORMS]').val(row);        // 行数を書き換えてPOST
     });
 
     $('#list').addInputArea({
@@ -10,17 +12,14 @@ $(function(){
             var num = tbl.querySelectorAll('.ResultItemNumber').length;
             var item = tbl.querySelectorAll('.ResultItemNumber')[num -2].value;
                 item = parseInt(item ,10) +1;
+            // 項番に前ゼロ付加
             var result = item.toString().padStart( 4, '0');
             tbl.querySelectorAll('.ResultItemNumber')[num -1].value = result;
-
-            $('#detail').append(
-				'<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-' + [num -1] + '-DELETE" id="id_OrderingId-' + [num -1] + '-DELETE">' +
-				'<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + [num -1] + '-OrderingDetailId" id="id_OrderingId-' + [num -1] + '-OrderingDetailId" value="">'
-			);
-
+            // OrderingDetailId取得し、追加行に設定する
             var id = document.getElementById('id_OrderingId-' + [num -2] + '-OrderingDetailId').value;
             document.getElementById('id_OrderingId-' + [num -1] + '-OrderingDetailId').value = id;
 
+            // 出荷日datepicker
             var ShippingDate = document.getElementsByClassName('ShippingDate');
             var fp = flatpickr(ShippingDate, {
                 'locale': 'ja',
@@ -34,6 +33,7 @@ $(function(){
                 }
             });
 
+            // 実績日datepicker
             var ResultDate = document.getElementsByClassName('ResultDate');
             var fp = flatpickr(ResultDate, {
                 'locale': 'ja',

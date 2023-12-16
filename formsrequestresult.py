@@ -40,13 +40,13 @@ class RequestResultForm(forms.ModelForm):
                   'TitleDiv','StockDiv','MarkName','OutputDiv','SampleDiv','is_Ordered','ManagerCode',
                  )
 
-    # 手配先
-    def clean_DestinationCode(self):
-        DestinationCode = self.cleaned_data['DestinationCode']
-        if DestinationCode == None:
-            raise forms.ValidationError(u'このフィールドは必須です。')
-        return DestinationCode
-   
+    # OrderingDetailId
+    #def clean_OrderingDetailId(self):
+    #    OrderingDetailId = self.cleaned_data['OrderingDetailId']
+    #    if OrderingDetailId == None:
+    #        raise forms.ValidationError(u'このフィールドは必須です。')
+    #    return OrderingDetailId
+  
 RequestResultFormset = forms.inlineformset_factory(
     OrderingTable, OrderingDetail, 
     fields=('DetailItemNumber','DetailColorNumber','DetailColor','DetailTailoring','DetailVolume','DetailUnitPrice',
@@ -63,14 +63,6 @@ RequestRecordFormset = forms.inlineformset_factory(
             ),
     extra=0,min_num=1,validate_min=True,can_delete=True
 )
-
-#RequestRecordFormset = forms.inlineformset_factory(
-#    OrderingTable, RequestResult,
-#    fields=('ResultItemNumber','ResultDate','ShippingDate','ShippingVolume','SlipNumber','ResultSummary',
-#            'ResultMoveDiv','ResultGainDiv','ResultDecreaseDiv','OrderingDetailId'
-#            ),
-#    extra=0,min_num=1,validate_min=True,can_delete=True
-#)
 
 class SearchForm(forms.Form):
     query = forms.CharField(

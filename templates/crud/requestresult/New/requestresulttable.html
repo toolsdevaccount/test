@@ -6,9 +6,10 @@
 		{{ formset.management_form }}	
 		<div class="table-responsive table-container">
 			<div class="table-sticky-container-small">
-				<table class="table table-sticky table-sm">
-					<thead>
+				<table class="table table-sm table-sticky-sm table-bordered" id="detailtblrow">
+					<thead class="thead-light">
 						<tr>
+							<th scope="col" class="text-center" style="width: 2%"></th>
 							<th scope="col" class="text-center" style="width: 5%">項番</th>
 							<th scope="col" class="text-center" style="width: 5%">色番</th>
 							<th scope="col" class="text-center" style="width: 8%">カラー</th>
@@ -19,8 +20,8 @@
 							<th scope="col" class="text-center" style="width: 5%">通常単価</th>
 							<th scope="col" class="text-center" style="width: 5%">UP分単価</th>
 							<th scope="col" class="text-center" style="width: 5%">販売単価</th>
-							<th scope="col" class="text-center" style="width: 7%">希望納期</th>
-							<th scope="col" class="text-center" style="width: 7%">回答納期</th>
+							<th scope="col" class="text-center" style="width: 10%">希望納期</th>
+							<th scope="col" class="text-center" style="width: 10%">回答納期</th>
 							<th scope="col" class="text-center" style="width: 15%">摘　　要</th>
 							<th scope="col" class="text-center" style="width: 2%">済</th>
 							<th scope="col" class="text-center" style="width: 2%">印</th>
@@ -28,67 +29,71 @@
 					</thead>
 					<tbody>
 						{% for form in formset %}
-						<tr onclick="Click_Sub(this)">
-						<!-- <tr class="list_formset"> -->
-							<!-- <input type="hidden" class="form-control OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.id.value }}">  -->
-							<input type="hidden" class="form-control OrderingId" data-id-format="id_OrderingTableId-%d-OrderingId" data-name-format="OrderingTableId-%d-OrderingId" name="OrderingTableId-0-OrderingId" id="id_OrderingTableId-0-OrderingId" value="{{ form.id.value }}"> 
+						<tr class="list_formset">
+							<input type="hidden" class="form-control OrderingId" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" id="id_OrderingTableId-0-id" name="OrderingTableId-0-id" value="{{ form.id.value }}">
+							<td class="tableid"></td>
 							<td>
-								<div id="div" class="fds-table__td-content">
-									<input type="tel" class="form-control DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-									name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value }}" readonly>
-								</div>
+								{% if form.errors.DetailItemNumber %}
+								{% for error in form.errors.DetailItemNumber %}
+								<input type="tel" class="form-control is-invalid DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+								name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value }}">
+								<div class="invalid-feedback">{{ error }}</div>
+								{% endfor %}
+								{% else %}
+								<input type="tel" class="form-control DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
+								name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value }}">
+								{% endif %}
 							</td>
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
-								name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value="{{ form.DetailColorNumber.value | default:'' }}" readonly>
+								name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value="{{ form.DetailColorNumber.value | default:'' }}">
 							</td> 
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
-								name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value="{{ form.DetailColor.value | default:'' }}" readonly>                                   
+								name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value="{{ form.DetailColor.value | default:'' }}">                                   
 							</td>
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
-								name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value="{{ form.DetailTailoring.value | default:'' }}" readonly>                                   
+								name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value="{{ form.DetailTailoring.value | default:'' }}">                                   
 							</td>
 							<td>
 								<input type="tel" step="0.1" class="form-control DetailVolume text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}" readonly>                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
 							</td>
 							<td>
-								<select class="custom-select" data-id-format="id_OrderingTableId-%d-DetailUnitDiv" data-name-format="OrderingTableId-%d-DetailUnitDiv" name="OrderingTableId-0-DetailUnitDiv" id="id_OrderingTableId-0-DetailUnitDiv" disabled>
+								<select class="custom-select" data-id-format="id_OrderingTableId-%d-DetailUnitDiv" data-name-format="OrderingTableId-%d-DetailUnitDiv" name="OrderingTableId-0-DetailUnitDiv" id="id_OrderingTableId-0-DetailUnitDiv">
 									{% for data in form.DetailUnitDiv %}
 									{{ data }}
 									{% endfor %}
 								</select>
-                                <input type="hidden" data-id-format="id_OrderingTableId-%d-TitleDiv" data-name-format="OrderingTableId-%d-TitleDiv" name="OrderingTableId-0-TitleDiv" id="id_OrderingTableId-0-TitleDiv" value="{{ object.TitleDiv }}">
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailUnitPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" data-empty-val="false" value="{{ form.DetailUnitPrice.value| intcomma }}" readonly>                                   
+								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" data-empty-val="false" value="{{ form.DetailUnitPrice.value| intcomma }}">                                   
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" data-empty-val="false" value="{{ form.DetailPrice.value| intcomma }}" readonly>
+								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" data-empty-val="false" value="{{ form.DetailPrice.value| intcomma }}">
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailOverPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" data-empty-val="false" value="{{ form.DetailOverPrice.value| intcomma }}" readonly>
+								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" data-empty-val="false" value="{{ form.DetailOverPrice.value| intcomma }}">
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailSellPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" data-empty-val="false" value="{{ form.DetailSellPrice.value| intcomma }}" readonly>                                   
+								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" data-empty-val="false" value="{{ form.DetailSellPrice.value| intcomma }}">                                   
 							</td>
 							<td>
 								<input type="tel" class="form-control SpecifyDeliveryDate" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
-								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value="{{ form.SpecifyDeliveryDate.value | default_if_none:"" }}" readonly>                                   
+								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value="{{ form.SpecifyDeliveryDate.value | default_if_none:"" }}">                                   
 							</td>
 							<td>
 								<input type="tel" class="form-control StainAnswerDeadline" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
-								name="OrderingTableId-0-StainAnswerDeadline" id="id_OrderingTableId-0-StainAnswerDeadline" value="{{ form.StainAnswerDeadline.value | default_if_none:"" }}" readonly>                                   
+								name="OrderingTableId-0-StainAnswerDeadline" id="idOrderingTableId-0-StainAnswerDeadline" value="{{ form.StainAnswerDeadline.value | default_if_none:"" }}">                                   
 							</td>
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
-								name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" value="{{ form.DetailSummary.value | default_if_none:"" }}" readonly>                                   
+								name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" value="{{ form.DetailSummary.value | default_if_none:"" }}">                                   
 							</td>
 							<td class="text-center">
 								<div class="form-check">
@@ -147,10 +152,7 @@
 						{% for form in inlinesRecord %}
 						<tr class="list_var">
 							<div id="detail">
-								<td>
-									<!-- <input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">
-									<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.OrderingDetailId.value }}"> -->
-								</td>
+								<td></td>
 							</div>
 							<td>
 								<div id="div" class="fds-table__td-content">
@@ -194,7 +196,7 @@
 								{% if form.errors.ShippingVolume %}
 								{% for error in form.errors.ShippingVolume %}
 									<input type="tel" step="0.1" class="form-control is-invalid ShippingVolume text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingVolume" data-name-format="OrderingId-%d-ShippingVolume"
-									name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" data-empty-val="false" value="{{ form.ShippingVolume.value | intcomma }}">                                   
+									name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" value="{{ form.ShippingVolume.value | intcomma }}">                                   
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
@@ -265,51 +267,54 @@
 <script src="{% static '\js\datalist.js' %}" charset="UTF-8"></script>
 <script src="{% static '\js\calc.js' %}" charset="UTF-8"></script>
 <script src="{% static '\js\inputareaRequest.js' %}" charset="UTF-8"></script>
+<script src="{% static '\js\commarequest.js' %}" charset="UTF-8"></script>
 <script src="{% static '\js\tab.js' %}" charset="UTF-8"></script>
 <script src="{% static '\js\enter.js' %}" charset="UTF-8"></script>
 {% endblock %}
 <script>
-	$('.DetailItemNumber').on('click', function(){
-	$('#detail').empty();
-	var idx=$(this).closest('tr').prop('rowIndex');
-	var id = document.querySelectorAll(".OrderingId")[idx-1].value
-	// Ajax通信を開始
-	$.ajax({
-		url: "{% url 'myapp:exec' %}",
-		method: "GET",
-		// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
-		dataType: 'json',
-		// リクエストパラメータ「?param=明細id」
-		data: {
-			param: id,
-		},
-		timeout: 5000,
-	})
-	.done(function(response) {
-		// 通信成功時の処理を記述
-		$.each(response.list, function(index, list) {
-			$('#detail').append(
-				'<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-' + index + '-DELETE" id="id_OrderingId-' + index + '-DELETE">' +
-				'<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + index + '-OrderingDetailId" id="id_OrderingId-' + index + '-OrderingDetailId" value="' + list.id + '">'
-			);
+	$('.tableid').on('click', function(){
+		$('#detail').empty();
+		var idx=$(this).closest('tr').prop('rowIndex');
+		var id = document.querySelectorAll(".OrderingId")[idx -1].value
+		// Ajax通信を開始
+		$.ajax({
+			url: "{% url 'myapp:exec' %}",
+			method: "GET",
+			// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
+			dataType: 'json',
+			// リクエストパラメータ「?param=明細id」
+			data: {
+				param: id,
+			},
+			timeout: 5000,
+		})
+		.done(function(response) {
+			// 通信成功時の処理を記述
+			$.each(response.list, function(index, list) {
+				$('#detail').append(
+					'<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-' + index + '-DELETE" id="id_OrderingId-' + index + '-DELETE">' +
+					'<input type="hidden" class="OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + index + '-OrderingDetailId" id="id_OrderingId-' + index + '-OrderingDetailId" value="' + list.id + '">'
+				);
+			});
+		})
+		.fail(function() {
+			// 通信失敗時の処理を記述
+			$('#resultGET').text('GET処理失敗.');
 		});
-	})
-	.fail(function() {
-		// 通信失敗時の処理を記述
-		$('#resultGET').text('GET処理失敗.');
-	});
 	})
 </script>
 <script>
-	function Click_Sub(obj) {
-		// 背景色を黄色に設定
-		var bg_color_tmp = "rgb(255, 255, 0)";
-		if(obj.style.backgroundColor==bg_color_tmp) {
-					// 背景色が黄色の場合は白色にする
-			obj.style.backgroundColor='#ffffff';
-		} else {
-					// 背景色が黄色以外の場合（白色）は黄色にする
-			obj.style.backgroundColor=bg_color_tmp;
+	var table = document.querySelector("table");
+	var tr = table.querySelectorAll("tr");
+	table.addEventListener("click", function(e) {
+		if(e.target.tagName.toLowerCase() === "td") {
+			//まずは全て背景色白
+			for(var i = 0; i < tr.length; i++) {
+				//alert(i +': '+ tr[i].style.backgroundColor);
+				tr[i].style.backgroundColor = "white";
+			}
+			//選択行だけ色を変える
+			e.target.parentNode.style.backgroundColor = "#eef";
 		}
-	}
+	}, false);
 </script>

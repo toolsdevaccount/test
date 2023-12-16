@@ -65,6 +65,8 @@ urlpatterns = [
     path('requestresult/delete/<int:pk>/', viewsrequestresult.RequestResultDeleteView.as_view(), name='requestresultdelete'),
     # Ajax処理
     path("requestresult/new/exec/", viewsrequestresult.RequestResultCreateView.exec_ajax, name='exec'),
+    # Ajax処理
+    path("requestresult/edit/exec_result/", viewsrequestresult.RequestResultUpdateView.exec_ajax_result, name='exec_result'),
 
 ]
 

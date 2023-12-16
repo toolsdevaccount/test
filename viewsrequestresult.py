@@ -9,9 +9,9 @@ from django.db.models import Q
 from django.utils import timezone
 import datetime
 from datetime import date
+
 # forms
-#from .forms import OrderingFormset
-from .formsrequestresult import RequestResultForm, RequestResultFormset, RequestRecordFormset, SearchForm
+from .formsrequestresult import RequestResultForm, RequestRecordFormset, RequestResultFormset, SearchForm
 # Transaction
 from django.db import transaction
 # SQL直接実行
@@ -131,12 +131,11 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
     formset_class = RequestResultFormset
     inlinesRecord_class = RequestRecordFormset
     template_name = "crud/requestresult/new/requestresultform.html"
-   
+  
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         context = super(RequestResultCreateView, self).get_context_data(**kwargs)
         context.update(dict(formset=RequestResultFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))),
-                       #inlinesRecord=RequestRecordFormset(self.request.POST or None, instance=self.get_object(), queryset=RequestResult.objects.filter(is_Deleted=0)),
                        inlinesRecord=RequestRecordFormset(self.request.POST or None),
                        DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                        SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
@@ -144,13 +143,13 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
                        CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
                        RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                        StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
-                       )
+                       ) 
         return context
 
     def exec_ajax(request):
         if request.method == 'GET':  # GETの処理
             param = request.GET.get("param")  # GETパラメータ
-            # カラーとサイズを取得する
+            #
             def dictfetchall(cursor):
                 "Return all rows from a cursor as a dict"
                 columns = [col[0] for col in cursor.description]
@@ -158,7 +157,7 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
                     dict(zip(columns, row))
                     for row in cursor.fetchall()
                 ]
-            # カラーとサイズを取得するSQL
+            # 取得するSQL
             with connection.cursor() as cursor:
                 cursor.execute(
                                 " select "
@@ -179,31 +178,43 @@ class RequestResultCreateView(LoginRequiredMixin,UpdateView):
 
             return JsonResponse(context)
 
-
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
-        formset = RequestResultFormset(self.request.POST,instance=post) 
+        #formset = RequestResultFormset(self.request.POST,instance=post) 
         inlinesRecord = RequestRecordFormset(self.request.POST,instance=post)
 
-        if self.request.method == 'POST' and inlinesRecord.is_valid(): 
-            instances = inlinesRecord.save(commit=False)
-            
-            if form.is_valid():       
+        if self.request.method == 'POST' and inlinesRecord.is_valid():
+            if inlinesRecord.is_valid():
+                instances = inlinesRecord.save(commit=False)
+                # 明細のfileを取り出して更新
                 for file in instances:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
+                    if not file.OrderingDetailId_id is None:
+                        file.Created_id = self.request.user.id
+                        file.Updated_id = self.request.user.id
+                        file.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+
+                        file.save()
         else:
             # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinesRecord=inlinesRecord))
-
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
         return redirect('myapp:requestresultlist')
 
     # バリデーションエラー時
     def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+        context = self.get_context_data(form=form)
+        context["formset"] = RequestResultFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0)),
+        context["DestinationCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["SupplierCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
+        context["ShippingCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["CustomerCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode')
+        context["RequestCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+        context["StainShippingCode"] = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+
+        return self.render_to_response(context)
+        #return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
 
 # 受発注情報編集
 class RequestResultUpdateView(LoginRequiredMixin,UpdateView):
@@ -214,8 +225,13 @@ class RequestResultUpdateView(LoginRequiredMixin,UpdateView):
 
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
+        pk = self.kwargs.get("pk")
+        queryset = RequestResult.objects.filter(is_Deleted=0, OrderingId_id=pk)       
+        abc = queryset.values_list("OrderingDetailId_id",flat=True).first()
+
         context = super(RequestResultUpdateView, self).get_context_data(**kwargs)
         context.update(dict(formset=RequestResultFormset(self.request.POST or None, instance=self.get_object(), queryset=OrderingDetail.objects.filter(is_Deleted=0))),
+                       inlinesRecord=RequestRecordFormset(self.request.POST or None, instance=self.get_object(), queryset=RequestResult.objects.filter(is_Deleted=0, OrderingDetailId_id=abc)),
                        DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                        SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
                        ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
@@ -225,39 +241,92 @@ class RequestResultUpdateView(LoginRequiredMixin,UpdateView):
                        )
         return context
 
+    def exec_ajax_result(request):
+        if request.method == 'GET':  # GETの処理
+            param = request.GET.get("param")  # GETパラメータ
+            #
+            def dictfetchall(cursor):
+                "Return all rows from a cursor as a dict"
+                columns = [col[0] for col in cursor.description]
+                return [
+                    dict(zip(columns, row))
+                    for row in cursor.fetchall()
+                ]
+            # 取得するSQL
+            with connection.cursor() as cursor:
+                cursor.execute(
+                                " select "
+                                    " id                    AS id, "
+                                    " ResultItemNumber      AS ResultItemNumber, "
+                                    " ResultDate            AS ResultDate, "
+                                    " ShippingDate          AS ShippingDate, "
+                                    " ShippingVolume        AS ShippingVolume, "
+                                    " SlipNumber            AS SlipNumber, "
+                                    " ResultSummary         AS ResultSummary, "
+                                    " ResultMoveDiv         AS ResultMoveDiv, "
+                                    " ResultGainDiv         AS ResultGainDiv, "
+                                    " ResultDecreaseDiv     AS ResultDecreaseDiv, "
+                                    " OrderingDetailId_id   AS OrderingDetailId_id "
+                                " from " 
+                                    " myapp_requestresult "
+                                " where "
+                                "     OrderingDetailId_id = %s "
+                            , [str(param)])
+                detail = dictfetchall(cursor)
+
+            context = {
+                'list': detail,
+            }
+
+            return JsonResponse(context)
+
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
-        formset = RequestResultFormset(self.request.POST,instance=post) 
+        #formset = RequestResultFormset(self.request.POST,instance=post) 
+        inlinesRecord = RequestRecordFormset(self.request.POST,instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid(): 
-            instances = formset.save(commit=False)
-           
-            if form.is_valid():
-                post.OrderNumber = post.OrderNumber.zfill(7)
-                # Updated_idフィールドはログインしているユーザidとする
-                post.Updated_id = self.request.user.id
-                # Updated_atは現在日付時刻とする
-                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
-                post.save()
-
-                # 削除チェックがついたfileを取り出して更新
-                for file in formset.deleted_objects:
-                    file.Updated_id = self.request.user.id
-                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.is_Deleted = True
-                    file.save()
-
+        if self.request.method == 'POST' and inlinesRecord.is_valid():
+            if inlinesRecord.is_valid():
+                instances = inlinesRecord.save(commit=False)
                 # 明細のfileを取り出して更新
                 for file in instances:
-                    file.DetailItemNumber = file.DetailItemNumber.zfill(4)
                     file.Updated_id = self.request.user.id
                     file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
                     file.save()
         else:
+            # is_validがFalseの場合はエラー文を表示
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
         return redirect('myapp:requestresultlist')
+
+        #if self.request.method == 'POST' and formset.is_valid(): 
+        #    instances = formset.save(commit=False)
+           
+        #    if form.is_valid():
+        #        post.OrderNumber = post.OrderNumber.zfill(7)
+        #        # Updated_idフィールドはログインしているユーザidとする
+        #        post.Updated_id = self.request.user.id
+        #        # Updated_atは現在日付時刻とする
+        #        post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時               
+        #        post.save()
+
+                # 削除チェックがついたfileを取り出して更新
+        #        for file in formset.deleted_objects:
+        #            file.Updated_id = self.request.user.id
+        #            file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+        #            file.is_Deleted = True
+        #            file.save()
+
+                # 明細のfileを取り出して更新
+        #        for file in instances:
+        #            file.DetailItemNumber = file.DetailItemNumber.zfill(4)
+        #            file.Updated_id = self.request.user.id
+        #            file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+        #            file.save()
+        #else:
+        #    return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
+        #return redirect('myapp:requestresultlist')
 
     # バリデーションエラー時
     def form_invalid(self,form):
