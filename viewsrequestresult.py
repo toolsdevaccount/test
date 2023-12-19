@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from django.views.generic import ListView, CreateView, UpdateView
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, UpdateView
 from .models import OrderingTable, OrderingDetail, CustomerSupplier, RequestResult
 from django.contrib.auth.mixins import LoginRequiredMixin
 

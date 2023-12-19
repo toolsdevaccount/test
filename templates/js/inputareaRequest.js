@@ -13,6 +13,18 @@ $(function(){
         //フォームを送信する直前 tableの行数を取得
         var row = tblrow.rows.length -1;                    //表題分差引く
         $('[name=OrderingId-TOTAL_FORMS]').val(row);        // 行数を書き換えてPOST
+
+        //明細行選択チェック
+        var table = document.querySelector("table");
+        var tr = table.querySelectorAll("tr");
+        for(var i = 0; i < tr.length; i++) {
+            var item = tr[i].style.backgroundColor;
+            if(item=='rgb(238, 238, 255)'){
+                return;
+            }
+        }
+        alert("明細行が選択されていません.");
+        return false;
     });
 
     $('#list').addInputArea({
