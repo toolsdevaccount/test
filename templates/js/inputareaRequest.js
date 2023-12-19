@@ -1,7 +1,16 @@
 $(function(){
-    $('#form').submit(function() {  	                    //フォームを送信する直前 tableの行数を取得
-		var row = detailtblrow.rows.length -1;              //表題分差引く
-        $('[name=OrderingTableId-TOTAL_FORMS]').val(row);   // 行数を書き換えてPOST
+    $('#form').submit(function() {
+        var DetailUnitPrice = removeComma($(".DetailUnitPrice").val());
+        var DetailPrice = removeComma($(".DetailPrice").val());
+        var DetailOverPrice = removeComma($(".DetailOverPrice").val());
+        var DetailSellPrice = removeComma($(".DetailSellPrice").val());
+
+        $(".DetailUnitPrice").val(DetailUnitPrice);
+        $(".DetailPrice").val(DetailPrice);
+        $(".DetailOverPrice").val(DetailOverPrice);
+        $(".DetailSellPrice").val(DetailSellPrice);
+
+        //フォームを送信する直前 tableの行数を取得
         var row = tblrow.rows.length -1;                    //表題分差引く
         $('[name=OrderingId-TOTAL_FORMS]').val(row);        // 行数を書き換えてPOST
     });
@@ -11,13 +20,16 @@ $(function(){
             var tbl = document.querySelector('#tblrow');
             var num = tbl.querySelectorAll('.ResultItemNumber').length;
             var item = tbl.querySelectorAll('.ResultItemNumber')[num -2].value;
-                item = parseInt(item ,10) +1;
+                item = parseInt(item ,10);
             // 項番に前ゼロ付加
             var result = item.toString().padStart( 4, '0');
             tbl.querySelectorAll('.ResultItemNumber')[num -1].value = result;
             // OrderingDetailId取得し、追加行に設定する
             var id = document.getElementById('id_OrderingId-' + [num -2] + '-OrderingDetailId').value;
             document.getElementById('id_OrderingId-' + [num -1] + '-OrderingDetailId').value = id;
+            // id値削除
+            list = document.getElementById('id_OrderingId-' + [num -1] + '-id');
+            list.remove();
 
             // 出荷日datepicker
             var ShippingDate = document.getElementsByClassName('ShippingDate');
@@ -48,20 +60,4 @@ $(function(){
             });
         }
     });
-});
-
-$('.DeliveryManageDiv').click(function() {
-    if($(".DeliveryManageDiv").prop('checked')){
-        $(".DeliveryManageDiv").val(1);
-    } else {
-        $(".DeliveryManageDiv").val(0);
-    }           
-});
-
-$('.PrintDiv').click(function() {
-    if($(".PrintDiv").prop('checked')){
-        $(".PrintDiv").val(1);
-    } else {
-        $(".PrintDiv").val(0);
-    }           
 });

@@ -32,15 +32,3 @@
     {
         return removeComma(detail(obj).querySelectorAll(".DetailSellPrice")[0].value);
     }
-
-    $('#form').submit(function(){
-        var DetailUnitPrice = removeComma($(".DetailUnitPrice").val());
-        var DetailPrice = removeComma($(".DetailPrice").val());
-        var DetailOverPrice = removeComma($(".DetailOverPrice").val());
-        var DetailSellPrice = removeComma($(".DetailSellPrice").val());
-
-        $(".DetailUnitPrice").val(DetailUnitPrice);
-        $(".DetailPrice").val(DetailPrice);
-        $(".DetailOverPrice").val(DetailOverPrice);
-        $(".DetailSellPrice").val(DetailSellPrice);
-    });

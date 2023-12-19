@@ -132,9 +132,7 @@
 						<td>{{ OrderTable.ShippingCode.CustomerOmitName }}</td>
 						<td>{{ OrderTable.RequestCode.CustomerOmitName }}</td>
 						<td class="text-center">
-							<span><button type="button" class="btn btn-outline-success btn-sm" onclick="location.href='{% url 'myapp:requestresultnew' pk=OrderTable.id %}'">登録</button></span>
 							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:requestresultedit' pk=OrderTable.id %}'">詳細</button></span>
-							<span><button type="button" class="btn btn-outline-danger btn-sm"  onclick="location.href='{% url 'myapp:orderingdelete' pk=OrderTable.id %}'">削除</button></span>
 						</td>
 					</tr>
 					{% endfor %}

@@ -2,7 +2,6 @@
 {% load humanize %}
 <div class="container-fluid">
 	<div class="form-group">
-		<input type="hidden" name="OrderingTableId-TOTAL_FORMS" id="OrderingTableId-TOTAL_FORMS">
 		{{ formset.management_form }}	
 		<div class="table-responsive table-container">
 			<div class="table-sticky-container-small">
@@ -135,10 +134,11 @@
 					<thead>
 						<tr>
 							<th scope="col" class="text-center" style="width: 2%"></th>
+							<th scope="col" class="text-center" style="width: 4%">削除</th>
 							<th scope="col" class="text-center" style="width: 5%">項番</th>
 							<th scope="col" class="text-center" style="width: 15%">実績日</th>
 							<th scope="col" class="text-center" style="width: 15%">出荷日</th>
-							<th scope="col" class="text-center" style="width: 13%">出荷数</th>
+							<th scope="col" class="text-center" style="width: 10%">出荷数</th>
 							<th scope="col" class="text-center" style="width: 10%">伝票番号</th>
 							<th scope="col" class="text-center" style="width: 20%">摘　　要</th>
 							<th scope="col" class="text-center" style="width: 5%">移動</th>
@@ -154,11 +154,14 @@
 							<input type="hidden" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" name="OrderingId-0-DELETE" id="id_OrderingId-0-DELETE">
 							<input type="hidden" data-id-format="id_OrderingId-%d-id" data-name-format="OrderingId-%d-id" name="OrderingId-0-id" id="id_OrderingId-0-id" value="{{ form.id.value }}">
 							{% endif %}
-							<div id="detail">
-								<td>
-									<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.OrderingDetailId.value }}">
-								</td>
-							</div>
+							<td id="detail">
+								<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="{{ form.OrderingDetailId.value }}">
+							</td>
+							<td class="text-center">
+								<div class="form-check">
+									<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" id="id_OrderingId-0-DELETE" name="OrderingId-0-DELETE">
+								</div>
+							</td>
 							<td>
 								<div id="div" class="fds-table__td-content">
 								{% if form.errors.ResultItemNumber %}
@@ -201,12 +204,12 @@
 								{% if form.errors.ShippingVolume %}
 								{% for error in form.errors.ShippingVolume %}
 									<input type="tel" step="0.1" class="form-control is-invalid ShippingVolume text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingVolume" data-name-format="OrderingId-%d-ShippingVolume"
-									name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" data-empty-val="false" value="{{ form.ShippingVolume.value | intcomma }}">                                   
+									name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" value="{{ form.ShippingVolume.value | intcomma }}">                                   
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 									<input type="tel" step="0.1" class="form-control ShippingVolume text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingVolume" data-name-format="OrderingId-%d-ShippingVolume" 
-									name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" data-empty-val="false" value="{{ form.ShippingVolume.value | intcomma }}">                                   
+									name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" value="{{ form.ShippingVolume.value | intcomma }}">                                   
 								{% endif %}
 							</td>
 							<td>
@@ -235,17 +238,29 @@
 							</td>
 							<td class="text-center">
 								<div class="form-check">
-									<input type="checkbox" class="form-check-input ResultMoveDiv" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-0-ResultMoveDiv" name="OrderingId-0-ResultMoveDiv">
+									{% if form.ResultMoveDiv.value == 1 %}
+									<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-0-ResultMoveDiv" name="OrderingId-0-ResultMoveDiv" checked>
+									{% else %}
+									<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-0-ResultMoveDiv" name="OrderingId-0-ResultMoveDiv">
+									{% endif %}
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="form-check">
-									<input type="checkbox" class="form-check-input ResultGainDiv" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-0-ResultGainDiv" name="OrderingId-0-ResultGainDiv">
+									{% if form.ResultGainDiv.value == 1 %}
+									<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-0-ResultGainDiv" name="OrderingId-0-ResultGainDiv" checked>
+									{% else %}
+									<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-0-ResultGainDiv" name="OrderingId-0-ResultGainDiv">
+									{% endif %}
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="form-check">
-									<input type="checkbox" class="form-check-input ResultDecreaseDiv" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-0-ResultDecreaseDiv" name="OrderingId-0-ResultDecreaseDiv">
+									{% if form.ResultDecreaseDiv.value == 1 %}
+									<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-0-ResultDecreaseDiv" name="OrderingId-0-ResultDecreaseDiv" checked>
+									{% else %}
+									<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-0-ResultDecreaseDiv" name="OrderingId-0-ResultDecreaseDiv">
+									{% endif %}
 								</div>
 							</td>
 							<td>
@@ -259,8 +274,6 @@
 		</div>
 	</div>
 </div>
-{% endblock %}
-{% block extrajs %}
 <!-- Datepicker 追加-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -277,107 +290,9 @@
 <script src="{% static '\js\enter.js' %}" charset="UTF-8"></script>
 {% endblock %}
 <script>
-	$('.tableid').on('click', function(){
-		$('#detail').empty();
-		$('#list').empty();
-		var idx=$(this).closest('tr').prop('rowIndex');
-		var id = document.querySelectorAll(".OrderingId")[idx -1].value
-		// Ajax通信を開始
-		$.ajax({
-			url: "{% url 'myapp:exec_result' %}",
-			method: "GET",
-			// プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
-			dataType: 'json',
-			// リクエストパラメータ「?param=明細id」
-			data: {
-				param: id,
-			},
-			timeout: 5000,
-		})
-		.done(function(response) {
-			if(response.list.length==0){
-				$('#list').empty();
-				texthtml = ''
-				texthtml = texthtml + '<tr class="list_var">';
-				texthtml = texthtml + '	<td id="detail"> ';
-				texthtml = texthtml + '		<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" data-empty-val="false" value=' + id + '>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control ResultItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingId-%d-ResultItemNumber" data-name-format="OrderingId-%d-ResultItemNumber" name="OrderingId-0-ResultItemNumber" id="id_OrderingId-0-ResultItemNumber" value=""></td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control ResultDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultDate" data-name-format="OrderingId-%d-ResultDate" name="OrderingId-0-ResultDate" id="id_OrderingId-0-ResultDate" value=""></td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control ShippingDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingDate" data-name-format="OrderingId-%d-ShippingDate" name="OrderingId-0-ShippingDate" id="id_OrderingId-0-ShippingDate" value=""></td>';                                  
-				texthtml = texthtml + '	<td><input type="tel" step="0.1" class="form-control ShippingVolume text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingVolume" data-name-format="OrderingId-%d-ShippingVolume" name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" data-empty-val="false" value={{"" | intcomma }}></td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control SlipNumber text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-SlipNumber" data-name-format="OrderingId-%d-SlipNumber" name="OrderingId-0-SlipNumber" id="id_OrderingId-0-SlipNumber" value={{"" | default_if_none:"" }}></td>';
-				texthtml = texthtml + '	<td><input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultSummary" data-name-format="OrderingId-%d-ResultSummary"	name="OrderingId-0-ResultSummary" id="id_OrderingId-0-ResultSummary" value={{"" | default_if_none:"" }}></td>';
-				texthtml = texthtml + '	<td class="text-center">';
-				texthtml = texthtml + '		<div class="form-check">';
-				texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultMoveDiv" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-0-ResultMoveDiv" name="OrderingId-0-ResultMoveDiv">';
-				texthtml = texthtml + '		</div>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td class="text-center">';
-				texthtml = texthtml + '		<div class="form-check">';
-				texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultGainDiv" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-0-ResultGainDiv" name="OrderingId-0-ResultGainDiv">';
-				texthtml = texthtml + '		</div>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td class="text-center">';
-				texthtml = texthtml + '		<div class="form-check">';
-				texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultDecreaseDiv" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-0-ResultDecreaseDiv" name="OrderingId-0-ResultDecreaseDiv">';
-				texthtml = texthtml + '		</div>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td>';
-				texthtml = texthtml + '		<span class="list_del"><button type="button" class="btn btn-outline-danger btn-sm">削除</button></span>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '</tr>';
-				$('#list').append(texthtml);
-
-				$('#detail').append(
-					'<input type="hidden" class="OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="' + id + '">'
-				);
-			}
-			// 通信成功時の処理を記述
-			$.each(response.list, function(index, list) {
-				texthtml = ''
-				texthtml = texthtml + '<tr class="list_var">';
-				texthtml = texthtml + '	<td id="detail"> ';
-				texthtml = texthtml + '		<input type="hidden" data-id-format="id_OrderingId-%d-id" data-name-format="OrderingId-%d-id" name="OrderingId-' + index + '-id" id="id_OrderingId-' + index + '-id" data-empty-val="false" value=' +  list.id + '>';
-				texthtml = texthtml + '		<input type="hidden" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + index + '-OrderingDetailId" id="id_OrderingId-' + index + '-OrderingDetailId" data-empty-val="false" value=' + id + '>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control ResultItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingId-%d-ResultItemNumber" data-name-format="OrderingId-%d-ResultItemNumber" name="OrderingId-' + index + '-ResultItemNumber" id="id_OrderingId-' + index + '-ResultItemNumber" value={{"' + list.ResultItemNumber + '"}}></td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control ResultDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultDate" data-name-format="OrderingId-%d-ResultDate" name="OrderingId-' + index + '-ResultDate" id="id_OrderingId-' + index + '-ResultDate" value={{"' + list.ResultDate + '"}}></td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control ShippingDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingDate" data-name-format="OrderingId-%d-ShippingDate" name="OrderingId-' + index + '-ShippingDate" id="id_OrderingId-' + index + '-ShippingDate" value={{"' + list.ShippingDate + '"}}></td>';                                  
-				texthtml = texthtml + '	<td><input type="tel" step="0.1" class="form-control ShippingVolume text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingVolume" data-name-format="OrderingId-%d-ShippingVolume" name="OrderingId-' + index + '-ShippingVolume" id="id_OrderingId-' + index + '-ShippingVolume" data-empty-val="false" value={{"' + list.ShippingVolume + '" | intcomma }}></td>';
-				texthtml = texthtml + '	<td><input type="tel" class="form-control SlipNumber text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-SlipNumber" data-name-format="OrderingId-%d-SlipNumber" name="OrderingId-' + index + '-SlipNumber" id="id_OrderingId-' + index + '-SlipNumber" value={{"' + list.SlipNumber + '" | default_if_none:"" }}></td>';
-				texthtml = texthtml + '	<td><input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultSummary" data-name-format="OrderingId-%d-ResultSummary"	name="OrderingId-' + index + '-ResultSummary" id="id_OrderingId-' + index + '-ResultSummary" value={{"' + list.ResultSummary + '" | default_if_none:"" }}></td>';
-				texthtml = texthtml + '	<td class="text-center">';
-				texthtml = texthtml + '		<div class="form-check">';
-				texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultMoveDiv" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-' + index + '-ResultMoveDiv" name="OrderingId-' + index + '-ResultMoveDiv">';
-				texthtml = texthtml + '		</div>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td class="text-center">';
-				texthtml = texthtml + '		<div class="form-check">';
-				texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultGainDiv" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-' + index + '-ResultGainDiv" name="OrderingId-' + index + '-ResultGainDiv">';
-				texthtml = texthtml + '		</div>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td class="text-center">';
-				texthtml = texthtml + '		<div class="form-check">';
-				texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultDecreaseDiv" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-' + index + '-ResultDecreaseDiv" name="OrderingId-' + index + '-ResultDecreaseDiv">';
-				texthtml = texthtml + '		</div>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '	<td>';
-				texthtml = texthtml + '		<span class="list_del"><button type="button" class="btn btn-outline-danger btn-sm">削除</button></span>';
-				texthtml = texthtml + '	</td>';
-				texthtml = texthtml + '</tr>';
-				$('#list').append(texthtml);
-			});
-		})
-		.fail(function() {
-			// 通信失敗時の処理を記述
-			$('#resultGET').text('GET処理失敗.');
-		});
-	})
-</script>
-<script>
-	var table = document.querySelector("table");
+    var table = document.querySelector("table");
 	var tr = table.querySelectorAll("tr");
+	var item;
 	table.addEventListener("click", function(e) {
 		if(e.target.tagName.toLowerCase() === "td") {
 			//まずは全て背景色白
@@ -386,6 +301,192 @@
 			}
 			//選択行だけ色を変える
 			e.target.parentNode.style.backgroundColor = "#eef";
+			item = e.target.parentNode.rowIndex;
 		}
 	}, false);
+</script>
+<script>
+	$('.tableid').on('click', function(){
+        var idx=$(this).closest('tr').prop('rowIndex');
+        var id = document.querySelectorAll(".OrderingId")[idx -1].value;
+        var texthtml = '';
+
+        $('#list').empty();
+
+        // Ajax通信を開始
+        $.ajax({
+            url: "{% url 'myapp:exec_result' %}",
+            method: "GET",
+            // プレーンテキストを受信（他にはhtml、xml、script、json、jsonp等）
+            dataType: 'json',
+            // リクエストパラメータ「?param=明細id」
+            data: {
+                param: id,
+            },
+            timeout: 5000,
+        })
+		// 通信成功時の処理を記述
+		.done(function(response) {
+            if(response.list.length==0){
+				// 項番作成
+				item = parseInt(item ,10);
+				var result = item.toString().padStart( 4, '0');
+
+				//HTML要素
+                texthtml = ''
+				texthtml = texthtml + '<tr class="list_var">';
+                texthtml = texthtml + '	<td id="detail"> ';
+                texthtml = texthtml + '		<input type="hidden" data-id-format="id_OrderingId-%d-id" data-name-format="OrderingId-%d-id" name="OrderingId-0-id" id="id_OrderingId-0-id">';
+                texthtml = texthtml + '		<input type="hidden" class="OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-0-OrderingDetailId" id="id_OrderingId-0-OrderingDetailId" value="' + id + '">';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td class="text-center">';
+				texthtml = texthtml + '		<div class="form-check">';
+				texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" id="id_OrderingId-0-DELETE" name="OrderingId-0-DELETE">';
+				texthtml = texthtml + '		</div>';
+				texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control ResultItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingId-%d-ResultItemNumber" data-name-format="OrderingId-%d-ResultItemNumber" name="OrderingId-0-ResultItemNumber" id="id_OrderingId-0-ResultItemNumber" value=' + result + '></td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control ResultDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultDate" data-name-format="OrderingId-%d-ResultDate" name="OrderingId-0-ResultDate" id="id_OrderingId-0-ResultDate" value=""></td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control ShippingDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingDate" data-name-format="OrderingId-%d-ShippingDate" name="OrderingId-0-ShippingDate" id="id_OrderingId-0-ShippingDate" value=""></td>';                                  
+                texthtml = texthtml + '	<td><input type="tel" step="0.1" class="form-control ShippingVolume text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingVolume" data-name-format="OrderingId-%d-ShippingVolume" name="OrderingId-0-ShippingVolume" id="id_OrderingId-0-ShippingVolume" data-empty-val="false" value="{{"0.0" | intcomma }}"></td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control SlipNumber text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-SlipNumber" data-name-format="OrderingId-%d-SlipNumber" name="OrderingId-0-SlipNumber" id="id_OrderingId-0-SlipNumber" value={{"" | default_if_none:"" }}></td>';
+                texthtml = texthtml + '	<td><input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultSummary" data-name-format="OrderingId-%d-ResultSummary"	name="OrderingId-0-ResultSummary" id="id_OrderingId-0-ResultSummary" value={{"" | default_if_none:"" }}></td>';
+                texthtml = texthtml + '	<td class="text-center">';
+                texthtml = texthtml + '		<div class="form-check">';
+                texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultMoveDiv" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-0-ResultMoveDiv" name="OrderingId-0-ResultMoveDiv">';
+                texthtml = texthtml + '		</div>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td class="text-center">';
+                texthtml = texthtml + '		<div class="form-check">';
+                texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultGainDiv" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-0-ResultGainDiv" name="OrderingId-0-ResultGainDiv">';
+                texthtml = texthtml + '		</div>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td class="text-center">';
+                texthtml = texthtml + '		<div class="form-check">';
+                texthtml = texthtml + '			<input type="checkbox" class="form-check-input ResultDecreaseDiv" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-0-ResultDecreaseDiv" name="OrderingId-0-ResultDecreaseDiv">';
+                texthtml = texthtml + '		</div>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td>';
+                texthtml = texthtml + '		<span class="list_del"><button type="button" class="btn btn-outline-danger btn-sm">削除</button></span>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '</tr>';
+                $('#list').empty();
+                $('#list').append(texthtml);
+                // Formの値を書き換える
+                $('input:hidden[name="OrderingId-TOTAL_FORMS"]').val(1);
+                $('input:hidden[name="OrderingId-INITIAL_FORMS"]').val(0);
+
+				// 出荷日datepicker
+				var ShippingDate = document.getElementsByClassName('ShippingDate');
+				var fp = flatpickr(ShippingDate, {
+					'locale': 'ja',
+					allowInput: true,
+					// onCloseは入力フォームが閉じられた時に発火する
+					onClose: (selectedDates, dateStr, instance) => {
+						if (selectedDates.length === 1) {
+							// プロパティにユーザーが選択した日付を代入
+							this.dateProps = selectedDates[0];
+						}
+					}
+				});
+				// 実績日datepicker
+				var ResultDate = document.getElementsByClassName('ResultDate');
+				var fp = flatpickr(ResultDate, {
+					'locale': 'ja',
+					allowInput: true,
+					// onCloseは入力フォームが閉じられた時に発火する
+					onClose: (selectedDates, dateStr, instance) => {
+						if (selectedDates.length === 1) {
+							// プロパティにユーザーが選択した日付を代入
+							this.dateProps = selectedDates[0];
+						}
+					}
+				});
+            }
+            $.each(response.list, function(index, list) {
+                texthtml = '';
+                texthtml = texthtml + '<tr class="list_var">';
+                texthtml = texthtml + '	<td id="detail"> ';
+                texthtml = texthtml + '		<input type="hidden" data-id-format="id_OrderingId-%d-id" data-name-format="OrderingId-%d-id" name="OrderingId-' + index + '-id" id="id_OrderingId-' + index + '-id" value=' + list.id + '>';
+                texthtml = texthtml + '		<input type="hidden" class="OrderingDetailId" data-id-format="id_OrderingId-%d-OrderingDetailId" data-name-format="OrderingId-%d-OrderingDetailId" name="OrderingId-' + index + '-OrderingDetailId" id="id_OrderingId-' + index + '-OrderingDetailId" value=' + id + '>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td class="text-center">';
+				texthtml = texthtml + '		<div class="form-check">';
+				texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-DELETE" data-name-format="OrderingId-%d-DELETE" id="id_OrderingId-' + index + '-DELETE" name="OrderingId-' + index + '-DELETE">';
+				texthtml = texthtml + '		</div>';
+				texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control ResultItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingId-%d-ResultItemNumber" data-name-format="OrderingId-%d-ResultItemNumber" name="OrderingId-' + index + '-ResultItemNumber" id="id_OrderingId-' + index + '-ResultItemNumber" value="{{"' + list.ResultItemNumber + '"}}"></td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control ResultDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultDate" data-name-format="OrderingId-%d-ResultDate" name="OrderingId-' + index + '-ResultDate" id="id_OrderingId-' + index + '-ResultDate" value="{{"' + list.ResultDate + '"}}"></td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control ShippingDate" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingDate" data-name-format="OrderingId-%d-ShippingDate" name="OrderingId-' + index + '-ShippingDate" id="id_OrderingId-' + index + '-ShippingDate" value="{{"' + list.ShippingDate + '"}}"></td>';                                  
+                texthtml = texthtml + '	<td><input type="tel" step="0.1" class="form-control ShippingVolume text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-ShippingVolume" data-name-format="OrderingId-%d-ShippingVolume" name="OrderingId-' + index + '-ShippingVolume" id="id_OrderingId-' + index + '-ShippingVolume" value="{{"' + list.ShippingVolume + '" | intcomma }}"></td>';
+                texthtml = texthtml + '	<td><input type="tel" class="form-control SlipNumber text-right" autocomplete="new-password" data-id-format="id_OrderingId-%d-SlipNumber" data-name-format="OrderingId-%d-SlipNumber" name="OrderingId-' + index + '-SlipNumber" id="id_OrderingId-' + index + '-SlipNumber" value="{{"' + list.SlipNumber + '" | default_if_none:"" }}"></td>';
+                texthtml = texthtml + '	<td><input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingId-%d-ResultSummary" data-name-format="OrderingId-%d-ResultSummary"	name="OrderingId-' + index + '-ResultSummary" id="id_OrderingId-' + index + '-ResultSummary" value="{{"' + list.ResultSummary + '" | default_if_none:"" }}"></td>';
+                texthtml = texthtml + '	<td class="text-center">';
+                texthtml = texthtml + '		<div class="form-check">';
+                if(list.ResultMoveDiv===1){
+                    texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-' + index + '-ResultMoveDiv" name="OrderingId-' + index + '-ResultMoveDiv" checked="checked">';
+                }else{
+                    texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultMoveDiv" data-name-format="OrderingId-%d-ResultMoveDiv" id="id_OrderingId-' + index + '-ResultMoveDiv" name="OrderingId-' + index + '-ResultMoveDiv">';
+                }
+                texthtml = texthtml + '		</div>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td class="text-center">';
+                texthtml = texthtml + '		<div class="form-check">';
+                if(list.ResultGainDiv===1){
+                    texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-' + index + '-ResultGainDiv" name="OrderingId-' + index + '-ResultGainDiv" checked="checked">';
+                }else{
+                    texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultGainDiv" data-name-format="OrderingId-%d-ResultGainDiv" id="id_OrderingId-' + index + '-ResultGainDiv" name="OrderingId-' + index + '-ResultGainDiv">';
+
+                }
+                texthtml = texthtml + '		</div>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td class="text-center">';
+                texthtml = texthtml + '		<div class="form-check">';
+                if(list.ResultDecreaseDiv===1){
+                    texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-' + index + '-ResultDecreaseDiv" name="OrderingId-' + index + '-ResultDecreaseDiv"  checked="checked">';
+                }else{
+                    texthtml = texthtml + '			<input type="checkbox" class="form-check-input position-static" data-id-format="id_OrderingId-%d-ResultDecreaseDiv" data-name-format="OrderingId-%d-ResultDecreaseDiv" id="id_OrderingId-' + index + '-ResultDecreaseDiv" name="OrderingId-' + index + '-ResultDecreaseDiv">';
+                }
+                texthtml = texthtml + '		</div>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '	<td>';
+                texthtml = texthtml + '		<span class="list_del"><button type="button" class="btn btn-outline-danger btn-sm">削除</button></span>';
+                texthtml = texthtml + '	</td>';
+                texthtml = texthtml + '</tr>';
+                $('#list').append(texthtml);
+                // Formの値を書き換える
+                $('input:hidden[name="OrderingId-INITIAL_FORMS"]').val([index +1]);
+
+				// 出荷日datepicker
+				var ShippingDate = document.getElementsByClassName('ShippingDate');
+				var fp = flatpickr(ShippingDate, {
+					'locale': 'ja',
+					allowInput: true,
+					// onCloseは入力フォームが閉じられた時に発火する
+					onClose: (selectedDates, dateStr, instance) => {
+						if (selectedDates.length === 1) {
+							// プロパティにユーザーが選択した日付を代入
+							this.dateProps = selectedDates[0];
+						}
+					}
+				});
+				// 実績日datepicker
+				var ResultDate = document.getElementsByClassName('ResultDate');
+				var fp = flatpickr(ResultDate, {
+					'locale': 'ja',
+					allowInput: true,
+					// onCloseは入力フォームが閉じられた時に発火する
+					onClose: (selectedDates, dateStr, instance) => {
+						if (selectedDates.length === 1) {
+							// プロパティにユーザーが選択した日付を代入
+							this.dateProps = selectedDates[0];
+						}
+					}
+				});
+            });
+        })
+        .fail(function() {
+            // 通信失敗時の処理を記述
+            $('#resultGET').text('GET処理失敗.');
+        });
+    })	
 </script>

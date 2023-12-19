@@ -58,15 +58,15 @@ urlpatterns = [
     # 受発注一覧
     path('requestresult/list/', viewsrequestresult.RequestResultListView.as_view(), name='requestresultlist'),
     # 受発注登録
-    path('requestresult/new/<int:pk>/', viewsrequestresult.RequestResultCreateView.as_view(), name='requestresultnew'),
+    #path('requestresult/new/<int:pk>/', viewsrequestresult.RequestResultCreateView.as_view(), name='requestresultnew'),
     # 受発注編集
     path('requestresult/edit/<int:pk>/', viewsrequestresult.RequestResultUpdateView.as_view(), name='requestresultedit'),
-    # 受発注削除
-    path('requestresult/delete/<int:pk>/', viewsrequestresult.RequestResultDeleteView.as_view(), name='requestresultdelete'),
-    # Ajax処理
-    path("requestresult/new/exec/", viewsrequestresult.RequestResultCreateView.exec_ajax, name='exec'),
     # Ajax処理
     path("requestresult/edit/exec_result/", viewsrequestresult.RequestResultUpdateView.exec_ajax_result, name='exec_result'),
+    # 受発注削除
+    #path('requestresult/delete/<int:pk>/', viewsrequestresult.RequestResultDeleteView.as_view(), name='requestresultdelete'),
+    # Ajax処理
+    #path("requestresult/new/exec/", viewsrequestresult.RequestResultCreateView.exec_ajax, name='exec'),
 
 ]
 
