@@ -31,7 +31,7 @@ class DivSampleClass(models.Model):
         return str(self.divcode)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
-        return reverse('crud/ordering/list/corderinglist.html')
+        return reverse('crud/ordering/list/orderinglist.html')
 
 #2023-11-24 追加（リストから検索するため）
 class DivOutputClass(models.Model):
@@ -42,8 +42,20 @@ class DivOutputClass(models.Model):
         return str(self.outputdivcode)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
-        return reverse('crud/ordering/list/corderinglist.html')
+        return reverse('crud/ordering/list/orderinglist.html')
 
+#入金支払区分
+class DepoPayDiv(models.Model):
+    DepoPayDivcode = models.CharField(max_length=2,null=False,blank=True,verbose_name="入金/支払区分コード")
+    DepoPayDivname = models.CharField(max_length=255,null=False,blank=True,verbose_name="入金/支払区分名称")
+
+    def __str__(self):
+        return str(self.DepoPayDivcode)
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/Deposit/list/Depositlist.html')
+
+# 得意先仕入先マスター
 class CustomerSupplier(models.Model):
     Closing = [
             (0, ""),
@@ -123,6 +135,7 @@ class CustomerSupplier(models.Model):
     def get_absolute_url(self):
         return reverse('crud/customersupplier/customersupplierlist.html')
 
+#受発注テーブル
 class OrderingTable(models.Model):
     Title = [
             (0, ""),
@@ -150,7 +163,6 @@ class OrderingTable(models.Model):
     TitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Title,verbose_name="敬称区分")
     StockDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="在庫済区分")
     MarkName = models.CharField(max_length=20,null=False,blank=True,verbose_name="マーク名")
-    #OutputDiv = models.IntegerField(null=False,blank=True,default=0,choices=Output,verbose_name="出力区分")
     OutputDiv = models.ForeignKey(DivOutputClass,on_delete=models.PROTECT,related_name='OutputDivCode',null=False,default=0,verbose_name="出力区分")
     SampleDiv = models.ForeignKey(DivSampleClass,on_delete=models.PROTECT,related_name='DivCode_div',null=False,default=0,verbose_name="サンプル量産区分")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
@@ -175,6 +187,7 @@ class OrderingTable(models.Model):
     def get_absolute_url(self):
         return reverse('crud/ordering/orderinglist.html')
 
+# 受発注明細テーブル
 class OrderingDetail(models.Model):
     #2023-11-01 追加
     Unit = [
@@ -211,6 +224,7 @@ class OrderingDetail(models.Model):
     def get_absolute_url(self):
         return reverse('crud/ordering/orderinglist.html')
     
+# 商品マスター
 class Merchandise(models.Model):
     MerchandiseTreatment = [
             (0, ""),
@@ -249,6 +263,7 @@ class Merchandise(models.Model):
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
 
+# 商品マスターカラーテーブル
 class MerchandiseColor(models.Model):
     McdColorId = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdColorId',verbose_name="商品マスタid")
     McdColorNumber = models.CharField(max_length=20,null=False,blank=True,verbose_name="商品カラー番号")
@@ -265,6 +280,7 @@ class MerchandiseColor(models.Model):
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
 
+# 商品マスターサイズテーブル
 class MerchandiseSize(models.Model):
     McdSizeId = models.ForeignKey(Merchandise,on_delete=models.PROTECT,blank=True, null=True,related_name='McdSizeId',verbose_name="商品マスタid")
     McdSize = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="商品サイズ")
@@ -280,6 +296,7 @@ class MerchandiseSize(models.Model):
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
 
+#商品マスター明細テーブル
 class MerchandiseDetail(models.Model):
     UnitCode = [
         (0, ""),
@@ -309,6 +326,7 @@ class MerchandiseDetail(models.Model):
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
 
+# 商品マスターアップロードファイルテーブル
 class MerchandiseFileUpload(models.Model):
     McdDtuploadid = models.ForeignKey(Merchandise, on_delete=models.PROTECT, blank=True, null=True, related_name='McdDtuploadid', verbose_name="商品マスタid")
     uploadPath = models.ImageField(upload_to='photos/%Y/%m/%d',blank=True, null=True, verbose_name="アップロードファイルパス")
@@ -329,6 +347,7 @@ class MerchandiseFileUpload(models.Model):
     def get_absolute_url(self):
         return reverse('crud/merchandise/merchandiselist.html')
 
+# 製品受発注テーブル
 class ProductOrder(models.Model):
     ProductOrderTitleDiv = [
             (0, ""),
@@ -364,8 +383,9 @@ class ProductOrder(models.Model):
         return str(self.ProductOrderMerchandiseCode)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
-        return reverse('crud/productorder/productorderlist.html')
+        return reverse('crud/productorder/list/productorderlist.html')
 
+# 製品受発注明細テーブル
 class ProductOrderDetail(models.Model):
     PodDetailId = models.ForeignKey(ProductOrder,on_delete=models.PROTECT,blank=True, null=True,related_name='PodDetailId',verbose_name="製品受発注明細id")
     PodColorId = models.ForeignKey(MerchandiseColor,on_delete=models.PROTECT,blank=True, null=True,related_name='PodColorId',verbose_name="商品カラーid")
@@ -381,8 +401,9 @@ class ProductOrderDetail(models.Model):
         return str(self.PodDetailId)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
-        return reverse('crud/productorder/productorderlist.html')
+        return reverse('crud/productorder/list/productorderlist.html')
 
+# 受発注実績テーブル
 class RequestResult(models.Model):
     OrderingId = models.ForeignKey(OrderingTable,on_delete=models.PROTECT,blank=True, null=True,related_name='OrderingId',verbose_name="受発注テーブルid")
     OrderingDetailId = models.ForeignKey(OrderingDetail,on_delete=models.PROTECT,blank=True, null=True,related_name='OrderingDetailId',verbose_name="受発注明細id")
@@ -417,4 +438,46 @@ class RequestResult(models.Model):
         return str(self.SlipNumber)
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
-        return reverse('crud/requestresult/requestresultlist.html')
+        return reverse('crud/requestresult/list/requestresultlist.html')
+
+# 入金テーブル
+class Deposit(models.Model):
+    DepositDate = models.DateField(null=True,blank=True,verbose_name="入金日")
+    DepositCustomerCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='DepositCustomerCode',verbose_name="得意先コード")
+    DepositMoney = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="入金金額")
+    DepositDiv = models.CharField(max_length=2,null=False,blank=False,verbose_name="入金区分")
+    DepositSummary = models.TextField(max_length=1000,null=False,blank=True,verbose_name="摘要")
+    DepositDeadlineUpdateDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="締次更新区分")
+    DepositMonthlyUpdateDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="月次更新区分")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+    def __str__(self):
+        return str(self.DepositDate)
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/Deposit/list/Depositlist.html')
+
+# 支払テーブル
+class Payment(models.Model):
+    PaymentDate = models.DateField(null=True,blank=True,verbose_name="支払日")
+    PaymentSupplierCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='PaymentSupplierCode',verbose_name="仕入先コード")
+    PaymentMoney = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="支払金額")
+    PaymentDiv = models.CharField(max_length=2,null=False,blank=False,verbose_name="支払区分")
+    PaymentSummary = models.TextField(max_length=1000,null=False,blank=True,verbose_name="摘要")
+    PaymentMonthlyUpdateDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="月次更新区分")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+    is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
+
+    def __str__(self):
+        return str(self.DepositDate)
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/Payment/list/Paymentlist.html')
+

@@ -1,0 +1,70 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">得意先仕入先マスタ一覧</li>
+		</ol>
+	</nav>
+	<div class="form-group">
+		<form method="post" id="form">{% csrf_token %}
+			<div class="form-row align-items-center">
+				<div class="col-auto">
+					<label class="sr-only" for="text5a">キーワード</label>
+					<input type="search" name="query" class="form-control mb-2" autocomplete="new-password" value="{{ cmsearch.query.value }}" placeholder="キーワード"/>
+				</div>
+				<div class="col-auto">
+					<button class="btn btn-primary mb-2" type="submit">
+						検索
+					</button>
+				</div>
+			</div>
+		</form>
+		<div class="text-right">
+			<button class="btn btn-primary mb-2" onclick="location.href='{% url 'myapp:new' %}'">新規登録</button>
+		</div>
+		<div class="table-responsive table-container">
+		<div class="table-sticky-container">
+			<table class="table table-sticky table-sm">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="text-center fixed">コード</th>
+						<th scope="col" class="text-center">名称</th>
+						<th scope="col" class="text-center">郵便番号</th>
+						<th scope="col" class="text-center">都道府県</th>
+						<th scope="col" class="text-center">市区町村</th>
+						<th scope="col" class="text-center">番地</th>
+						<th scope="col" class="text-center">電話番号</th>
+						<th scope="col" class="text-center">担当者名</th>
+						<th scope="col" class="text-center">アクション</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for customersupplier in object_list %}
+					<tr>
+						<td class="text-right">{{ customersupplier.CustomerCode }}</td>
+						<td>{{ customersupplier.CustomerName }}</td>
+						<td>{{ customersupplier.PostCode }}</td>
+						<td>{{ customersupplier.PrefecturesCode.prefecturename }}</td>
+						<td>{{ customersupplier.Municipalities }}</td>
+						<td>{{ customersupplier.Address }}</td>
+						<td>{{ customersupplier.PhoneNumber }}</td>
+						<td>{{ customersupplier.ManagerCode.first_name|add:customersupplier.ManagerCode.last_name }}</td>
+						<td>
+							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button></span>
+							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="col-6 offset-3 justify-content-center">
+	{% if is_paginated %}
+		{% include "crud/pagination.html" %}
+	{% endif %}
+</div>
+{% endblock %}

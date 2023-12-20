@@ -1,0 +1,63 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">入金情報一覧</li>
+		</ol>
+	</nav>
+	<div class="form-group">
+		<form method="post" id="form">{% csrf_token %}
+			<div class="form-row align-items-center">
+				<div class="col-auto">
+					<label class="sr-only" for="text5a">キーワード</label>
+					<input type="search" name="query" class="form-control mb-2" autocomplete="new-password" value="{{ dpsearch.query.value }}" placeholder="キーワード"/>
+				</div>
+				<div class="col-auto">
+					<button class="btn btn-primary mb-2" type="submit">
+						検索
+					</button>
+				</div>
+			</div>
+		</form>
+		<div class="text-right">
+			<button class="btn btn-primary mb-2" onclick="location.href='{% url 'myapp:Depositnew' %}'">新規登録</button>
+		</div>
+		<div class="table-responsive table-container">
+		<div class="table-sticky-container">
+			<table class="table table-sticky table-sm">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col" class="text-center fixed">入金日</th>
+						<th scope="col" class="text-center">得意先名</th>
+						<th scope="col" class="text-center">入金金額</th>
+						<th scope="col" class="text-center">入金区分</th>
+						<th scope="col" class="text-center">摘要</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for Deposit in object_list %}
+					<tr>
+						<td class="text-right">{{ Deposit.DepositDate }}</td>
+						<td>{{ Deposit.DepositCustomerCode.CustomerOmitName }}</td>
+						<td>{{ Deposit.DepositMoney }}</td>
+						<td>{{ Deposit.DepositMoney }}</td>
+						<td>{{ Deposit.DepositSummary }}</td>
+						<td>
+							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button></span>
+							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="col-6 offset-3 justify-content-center">
+	{% if is_paginated %}
+		{% include "crud/pagination.html" %}
+	{% endif %}
+</div>
+{% endblock %}

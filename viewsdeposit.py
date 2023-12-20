@@ -1,0 +1,136 @@
+from django.shortcuts import render,redirect
+from django.views.generic import ListView,CreateView
+from .models import Deposit,CustomerSupplier
+from .forms import CustomerSearchForm
+from .formsdeposit import DepositForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+# 検索機能のために追加
+from django.db.models import Q
+
+# 日時
+from django.utils import timezone
+import datetime
+
+# 入金情報一覧/検索
+class DepositListView(LoginRequiredMixin,ListView):
+    model = Deposit
+    context_object_name = 'object_list'
+    queryset = Deposit.objects.order_by('DepositDate')
+    template_name = "crud/deposit/list/depositlist.html"
+    paginate_by = 20
+
+    def post(self, request, *args, **kwargs):
+        search = [
+            self.request.POST.get('query', None),
+        ]
+        request.session['dpsearch'] = search
+        # 検索時にページネーションに関連したエラーを防ぐ
+        self.request.GET = self.request.GET.copy()
+        self.request.GET.clear()
+
+        return self.get(request, *args, **kwargs)
+
+    #検索機能
+    def get_queryset(self):
+        if 'dpsearch' in self.request.session:
+            search = self.request.session['dpsearch']
+            query = search[0]
+        else:
+            query = self.request.POST.get('query', None)
+
+        # コード順
+        queryset = Deposit.objects.order_by('DepositDate')
+        # 削除済除外
+        queryset = queryset.filter(is_Deleted=0)
+
+        if query:
+            queryset = queryset.filter(
+                 Q(CustomerName__contains=query) | Q(Municipalities__contains=query) | Q(CustomerCode__contains=query) | Q(CustomerNameKana__contains=query) |
+                 Q(Address__contains=query) | Q(PhoneNumber__contains=query) | Q(PrefecturesCode__prefecturename__icontains=query)| Q(ManagerCode__first_name__icontains=query)
+            )
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # sessionに値がある場合、その値をセットする。（ページングしてもform値が変わらないように）
+        query = ''
+        if 'dpsearch' in self.request.session:
+            search = self.request.session['dpsearch']
+            query = search[0]
+
+        default_data = {'query': query }
+        
+        form = CustomerSearchForm(initial=default_data) # 検索フォーム
+        context['dpsearch'] = form
+        return context
+       
+# 入金情報登録
+class DepositCreateView(LoginRequiredMixin,CreateView):
+    model = Deposit
+    form_class =  DepositForm
+    template_name = "crud/deposit/new/depositform.html"
+
+    def get(self, request):
+        form = DepositForm(self.request.POST or None)
+        DepositCustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
+
+        context = {
+            'form': form,
+            'DepositCustomerCode': DepositCustomerCode,
+        }
+
+        return render(request, 'crud/deposit/new/depositform.html', context)
+
+    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        # Createid,Updatedidフィールドはログインしているユーザidとする
+        post.Created_id = self.request.user.id
+        post.Updated_id = self.request.user.id
+        post.save()
+
+        return redirect('myapp:Depositlist')
+    # バリデーションエラー時
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
+# 得意先仕入先マスター更新
+#class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
+#    model = CustomerSupplier
+#    form_class =  CustomerSupplierForm
+#    template_name = "crud/customersupplier/update/customersupplierformupdate.html"
+       
+    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+#    def form_valid(self, form):
+#        if self.request.method == "POST":
+#            if form.is_valid():
+#                post = form.save(commit=False)
+#                # Updatedidフィールドはログインしているユーザidとする
+#                post.Updated_id = self.request.user.id
+#                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+#                post.save()
+#            return redirect('myapp:list')
+
+#    # バリデーションエラー時
+#    def form_invalid(self, form):
+#        return super().form_invalid(form) 
+
+# 得意先仕入先マスター削除
+#class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
+#    model = CustomerSupplier
+#    form_class =  CustomerSupplierForm
+#    template_name = "crud/customersupplier/delete/customersupplierformdelete.html"
+       
+#    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+#    def form_valid(self, form):
+#        if self.request.method == "POST":
+#            post = form.save(commit=False)
+ 
+#            post.Updated_id = self.request.user.id
+#            post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+#            post.is_Deleted = True
+#            post.save()
+
+#        return redirect('myapp:list')

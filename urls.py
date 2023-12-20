@@ -1,6 +1,6 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult
+from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult,viewsdeposit
 
 # fileupload import
 from django.conf import settings
@@ -71,7 +71,17 @@ urlpatterns = [
     # Ajax処理
     #path("requestresult/new/exec/", viewsrequestresult.RequestResultCreateView.exec_ajax, name='exec'),
     # 本番環境Media参照
-    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),  #追加    
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),  #追加
+
+    # 入金情報一覧
+    path('deposit/list/', viewsdeposit.DepositListView.as_view(), name='Depositlist'),
+    # 入金情報登録
+    path('deposit/new/', viewsdeposit.DepositCreateView.as_view(), name='Depositnew'),
+    # 得意先仕入先編集
+    path('deposit/edit/<int:pk>/', viewscustomer.CustomerSupplierUpdateView.as_view(), name='edit'),
+    # 得意先仕入先削除
+    path('deposit/delete/<int:pk>/',viewscustomer.CustomerSupplierDeleteView.as_view(),name='delete'),   
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
