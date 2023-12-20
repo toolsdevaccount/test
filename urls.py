@@ -6,6 +6,9 @@ from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.urls import re_path
+from django.views.static import serve  #追加
+
 app_name = "myapp"
 
 urlpatterns = [
@@ -67,8 +70,10 @@ urlpatterns = [
     #path('requestresult/delete/<int:pk>/', viewsrequestresult.RequestResultDeleteView.as_view(), name='requestresultdelete'),
     # Ajax処理
     #path("requestresult/new/exec/", viewsrequestresult.RequestResultCreateView.exec_ajax, name='exec'),
+    # 本番環境Media参照
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),  #追加    
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \

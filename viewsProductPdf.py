@@ -312,8 +312,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
 
     # ロゴ追加
-    img = './mysite/myapp/templates/image/image1.jpg'
-    #img = './static/image/image1.jpg'
+    #img = './mysite/myapp/templates/image/image1.jpg'
+    img = './static/image/image1.jpg'
     pdf_canvas.drawImage(img, 132*mm, 259*mm , 20*mm, 5*mm)
 
     pdf_canvas.drawString(435, 734, dt[0][26] + dt[0][27])
@@ -625,8 +625,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     for i in range(l):
         row = dtimage[i]
         if row[3]!="":
-            img = './mysite/media/' + row[3]
-            #img = './media/' + row[3]
+            #img = './mysite/media/' + row[3]
+            img = './media/' + row[3]
             if i==0:
                 pdf_canvas.drawImage(img, 16*mm, 25*mm , 25*mm, 25*mm)
             if i==1:
@@ -661,8 +661,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     pdf_canvas.rect(33, 57, 533, 147) 
 
     # ロゴ追加
-    img = './mysite/myapp/templates/image/image2.jpg'
-    #img = './static/image/image2.jpg'
+    #img = './mysite/myapp/templates/image/image2.jpg'
+    img = './static/image/image2.jpg'
 
     pdf_canvas.drawImage(img, 85*mm, 7*mm, 38*mm, 7*mm)
 
