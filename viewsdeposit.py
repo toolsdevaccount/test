@@ -1,13 +1,12 @@
 from django.shortcuts import render,redirect
-from django.views.generic import ListView,CreateView
+from django.views.generic import ListView,CreateView,UpdateView
 from .models import Deposit,CustomerSupplier
-from .forms import CustomerSearchForm
-from .formsdeposit import DepositForm
+from .formsdeposit import DepositForm, DepositSearchForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 # 検索機能のために追加
 from django.db.models import Q
-
+# Transaction
+from django.db import transaction
 # 日時
 from django.utils import timezone
 import datetime
@@ -16,7 +15,7 @@ import datetime
 class DepositListView(LoginRequiredMixin,ListView):
     model = Deposit
     context_object_name = 'object_list'
-    queryset = Deposit.objects.order_by('DepositDate')
+    queryset = Deposit.objects.order_by('id').reverse()
     template_name = "crud/deposit/list/depositlist.html"
     paginate_by = 20
 
@@ -40,14 +39,13 @@ class DepositListView(LoginRequiredMixin,ListView):
             query = self.request.POST.get('query', None)
 
         # コード順
-        queryset = Deposit.objects.order_by('DepositDate')
+        queryset = Deposit.objects.order_by('id').reverse()
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
 
         if query:
             queryset = queryset.filter(
-                 Q(CustomerName__contains=query) | Q(Municipalities__contains=query) | Q(CustomerCode__contains=query) | Q(CustomerNameKana__contains=query) |
-                 Q(Address__contains=query) | Q(PhoneNumber__contains=query) | Q(PrefecturesCode__prefecturename__icontains=query)| Q(ManagerCode__first_name__icontains=query)
+                 Q(DepositCustomerCode__CustomerOmitName__icontains=query) | Q(DepositMoney__contains=query)
             )
 
         return queryset
@@ -62,7 +60,7 @@ class DepositListView(LoginRequiredMixin,ListView):
 
         default_data = {'query': query }
         
-        form = CustomerSearchForm(initial=default_data) # 検索フォーム
+        form = DepositSearchForm(initial=default_data) # 検索フォーム
         context['dpsearch'] = form
         return context
        
@@ -72,65 +70,81 @@ class DepositCreateView(LoginRequiredMixin,CreateView):
     form_class =  DepositForm
     template_name = "crud/deposit/new/depositform.html"
 
-    def get(self, request):
-        form = DepositForm(self.request.POST or None)
-        DepositCustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0)
-
-        context = {
-            'form': form,
-            'DepositCustomerCode': DepositCustomerCode,
-        }
-
-        return render(request, 'crud/deposit/new/depositform.html', context)
+    # get_context_dataをオーバーライド
+    def get_context_data(self, **kwargs):
+        context = super(DepositCreateView, self).get_context_data(**kwargs)
+        context.update(DepositCustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),)
+        return context
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+    @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)
-        # Createid,Updatedidフィールドはログインしているユーザidとする
-        post.Created_id = self.request.user.id
-        post.Updated_id = self.request.user.id
-        post.save()
-
+        if self.request.method == 'POST':            
+            if form.is_valid():
+                # Created_id,Updated_idフィールドはログインしているユーザidとする
+                post.Created_id = self.request.user.id
+                post.Updated_id = self.request.user.id
+                post.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                post.save()       
+        else:
+            # is_validがFalseの場合はエラー文を表示
+            return self.render_to_response(self.get_context_data(form=form))
         return redirect('myapp:Depositlist')
     # バリデーションエラー時
     def form_invalid(self, form):
         return super().form_invalid(form)
 
-# 得意先仕入先マスター更新
-#class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
-#    model = CustomerSupplier
-#    form_class =  CustomerSupplierForm
-#    template_name = "crud/customersupplier/update/customersupplierformupdate.html"
-       
-    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
-#    def form_valid(self, form):
-#        if self.request.method == "POST":
-#            if form.is_valid():
-#                post = form.save(commit=False)
-#                # Updatedidフィールドはログインしているユーザidとする
-#                post.Updated_id = self.request.user.id
-#                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-#                post.save()
-#            return redirect('myapp:list')
+# 入金情報更新
+class DepositUpdateView(LoginRequiredMixin,UpdateView):
+    model = Deposit
+    form_class =  DepositForm
+    template_name = "crud/deposit/update/depositformupdate.html"
 
-#    # バリデーションエラー時
-#    def form_invalid(self, form):
-#        return super().form_invalid(form) 
+    # get_context_dataをオーバーライド
+    def get_context_data(self, **kwargs):
+        context = super(DepositUpdateView, self).get_context_data(**kwargs)
+        context.update(DepositCustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),)
+        return context
+
+    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+    @transaction.atomic # トランザクション設定
+    def form_valid(self, form):
+        if self.request.method == "POST":
+            if form.is_valid():
+                post = form.save(commit=False)
+                # Updatedidフィールドはログインしているユーザidとする
+                post.Updated_id = self.request.user.id
+                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                post.save()
+            return redirect('myapp:Depositlist')
+
+    # バリデーションエラー時
+    def form_invalid(self, form):
+        return super().form_invalid(form) 
 
 # 得意先仕入先マスター削除
-#class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
-#    model = CustomerSupplier
-#    form_class =  CustomerSupplierForm
-#    template_name = "crud/customersupplier/delete/customersupplierformdelete.html"
-       
-#    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
-#    def form_valid(self, form):
-#        if self.request.method == "POST":
-#            post = form.save(commit=False)
- 
-#            post.Updated_id = self.request.user.id
-#            post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-#            post.is_Deleted = True
-#            post.save()
+class DepositDeleteView(LoginRequiredMixin,UpdateView):
+    model = Deposit
+    form_class =  DepositForm
+    template_name = "crud/deposit/delete/depositformdelete.html"
 
-#        return redirect('myapp:list')
+    # get_context_dataをオーバーライド
+    def get_context_data(self, **kwargs):
+        context = super(DepositDeleteView, self).get_context_data(**kwargs)
+        context.update(DepositCustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),)
+        return context
+
+    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
+    @transaction.atomic # トランザクション設定
+    def form_valid(self, form):
+        if self.request.method == "POST":
+            post = form.save(commit=False)
+ 
+            post.Updated_id = self.request.user.id
+            post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+            post.is_Deleted = True
+            post.save()
+
+        return redirect('myapp:Depositlist')

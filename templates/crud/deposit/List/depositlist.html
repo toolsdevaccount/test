@@ -1,5 +1,6 @@
 {% extends 'crud/base.html' %}
 {% block content %}
+{% load humanize %}
 <div class="container-fluid">
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
@@ -34,19 +35,20 @@
 						<th scope="col" class="text-center">入金金額</th>
 						<th scope="col" class="text-center">入金区分</th>
 						<th scope="col" class="text-center">摘要</th>
+						<th scope="col" class="text-center">アクション</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for Deposit in object_list %}
 					<tr>
 						<td class="text-right">{{ Deposit.DepositDate }}</td>
-						<td>{{ Deposit.DepositCustomerCode.CustomerOmitName }}</td>
-						<td>{{ Deposit.DepositMoney }}</td>
-						<td>{{ Deposit.DepositMoney }}</td>
+						<td>{{ Deposit.DepositCustomerCode.CustomerName }}</td>
+						<td class="text-right">{{ Deposit.DepositMoney | intcomma }}</td>
+						<td>{{ Deposit.DepositDiv.DepoPayDivname }}</td>
 						<td>{{ Deposit.DepositSummary }}</td>
 						<td>
-							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:edit' pk=customersupplier.id %}'">詳細</button></span>
-							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:delete' pk=customersupplier.id %}'">削除</button></span>
+							<span><button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'myapp:Depositedit' pk=Deposit.id %}'">詳細</button></span>
+							<span><button type="button" class="btn btn-outline-danger btn-sm" onclick="location.href='{% url 'myapp:Depositdelete' pk=Deposit.id %}'">削除</button></span>
 						</td>
 					</tr>
 					{% endfor %}

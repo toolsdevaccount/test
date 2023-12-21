@@ -78,9 +78,9 @@ urlpatterns = [
     # 入金情報登録
     path('deposit/new/', viewsdeposit.DepositCreateView.as_view(), name='Depositnew'),
     # 得意先仕入先編集
-    path('deposit/edit/<int:pk>/', viewscustomer.CustomerSupplierUpdateView.as_view(), name='edit'),
+    path('deposit/edit/<int:pk>/', viewsdeposit.DepositUpdateView.as_view(), name='Depositedit'),
     # 得意先仕入先削除
-    path('deposit/delete/<int:pk>/',viewscustomer.CustomerSupplierDeleteView.as_view(),name='delete'),   
+    path('deposit/delete/<int:pk>/',viewsdeposit.DepositDeleteView.as_view(),name='Depositdelete'),   
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

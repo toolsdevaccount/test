@@ -21,34 +21,17 @@ class CustomerSupplierChoiceField(ModelChoiceField):
 
 class DepositDivChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
-        return  obj.DepoPayDivcode + ":" + obj.DepoPayDivname
+        return  obj.DepoPayDivname
 
 class DepositForm(forms.ModelForm):
-    DepositManagerCode = ManagerChoiceField(queryset=get_user_model().objects.all(),empty_label='')
     DepositDiv = DepositDivChoiceField(queryset=DepoPayDiv.objects.all(),empty_label='')
 
     class Meta:
         model = Deposit
-        fields = ('DepositDate', 'DepositCustomerCode', 'DepositMoney', 'DepositDiv','DepositSummary', )   
- 
-class SearchForm(forms.Form):
+        fields = ('DepositDate', 'DepositCustomerCode', 'DepositMoney', 'DepositDiv', 'DepositSummary' )
+
+class DepositSearchForm(forms.Form):
     query = forms.CharField(
         initial='',
         required = False, # 必須ではない
-    )
-    key = forms.CharField(
-        initial='',
-        required=False,  # 必須ではない
-    )
-    word = forms.CharField(
-        initial='',
-        required=False,  # 必須ではない
-    )
-    productorderdateFrom = forms.CharField(
-        initial='',
-        required=False,  # 必須ではない
-    )
-    productorderdateTo = forms.CharField(
-        initial='',
-        required=False,  # 必須ではない
     )
