@@ -1,6 +1,6 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult,viewsdeposit
+from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult, viewsdeposit, viewspayment
 
 # fileupload import
 from django.conf import settings
@@ -77,11 +77,19 @@ urlpatterns = [
     path('deposit/list/', viewsdeposit.DepositListView.as_view(), name='Depositlist'),
     # 入金情報登録
     path('deposit/new/', viewsdeposit.DepositCreateView.as_view(), name='Depositnew'),
-    # 得意先仕入先編集
+    # 入金情報編集
     path('deposit/edit/<int:pk>/', viewsdeposit.DepositUpdateView.as_view(), name='Depositedit'),
-    # 得意先仕入先削除
+    # 入金情報削除
     path('deposit/delete/<int:pk>/',viewsdeposit.DepositDeleteView.as_view(),name='Depositdelete'),   
 
+    # 支払情報一覧
+    path('payment/list/', viewspayment.PaymentListView.as_view(), name='Paymentlist'),
+    # 支払情報登録
+    path('payment/new/', viewspayment.PaymentCreateView.as_view(), name='Paymentnew'),
+    # 支払情報編集
+    path('payment/edit/<int:pk>/', viewspayment.PaymentUpdateView.as_view(), name='Paymentedit'),
+    # 支払情報削除
+    path('payment/delete/<int:pk>/',viewspayment.PaymentDeleteView.as_view(),name='Paymentdelete'),   
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
