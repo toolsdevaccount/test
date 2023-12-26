@@ -6,8 +6,8 @@
     // 指定したエレメント(input)が所属する行(tr)を取得
     function detail(obj)
     {
-        return obj.parentElement.parentElement.parentElement ;
-        //return obj.parentElement.parentElement ;
+        //return obj.parentElement.parentElement.parentElement ;
+        return obj.parentElement.parentElement ;
     }
 
     // 指定したエレメント(input)と同じ行にある仕入単価を取得
@@ -22,10 +22,16 @@
         return removeComma(detail(obj).querySelectorAll(".McdSellPrice")[0].value);
     }
 
-    // 指定したエレメント(input)と同じ行にある加工賃を取得
+    // 指定したエレメント(input)と同じ行にある仕入単価を取得
     function McdProcessfee(obj)
     {
         return removeComma(detail(obj).querySelectorAll(".McdProcessfee")[0].value);
+    }
+
+    // 指定したエレメント(input)と同じ行にある加工賃を取得
+    function McdDtlPrice(obj)
+    {
+        return removeComma(detail(obj).querySelectorAll(".McdDtlPrice")[0].value);
     }
 
     function comma(obj)
@@ -46,7 +52,6 @@
     function detailcomma(obj)
     {
         //桁区切りして配置（仕入単価）
-        val = Number(detail(obj).querySelectorAll(".McdDtlPrice")[0].value);
-        DtlPrice = val.toLocaleString();
+        DtlPrice = Number(McdDtlPrice(obj)).toLocaleString();
         detail(obj).querySelectorAll(".McdDtlPrice")[0].value = DtlPrice;
     }
