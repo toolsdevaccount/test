@@ -20,6 +20,9 @@ import datetime
 from decimal import Decimal
 # メッセージ
 from django.contrib import messages
+#LOG出力設定
+import logging
+logger = logging.getLogger(__name__)
 
 def pdf(request,pk):
     try:

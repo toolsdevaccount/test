@@ -91,11 +91,11 @@
                                 <label for="id_OrderNumber">オーダーNO</label>
                                 {% if form.errors.OrderNumber %}
                                 {% for error in form.errors.OrderNumber %}
-                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="OrderNumber" id="id_OrderNumber" value="{{ form.data.OrderNumber }}">
+                                <input type="tel" class="form-control is-invalid" maxlength="7" autocomplete="new-password" name="OrderNumber" id="id_OrderNumber" value="{{ form.data.OrderNumber }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" autocomplete="new-password" name="OrderNumber" id="id_OrderNumber" value="{{ form.data.OrderNumber }}">
+                                <input type="tel" class="form-control" maxlength="7" autocomplete="new-password" name="OrderNumber" id="id_OrderNumber" value="{{ form.data.OrderNumber }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">

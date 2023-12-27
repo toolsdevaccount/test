@@ -3,10 +3,8 @@ from django.views.generic import ListView,CreateView, UpdateView
 from .models import CustomerSupplier
 from .forms import CustomerSupplierForm, CustomerSearchForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 # 検索機能のために追加
 from django.db.models import Q
-
 # 日時
 from django.utils import timezone
 import datetime
@@ -40,6 +38,7 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
 
         # コード順
         queryset = CustomerSupplier.objects.order_by('CustomerCode')
+
         # 削除済除外
         queryset = queryset.filter(is_Deleted=0)
 

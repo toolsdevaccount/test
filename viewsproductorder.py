@@ -31,8 +31,8 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
             self.request.POST.get('query', None),
             self.request.POST.get('key', None),
             self.request.POST.get('word', None),
-            self.request.POST.get('productorderdateFrom', None),
-            self.request.POST.get('productorderdateTo', None),
+            self.request.POST.get('orderdateFrom', None),
+            self.request.POST.get('orderdateTo', None),
         ]
         request.session['posearch'] = search
         # 検索時にページネーションに関連したエラーを防ぐ
@@ -48,14 +48,14 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
             query = search[0]
             key = search[1]
             word = search[2]
-            productorderdateFrom = search[3]
-            productorderdateTo = search[4]
+            orderdateFrom = search[3]
+            orderdateTo = search[4]
         else:
             query = self.request.POST.get('query', None)
             key = self.request.POST.get('key', None)
             word = self.request.POST.get('word', None)
-            productorderdateFrom = self.request.POST.get('productorderdateFrom', None)
-            productorderdateTo = self.request.POST.get('productorderdateTo', None)
+            orderdateFrom = self.request.POST.get('orderdateFrom', None)
+            orderdateTo = self.request.POST.get('orderdateTo', None)
 
         # 依頼日、登録日大きい順で抽出
         queryset = ProductOrder.objects.order_by('ProductOrderOrderingDate','Created_at').reverse()
@@ -95,8 +95,8 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
                  Q(ProductOrderBrandName__contains=word) | Q(ProductOrderManagerCode__first_name__icontains=word) 
             )
 
-        if productorderdateFrom and productorderdateTo:
-            queryset = queryset.filter(Q(ProductOrderDeliveryDate__range=(productorderdateFrom,productorderdateTo)))
+        if orderdateFrom and orderdateTo:
+            queryset = queryset.filter(Q(ProductOrderDeliveryDate__range=(orderdateFrom,orderdateTo)))
 
         return queryset
 
@@ -106,21 +106,21 @@ class ProductOrderListView(LoginRequiredMixin,ListView):
         query = ''
         key = ''
         word = ''
-        productorderdateFrom = ''
-        productorderdateTo = ''
+        orderdateFrom = ''
+        orderdateTo = ''
         if 'posearch' in self.request.session:
             search = self.request.session['posearch']
             query = search[0]
             key = search[1]
             word = search[2]
-            productorderdateFrom = search[3]
-            productorderdateTo = search[4]
+            orderdateFrom = search[3]
+            orderdateTo = search[4]
 
         default_data = {'query': query,
                         'key': key,
                         'word': word,
-                        'productorderdateFrom': productorderdateFrom,
-                        'productorderdateTo': productorderdateTo,
+                        'productorderdateFrom': orderdateFrom,
+                        'productorderdateTo': orderdateTo,
                        }
         
         form = SearchForm(initial=default_data) # 検索フォーム

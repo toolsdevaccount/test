@@ -6,11 +6,6 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
 			<li class="breadcrumb-item active" aria-current="page">受発注情報一覧</li>
-			<!-- <div class="container">
-				<div class="text-right">
-					<button class="btn btn-primary btn-sm" onclick="location.href='{% url 'myapp:orderingnew' %}'">新規登録</button>
-				</div>	
-			</div>	-->
 		</ol>
 	</nav>
 	<div class="form-group">
@@ -49,45 +44,17 @@
 			</div>
 		</form>
 		{% block extrajs %}
-		<!-- Datepicker 追加-->
+		<!-- flatpicr -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 		{% load static %}
-		<script>
-			// 依頼日(From)検索用
-			var orderdateFrom = document.getElementById('orderdateFrom');
-			var fp = flatpickr(orderdateFrom, {
-				'locale': 'ja',
-				allowInput: true,
-				// onCloseは入力フォームが閉じられた時に発火する
-				onClose: (selectedDates, dateStr, instance) => {
-					if (selectedDates.length === 1) {
-						// プロパティにユーザーが選択した日付を代入
-						this.dateProps = selectedDates[0];
-					}
-				}
-			});
-
-			// 依頼日(To)検索用
-			var orderdateTo = document.getElementById('orderdateTo');
-			var fp = flatpickr(orderdateTo, {
-				'locale': 'ja',
-				allowInput: true,
-				// onCloseは入力フォームが閉じられた時に発火する
-				onClose: (selectedDates, dateStr, instance) => {
-					if (selectedDates.length === 1) {
-						// プロパティにユーザーが選択した日付を代入
-						this.dateProps = selectedDates[0];
-					}
-				}
-			});
-		</script>
+		<script src="{% static '\js\datepickerlist.js' %}" charset="UTF-8"></script>
 		{% endblock %}  
 	</div>
 	<div class="table-responsive table-container">
 		<div class="table-sticky-container">
-			<table class="table table-sticky table-sm">
+			<table class="table table-sticky">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="text-center fixed">

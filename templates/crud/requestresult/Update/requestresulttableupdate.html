@@ -292,7 +292,6 @@
 <script>
     var table = document.querySelector("table");
 	var tr = table.querySelectorAll("tr");
-	var item;
 	table.addEventListener("click", function(e) {
 		if(e.target.tagName.toLowerCase() === "td") {
 			//まずは全て背景色白
@@ -301,7 +300,6 @@
 			}
 			//選択行だけ色を変える
 			e.target.parentNode.style.backgroundColor = "#eef";
-			item = e.target.parentNode.rowIndex;
 		}
 	}, false);
 </script>
@@ -309,6 +307,7 @@
 	$('.tableid').on('click', function(){
         var idx=$(this).closest('tr').prop('rowIndex');
         var id = document.querySelectorAll(".OrderingId")[idx -1].value;
+		var item = document.querySelectorAll(".DetailItemNumber")[idx -1].value;
         var texthtml = '';
 
         $('#list').empty();

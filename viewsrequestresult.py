@@ -2,16 +2,12 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, UpdateView
 from .models import OrderingTable, OrderingDetail, CustomerSupplier, RequestResult
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from .formsrequestresult import RequestResultForm, RequestRecordFormset, RequestResultFormset, SearchForm
 # 検索機能のために追加
 from django.db.models import Q
 # 日時
 from django.utils import timezone
 import datetime
-from datetime import date
-
-# forms
-from .formsrequestresult import RequestResultForm, RequestRecordFormset, RequestResultFormset, SearchForm
 # Transaction
 from django.db import transaction
 # SQL直接実行

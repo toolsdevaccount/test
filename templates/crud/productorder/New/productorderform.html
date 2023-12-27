@@ -32,11 +32,11 @@
                                     <label for="id_OrderNumber">オーダーNO</label>
                                     {% if form.errors.OrderNumber %}
                                     {% for error in form.errors.OrderNumber %}
-                                    <input type="text" class="form-control is-invalid" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
+                                    <input type="text" class="form-control is-invalid" maxlength="7" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
                                     <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                     {% else %}
-                                    <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
+                                    <input type="text" class="form-control" maxlength="7" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
                                     {% endif %}
                                 </div>
                             </div>
