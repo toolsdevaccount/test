@@ -4,7 +4,7 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.lib.pagesizes import B5, portrait, landscape
-from reportlab.platypus import Table, TableStyle
+from reportlab.platypus import Table, TableStyle, LongTable
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from reportlab.platypus import Paragraph
@@ -209,8 +209,8 @@ def print_string(pdf_canvas,dt):
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
 
     # ロゴ追加
-    #img = './mysite/myapp/templates/image/image1.jpg'
-    img = './static/image/image1.jpg'
+    img = './mysite/myapp/templates/image/image1.jpg'
+    #img = './static/image/image1.jpg'
     pdf_canvas.drawImage(img, 173*mm, 134*mm , 20*mm, 5*mm)
 
     pdf_canvas.drawString(560, 379, dt[0][31] + dt[0][32])
@@ -247,6 +247,7 @@ def print_string(pdf_canvas,dt):
     ]
 
     table = Table(data, colWidths=(30*mm, 15*mm, 15*mm, 30*mm, 15*mm, 12*mm, 15*mm, 18*mm, 18*mm, 40*mm), rowHeights=7*mm)
+    #table = LongTable(data, colWidths=(30*mm, 15*mm, 15*mm, 30*mm, 15*mm, 12*mm, 15*mm, 18*mm, 18*mm, 40*mm), rowHeights=7*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 8),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -265,6 +266,7 @@ def print_string(pdf_canvas,dt):
     styleCenter = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=8, alignment=TA_CENTER)
 
     for i in range(9):
+    #for i in range(l):
         if i<l: 
             row = dt[i]
             # 前の行と同一品名の場合は空白
@@ -329,8 +331,8 @@ def print_string(pdf_canvas,dt):
     pdf_canvas.drawString(75, 70, '　出荷次第、オーダーNoを記入した納品書を翌日当社宛にご連絡ください。')
 
     # ロゴ追加
-    #img = './mysite/myapp/templates/image/image2.jpg'
-    img = './static/image/image2.jpg'
+    img = './mysite/myapp/templates/image/image2.jpg'
+    #img = './static/image/image2.jpg'
     pdf_canvas.drawImage(img, 110*mm, 8*mm, 32*mm, 7*mm)
 
     pdf_canvas.rect(63, 60, 591, 45) 
@@ -373,8 +375,8 @@ def print_string_StainRequest(pdf_canvas,dt):
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
 
     # ロゴ追加
-    #img = './mysite/myapp/templates/image/image1.jpg'
-    img = './static/image/image1.jpg'
+    img = './mysite/myapp/templates/image/image1.jpg'
+    #img = './static/image/image1.jpg'
     pdf_canvas.drawImage(img, 110*mm, 213*mm , 20*mm, 5*mm)
 
     pdf_canvas.drawString(375, 605, dt[0][31] + dt[0][32])
