@@ -3,7 +3,7 @@
 <html lang="ja" >
 	<head>
 		<!-- favicon -->
-		<link rel="icon" href="{% static '\image\favicon.ico' %}" sizes="32x32">
+		<link rel="icon" href="{% static '\image\favicon.ico' %}">
 		<title>カノン販売管理システム</title>
 		<link rel="canonical" href="https://getbootstrap.jp/docs/5.3/examples/dashboard/">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -68,7 +68,11 @@
 			<ul class="navbar-nav px-3">
 				<li class="nav-item text-nowrap">
 					{% if user.is_authenticated %}
-					<span><a class="nav-link" href="{% url 'logout' %}">{{ user.first_name|add:user.last_name }}</a></span>
+					<form action="{% url 'logout' %}" name="form1" method="post">
+					{% csrf_token %}
+					<span><a class="nav-link" href="javascript:form1.submit()">{{ user.first_name|add:user.last_name }}</a></span>
+					</form>
+					<!-- <span><a class="nav-link" href="{% url 'logout' %}">{{ user.first_name|add:user.last_name }}</a></span> -->
 					{% else %}
 					<span><a class="nav-link" href="{% url 'login' %}">ログイン</a></span>
 					{% endif %}
