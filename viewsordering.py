@@ -129,9 +129,9 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
         context = super(OrderingCreateView, self).get_context_data(**kwargs)
         context.update(dict(formset=OrderingFormset(self.request.POST or None)),
                 DestinationCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
-                SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=3) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
+                SupplierCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(~Q(MasterDiv=2),is_Deleted=0).order_by('CustomerCode'),
                 ShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
-                CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(Q(MasterDiv=2) | Q(MasterDiv=4),is_Deleted=0).order_by('CustomerCode'),
+                CustomerCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').filter(~Q(MasterDiv=3),is_Deleted=0).order_by('CustomerCode'),
                 RequestCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                 StainShippingCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),
                 ApparelCode = CustomerSupplier.objects.values('id','CustomerCode','CustomerOmitName').order_by('CustomerCode').filter(is_Deleted=0),

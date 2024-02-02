@@ -83,6 +83,15 @@ class CustomerSupplierForm(forms.ModelForm):
     #            raise forms.ValidationError(u'EMAILはXXXX@XXXX.XX.XXの形式で')
     #    return email
 
+    # 得意先仕入先コード重複チェック
+    #def clean_CustomerCode(self):
+    #    CustomerCode = self.cleaned_data['CustomerCode']
+    #    CustomerCodecnt = CustomerSupplier.objects.filter(CustomerCode__exact = CustomerCode).count()
+    #    if CustomerCode:
+    #        if CustomerCodecnt > 0:
+    #            raise forms.ValidationError(u'得意先仕入先コードが重複しています')
+    #    return CustomerCode
+
 class CustomerSupplierChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
         #return  obj.CustomerOmitName[0:5] + ":" + obj.CustomerCode

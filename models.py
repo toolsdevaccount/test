@@ -160,7 +160,9 @@ class OrderingTable(models.Model):
     ApparelCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ApparelCode',verbose_name="アパレルコード",default=1)
     ManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
     SupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
-    TitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Title,verbose_name="敬称区分")
+    #2024-02-02 変更
+    #TitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=Title,verbose_name="敬称区分")
+    TitleDiv = models.IntegerField(null=False,default=0,choices=Title,verbose_name="敬称区分")
     StockDiv = models.BooleanField(null=False,blank=False,default=False,verbose_name="在庫済区分")
     MarkName = models.CharField(max_length=20,null=False,blank=True,verbose_name="マーク名")
     OutputDiv = models.ForeignKey(DivOutputClass,on_delete=models.PROTECT,related_name='OutputDivCode',null=False,default=0,verbose_name="出力区分")
@@ -216,7 +218,7 @@ class OrderingDetail(models.Model):
     Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
     #2023-11-01 追加
-    DetailUnitDiv = models.IntegerField(null=False,blank=True,default=0,choices=Unit,verbose_name="敬称区分")
+    DetailUnitDiv = models.IntegerField(null=False,default=0,choices=Unit,verbose_name="単位")
 
     def __str__(self):
         return str(self.DetailItemNumber)
@@ -242,15 +244,21 @@ class Merchandise(models.Model):
         (7, "US$ CMT上海"),
         ]
     #McdCode = models.IntegerField(null=False,default=0,verbose_name="商品コード")
-    McdTreatmentCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseTreatment,verbose_name="扱区分")
+    #2024-02-02 変更
+    #McdTreatmentCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseTreatment,verbose_name="扱区分")
+    McdTreatmentCode = models.IntegerField(null=False,default=0,choices=MerchandiseTreatment,verbose_name="扱区分")
     McdTempPartNumber = models.CharField(max_length=20,null=False,blank=True,verbose_name="仮品番")
     McdPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
     McdManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
     McdUnitPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="仕入単価")
-    McdUnitCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseUnitCode,verbose_name="仕入単位")
+    #2024-02-02 変更
+    #McdUnitCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseUnitCode,verbose_name="仕入単位")
+    McdUnitCode = models.IntegerField(null=False,default=0,choices=MerchandiseUnitCode,verbose_name="仕入単位")
     McdSellPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="販売単価")
     McdProcessfee = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="加工賃")
-    McdProcessCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseUnitCode,verbose_name="加工賃単位")
+    #2024-02-02 変更
+    #McdProcessCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseUnitCode,verbose_name="加工賃単位")
+    McdProcessCode = models.IntegerField(null=False,default=0,choices=MerchandiseUnitCode,verbose_name="加工賃単位")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
@@ -313,7 +321,9 @@ class MerchandiseDetail(models.Model):
     McdDtOrderingCount = models.CharField(max_length=8,null=False,blank=True,verbose_name="番手")
     McdDtStainMixRatio = models.CharField(max_length=20,null=False,blank=True,verbose_name="混率")
     McdDtlPrice = models.DecimalField(max_digits=8,decimal_places=2, null=False,blank=False,default=0.00,verbose_name="単価")
-    McdDtUnitCode = models.IntegerField(null=False,blank=True,default=0,choices=UnitCode,verbose_name="単位")
+    #2024-02-02 変更
+    #McdDtUnitCode = models.IntegerField(null=False,blank=True,default=0,choices=UnitCode,verbose_name="単位")
+    McdDtUnitCode = models.IntegerField(null=False,default=0,choices=UnitCode,verbose_name="単位")
     Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
     Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
@@ -364,7 +374,9 @@ class ProductOrder(models.Model):
     ProductOrderDestinationCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderDestinationCode',null=False,blank=True,verbose_name="手配先コード",default=1)
     ProductOrderSupplierCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderSupplierCode',verbose_name="仕入先コード")
     ProductOrderSupplierPerson = models.CharField(max_length=30,null=False,blank=True,verbose_name="仕入先担当者名")
-    ProductOrderTitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=ProductOrderTitleDiv,verbose_name="敬称区分")
+    #2024-02-02 変更
+    #ProductOrderTitleDiv = models.IntegerField(null=False,blank=True,default=0,choices=ProductOrderTitleDiv,verbose_name="敬称区分")
+    ProductOrderTitleDiv = models.IntegerField(null=False,default=0,choices=ProductOrderTitleDiv,verbose_name="敬称区分")
     ProductOrderShippingCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderShippingCode',verbose_name="出荷先コード")
     ProductOrderCustomeCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderCustomeCode',verbose_name="得意先コード")
     ProductOrderRequestCode = models.ForeignKey(CustomerSupplier,on_delete=models.PROTECT,related_name='ProductOrderRequestCode',verbose_name="依頼先コード")

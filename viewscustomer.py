@@ -71,6 +71,7 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/customersupplier/new/customersupplierform.html"
 
     def get(self, request):
+        mngcode = self.request.user.id
         form = CustomerSupplierForm(self.request.POST or None,initial=
             {
             'PrefecturesCode': '1',
@@ -79,6 +80,7 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
             'LastPayable': 0,
             'LastProceeds': 0,
             'ProceedsTarget': 0,
+            'ManagerCode':mngcode,
             })
 
         context = {
