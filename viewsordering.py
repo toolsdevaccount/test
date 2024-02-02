@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render,redirect
 from django.views.generic import ListView,CreateView,UpdateView
 from .models import OrderingTable, OrderingDetail, CustomerSupplier
@@ -124,6 +125,18 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     formset_class = OrderingFormset
     template_name = "crud/ordering/new/orderingform.html"
    
+    # get_initialをオーバーライド
+    def get_initial(self):
+        mngcode = self.request.user.id
+        day = datetime.date.today()
+        str_time = day.strftime('%Y-%m-%d')
+
+        initial = super().get_initial()
+        initial['ManagerCode'] = mngcode
+        initial['OrderingDate'] = str_time
+
+        return initial
+
     # get_context_dataをオーバーライド
     def get_context_data(self, **kwargs):
         context = super(OrderingCreateView, self).get_context_data(**kwargs)

@@ -81,6 +81,7 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
             'LastProceeds': 0,
             'ProceedsTarget': 0,
             'ManagerCode':mngcode,
+            'OffsetDiv': 2,
             })
 
         context = {
@@ -128,6 +129,7 @@ class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
     form_class =  CustomerSupplierForm
     template_name = "crud/customersupplier/delete/customersupplierformdelete.html"
        
+
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
         if self.request.method == "POST":

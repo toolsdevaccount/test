@@ -88,10 +88,11 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/merchandise/new/merchandiseform.html"
    
     def get(self, request):
+        mngcode = self.request.user.id
         form = MerchandiseForm(self.request.POST or None, 
                             initial={
                                     'McdTreatmentCode': '1',
-                                    'McdManagerCode': '1',
+                                    'McdManagerCode': mngcode,
                                     'McdUnitCode':'1',
                                     'McdProcessCode':'1',
                                     })

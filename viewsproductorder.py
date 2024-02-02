@@ -135,6 +135,10 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/productorder/new/productorderform.html"
    
     def get(self, request):
+        mngcode = self.request.user.id
+        day = datetime.date.today()
+        str_time = day.strftime('%Y-%m-%d')
+        print(str_time)
         form = ProductOrderForm(self.request.POST or None,
                 initial={'ProductOrderDestinationCode': '1',
                          'ProductOrderSupplierCode': '1',
@@ -142,7 +146,8 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                          'ProductOrderCustomeCode': '1',
                          'ProductOrderRequestCode': '1',
                          'ProductOrderApparelCode': '1',
-                         'ProductOrderOrderingDate': date.today(),
+                         'ProductOrderOrderingDate': str_time,
+                         'ProductOrderManagerCode':mngcode,
                         })
 
         formset = ProductOrderFormset(self.request.POST or None)
