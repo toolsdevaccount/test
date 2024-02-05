@@ -36,7 +36,9 @@ def pdf(request,pk):
 
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
-        messages.error(request,message) 
+        logger.error(message)
+        messages.add_message(request, messages.ERROR, message)
+        #messages.error(request,message) 
         return redirect("myapp:orderinglist")
     return response
 

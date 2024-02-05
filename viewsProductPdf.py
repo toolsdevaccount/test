@@ -23,6 +23,9 @@ from django.contrib import messages
 from PIL import Image
 # 文字列折り返し
 import textwrap
+#LOG出力設定
+import logging
+logger = logging.getLogger(__name__)
 
 def pdf(request,pk):
     try:
@@ -34,6 +37,7 @@ def pdf(request,pk):
         UpdateQuery(pk)
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
+        logger.error(message)
         messages.error(request,message) 
         return redirect("myapp:productorderlist")
     return response

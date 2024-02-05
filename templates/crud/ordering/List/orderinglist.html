@@ -14,13 +14,6 @@
 	</nav>
 	<div class="form-group">
 		<form method="post" id="form">{% csrf_token %}
-			{% if messages %}
-			<div class="invalid-feedback">
-			{% for message in messages %}
-				{{ message }}
-			{% endfor %}
-			</div>
-			{% endif %}
 			<div class="form-row">
 				<div class="form-group col-sm-2">
 					<input type="search" name="query" id="query" class="form-control" autocomplete="new-password" placeholder="キーワード" value="{{ search.query.value }}"/>
@@ -46,6 +39,13 @@
 					</button>
 				</div>
 			</div>
+			{% if messages %}
+			<ul class="messages_ul">
+				{% for message in messages %}
+					<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
 		</form>
 		{% block extrajs %}
 		<!-- flatpicr -->

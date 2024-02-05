@@ -39,6 +39,13 @@
 					</button>
 				</div>
 			</div>
+			{% if messages %}
+			<ul class="messages_ul">
+				{% for message in messages %}
+					<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
 		</form>
 		{% block extrajs %}
 		<!-- flatpicr -->
@@ -48,11 +55,6 @@
 		{% load static %}
 		<script src="{% static '\js\datepickerlist.js' %}" charset="UTF-8"></script>
 		{% endblock %}
-		{% if messages %}
-		{% for message in messages %}
-		<div class="invalid-feedback">{{ message }}</div>
-		{% endfor %}
-		{% endif %}
 		<div class="table-responsive table-container">
 			<div class="table-sticky-container">
 				<table class="table table-sticky">
