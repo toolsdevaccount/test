@@ -101,11 +101,11 @@
                                 <label for="id_ProductName">仕入単価</label>
                                 {% if form.errors.ProductName %}
                                 {% for error in form.errors.ProductName %}
-                                <input type="text" class="form-control is-invalid McdUnitPrice" autocomplete="new-password" name="McdUnitPrice" id="id_McdUnitPrice" style="text-align: right;" onchange="comma(this);" value="{{ object.McdUnitPrice|intcomma }}">
+                                <input type="text" class="form-control is-invalid McdUnitPrice" autocomplete="new-password" name="McdUnitPrice" id="id_McdUnitPrice" style="text-align: right;" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.McdUnitPrice|intcomma }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control McdUnitPrice" autocomplete="new-password" name="McdUnitPrice" id="id_McdUnitPrice" style="text-align: right;" onchange="comma(this);" value="{{ object.McdUnitPrice|intcomma }}">
+                                <input type="text" class="form-control McdUnitPrice" autocomplete="new-password" name="McdUnitPrice" id="id_McdUnitPrice" style="text-align: right;" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.McdUnitPrice|intcomma }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
@@ -133,11 +133,11 @@
                                 <label for="id_McdSellPrice">販売単価</label>
                                 {% if form.errors.McdSellPrice %}
                                 {% for error in form.errors.McdSellPrice %}
-                                <input type="tel" class="form-control is-invalid McdSellPrice" autocomplete="new-password" name="McdSellPrice" id="id_McdSellPrice" style="text-align: right;" onchange="comma(this);" value="{{ object.McdSellPrice|intcomma }}">
+                                <input type="tel" class="form-control is-invalid McdSellPrice" autocomplete="new-password" name="McdSellPrice" id="id_McdSellPrice" style="text-align: right;" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.McdSellPrice|intcomma }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control McdSellPrice" autocomplete="new-password" name="McdSellPrice" id="id_McdSellPrice" style="text-align: right;" onchange="comma(this);" value="{{ object.McdSellPrice|intcomma }}">
+                                <input type="tel" class="form-control McdSellPrice" autocomplete="new-password" name="McdSellPrice" id="id_McdSellPrice" style="text-align: right;" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.McdSellPrice|intcomma }}">
                                 {% endif %}
                             </div>
                         </div>
@@ -146,11 +146,11 @@
                                 <label for="id_McdProcessfee">加工賃</label>
                                 {% if form.errors.McdProcessfee %}
                                 {% for error in form.errors.McdProcessfee %}
-                                <input type="tel" class="form-control is-invalid McdProcessfee" autocomplete="new-password" name="McdProcessfee" id="id_McdProcessfee" style="text-align: right;" onchange="comma(this);" value="{{ object.McdProcessfee|intcomma }}">
+                                <input type="tel" class="form-control is-invalid McdProcessfee" autocomplete="new-password" name="McdProcessfee" id="id_McdProcessfee" style="text-align: right;" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.McdProcessfee|intcomma }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control McdProcessfee" autocomplete="new-password" name="McdProcessfee" id="id_McdProcessfee" style="text-align: right;" onchange="comma(this);" value="{{ object.McdProcessfee|intcomma }}">
+                                <input type="tel" class="form-control McdProcessfee" autocomplete="new-password" name="McdProcessfee" id="id_McdProcessfee" style="text-align: right;" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.McdProcessfee|intcomma }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">

@@ -6,8 +6,8 @@
     // 指定したエレメント(input)が所属する行(tr)を取得
     function detail(obj)
     {
-        //return obj.parentElement.parentElement.parentElement ;
-        return obj.parentElement.parentElement ;
+        return obj.parentElement.parentElement.parentElement ;
+        // return obj.parentElement.parentElement ;
     }
 
     // 指定したエレメント(input)と同じ行にある仕入単価を取得

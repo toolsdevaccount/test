@@ -87,12 +87,12 @@
 							{% if form.errors.DetailVolume %}
 							{% for error in form.errors.DetailVolume %}
 								<input type="tel" step="0.1" class="form-control is-invalid DetailVolume text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume"
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" onInput="checkForm(this)" value="{{ form.DetailVolume.value | intcomma }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
 								<input type="tel" step="0.1" class="form-control DetailVolume text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" value="{{ form.DetailVolume.value | intcomma }}" data-empty-val="false">                                   
+								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" onInput="checkForm(this)" value="{{ form.DetailVolume.value | intcomma }}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
@@ -106,48 +106,48 @@
 							{% if form.errors.DetailUnitPrice %}
 							{% for error in form.errors.DetailUnitPrice %}
 								<input type="tel" class="form-control is-invalid DetailUnitPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" data-empty-val="false" value="{{ form.DetailUnitPrice.value }}">                                   
+								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onInput="checkForm(this)" onchange="comma(this);" data-empty-val="false" value="{{ form.DetailUnitPrice.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailUnitPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onchange="comma(this);" value="{{ form.DetailUnitPrice.value | default:'0'}}" data-empty-val="false">                                   
+								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" onInput="checkForm(this)" onchange="comma(this);" value="{{ form.DetailUnitPrice.value | default:'0'}}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailPrice %}
 							{% for error in form.errors.DetailPrice %}
 								<input type="tel" class="form-control is-invalid DetailPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" data-empty-val="false" value="{{ form.DetailPrice.value }}">
+								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onInput="checkForm(this)" onchange="calc(this);" data-empty-val="false" value="{{ form.DetailPrice.value }}">
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onchange="calc(this);" value="{{ form.DetailPrice.value | default:'0' }}" data-empty-val="false">
+								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" onInput="checkForm(this)" onchange="calc(this);" value="{{ form.DetailPrice.value | default:'0' }}" data-empty-val="false">
 							{% endif %}
 							</td>
 							<td>
 							{% if form.errors.DetailOverPrice %}
 							{% for error in form.errors.DetailOverPrice %}
 								<input type="tel" class="form-control is-invalid DetailOverPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" data-empty-val="false" value="{{ form.DetailOverPrice.value }}">
+								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onInput="checkForm(this)" onchange="calc(this);" data-empty-val="false" value="{{ form.DetailOverPrice.value }}">
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailOverPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onchange="calc(this);" value="{{ form.DetailOverPrice.value | default:'0' }}" data-empty-val="false">
+								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" onInput="checkForm(this)" onchange="calc(this);" value="{{ form.DetailOverPrice.value | default:'0' }}" data-empty-val="false">
 							{% endif %}
 							</td>
 							<td>
-							{% if form.errors.DetailOverPrice %}
-							{% for error in form.errors.DetailOverPrice %}
+							{% if form.errors.DetailSellPrice %}
+							{% for error in form.errors.DetailSellPrice %}
 								<input type="tel" class="form-control is-invalid DetailSellPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" data-empty-val="false" value="{{ form.DetailSellPrice.value }}">                                   
+								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" onInput="checkForm(this)" data-empty-val="false" value="{{ form.DetailSellPrice.value }}">                                   
                                 <div class="invalid-feedback">{{ error }}</div>
 							{% endfor %}
 							{% else %}
 								<input type="tel" class="form-control DetailSellPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" value="{{ form.DetailSellPrice.value | default:'0' }}" data-empty-val="false">                                   
+								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" onInput="checkForm(this)" value="{{ form.DetailSellPrice.value | default:'0' }}" data-empty-val="false">                                   
 							{% endif %}
 							</td>
 							<td>
@@ -187,7 +187,7 @@
 							<td>
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input PrintDiv" data-id-format="id_OrderingTableId-%d-PrintDiv" data-name-format="OrderingTableId-%d-PrintDiv" 
-									name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" >
+									name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" checked>
 								</div>
 							</td>
 							<td>

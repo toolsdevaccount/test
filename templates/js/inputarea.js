@@ -40,6 +40,8 @@ $(function(){
             tbl.querySelectorAll('.DetailOverPrice')[num -1].value = 0;
             tbl.querySelectorAll('.DetailSellPrice')[num -1].value = 0;
 
+            tbl.querySelectorAll('.PrintDiv')[num -1].checked = true;
+
             var SpecifyDeliveryDate = document.getElementsByClassName('SpecifyDeliveryDate');
             var fp = flatpickr(SpecifyDeliveryDate, {
                 'locale': 'ja',

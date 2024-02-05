@@ -128,12 +128,9 @@ class OrderingCreateView(LoginRequiredMixin,CreateView):
     # get_initialをオーバーライド
     def get_initial(self):
         mngcode = self.request.user.id
-        day = datetime.date.today()
-        str_time = day.strftime('%Y-%m-%d')
 
-        initial = super().get_initial()
+        initial = super(OrderingCreateView,self).get_initial()
         initial['ManagerCode'] = mngcode
-        initial['OrderingDate'] = str_time
 
         return initial
 

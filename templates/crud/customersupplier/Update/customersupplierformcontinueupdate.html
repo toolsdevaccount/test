@@ -45,11 +45,11 @@
             <label for="id_LastClaimBalance">前回請求残</label>
             {% if form.errors.LastClaimBalance %}
             {% for error in form.errors.LastClaimBalance %}
-            <input type="text" class="form-control text-right LastClaimBalance is-invalid" autocomplete="new-password" name="LastClaimBalance" id="id_LastClaimBalance" maxlength="10" onchange="comma(this);" value="{{ object.LastClaimBalance|intcomma }}">
+            <input type="text" class="form-control text-right LastClaimBalance is-invalid" autocomplete="new-password" name="LastClaimBalance" id="id_LastClaimBalance" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastClaimBalance|intcomma }}">
             <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
             {% else %}
-            <input type="text" class="form-control text-right LastClaimBalance" autocomplete="new-password" name="LastClaimBalance" id="id_LastClaimBalance" maxlength="10" onchange="comma(this);" value="{{ object.LastClaimBalance|intcomma }}">
+            <input type="text" class="form-control text-right LastClaimBalance" autocomplete="new-password" name="LastClaimBalance" id="id_LastClaimBalance" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastClaimBalance|intcomma }}">
             {% endif %}
         </div>
     </div>
@@ -58,22 +58,22 @@
             <label for="id_LastReceivable">前月売掛残</label>
             {% if form.errors.LastReceivable %}
             {% for error in form.errors.LastReceivable %}
-            <input type="text" class="form-control text-right LastReceivable is-invalid" autocomplete="new-password" name="LastReceivable" id="id_LastReceivable" maxlength="10"onchange="comma(this);" value="{{ object.LastReceivable|intcomma }}">
+            <input type="text" class="form-control text-right LastReceivable is-invalid" autocomplete="new-password" name="LastReceivable" id="id_LastReceivable" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastReceivable|intcomma }}">
             <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
             {% else %}
-            <input type="text" class="form-control text-right LastReceivable" autocomplete="new-password" name="LastReceivable" id="id_LastReceivable" maxlength="10" onchange="comma(this);" value="{{ object.LastReceivable|intcomma }}">
+            <input type="text" class="form-control text-right LastReceivable" autocomplete="new-password" name="LastReceivable" id="id_LastReceivable" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastReceivable|intcomma }}">
             {% endif %}
         </div>
         <div class="form-group col-sm-2">
             <label for="id_LastPayable">前月買掛残</label>
             {% if form.errors.LastPayable %}
             {% for error in form.errors.LastPayable %}
-            <input type="text" class="form-control text-right LastPayable is-invalid" autocomplete="new-password" name="LastPayable" id="id_LastPayable" maxlength="10" onchange="comma(this);" value="{{ object.LastPayable|intcomma }}">
+            <input type="text" class="form-control text-right LastPayable is-invalid" autocomplete="new-password" name="LastPayable" id="id_LastPayable" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastPayable|intcomma }}">
             <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
             {% else %}
-            <input type="text" class="form-control text-right LastPayable" autocomplete="new-password" name="LastPayable" id="id_LastPayable" maxlength="10" onchange="comma(this);" value="{{ object.LastPayable|intcomma }}">
+            <input type="text" class="form-control text-right LastPayable" autocomplete="new-password" name="LastPayable" id="id_LastPayable" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastPayable|intcomma }}">
             {% endif %}
         </div>
     </div>
@@ -82,22 +82,22 @@
             <label for="id_LastProceeds">前年売上実績</label>
             {% if form.errors.LastProceeds %}
             {% for error in form.errors.LastProceeds %}
-            <input type="text" class="form-control text-right LastProceeds is-invalid" autocomplete="new-password" name="LastProceeds" id="id_LastProceeds" maxlength="10" onchange="comma(this);" value="{{ object.LastProceeds|intcomma }}">
+            <input type="text" class="form-control text-right LastProceeds is-invalid" autocomplete="new-password" name="LastProceeds" id="id_LastProceeds" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastProceeds|intcomma }}">
             <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
             {% else %}
-            <input type="text" class="form-control text-right LastProceeds" autocomplete="new-password" name="LastProceeds" id="id_LastProceeds" maxlength="10" onchange="comma(this);" value="{{ object.LastProceeds|intcomma }}">
+            <input type="text" class="form-control text-right LastProceeds" autocomplete="new-password" name="LastProceeds" id="id_LastProceeds" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.LastProceeds|intcomma }}">
             {% endif %}
         </div>
         <div class="form-group col-sm-2">
             <label for="id_ProceedsTarget">当年売上目標</label>
             {% if form.errors.ProceedsTarget %}
             {% for error in form.errors.ProceedsTarget %}
-            <input type="text" class="form-control text-right is-invalid ProceedsTarget" autocomplete="new-password" name="ProceedsTarget" id="id_ProceedsTarget" maxlength="10" onchange="comma(this);" value="{{ object.ProceedsTarget|intcomma }}">
+            <input type="text" class="form-control text-right is-invalid ProceedsTarget" autocomplete="new-password" name="ProceedsTarget" id="id_ProceedsTarget" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.ProceedsTarget|intcomma }}">
             <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
             {% else %}
-            <input type="text" class="form-control text-right ProceedsTarget" autocomplete="new-password" name="ProceedsTarget" id="id_ProceedsTarget" maxlength="10" onchange="comma(this);" value="{{ object.ProceedsTarget|intcomma }}">
+            <input type="text" class="form-control text-right ProceedsTarget" autocomplete="new-password" name="ProceedsTarget" id="id_ProceedsTarget" maxlength="10" onInput="checkForm(this)" onchange="comma(this);" value="{{ object.ProceedsTarget|intcomma }}">
             {% endif %}
         </div>
     </div>

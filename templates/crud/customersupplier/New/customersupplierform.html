@@ -26,11 +26,11 @@
                                 <label for="id_CustomerCode">コード</label>
                                 {% if form.errors.CustomerCode %}
                                 {% for error in form.errors.CustomerCode %}
-                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="CustomerCode" id="id_CustomerCode" value="{{ form.data.CustomerCode }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="CustomerCode" id="id_CustomerCode" onInput="checkForm(this)" value="{{ form.data.CustomerCode }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" autocomplete="new-password" name="CustomerCode" id="id_CustomerCode" value="{{ form.data.CustomerCode }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="CustomerCode" id="id_CustomerCode" onInput="checkForm(this)" value="{{ form.data.CustomerCode }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-6">
@@ -85,11 +85,11 @@
                                 <label for="id_PostCode">郵便番号</label>
                                 {% if form.errors.PostCode %}
                                 {% for error in form.errors.PostCode %}
-                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="PostCode" id="id_PostCode" value="{{ form.data.PostCode }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="PostCode" id="id_PostCode" onInput="checkForm(this)" value="{{ form.data.PostCode }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" autocomplete="new-password" name="PostCode" id="id_PostCode" value="{{ form.data.PostCode }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="PostCode" id="id_PostCode" onInput="checkForm(this)" value="{{ form.data.PostCode }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
@@ -152,22 +152,22 @@
                                 <label for="id_PhoneNumber">電話番号</label>
                                 {% if form.errors.PhoneNumber %}
                                 {% for error in form.errors.PhoneNumber %}
-                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="PhoneNumber" id="id_PhoneNumber" value="{{ form.data.PhoneNumber }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="PhoneNumber" id="id_PhoneNumber" onInput="checkForm(this)" value="{{ form.data.PhoneNumber }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" autocomplete="new-password" name="PhoneNumber" id="id_PhoneNumber" value="{{ form.data.PhoneNumber }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="PhoneNumber" id="id_PhoneNumber" onInput="checkForm(this)" value="{{ form.data.PhoneNumber }}">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
                                 <label for="id_FaxNumber">FAX番号</label>
                                 {% if form.errors.FaxNumber %}
                                 {% for error in form.errors.FaxNumber %}
-                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="FaxNumber" id="id_FaxNumber" value="{{ form.data.FaxNumber }}">
+                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="FaxNumber" id="id_FaxNumber" onInput="checkForm(this)" value="{{ form.data.FaxNumber }}">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="text" class="form-control" autocomplete="new-password" name="FaxNumber" id="id_FaxNumber" value="{{ form.data.FaxNumber }}">
+                                <input type="text" class="form-control" autocomplete="new-password" name="FaxNumber" id="id_FaxNumber" onInput="checkForm(this)" value="{{ form.data.FaxNumber }}">
                                 {% endif %}
                             </div>
                         </div>

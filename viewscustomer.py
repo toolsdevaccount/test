@@ -128,7 +128,7 @@ class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
     model = CustomerSupplier
     form_class =  CustomerSupplierForm
     template_name = "crud/customersupplier/delete/customersupplierformdelete.html"
-       
+
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):

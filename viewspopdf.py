@@ -102,7 +102,7 @@ def connect(pk):
         '   ,a.OrderingCount '
         '   ,a.StainPartNumber '
         '   ,a.SupplierPerson'
-        '   ,CASE WHEN a.TitleDiv=1 THEN "様" ELSE "御中" END'
+        '   ,CASE WHEN a.TitleDiv=1 THEN "様" WHEN a.TitleDiv=2 THEN "御中" ELSE " " END'
         '   ,IFNULL(DATE_FORMAT(b.StainAnswerDeadline,"%m/%d"),"") '
         '   ,c.CustomerName '
         '   ,c.PostCode '
@@ -162,7 +162,7 @@ def connect(pk):
         '   LEFT JOIN myapp_customersupplier l on a.ApparelCode_id = l.id'
         '   ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) e'
         '   LEFT JOIN myapp_prefecture g on e.PrefecturesCode_id = g.id'
-        ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted = 0 AND b.PrintDiv = 0' 
+        ' WHERE a.id = ' + str(pk) + ' AND b.is_Deleted = 0 AND b.PrintDiv = 1' 
         ' ORDER BY '
         '   b.DetailItemNumber ASC' 
         )
@@ -291,8 +291,20 @@ def print_string(pdf_canvas,dt):
             StainAnswerDeadline = Paragraph(row[8],styleCenter)
             SpecifyDeliveryDate = Paragraph(row[45],styleCenter)
             # 指定した列の右寄せ
-            Volume = Paragraph(row[19],styleRight)
-            UnitPrice = Paragraph(row[20],styleRight)
+            # 0なら空白を送る
+            if row[19] == '0.00':
+                varivol = ' '
+            else:
+                varivol = row[19]
+            Volume = Paragraph(varivol,styleRight)
+
+            # 0なら空白を送る
+            if row[20] == '0':
+                variPrice = ' '
+            else:
+                variPrice = row[20]
+
+            UnitPrice = Paragraph(variPrice,styleRight)
             # 品名の保存
             Pname = row[3]
             # 番手の保存
@@ -523,8 +535,21 @@ def print_string_StainRequest(pdf_canvas,dt):
             DetailSummary = Paragraph(row[21],styleLeft)
             # 指定した列の右寄せ
             DetailItemNumber = Paragraph(row[15],styleCenter)
-            Volume = Paragraph(row[19],styleRight)
-            DetailUnitPrice = Paragraph(row[20],styleRight)
+            # 0なら空白を送る
+            if row[19] == '0.00':
+                varivol = ' '
+            else:
+                varivol = row[19]
+            Volume = Paragraph(varivol,styleRight)
+            #Volume = Paragraph(row[19],styleRight)
+
+            # 0なら空白を送る
+            if row[20] == '0':
+                variprice = ' '
+            else:
+                variprice = row[20]
+            DetailUnitPrice = Paragraph(variprice,styleRight)
+
             StainAnswerDeadline = Paragraph(row[45],styleCenter)
             SpecifyDeliveryDate = Paragraph(row[8],styleCenter)            
             data += [
@@ -559,8 +584,8 @@ def print_string_StainRequest(pdf_canvas,dt):
     table.drawOn(pdf_canvas, 7*mm, 21.0*mm)
 
     # ロゴ追加
-    #img = './mysite/myapp/templates/image/image2.jpg'
-    img = './static/image/image2.jpg'
+    img = './mysite/myapp/templates/image/image2.jpg'
+    #img = './static/image/image2.jpg'
     pdf_canvas.drawImage(img, 65*mm, 5*mm, 38*mm, 7*mm)
 
     pdf_canvas.showPage()

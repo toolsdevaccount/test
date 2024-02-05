@@ -84,13 +84,15 @@ class CustomerSupplierForm(forms.ModelForm):
     #    return email
 
     # 得意先仕入先コード重複チェック
-    #def clean_CustomerCode(self):
-    #    CustomerCode = self.cleaned_data['CustomerCode']
-    #    CustomerCodecnt = CustomerSupplier.objects.filter(CustomerCode__exact = CustomerCode).count()
-    #    if CustomerCode:
-    #        if CustomerCodecnt > 0:
-    #            raise forms.ValidationError(u'得意先仕入先コードが重複しています')
-    #    return CustomerCode
+    def clean_CustomerCode(self):
+        CustomerCode = self.cleaned_data['CustomerCode']
+        idcnt = CustomerSupplier.objects.filter(id__exact = self.instance.pk).count()
+        CustomerCodecnt = CustomerSupplier.objects.filter(CustomerCode__exact = CustomerCode).count()
+        if CustomerCode:
+            if idcnt == 0:
+                if CustomerCodecnt > 0:
+                    raise forms.ValidationError(u'得意先仕入先コードが重複しています')
+        return CustomerCode
 
 class CustomerSupplierChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):

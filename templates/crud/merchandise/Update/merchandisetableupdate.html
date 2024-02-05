@@ -71,12 +71,12 @@
 								{% if form.errors.McdDtlPrice %}
 								{% for error in form.errors.McdDtlPrice %}
 									<input type="text" step="0.1" class="form-control is-invalid McdDtlPrice" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
-									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" style="text-align: right;" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value|intcomma }}">                                   
+									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" style="text-align: right;" onInput="checkForm(this)" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value|intcomma }}">                                   
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 									<input type="text" step="0.1" class="form-control McdDtlPrice" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
-									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" style="text-align: right;" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value|intcomma }}">                                
+									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" style="text-align: right;" onInput="checkForm(this)" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value|intcomma }}">                                
 								{% endif %}
 							</td>
 							<td>
