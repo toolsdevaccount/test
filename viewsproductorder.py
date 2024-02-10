@@ -136,9 +136,6 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
    
     def get(self, request):
         mngcode = self.request.user.id
-        day = datetime.date.today()
-        str_time = day.strftime('%Y-%m-%d')
-        print(str_time)
         form = ProductOrderForm(self.request.POST or None,
                 initial={'ProductOrderDestinationCode': '1',
                          'ProductOrderSupplierCode': '1',
@@ -146,7 +143,6 @@ class ProductOrderCreateView(LoginRequiredMixin,CreateView):
                          'ProductOrderCustomeCode': '1',
                          'ProductOrderRequestCode': '1',
                          'ProductOrderApparelCode': '1',
-                         'ProductOrderOrderingDate': str_time,
                          'ProductOrderManagerCode':mngcode,
                         })
 

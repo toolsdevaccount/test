@@ -47,7 +47,7 @@
                                 <label for="id_OutputDiv">出力区分</label>
                                 {% if form.errors.OutputDiv %}
                                 {% for error in form.errors.OutputDiv %}
-                                <select class="custom-select is-invalid" name="OutputDiv" id="id_OutputDiv">
+                                <select class="custom-select is-invalid" name="OutputDiv" id="id_OutputDiv" onchange="viewChange();">
                                     {% for data in form.OutputDiv %}
                                     {{ data }}
                                     {% endfor %}
@@ -55,7 +55,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <select class="custom-select" name="OutputDiv" id="id_OutputDiv">
+                                <select class="custom-select" name="OutputDiv" id="id_OutputDiv" onchange="viewChange();">
                                     {% for data in form.OutputDiv %}
                                     {{ data }}
                                     {% endfor %}
@@ -148,11 +148,11 @@
                                 <label for="id_StainMixRatio">混率</label>
                                 {% if form.errors.StainMixRatio %}
                                 {% for error in form.errors.StainMixRatio %}
-                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="StainMixRatio" id="id_StainMixRatio" value="{{ object.StainMixRatio }}">
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="StainMixRatio" id="id_StainMixRatio" value="{{ object.StainMixRatio }}" readonly="true">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" autocomplete="new-password" name="StainMixRatio" id="id_StainMixRatio" value="{{ object.StainMixRatio }}">
+                                <input type="tel" class="form-control" autocomplete="new-password" name="StainMixRatio" id="id_StainMixRatio" value="{{ object.StainMixRatio }}" readonly="true">
                                 {% endif %}
                             </div>
                         </div>
@@ -273,7 +273,7 @@
                                 <label for="id_ApparelCode">アパレル</label>
                                 {% if form.errors.ApparelCode %}
                                 {% for error in form.errors.ApparelCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="{{ object.ApparelCode.CustomerCode }} {{ object.ApparelCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="{{ object.ApparelCode.CustomerCode }} {{ object.ApparelCode.CustomerOmitName }}" readonly="true">
                                 <datalist id="Apparel">
                                 {% for data in ApparelCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -282,7 +282,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="{{ object.ApparelCode.CustomerCode }} {{ object.ApparelCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="{{ object.ApparelCode.CustomerCode }} {{ object.ApparelCode.CustomerOmitName }}" readonly="true">
                                 <datalist id="Apparel">
                                 {% for data in ApparelCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -297,7 +297,7 @@
                                 <label for="id_StainShippingCode">原糸メーカー</label>
                                 {% if form.errors.StainShippingCode %}
                                 {% for error in form.errors.StainShippingCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="{{ object.StainShippingCode.CustomerCode }} {{ object.StainShippingCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="{{ object.StainShippingCode.CustomerCode }} {{ object.StainShippingCode.CustomerOmitName }}" readonly="true">
                                 <datalist id="Stain">
                                 {% for data in StainShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -306,7 +306,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="{{ object.StainShippingCode.CustomerCode }} {{ object.StainShippingCode.CustomerOmitName }}">
+                                <input type="tel" class="form-control" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="{{ object.StainShippingCode.CustomerCode }} {{ object.StainShippingCode.CustomerOmitName }}" readonly="true">
                                 <datalist id="Stain">
                                 {% for data in StainShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -319,11 +319,11 @@
                                 <label for="id_StainShippingDate">原糸出荷日</label>
                                 {% if form.errors.StainShippingDate %}
                                 {% for error in form.errors.StainShippingDate %}
-                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="StainShippingDate" id="id_StainShippingDate" value="{{ object.StainShippingDate }}">
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="StainShippingDate" id="id_StainShippingDate" value="{{ object.StainShippingDate }}" readonly="true">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" autocomplete="new-password" name="StainShippingDate" id="id_StainShippingDate" value="{{ object.StainShippingDate | default_if_none:"" }}"">
+                                <input type="tel" class="form-control" autocomplete="new-password" name="StainShippingDate" id="id_StainShippingDate" value="{{ object.StainShippingDate | default_if_none:"" }}"" readonly="true">
                                 {% endif %}
                             </div>
                         </div>

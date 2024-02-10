@@ -73,6 +73,7 @@
 						<th scope="col" class="text-center">オーダーNO</th>
 						<th scope="col" class="text-center">手配先</th>
 						<th scope="col" class="text-center">商品名</th>
+						<th scope="col" class="text-center">番手</th>
 						<th scope="col" class="text-center">出荷先</th>
 						<th scope="col" class="text-center">依頼先</th>
 						<th scope="col" class="text-center">アクション</th>
@@ -99,6 +100,7 @@
 						<td><span>{{ OrderTable.SlipDiv }}</span><span>{{ OrderTable.OrderNumber }}</span></td>
 						<td>{{ OrderTable.DestinationCode.CustomerOmitName }}</td>
 						<td>{{ OrderTable.ProductName }}</td>
+						<td>{{ OrderTable.OrderingCount }}</td>
 						<td>{{ OrderTable.ShippingCode.CustomerOmitName }}</td>
 						<td>{{ OrderTable.RequestCode.CustomerOmitName }}</td>
 						<td class="text-center">

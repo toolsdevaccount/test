@@ -24,19 +24,30 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group row">
-                                <div class="col-sm-3">
+                                <div class="form-group col-sm-3">
+                                    <label for="id_ProductOrderMerchandiseCode">商品コード</label>
+                                    {% if form.errors.ProductOrderMerchandiseCode %}
+                                    {% for error in form.errors.ProductOrderMerchandiseCode %}
+                                    <input type="text" class="form-control is-invalid" autocomplete="new-password" maxlength="5" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" onInput="checkForm(this)" value="{{ form.data.ProductOrderMerchandiseCode }}">
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <input type="text" class="form-control" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" onInput="checkForm(this)" value="{{ form.data.ProductOrderMerchandiseCode }}">
+                                    {% endif %}
+                                </div>   
+                                <div class="col-sm-2">
                                     <label for="id_ProductOrderSlipDiv">伝票区分</label>
-                                    <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" value="{{ form.data.ProductOrderSlipDiv }}">
+                                    <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" onInput="checkForm(this)" value="{{ form.data.ProductOrderSlipDiv }}">
                                 </div>
                                 <div class="col-sm-5">
                                     <label for="id_OrderNumber">オーダーNO</label>
                                     {% if form.errors.OrderNumber %}
                                     {% for error in form.errors.OrderNumber %}
-                                    <input type="text" class="form-control is-invalid" maxlength="7" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
+                                    <input type="text" class="form-control is-invalid" maxlength="7" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onInput="checkForm(this)" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
                                     <div class="invalid-feedback">{{ error }}</div>
                                     {% endfor %}
                                     {% else %}
-                                    <input type="text" class="form-control" maxlength="7" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
+                                    <input type="text" class="form-control" maxlength="7" autocomplete="new-password" name="ProductOrderOrderNumber" id="id_ProductOrderOrderNumber" maxlength="7" onInput="checkForm(this)" onchange="Productorder(this);" value="{{ form.data.ProductOrderOrderNumber }}">
                                     {% endif %}
                                 </div>
                             </div>
@@ -74,17 +85,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-2">
-                                <label for="id_ProductOrderMerchandiseCode">商品コード</label>
-                                {% if form.errors.ProductOrderMerchandiseCode %}
-                                {% for error in form.errors.ProductOrderMerchandiseCode %}
-                                <input type="text" class="form-control is-invalid" autocomplete="new-password" maxlength="5" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ form.data.ProductOrderMerchandiseCode }}">
-                                <div class="invalid-feedback">{{ error }}</div>
-                                {% endfor %}
-                                {% else %}
-                                <input type="text" class="form-control" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ form.data.ProductOrderMerchandiseCode }}">
-                                {% endif %}
-                            </div>
+                            <!-- 商品コードの場所 -->
                             <div class="form-group col-sm-2">
                                 <label for="id_ProductOrderPartNumber">本品番</label>
                                 {% if form.errors.ProductOrderPartNumber %}

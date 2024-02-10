@@ -11,10 +11,10 @@
     }
 
     // 指定したエレメント(input)と同じ行にある仕入単価を取得
-    function McdUnitPrice(obj)
-    {
-        return removeComma(detail(obj).querySelectorAll(".McdUnitPrice")[0].value);
-    }
+    //function McdUnitPrice(obj)
+    //{
+    //    return removeComma(detail(obj).querySelectorAll(".McdUnitPrice")[0].value);
+    //}
 
     // 指定したエレメント(input)と同じ行にある販売単価を取得
     function McdSellPrice(obj)
@@ -37,8 +37,8 @@
     function comma(obj)
     {
         //桁区切りして配置（仕入単価）
-        UnitPrice = Number(McdUnitPrice(obj)).toLocaleString();
-        detail(obj).querySelectorAll(".McdUnitPrice")[0].value = UnitPrice;
+        //UnitPrice = Number(McdUnitPrice(obj)).toLocaleString();
+        //detail(obj).querySelectorAll(".McdUnitPrice")[0].value = UnitPrice;
 
         //桁区切りして配置（販売単価）
         SellPrice = Number(McdSellPrice(obj)).toLocaleString();

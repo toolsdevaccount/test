@@ -108,7 +108,7 @@ class CustomerSupplier(models.Model):
     Municipalities = models.CharField(max_length=24,null=False,blank=True,verbose_name="市区町村")
     Address = models.CharField(max_length=24,null=False,blank=True,verbose_name="番地")
     BuildingName = models.CharField(max_length=24,null=False,blank=True,verbose_name="建物名")
-    PhoneNumber = models.CharField(max_length=12,null=False,blank=True,verbose_name="電話番号")
+    PhoneNumber = models.CharField(max_length=13,null=False,blank=True,verbose_name="電話番号")
     FaxNumber = models.CharField(max_length=12,null=False,blank=True,verbose_name="FAX番号")
     EMAIL = models.EmailField(null=False,blank=True,verbose_name="メールアドレス")
     MasterDiv = models.IntegerField(null=False,default=0,choices=MasterDiv,verbose_name="マスタ区分")
@@ -250,7 +250,9 @@ class Merchandise(models.Model):
     McdTempPartNumber = models.CharField(max_length=20,null=False,blank=True,verbose_name="仮品番")
     McdPartNumber = models.CharField(max_length=20,null=False,blank=False,default=0,verbose_name="本品番")
     McdManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
-    McdUnitPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="仕入単価")
+    #2024-02-09 変更
+    McdUnitPrice = models.DecimalField(max_digits=8,decimal_places=2, null=False,blank=False,default=0.00,verbose_name="仕入単価")
+    #McdUnitPrice = models.DecimalField(max_digits=8,decimal_places=0, null=False,blank=False,default=0,verbose_name="仕入単価")
     #2024-02-02 変更
     #McdUnitCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseUnitCode,verbose_name="仕入単位")
     McdUnitCode = models.IntegerField(null=False,default=0,choices=MerchandiseUnitCode,verbose_name="仕入単位")

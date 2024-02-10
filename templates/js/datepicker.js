@@ -78,9 +78,9 @@ var fp = flatpickr(ResultDate, {
 	}
 });
 
-//今日の日時を表示
+//今日の日付を表示
 window.onload = function () {
-    //今日の日時を表示
+    //今日の日付を表示
     var date = new Date()
     var year = date.getFullYear()
     var month = date.getMonth() + 1
@@ -98,6 +98,9 @@ window.onload = function () {
     var mm = toTwoDigits(month, 2)
     var dd = toTwoDigits(day, 2)
     var ymd = yyyy + "-" + mm + "-" + dd;
-    
-    document.getElementById("id_OrderingDate").value = ymd;
+
+    if (document.getElementById("id_OrderingDate").value==""){
+        document.getElementById("id_OrderingDate").value = ymd;
+    }
+
 }

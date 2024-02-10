@@ -24,7 +24,18 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group row">
-                                <div class="col-sm-3">
+                                <div class="form-group col-sm-3">
+                                    <label for="id_ProductOrderMerchandiseCode">商品コード</label>
+                                    {% if form.errors.ProductOrderMerchandiseCode %}
+                                    {% for error in form.errors.ProductOrderMerchandiseCode %}
+                                    <input type="text" class="form-control is-invalid" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <input type="text" class="form-control" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-2">
                                     <label for="id_ProductOrderSlipDiv">伝票区分</label>
                                     <input type="text" class="form-control" autocomplete="new-password" name="ProductOrderSlipDiv" id="id_ProductOrderSlipDiv" maxlength="1" value="{{ object.ProductOrderSlipDiv }}" readonly>
                                 </div>
@@ -74,17 +85,7 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-sm-2">
-                                <label for="id_ProductOrderMerchandiseCode">商品コード</label>
-                                {% if form.errors.ProductOrderMerchandiseCode %}
-                                {% for error in form.errors.ProductOrderMerchandiseCode %}
-                                <input type="text" class="form-control is-invalid" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
-                                <div class="invalid-feedback">{{ error }}</div>
-                                {% endfor %}
-                                {% else %}
-                                <input type="text" class="form-control" maxlength="5" autocomplete="new-password" name="ProductOrderMerchandiseCode" id="id_ProductOrderMerchandiseCode" value="{{ object.ProductOrderMerchandiseCode }}" readonly>
-                                {% endif %}
-                            </div>
+                            <!-- 商品コードのあった場所-->
                             <div class="form-group col-sm-2">
                                 <label for="id_ProductOrderPartNumber">本品番</label>
                                 {% if form.errors.ProductOrderPartNumber %}
