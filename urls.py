@@ -1,7 +1,6 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult, viewsdeposit, viewspayment
-
+from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult, viewsdeposit, viewspayment, viewsdailyupdate
 # fileupload import
 from django.conf import settings
 from django.conf.urls.static import static
@@ -90,6 +89,9 @@ urlpatterns = [
     path('payment/edit/<int:pk>/', viewspayment.PaymentUpdateView.as_view(), name='Paymentedit'),
     # 支払情報削除
     path('payment/delete/<int:pk>/',viewspayment.PaymentDeleteView.as_view(),name='Paymentdelete'),   
+
+    # 日次更新処理
+    path('dailyupdate/new/', viewsdailyupdate.DailyUpdateView.as_view(), name='DailyUpdate'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

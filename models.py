@@ -24,7 +24,7 @@ class prefecture(models.Model):
 
 #2023-11-24 追加（リストから検索するため）
 class DivSampleClass(models.Model):
-    divcode = models.CharField(max_length=2,null=False,blank=True,verbose_name="区分コード")
+    divcode = models.CharField(max_length=2,blank=True,verbose_name="区分コード")
     divname = models.CharField(max_length=255,null=False,blank=True,verbose_name="名称")
 
     def __str__(self):
@@ -261,8 +261,8 @@ class Merchandise(models.Model):
     #2024-02-02 変更
     #McdProcessCode = models.IntegerField(null=False,blank=True,default=0,choices=MerchandiseUnitCode,verbose_name="加工賃単位")
     McdProcessCode = models.IntegerField(null=False,default=0,choices=MerchandiseUnitCode,verbose_name="加工賃単位")
-    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
-    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_id = models.BigIntegerField(blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(blank=True,default=0,verbose_name="更新者id")
     Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
     Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
     is_Deleted = models.BooleanField(null=False,blank=False,default=False,verbose_name="削除区分")
@@ -494,4 +494,19 @@ class Payment(models.Model):
     # 新規登録・編集完了後のリダイレクト先
     def get_absolute_url(self):
         return reverse('crud/Payment/list/Paymentlist.html')
+
+# 個別請求書番号管理テーブル
+class InvoiceNo(models.Model):
+    InvoiceNo = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="個別請求書番号")
+    SInvoiceNo = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="染色用個別請求書番号")
+    Created_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="登録者id")
+    Updated_id = models.BigIntegerField(null=False,blank=True,default=0,verbose_name="更新者id")
+    Created_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="登録日時")
+    Updated_at = models.DateTimeField(null=False, blank=False,default=timezone.now() + datetime.timedelta(hours=9),verbose_name="更新日時")
+
+    def __str__(self):
+        return str(self.InvoiceNo)
+    # 新規登録・編集完了後のリダイレクト先
+    def get_absolute_url(self):
+        return reverse('crud/DailyUpdate/DailyUpdate.html')
 

@@ -78,6 +78,20 @@ var fp = flatpickr(ResultDate, {
 	}
 });
 
+// DailyUpdate日次更新日付
+var DailyUpdateDate = document.getElementsByClassName('DailyUpdateDate');
+var fp = flatpickr(DailyUpdateDate, {
+	'locale': 'ja',
+	allowInput: true,
+	// onCloseは入力フォームが閉じられた時に発火する
+	onClose: (selectedDates, dateStr, instance) => {
+		if (selectedDates.length === 1) {
+			// プロパティにユーザーが選択した日付を代入
+			this.dateProps = selectedDates[0];
+		}
+	}
+});
+
 //今日の日付を表示
 window.onload = function () {
     //今日の日付を表示

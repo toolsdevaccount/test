@@ -1,0 +1,33 @@
+{% extends 'crud/base.html' %}
+{% block content %}
+{% load humanize %}
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">日次更新処理</li>
+        </ol>
+    </nav>
+	<div class="form-group">
+        <form method="post" id="form">
+            {% csrf_token %}
+            <div class="tab-content">
+                <div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-sm-2">
+                                <label for="id_DailyUpdateDate">日次更新対象日</label>
+                                <input type="text" class="form-control DailyUpdateDate" autocomplete="new-password" name="DailyUpdateDate" id="id_DailyUpdateDate" value="{{ object.DailyUpdateDate }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary">実行</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'myapp:index' %}'">キャンセル</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
