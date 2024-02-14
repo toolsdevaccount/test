@@ -27,25 +27,39 @@ class DailyUpdateView(LoginRequiredMixin,CreateView):
         if self.request.method == "POST":
             if form.is_valid():
                 try:       
-                    DailyDate = form.data.get('DailyUpdateDate') 
-                    dt = extract(DailyDate)
+                    DailyDate = form.data.get('DailyUpdateDate')                     
+                    dt = extract(DailyDate) 
                     length=len(dt)
-                    invdt = getInvoiceNo()
-                    InvoiceNo = invdt[0][0]
-                    #SInvoiceNo = invdt[0][1]
+
+                    if length == 0:
+                        message = "更新対象データがありませんでした"
+                        logger.error(message)
+                        messages.add_message(self.request, messages.WARNING, message)
+
+                        return redirect("myapp:DailyUpdate")
                     userid = self.request.user.id
                     for i in range(length):
-                        InvoiceNo += Decimal(1)
-                        #SInvoiceNo += Decimal(1)
                         updid = dt[i][0]
+                        SlipDiv = dt[i][4]
+                        invdt = getInvoiceNo()
+                        if SlipDiv == "A" or SlipDiv == "R" or SlipDiv == "P" or SlipDiv == "T" or SlipDiv == "M" or SlipDiv == "I" or SlipDiv == "E" or SlipDiv == "D" or SlipDiv == "B" or SlipDiv == "Y" or SlipDiv ==  "Z":
+                            InvoiceNo = invdt[0][0]
+                        else:
+                            InvoiceNo = invdt[0][1]
+
                         UpdateRequestResult(updid,DailyDate,InvoiceNo,userid)
-                        UpdateInvoiceNo(InvoiceNo,userid)
+                        InvoiceNo += Decimal(1)
+                        UpdateInvoiceNo(InvoiceNo,userid,SlipDiv)
                 except Exception as e:
                     message = "日次更新時にエラーが発生しました"
                     logger.error(message)
                     messages.add_message(self.request, messages.ERROR, message)
 
                     return redirect("myapp:DailyUpdate")
+
+            message = "日次更新処理正常終了"
+            logger.error(message)
+            messages.add_message(self.request, messages.SUCCESS, message)
 
             return redirect('myapp:DailyUpdate')
 
@@ -59,6 +73,7 @@ def extract(DailyDate):
             '	,c.InvoiceIssueDiv '
             '	,c.DailyUpdateDiv '
             '	,c.DailyUpdateDate '
+            '   ,a.SlipDiv'
             ' from '
             '	myapp_orderingtable a '
             '	inner join '
@@ -69,8 +84,7 @@ def extract(DailyDate):
             '			 a.id = OrderingId_id '
             '		and b.id = OrderingDetailId_id '
             ' where '
-            '	  a.SlipDiv IN("A","R","P","T","M","I","E","D","B","Y","Z") '
-            ' and c.DailyUpdateDiv = false '
+            '     c.DailyUpdateDiv = false '
             ' and c.DailyUpdateDate <= ' + "'" + str(DailyDate) + "'"
         )
     cur.execute(sql)
@@ -126,21 +140,33 @@ def UpdateRequestResult(pk,DailyUpdate,InvoiceNo,userid):
 
     return result
 
-def UpdateInvoiceNo(InvoiceNo,userid):
+def UpdateInvoiceNo(InvoiceNo,userid,SlipDiv):
     conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
     #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
 
     cur = conn.cursor()
-    sql = (
-            ' update ' 
-            '	myapp_InvoiceNo '
-            ' set '
-            '	 InvoiceNo  = ' + "'" + str(InvoiceNo) + "'" 
-            '   ,Updated_id = ' + str(userid) +
-            '   ,Updated_at = now() ' 
-            ' where '
-            '	id = 1'
-        )
+    if SlipDiv == "A" or SlipDiv == "R" or SlipDiv == "P" or SlipDiv == "T" or SlipDiv == "M" or SlipDiv == "I" or SlipDiv == "E" or SlipDiv == "D" or SlipDiv == "B" or SlipDiv == "Y" or SlipDiv ==  "Z":
+        sql = (
+                ' update ' 
+                '	myapp_InvoiceNo '
+                ' set '
+                '	 InvoiceNo  = ' + "'" + str(InvoiceNo) + "'" 
+                '   ,Updated_id = ' + str(userid) +
+                '   ,Updated_at = now() ' 
+                ' where '
+                '	id = 1'
+            )
+    else:
+        sql = (
+                ' update ' 
+                '	myapp_InvoiceNo '
+                ' set '
+                '	 SInvoiceNo  = ' + "'" + str(InvoiceNo) + "'" 
+                '   ,Updated_id = ' + str(userid) +
+                '   ,Updated_at = now() ' 
+                ' where '
+                '	id = 1'
+            )
     cur.execute(sql)
     result = conn.affected_rows()
     conn.commit()
@@ -149,31 +175,3 @@ def UpdateInvoiceNo(InvoiceNo,userid):
     conn.close()
 
     return result
-
-
-# 日次更新
-#class DailyUpdateView(LoginRequiredMixin,CreateView):
-#    model = InvoiceNo
-#    form_class =  DailyUpdateForm
-#    template_name = "crud/dailyupdate/dailyupdate.html"
-
-    # get_context_dataをオーバーライド
-#    def get_context_data(self, **kwargs):
-#        context = super(DailyUpdateView, self).get_context_data(**kwargs)
-#        return context
-
-    # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
-#    @transaction.atomic # トランザクション設定
-#    def form_valid(self, form):
-#        if self.request.method == "POST":
-#            if form.is_valid():
-#                post = form.save(commit=False)
-                # Updatedidフィールドはログインしているユーザidとする
-#                post.Updated_id = self.request.user.id
-#                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-#                post.save()
-#            return redirect('myapp:DailyUpdate')
-
-    # バリデーションエラー時
-#    def form_invalid(self, form):
-#        return super().form_invalid(form) 

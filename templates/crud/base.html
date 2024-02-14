@@ -42,8 +42,6 @@
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{% url 'myapp:Depositlist' %}"><p class="font-small">入金情報一覧</p></a>
 							<a class="dropdown-item" href="{% url 'myapp:Paymentlist' %}"><p class="font-small">支払情報一覧</p></a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'myapp:DailyUpdate' %}"><p class="font-small">日次更新処理</p></a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
@@ -54,6 +52,16 @@
 						<div class="dropdown-menu mt-0">
 							<a class="dropdown-item" href="{% url 'myapp:list' %}"><p class="font-small">得意先仕入先マスタ</p></a>
 							<a class="dropdown-item" href="{% url 'myapp:merchandiselist' %}"><p class="font-small">商品マスタ</p></a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<p class="font-small"><a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							日次処理
+						</a>
+						</p>
+						<div class="dropdown-menu mt-0">
+							<a class="dropdown-item" href="{% url 'myapp:DailyUpdate' %}"><p class="font-small">日次更新処理</p></a>
+							<a class="dropdown-item" href="#"><p class="font-small">個別請求書発行</p></a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
