@@ -12,7 +12,9 @@ import datetime
 import MySQLdb
 # メッセージ
 from django.contrib import messages
-#LOG出力設定
+# 計算用
+from decimal import Decimal
+# LOG出力設定
 import logging
 logger = logging.getLogger(__name__)
 
@@ -23,16 +25,28 @@ class DailyUpdateView(LoginRequiredMixin,CreateView):
 
     def form_valid(self, form):
         if self.request.method == "POST":
-            if form.is_valid():             
+            if form.is_valid():
+                try:       
                     DailyDate = form.data.get('DailyUpdateDate') 
                     dt = extract(DailyDate)
                     length=len(dt)
                     invdt = getInvoiceNo()
                     InvoiceNo = invdt[0][0]
-                    SInvoiceNo = invdt[0][1]
+                    #SInvoiceNo = invdt[0][1]
+                    userid = self.request.user.id
                     for i in range(length):
-                        updid = dt[i]
-                        UpdateQuery(updid,DailyDate,InvoiceNo,SInvoiceNo)
+                        InvoiceNo += Decimal(1)
+                        #SInvoiceNo += Decimal(1)
+                        updid = dt[i][0]
+                        UpdateRequestResult(updid,DailyDate,InvoiceNo,userid)
+                        UpdateInvoiceNo(InvoiceNo,userid)
+                except Exception as e:
+                    message = "日次更新時にエラーが発生しました"
+                    logger.error(message)
+                    messages.add_message(self.request, messages.ERROR, message)
+
+                    return redirect("myapp:DailyUpdate")
+
             return redirect('myapp:DailyUpdate')
 
 def extract(DailyDate):
@@ -86,9 +100,10 @@ def getInvoiceNo():
     conn.close()
     return result
 
-def UpdateQuery(pk,DailyUpdate,InvoiceNo,SInvoiceNo):
+def UpdateRequestResult(pk,DailyUpdate,InvoiceNo,userid):
     conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
     #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+
     cur = conn.cursor()
     sql = (
             ' update ' 
@@ -97,8 +112,34 @@ def UpdateQuery(pk,DailyUpdate,InvoiceNo,SInvoiceNo):
             '	 InvoiceNUmber = ' + "'" + str(InvoiceNo) + "'" 
             '	,DailyUpdateDiv = true '
             '	,DailyUpdateDate = ' + "'" + str(DailyUpdate) + "'"
+            '   ,Updated_id = ' + str(userid) +
+            '   ,Updated_at = now() ' 
             ' where '
             '	id = ' + str(pk)
+        )
+    cur.execute(sql)
+    result = conn.affected_rows()
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    return result
+
+def UpdateInvoiceNo(InvoiceNo,userid):
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+
+    cur = conn.cursor()
+    sql = (
+            ' update ' 
+            '	myapp_InvoiceNo '
+            ' set '
+            '	 InvoiceNo  = ' + "'" + str(InvoiceNo) + "'" 
+            '   ,Updated_id = ' + str(userid) +
+            '   ,Updated_at = now() ' 
+            ' where '
+            '	id = 1'
         )
     cur.execute(sql)
     result = conn.affected_rows()

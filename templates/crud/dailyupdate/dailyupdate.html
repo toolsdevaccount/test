@@ -9,24 +9,67 @@
         </ol>
     </nav>
 	<div class="form-group">
-        <form method="post" id="form">
+        <form method="post" id="form" name="confirm">
             {% csrf_token %}
             <div class="tab-content">
                 <div>
                     <div class="card-body">
                         <div class="form-row">
-                            <div class="form-group col-sm-2">
+                            <div class="form-group col-sm-1">
                                 <label for="id_DailyUpdateDate">日次更新対象日</label>
-                                <input type="text" class="form-control DailyUpdateDate" autocomplete="new-password" name="DailyUpdateDate" id="id_DailyUpdateDate" value="{{ object.DailyUpdateDate }}">
+                                <input type="tel" class="form-control DailyUpdateDate" autocomplete="new-password" name="DailyUpdateDate" id="id_DailyUpdateDate" value="{{ object.DailyUpdateDate }}">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="text-right">
-                <button type="submit" class="btn btn-primary">実行</button>
+                <button type="button" id="modalOpen" class="btn btn-primary" data-toggle="modal" data-target="#modal">実行</button>
                 <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'myapp:index' %}'">キャンセル</button>
             </div>
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="label1">日次更新処理実行</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            実行してよろしいですか
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="delete" class="btn btn-primary">実行</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">中止</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% block extrajs %}
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+            {% load static %}
+            <script src="{% static '\js\datepickerdailyupdate.js' %}" charset="UTF-8"></script>
+            {% endblock %}
+            <script>
+                var btn = document.getElementById('modalOpen');
+                var cls = document.getElementById('modalClose');
+                var dlt = document.getElementById('delete');
+                var modal = document.getElementsByClassName('modal fade');
+
+                btn.addEventListener('click', function() {
+                    for(i=0;i<modal.length;i++){
+                        modal[i].style.opacity = '1';
+                        modal[i].style.visibility = 'visible';
+                    }
+                })
+
+                dlt.addEventListener('click', function() {
+                    document.confirm.submit();
+                })
+            </script>      
         </form>
     </div>
 </div>
