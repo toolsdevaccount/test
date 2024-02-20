@@ -38,6 +38,7 @@ class DailyUpdateView(LoginRequiredMixin,CreateView):
 
                         return redirect("myapp:DailyUpdate")
                     userid = self.request.user.id
+                    OrderNumber = ''
                     for i in range(length):
                         updid = dt[i][0]
                         SlipDiv = dt[i][4]
@@ -47,9 +48,12 @@ class DailyUpdateView(LoginRequiredMixin,CreateView):
                         else:
                             InvoiceNo = invdt[0][1]
 
+                        if OrderNumber != str(dt[i][4] + dt[i][5]):
+                            InvoiceNo += Decimal(1)
+
                         UpdateRequestResult(updid,DailyDate,InvoiceNo,userid)
-                        InvoiceNo += Decimal(1)
                         UpdateInvoiceNo(InvoiceNo,userid,SlipDiv)
+                        OrderNumber = str(dt[i][4] + dt[i][5])
                 except Exception as e:
                     message = "日次更新時にエラーが発生しました"
                     logger.error(message)
@@ -74,6 +78,7 @@ def extract(DailyDate):
             '	,c.DailyUpdateDiv '
             '	,c.DailyUpdateDate '
             '   ,a.SlipDiv'
+            '   ,a.OrderNumber'
             ' from '
             '	myapp_orderingtable a '
             '	inner join '

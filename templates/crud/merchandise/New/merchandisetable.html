@@ -65,12 +65,12 @@
 								{% if form.errors.McdDtlPrice %}
 								{% for error in form.errors.McdDtlPrice %}
 									<input type="text" class="form-control is-invalid McdDtlPrice" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
-									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" style="text-align: right;" data-empty-val="false" value="{{ form.McdDtlPrice.value }}">                                   
+									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" style="text-align: right;" data-empty-val="false" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value }}">                                   
 									<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 									<input type="text" class="form-control McdDtlPrice" autocomplete="new-password" data-id-format="id_McdDtid-%d-McdDtlPrice" data-name-format="McdDtid-%d-McdDtlPrice" 
-									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" data-empty-val="false"  style="text-align: right;" value="{{ form.McdDtlPrice.value }}">                                 
+									name="McdDtid-0-McdDtlPrice" id="id_McdDtid-0-McdDtlPrice" data-empty-val="false"  style="text-align: right;" onchange="detailcomma(this);" value="{{ form.McdDtlPrice.value }}">                                 
 								{% endif %}
 							</td>
 							<td>

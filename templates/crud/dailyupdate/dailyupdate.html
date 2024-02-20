@@ -13,18 +13,18 @@
             {% csrf_token %}
             <div class="tab-content">
                 <div>
-                    {% if messages %}
                     <ul class="messages_ul">
+                    {% if messages %}
                     {% for message in messages %}
                         <li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</li>
                     {% endfor %}
-                    </ul>
                     {% endif %}
+                    </ul>
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group col-sm-2">
                                 <label for="id_DailyUpdateDate">処理日</label>
-                                <input type="tel" class="form-control DailyUpdateDate" autocomplete="new-password" name="DailyUpdateDate" id="id_DailyUpdateDate" value="{{ object.DailyUpdateDate }}">
+                                <input type="tel" class="form-control DailyUpdateDate" autocomplete="new-password" name="DailyUpdateDate" id="id_DailyUpdateDate" value="" readonly="true">
                             </div>
                         </div>           
                     </div>

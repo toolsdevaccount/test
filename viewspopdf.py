@@ -38,7 +38,6 @@ def pdf(request,pk):
         message = "PDF作成時にエラーが発生しました"
         logger.error(message)
         messages.add_message(request, messages.ERROR, message)
-        #messages.error(request,message) 
         return redirect("myapp:orderinglist")
     return response
 
@@ -211,8 +210,8 @@ def print_string(pdf_canvas,dt):
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
 
     # ロゴ追加
-    img = './mysite/myapp/templates/image/image1.jpg'
-    #img = './static/image/image1.jpg'
+    #img = './mysite/myapp/templates/image/image1.jpg'
+    img = './static/image/image1.jpg'
     pdf_canvas.drawImage(img, 173*mm, 134*mm , 20*mm, 5*mm)
 
     pdf_canvas.drawString(560, 379, dt[0][31] + dt[0][32])
@@ -345,8 +344,8 @@ def print_string(pdf_canvas,dt):
     pdf_canvas.drawString(75, 70, '　出荷次第、オーダーNoを記入した納品書を翌日当社宛にご連絡ください。')
 
     # ロゴ追加
-    img = './mysite/myapp/templates/image/image2.jpg'
-    #img = './static/image/image2.jpg'
+    #img = './mysite/myapp/templates/image/image2.jpg'
+    img = './static/image/image2.jpg'
     pdf_canvas.drawImage(img, 110*mm, 8*mm, 32*mm, 7*mm)
 
     pdf_canvas.rect(63, 60, 591, 45) 
@@ -389,8 +388,8 @@ def print_string_StainRequest(pdf_canvas,dt):
     pdf_canvas.setFont('HeiseiMin-W3', font_size)
 
     # ロゴ追加
-    img = './mysite/myapp/templates/image/image1.jpg'
-    #img = './static/image/image1.jpg'
+    #img = './mysite/myapp/templates/image/image1.jpg'
+    img = './static/image/image1.jpg'
     pdf_canvas.drawImage(img, 110*mm, 213*mm , 20*mm, 5*mm)
 
     pdf_canvas.drawString(375, 605, dt[0][31] + dt[0][32])
@@ -558,6 +557,9 @@ def print_string_StainRequest(pdf_canvas,dt):
         else:
             if i==10:
                 # 指定した列の右寄せ
+                if str(total) == '0.00':
+                    total = ''
+                
                 Detailtotal = Paragraph(str(total),styleRight)
                 data += [
                         ['','　合　　計','',Detailtotal,'','',''],
@@ -584,8 +586,8 @@ def print_string_StainRequest(pdf_canvas,dt):
     table.drawOn(pdf_canvas, 7*mm, 21.0*mm)
 
     # ロゴ追加
-    img = './mysite/myapp/templates/image/image2.jpg'
-    #img = './static/image/image2.jpg'
+    #img = './mysite/myapp/templates/image/image2.jpg'
+    img = './static/image/image2.jpg'
     pdf_canvas.drawImage(img, 65*mm, 5*mm, 38*mm, 7*mm)
 
     pdf_canvas.showPage()

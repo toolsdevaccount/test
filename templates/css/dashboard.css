@@ -218,3 +218,40 @@ box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
   z-index: 1;
   left: 0;
 }
+
+
+/* tblrow */
+#tblrow th, #tblrow td {
+  text-align: center;
+  width: 10%;
+  min-width: 130px;
+  padding: 10px;
+  height: 60px;
+}
+
+/* detailtblrow */
+#detailtblrow th, #detailtblrow td {
+  text-align: center;
+  width: 20%;
+  min-width: 130px;
+  padding: 10px;
+  height: 60px;
+}
+
+/* tblrowclsz */
+#tblrowclsz th, #tblrowclsz td {
+  text-align: center;
+  width: 5%;
+  min-width: 100px;
+  padding: 10px;
+  height: 60px;
+}
+
+/* tab */
+@media only screen and (max-width: 768px) {
+  #table03 {
+    display: block;
+    overflow-x: scroll;
+    white-space: nowrap;
+  }
+}

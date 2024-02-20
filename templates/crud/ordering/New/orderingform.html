@@ -138,11 +138,11 @@
                                 <label for="id_StainPartNumber">品番</label>
                                 {% if form.errors.StainPartNumber %}
                                 {% for error in form.errors.StainPartNumber %}
-                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="StainPartNumber" id="id_StainPartNumber" value="{{ form.data.StainPartNumber }}">
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="StainPartNumber" id="id_StainPartNumber" value="{{ form.data.StainPartNumber }}" readonly="true">
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" autocomplete="new-password" name="StainPartNumber" id="id_StainPartNumber" value="{{ form.data.StainPartNumber }}">
+                                <input type="tel" class="form-control" autocomplete="new-password" name="StainPartNumber" id="id_StainPartNumber" value="{{ form.data.StainPartNumber }}" readonly="true">
                                 {% endif %}
                             </div>
                             <div class="form-group col-sm-2">
