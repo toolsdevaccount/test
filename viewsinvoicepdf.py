@@ -43,12 +43,12 @@ def pdf(request,pkclosing,pkfrom,pkto,customerfrom,customerto):
 
 def make(pkclosing,pkfrom,pkto,customerfrom,customerto,response):
     pdf_canvas = set_info(response) # キャンバス名
-    cnt = pkto - pkfrom +1
-    for i in range(cnt):
-        if i>0:
-            pkfrom+= 1     
-        dt = connect(pkclosing,pkfrom,pkto,customerfrom,customerto)
-        print_string(pdf_canvas,dt)
+    #cnt = pkto - pkfrom +1
+    #for i in range(cnt):
+    #    if i>0:
+    #        pkfrom+= 1     
+    dt = connect(pkclosing,pkfrom,pkto,customerfrom,customerto)
+    print_string(pdf_canvas,dt)
    
     pdf_canvas.save() # 保存
 
@@ -59,28 +59,6 @@ def set_info(response):
     pdf_canvas.setTitle("一括請求書")
     pdf_canvas.setSubject("一括請求書")
     return pdf_canvas
-
-def UpdateQuery(pkfromdef,isdate):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
-    cur = conn.cursor()
-    sql = (
-           ' UPDATE ' 
-	           ' myapp_requestresult '
-	       ' SET ' 	 
-		       '  InvoiceIssueDate = DATE_FORMAT(' + str(isdate) + ' ,"%Y-%m-%d" )'
-               ' ,InvoiceIssueDiv = true '
-	       ' WHERE '
-		        ' INVOICENumber = ' + str(pkfromdef) 
-        )
-    cur.execute(sql)
-    result = conn.affected_rows()
-    conn.commit()
-
-    cur.close()
-    conn.close()
-
-    return result
 
 def connect(pkfrom,isdate):
     conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
@@ -116,7 +94,7 @@ def connect(pkfrom,isdate):
         '	,C.ShippingVolume * B.DetailSellPrice '
         '   ,CASE WHEN B.DetailUnitDiv=1 THEN "㎏" WHEN B.DetailUnitDiv=2 THEN "本" ELSE " " END'
         '   ,C.ResultSummary'
-        '	,DATE_FORMAT(' + str(isdate) + ',"%Y年%m月%d日")	AS issuedate '
+        '	,DATE_FORMAT(20240318,"%Y年%m月%d日")	AS issuedate '
         '   ,D.id'
         ' FROM '
         '	myapp_orderingtable A '
@@ -141,7 +119,7 @@ def connect(pkfrom,isdate):
         '	myapp_prefecture G on '
         '		F.PrefecturesCode_id = G.id '
         ' WHERE '
-        '	  C.INVOICENumber = ' + str(pkfrom) + 
+        '	  C.INVOICENumber = 113635' 
         ' ORDER BY '
         '	C.id ASC '
         )

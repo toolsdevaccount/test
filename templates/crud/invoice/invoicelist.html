@@ -148,17 +148,17 @@
 					var InvoiceDate_To = document.getElementById('id_InvoiceDate_To').value;
 					var InvoiceCustomerCode_From = document.getElementById('id_InvoiceCustomerCode_From').value;
 					var InvoiceCustomerCode_To = document.getElementById('id_InvoiceCustomerCode_To').value;
-					var url = "/individualinvoice/pdf/123/456/789/321/654/";
+					var url = "/individualinvoice/pdf/123/456/789/";
 
 					InvoiceDate_From = InvoiceDate_From.replace(/-/g,'');
 					InvoiceDate_To = InvoiceDate_To.replace(/-/g,'');
 					url = url.replace(/123/,closing);
 					url = url.replace(/456/,InvoiceDate_From);
 					url = url.replace(/789/,InvoiceDate_To);
-					url = url.replace(/321/,InvoiceCustomerCode_From);
-					url = url.replace(/654/,InvoiceCustomerCode_To);
+					//url = url.replace(/321/,InvoiceCustomerCode_From);
+					//url = url.replace(/654/,InvoiceCustomerCode_To);
 					console.log(url);
-					//location.href = url;
+					location.href = url;
 				})
             </script>
 		</form>
