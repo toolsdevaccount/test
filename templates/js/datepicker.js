@@ -11,6 +11,7 @@ var fp = flatpickr(OrderingDate, {
         }
     }
 });
+
 // 原糸出荷日
 var StainShippingDate = document.getElementById('id_StainShippingDate');
 var fp = flatpickr(StainShippingDate, {
@@ -24,6 +25,7 @@ var fp = flatpickr(StainShippingDate, {
         }
     }
 });
+
 // 希望納期
 var SpecifyDeliveryDate = document.getElementsByClassName('SpecifyDeliveryDate');
 var fp = flatpickr(SpecifyDeliveryDate, {

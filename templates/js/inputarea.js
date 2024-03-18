@@ -41,6 +41,7 @@ $(function(){
             tbl.querySelectorAll('.DetailSellPrice')[num -1].value = 0;
 
             tbl.querySelectorAll('.PrintDiv')[num -1].checked = true;
+            tbl.querySelectorAll('.DetailUnitDiv')[num -1].value = 1;
 
             var SpecifyDeliveryDate = document.getElementsByClassName('SpecifyDeliveryDate');
             var fp = flatpickr(SpecifyDeliveryDate, {

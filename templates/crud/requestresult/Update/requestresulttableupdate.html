@@ -5,62 +5,62 @@
 		{{ formset.management_form }}	
 		<div class="table-responsive table-container">
 			<div class="table-sticky-container-small">
-				<table class="table table-sm table-sticky-sm table-bordered" id="detailtblrow">
+				<table class="table table-sticky-sm table-bordered" id="detailtblrow">
 					<thead class="thead-light">
 						<tr>
-							<th scope="col" class="text-center" style="width: 2%"></th>
-							<th scope="col" class="text-center" style="width: 5%">項番</th>
-							<th scope="col" class="text-center" style="width: 5%">色番</th>
-							<th scope="col" class="text-center" style="width: 8%">カラー</th>
-							<th scope="col" class="text-center" style="width: 4%">仕立</th>
-							<th scope="col" class="text-center" style="width: 5%">数量</th>
-							<th scope="col" class="text-center" style="width: 5%">単位</th>
-							<th scope="col" class="text-center" style="width: 5%">仕入単価</th>
-							<th scope="col" class="text-center" style="width: 5%">通常単価</th>
-							<th scope="col" class="text-center" style="width: 5%">UP分単価</th>
-							<th scope="col" class="text-center" style="width: 5%">販売単価</th>
-							<th scope="col" class="text-center" style="width: 10%">希望納期</th>
-							<th scope="col" class="text-center" style="width: 10%">回答納期</th>
-							<th scope="col" class="text-center" style="width: 15%">摘　　要</th>
-							<th scope="col" class="text-center" style="width: 2%">済</th>
-							<th scope="col" class="text-center" style="width: 2%">印</th>
+							<th scope="col" class="text-center check">&nbsp&nbsp</th>
+							<th scope="col" class="text-center items">項番</th>
+							<th scope="col" class="text-center items">色番</th>
+							<th scope="col" class="text-center days">カラー</th>
+							<th scope="col" class="text-center four">仕立</th>
+							<th scope="col" class="text-center items">数量</th>
+							<th scope="col" class="text-center items">単位</th>
+							<th scope="col" class="text-center items">仕入単価</th>
+							<th scope="col" class="text-center items">通常単価</th>
+							<th scope="col" class="text-center items">UP分単価</th>
+							<th scope="col" class="text-center items">販売単価</th>
+							<th scope="col" class="text-center days">希望納期</th>
+							<th scope="col" class="text-center days">回答納期</th>
+							<th scope="col" class="text-center">摘&nbsp&nbsp&nbsp&nbsp要</th>
+							<th scope="col" class="text-center check">済</th>
+							<th scope="col" class="text-center check">印</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for form in formset %}
 						<tr class="list_formset">
 							<td class="tableid"></td>
-								<input type="hidden" class="form-control OrderingId" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" id="id_OrderingTableId-0-id" name="OrderingTableId-0-id" value="{{ form.id.value }}">
+								<input type="hidden" class="form-control OrderingId" data-id-format="id_OrderingTableId-%d-id" data-name-format="OrderingTableId-%d-id" id="id_OrderingTableId-{{ forloop.counter0 }}-id" name="OrderingTableId-{{ forloop.counter0 }}-id" value="{{ form.id.value }}">
 							<td>
 								{% if form.errors.DetailItemNumber %}
 								{% for error in form.errors.DetailItemNumber %}
 								<input type="tel" class="form-control is-invalid DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-								name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value }}">
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailItemNumber" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailItemNumber" value="{{ form.DetailItemNumber.value }}">
 								<div class="invalid-feedback">{{ error }}</div>
 								{% endfor %}
 								{% else %}
 								<input type="tel" class="form-control DetailItemNumber" autocomplete="new-password" style="text-align: right;" data-id-format="id_OrderingTableId-%d-DetailItemNumber" data-name-format="OrderingTableId-%d-DetailItemNumber"
-								name="OrderingTableId-0-DetailItemNumber" id="id_OrderingTableId-0-DetailItemNumber" value="{{ form.DetailItemNumber.value }}">
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailItemNumber" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailItemNumber" value="{{ form.DetailItemNumber.value }}">
 								{% endif %}
 							</td>
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColorNumber" data-name-format="OrderingTableId-%d-DetailColorNumber"
-								name="OrderingTableId-0-DetailColorNumber" id="id_OrderingTableId-0-DetailColorNumber" value="{{ form.DetailColorNumber.value | default:'' }}">
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailColorNumber" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailColorNumber" value="{{ form.DetailColorNumber.value | default:'' }}">
 							</td> 
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailColor" data-name-format="OrderingTableId-%d-DetailColor" 
-								name="OrderingTableId-0-DetailColor" id="id_OrderingTableId-0-DetailColor" value="{{ form.DetailColor.value | default:'' }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailColor" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailColor" value="{{ form.DetailColor.value | default:'' }}">                                   
 							</td>
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailTailoring" data-name-format="OrderingTableId-%d-DetailTailoring" 
-								name="OrderingTableId-0-DetailTailoring" id="id_OrderingTableId-0-DetailTailoring" value="{{ form.DetailTailoring.value | default:'' }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailTailoring" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailTailoring" value="{{ form.DetailTailoring.value | default:'' }}">                                   
 							</td>
 							<td>
 								<input type="tel" step="0.1" class="form-control DetailVolume text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailVolume" data-name-format="OrderingTableId-%d-DetailVolume" 
-								name="OrderingTableId-0-DetailVolume" id="id_OrderingTableId-0-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailVolume" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailVolume" data-empty-val="false" value="{{ form.DetailVolume.value | intcomma }}">                                   
 							</td>
 							<td>
-								<select class="custom-select" data-id-format="id_OrderingTableId-%d-DetailUnitDiv" data-name-format="OrderingTableId-%d-DetailUnitDiv" name="OrderingTableId-0-DetailUnitDiv" id="id_OrderingTableId-0-DetailUnitDiv">
+								<select class="custom-select" data-id-format="id_OrderingTableId-%d-DetailUnitDiv" data-name-format="OrderingTableId-%d-DetailUnitDiv" name="OrderingTableId-{{ forloop.counter0 }}-DetailUnitDiv" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailUnitDiv">
 									{% for data in form.DetailUnitDiv %}
 									{{ data }}
 									{% endfor %}
@@ -68,40 +68,40 @@
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailUnitPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailUnitPrice" data-name-format="OrderingTableId-%d-DetailUnitPrice" 
-								name="OrderingTableId-0-DetailUnitPrice" id="id_OrderingTableId-0-DetailUnitPrice" data-empty-val="false" value="{{ form.DetailUnitPrice.value| intcomma }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailUnitPrice" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailUnitPrice" data-empty-val="false" value="{{ form.DetailUnitPrice.value| intcomma }}">                                   
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailPrice" data-name-format="OrderingTableId-%d-DetailPrice" 
-								name="OrderingTableId-0-DetailPrice" id="id_OrderingTableId-0-DetailPrice" data-empty-val="false" value="{{ form.DetailPrice.value| intcomma }}">
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailPrice" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailPrice" data-empty-val="false" value="{{ form.DetailPrice.value| intcomma }}">
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailOverPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailOverPrice" data-name-format="OrderingTableId-%d-DetailOverPrice" 
-								name="OrderingTableId-0-DetailOverPrice" id="id_OrderingTableId-0-DetailOverPrice" data-empty-val="false" value="{{ form.DetailOverPrice.value| intcomma }}">
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailOverPrice" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailOverPrice" data-empty-val="false" value="{{ form.DetailOverPrice.value| intcomma }}">
 							</td>
 							<td>
 								<input type="tel" class="form-control DetailSellPrice text-right" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSellPrice" data-name-format="OrderingTableId-%d-DetailSellPrice" 
-								name="OrderingTableId-0-DetailSellPrice" id="id_OrderingTableId-0-DetailSellPrice" data-empty-val="false" value="{{ form.DetailSellPrice.value| intcomma }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailSellPrice" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailSellPrice" data-empty-val="false" value="{{ form.DetailSellPrice.value| intcomma }}">                                   
 							</td>
 							<td>
 								<input type="tel" class="form-control SpecifyDeliveryDate" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-SpecifyDeliveryDate" data-name-format="OrderingTableId-%d-SpecifyDeliveryDate" 
-								name="OrderingTableId-0-SpecifyDeliveryDate" id="id_OrderingTableId-0-SpecifyDeliveryDate" value="{{ form.SpecifyDeliveryDate.value | default_if_none:"" }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-SpecifyDeliveryDate" id="id_OrderingTableId-{{ forloop.counter0 }}-SpecifyDeliveryDate" value="{{ form.SpecifyDeliveryDate.value | default_if_none:"" }}">                                   
 							</td>
 							<td>
 								<input type="tel" class="form-control StainAnswerDeadline" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-StainAnswerDeadline" data-name-format="OrderingTableId-%d-StainAnswerDeadline" 
-								name="OrderingTableId-0-StainAnswerDeadline" id="idOrderingTableId-0-StainAnswerDeadline" value="{{ form.StainAnswerDeadline.value | default_if_none:"" }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-StainAnswerDeadline" id="idOrderingTableId-{{ forloop.counter0 }}-StainAnswerDeadline" value="{{ form.StainAnswerDeadline.value | default_if_none:"" }}">                                   
 							</td>
 							<td>
 								<input type="text" class="form-control" autocomplete="new-password" data-id-format="id_OrderingTableId-%d-DetailSummary" data-name-format="OrderingTableId-%d-DetailSummary"
-								name="OrderingTableId-0-DetailSummary" id="id_OrderingTableId-0-DetailSummary" value="{{ form.DetailSummary.value | default_if_none:"" }}">                                   
+								name="OrderingTableId-{{ forloop.counter0 }}-DetailSummary" id="id_OrderingTableId-{{ forloop.counter0 }}-DetailSummary" value="{{ form.DetailSummary.value | default_if_none:"" }}">                                   
 							</td>
 							<td class="text-center">
 								<div class="form-check">
 									{% if form.DeliveryManageDiv.value == 1 %}
 									<input type="checkbox" class="form-check-input DeliveryManageDiv" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
-									name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" checked>
+									name="OrderingTableId-{{ forloop.counter0 }}-DeliveryManageDiv" id="id_OrderingTableId-{{ forloop.counter0 }}-DeliveryManageDiv" checked>
 									{% else %}
 									<input type="checkbox" class="form-check-input DeliveryManageDiv" data-id-format="id_OrderingTableId-%d-DeliveryManageDiv" data-name-format="OrderingTableId-%d-DeliveryManageDiv" 
-									name="OrderingTableId-0-DeliveryManageDiv" id="id_OrderingTableId-0-DeliveryManageDiv" >
+									name="OrderingTableId-{{ forloop.counter0 }}-DeliveryManageDiv" id="id_OrderingTableId-{{ forloop.counter0 }}-DeliveryManageDiv" >
 									{% endif %}
 								</div>
 							</td>
@@ -109,10 +109,10 @@
 								<div class="form-check">
 									{% if form.PrintDiv.value == 1 %}
 									<input type="checkbox" class="form-check-input PrintDiv" data-id-format="id_OrderingTableId-%d-PrintDiv" data-name-format="OrderingTableId-%d-PrintDiv" 
-									name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" checked>
+									name="OrderingTableId-{{ forloop.counter0 }}-PrintDiv" id="id_OrderingTableId-{{ forloop.counter0 }}-PrintDiv" checked>
 									{% else %}
 									<input type="checkbox" class="form-check-input PrintDiv" data-id-format="id_OrderingTableId-%d-PrintDiv" data-name-format="OrderingTableId-%d-PrintDiv" 
-									name="OrderingTableId-0-PrintDiv" id="id_OrderingTableId-0-PrintDiv" >
+									name="OrderingTableId-{{ forloop.counter0 }}-PrintDiv" id="id_OrderingTableId-{{ forloop.counter0 }}-PrintDiv" >
 									{% endif %}
 								</div>
 							</td>
@@ -127,24 +127,24 @@
 		<div class="text-left">
 			<button type="button" id="add" class="btn btn-primary list_add">追加</button>
 		</div>
-		<div class="table-responsive table-container">	
+		<div class="table-responsive table-container">
 			<div class="table-sticky-container-small">
-				{{ inlinesRecord.management_form }}	
+				{{ inlinesRecord.management_form }}
 				<table class="table table-sticky table-sm" id="tblrow">
 					<thead>
 						<tr>
-							<th scope="col" class="text-center" style="width: 2%"></th>
-							<th scope="col" class="text-center" style="width: 4%">削除</th>
-							<th scope="col" class="text-center" style="width: 5%">項番</th>
-							<th scope="col" class="text-center" style="width: 15%">実績日</th>
-							<th scope="col" class="text-center" style="width: 15%">出荷日</th>
-							<th scope="col" class="text-center" style="width: 10%">出荷数</th>
-							<th scope="col" class="text-center" style="width: 10%">伝票番号</th>
-							<th scope="col" class="text-center" style="width: 20%">摘　　要</th>
-							<th scope="col" class="text-center" style="width: 5%">移動</th>
-							<th scope="col" class="text-center" style="width: 5%">目増</th>
-							<th scope="col" class="text-center" style="width: 5%">目減</th>
-							<th scope="col" class="text-center" style="width: 5%">　</th>
+							<th scope="col" class="text-center check"></th>
+							<th scope="col" class="text-center check">削除</th>
+							<th scope="col" class="text-center items">項番</th>
+							<th scope="col" class="text-center days">実績日</th>
+							<th scope="col" class="text-center days">出荷日</th>
+							<th scope="col" class="text-center items">出荷数</th>
+							<th scope="col" class="text-center days">伝票番号</th>
+							<th scope="col" class="text-center">摘&nbsp&nbsp&nbsp&nbsp要</th>
+							<th scope="col" class="text-center check">移動</th>
+							<th scope="col" class="text-center check">目増</th>
+							<th scope="col" class="text-center check">目減</th>
+							<th scope="col" class="text-center check">&nbsp&nbsp</th>
 						</tr>
 					</thead>
 					<tbody id="list">
@@ -402,7 +402,8 @@
 				});
             }
             $.each(response.list, function(index, list) {
-                texthtml = '';
+				console.log(list.id);
+				texthtml = '';
                 texthtml = texthtml + '<tr class="list_var">';
                 texthtml = texthtml + '	<td id="detail"> ';
                 texthtml = texthtml + '		<input type="hidden" data-id-format="id_OrderingId-%d-id" data-name-format="OrderingId-%d-id" name="OrderingId-' + index + '-id" id="id_OrderingId-' + index + '-id" value=' + list.id + '>';
@@ -487,5 +488,5 @@
             // 通信失敗時の処理を記述
             $('#resultGET').text('GET処理失敗.');
         });
-    })	
+    })
 </script>

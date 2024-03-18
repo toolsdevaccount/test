@@ -162,7 +162,7 @@
                                 <label for="id_DestinationCode">手配先</label>
                                 {% if form.errors.DestinationCode %}
                                 {% for error in form.errors.DestinationCode %}
-                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" value="A00000 未登録">
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" value="A0000 未登録">
                                 <datalist id="Destination">
                                 {% for data in DestinationCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -171,7 +171,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                    <input type="tel" class="form-control" autocomplete="new-password" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" value="A00000 未登録">
+                                    <input type="tel" class="form-control" autocomplete="new-password" placeholder="" list="Destination" name="DestinationCode" id="id_DestinationCode" value="A0000 未登録">
                                     <datalist id="Destination">
                                 {% for data in DestinationCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -184,7 +184,7 @@
                                 <label for="id_SupplierCode">仕入先</label>
                                 {% if form.errors.SupplierCode %}
                                 {% for error in form.errors.SupplierCode %}
-                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" placeholder="" list="Supplier" name="SupplierCode" id="id_SupplierCode" value="A00000 未登録">
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" placeholder="" list="Supplier" name="SupplierCode" id="id_SupplierCode" value="A0000 未登録">
                                 <datalist id="Supplier">
                                 {% for data in SupplierCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -193,7 +193,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" autocomplete="new-password" list="Supplier" name="SupplierCode" id="id_SupplierCode" value="A00000 未登録">
+                                <input type="tel" class="form-control" placeholder="" autocomplete="new-password" list="Supplier" name="SupplierCode" id="id_SupplierCode" value="A0000 未登録">
                                 <datalist id="Supplier">
                                 {% for data in SupplierCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -206,7 +206,7 @@
                                 <label for="id_SupplierCode">出荷先</label>
                                 {% if form.errors.SupplierCode %}
                                 {% for error in form.errors.SupplierCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="Shipping" autocomplete="new-password" name="ShippingCode" id="id_ShippingCode" value="A00000 未登録">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="Shipping" autocomplete="new-password" name="ShippingCode" id="id_ShippingCode" value="A0000 未登録">
                                 <datalist id="Shipping">
                                 {% for data in ShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -215,9 +215,9 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Shipping" autocomplete="new-password" name="ShippingCode" id="id_ShippingCode" value="A00000 未登録">
+                                <input type="tel" class="form-control" placeholder="" list="Shipping" autocomplete="new-password" name="ShippingCode" id="id_ShippingCode" value="A0000 未登録">
                                 <datalist id="Shipping">
-                                {% for data in SupplierCode %}
+                                {% for data in ShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
                                 {% endfor %}
                                 </datalist>
@@ -230,7 +230,7 @@
                                 <label for="id_CustomeCode">得意先</label>
                                 {% if form.errors.CustomerCode %}
                                 {% for error in form.errors.CustomerCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="Customer" autocomplete="new-password" name="CustomeCode" id="id_CustomeCode" value="A00000 未登録">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="Customer" autocomplete="new-password" name="CustomeCode" id="id_CustomeCode" value="A0000 未登録">
                                 <datalist id="Customer">
                                 {% for data in CustomerCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -239,7 +239,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Customer" autocomplete="new-password" name="CustomeCode" id="id_CustomeCode" value="A00000 未登録">
+                                <input type="tel" class="form-control" placeholder="" list="Customer" autocomplete="new-password" name="CustomeCode" id="id_CustomeCode" value="A0000 未登録">
                                 <datalist id="Customer">
                                 {% for data in CustomerCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -252,7 +252,7 @@
                                 <label for="id_RequestCode">依頼先</label>
                                 {% if form.errors.RequestCode %}
                                 {% for error in form.errors.RequestCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="Request" autocomplete="new-password" name="RequestCode" id="id_RequestCode" value="A00000 未登録">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="Request" autocomplete="new-password" name="RequestCode" id="id_RequestCode" value="A0000 未登録">
                                 <datalist id="Request">
                                 {% for data in RequestCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -261,7 +261,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Request" autocomplete="new-password" name="RequestCode" id="id_RequestCode" value="A00000 未登録">
+                                <input type="tel" class="form-control" placeholder="" list="Request" autocomplete="new-password" name="RequestCode" id="id_RequestCode" value="A0000 未登録">
                                 <datalist id="Request">
                                 {% for data in RequestCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -274,7 +274,7 @@
                                 <label for="id_ApparelCode">アパレル</label>
                                 {% if form.errors.ApparelCode %}
                                 {% for error in form.errors.ApparelCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="A00000 未登録" readonly="true">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="A0000 未登録" readonly="true">
                                 <datalist id="Apparel">
                                 {% for data in ApparelCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -283,7 +283,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="A00000 未登録" readonly="true">
+                                <input type="tel" class="form-control" placeholder="" list="Apparel" autocomplete="new-password" name="ApparelCode" id="id_ApparelCode" value="A0000 未登録" readonly="true">
                                 <datalist id="Apparel">
                                 {% for data in ApparelCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -298,7 +298,7 @@
                                 <label for="id_StainShippingCode">原糸メーカー</label>
                                 {% if form.errors.StainShippingCode %}
                                 {% for error in form.errors.StainShippingCode %}
-                                <input type="tel" class="form-control is-invalid" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="A00000 未登録" readonly="true">
+                                <input type="tel" class="form-control is-invalid" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="A0000 未登録" readonly="true">
                                 <datalist id="Stain">
                                 {% for data in StainShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
@@ -307,7 +307,7 @@
                                 <div class="invalid-feedback">{{ error }}</div>
                                 {% endfor %}
                                 {% else %}
-                                <input type="tel" class="form-control" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="A00000 未登録" readonly="true">
+                                <input type="tel" class="form-control" placeholder="" list="Stain" autocomplete="new-password" name="StainShippingCode" id="id_StainShippingCode" value="A0000 未登録" readonly="true">
                                 <datalist id="Stain">
                                 {% for data in StainShippingCode %}
                                     <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>

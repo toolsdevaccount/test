@@ -61,7 +61,17 @@
 						</p>
 						<div class="dropdown-menu mt-0">
 							<a class="dropdown-item" href="{% url 'myapp:DailyUpdate' %}"><p class="font-small">日次更新処理</p></a>
-							<a class="dropdown-item" href="#"><p class="font-small">個別請求書発行</p></a>
+							<!-- <a class="dropdown-item" href="#"><p class="font-small">個別請求書発行</p></a> -->
+							<a class="dropdown-item" href="{% url 'myapp:individualinvoicelist' %}"><p class="font-small">個別請求書発行</p></a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<p class="font-small"><a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							月&nbsp次&nbsp処理
+						</a>
+						</p>
+						<div class="dropdown-menu mt-0">
+							<a class="dropdown-item" href="{% url 'myapp:invoicelist' %}"><p class="font-small">一括請求書発行</p></a>
 						</div>
 					</li>
 					<li class="nav-item dropdown">
@@ -81,11 +91,11 @@
 					{% if user.is_authenticated %}
 					<form action="{% url 'logout' %}" name="form1" method="post">
 					{% csrf_token %}
-					<span><a class="nav-link" href="javascript:form1.submit()">{{ user.first_name|add:user.last_name }}</a></span>
+					<span><p class="font-small"><a class="nav-link" href="javascript:form1.submit()">{{ user.first_name|add:user.last_name }}</a></p></span>
 					</form>
 					<!-- <span><a class="nav-link" href="{% url 'logout' %}">{{ user.first_name|add:user.last_name }}</a></span> -->
 					{% else %}
-					<span><a class="nav-link" href="{% url 'login' %}">ログイン</a></span>
+					<span><p class="font-small"><a class="nav-link" href="{% url 'login' %}">ログイン</a></p></span>
 					{% endif %}
 				</li>
 			</ul>

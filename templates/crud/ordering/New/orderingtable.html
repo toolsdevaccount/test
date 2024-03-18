@@ -10,43 +10,25 @@
 		<div class="table-responsive table-container">
 			<div class="table-sticky-container">
 				{{ formset.management_form }}	
-				<!-- <table class="table table-sticky table-sm" id="tblrow"> -->
 				<table class="table table-sticky" id="tblrow">
 					<thead>
 						<tr>
-							<th scope="col" class="text-center">項番</th>
-							<th scope="col" class="text-center">色番</th>
-							<th scope="col" class="text-center">カラー</th>
-							<th scope="col" class="text-center">仕立</th>
-							<th scope="col" class="text-center">数量</th>
-							<th scope="col" class="text-center">単位</th>
-							<th scope="col" class="text-center">仕入単価</th>
-							<th scope="col" class="text-center">通常単価</th>
-							<th scope="col" class="text-center">UP分単価</th>
-							<th scope="col" class="text-center">販売単価</th>
-							<th scope="col" class="text-center">希望納期</th>
-							<th scope="col" class="text-center">回答納期</th>
+							<th scope="col" class="text-center items">項番</th>
+							<th scope="col" class="text-center items">色番</th>
+							<th scope="col" class="text-center days">カラー</th>
+							<th scope="col" class="text-center four">仕立</th>
+							<th scope="col" class="text-center items">数量</th>
+							<th scope="col" class="text-center items">単位</th>
+							<th scope="col" class="text-center items">仕入単価</th>
+							<th scope="col" class="text-center items">通常単価</th>
+							<th scope="col" class="text-center items">UP分単価</th>
+							<th scope="col" class="text-center items">販売単価</th>
+							<th scope="col" class="text-center days">希望納期</th>
+							<th scope="col" class="text-center days">回答納期</th>
 							<th scope="col" class="text-center">摘&nbsp&nbsp&nbsp&nbsp要</th>
-							<th scope="col" class="text-center">済</th>
-							<th scope="col" class="text-center">印</th>
-							<th scope="col" class="text-center">&nbsp</th>
-
-							<!-- <th scope="col" class="text-center" style="width: 5%">項番</th>
-							<th scope="col" class="text-center" style="width: 5%">色番</th>
-							<th scope="col" class="text-center" style="width: 8%">カラー</th>
-							<th scope="col" class="text-center" style="width: 4%">仕立</th>
-							<th scope="col" class="text-center" style="width: 5%">数&nbsp&nbsp量</th>
-							<th scope="col" class="text-center" style="width: 5%">単&nbsp&nbsp位</th>
-							<th scope="col" class="text-center" style="width: 5%">仕入単価</th>
-							<th scope="col" class="text-center" style="width: 5%">通常単価</th>
-							<th scope="col" class="text-center" style="width: 5%">UP分単価</th>
-							<th scope="col" class="text-center" style="width: 5%">販売単価</th>
-							<th scope="col" class="text-center" style="width: 8%">希望納期</th>
-							<th scope="col" class="text-center" style="width: 8%">回答納期</th>
-							<th scope="col" class="text-center" style="width: 15%">摘&nbsp&nbsp要</th>
-							<th scope="col" class="text-center" style="width: 2%">済</th>
-							<th scope="col" class="text-center" style="width: 2%">印</th>
-							<th scope="col" class="text-center" style="width: 5%">&nbsp</th> -->
+							<th scope="col" class="text-center check">済</th>
+							<th scope="col" class="text-center check">印</th>
+							<th scope="col" class="text-center check">&nbsp</th>
 						</tr>
 					</thead>
 					<tbody id="list">
@@ -115,7 +97,7 @@
 							{% endif %}
 							</td>
 							<td>
-								<select class="custom-select" data-id-format="id_OrderingTableId-%d-DetailUnitDiv" data-name-format="OrderingTableId-%d-DetailUnitDiv" name="OrderingTableId-0-DetailUnitDiv" id="id_OrderingTableId-0-DetailUnitDiv">
+								<select class="custom-select DetailUnitDiv" data-id-format="id_OrderingTableId-%d-DetailUnitDiv" data-name-format="OrderingTableId-%d-DetailUnitDiv" name="OrderingTableId-0-DetailUnitDiv" id="id_OrderingTableId-0-DetailUnitDiv">
 									{% for data in form.DetailUnitDiv %}
 									{{ data }}
 									{% endfor %}

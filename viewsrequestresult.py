@@ -14,6 +14,11 @@ from django.db import transaction
 from django.db import connection
 # ajax
 from django.http import JsonResponse
+# メッセージ
+from django.contrib import messages
+#LOG出力設定
+import logging
+logger = logging.getLogger(__name__)
 
 # 受発注一覧/検索
 class RequestResultListView(LoginRequiredMixin,ListView):
@@ -181,32 +186,43 @@ class RequestResultUpdateView(LoginRequiredMixin,UpdateView):
             return JsonResponse(context)
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
-    @transaction.atomic # トランザクション設定
+    @transaction.atomic # トランザクション設定   
     def form_valid(self, form):
-        post = form.save(commit=False)
-        #formset = RequestResultFormset(self.request.POST,instance=post) 
-        inlinesRecord = RequestRecordFormset(self.request.POST,instance=post)
+        try:
+            post = form.save(commit=False)
+            inlinesRecord = RequestRecordFormset(self.request.POST,instance=post)
 
-        if self.request.method == 'POST' and inlinesRecord.is_valid():
-            if inlinesRecord.is_valid():
-                instances = inlinesRecord.save(commit=False)
-                # 明細のfileを取り出して更新
-                for file in instances:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.save()
-                # 削除チェックがついたfileを取り出して更新
-                for file in inlinesRecord.deleted_objects:
-                    file.Updated_id = self.request.user.id
-                    file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                    file.is_Deleted = True
-                    file.save()
-        else:
-            # is_validがFalseの場合はエラー文を表示
+            if self.request.method == 'POST' and inlinesRecord.is_valid():
+                if inlinesRecord.is_valid():
+                    instances = inlinesRecord.save(commit=False)
+                    # 明細のfileを取り出して更新
+                    for file in instances:
+                        file.Created_id = self.request.user.id
+                        file.Updated_id = self.request.user.id
+                        file.Created_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                        file.save()
+                    # 削除チェックがついたfileを取り出して更新
+                    for file in inlinesRecord.deleted_objects:
+                        file.Updated_id = self.request.user.id
+                        file.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                        file.is_Deleted = True
+                        file.save()
+            else:
+                message = "更新エラーが発生しました"
+                logger.error(message)
+                messages.error(self.request,message) 
+                # is_validがFalseの場合はエラー文を表示
+                return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
+            message = "更新が正常に終了しました"
+            messages.add_message(self.request, messages.SUCCESS, message)
+            return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class))
+            #return redirect('myapp:requestresultlist')
+        except Exception as e:
+            message = "更新エラーが発生しました"
+            logger.error(message)
+            messages.error(self.request,message) 
             return self.render_to_response(self.get_context_data(form=form, formset=self.formset_class)) 
-        return redirect('myapp:requestresultlist')
 
     # バリデーションエラー時
     def form_invalid(self,form):

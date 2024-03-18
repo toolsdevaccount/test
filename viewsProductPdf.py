@@ -181,7 +181,7 @@ def connect(pk):
             '   LEFT JOIN '
             '  	myapp_customersupplier L on	'
             '      A.ProductOrderSupplierCode_id = L.id '
-            '   ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber,EMAIL FROM myapp_customersupplier WHERE CustomerCode = "A00042" AND is_Deleted = 0) H '
+            '   ,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber,EMAIL FROM myapp_customersupplier WHERE CustomerCode = "A0042" AND is_Deleted = 0) H '
             '   LEFT JOIN '
             '   myapp_prefecture I on '
             '       H.PrefecturesCode_id = I.id '
@@ -202,7 +202,7 @@ def getsize(pk):
     cur = conn.cursor()
     sql = (
                 ' SELECT '
-                ' 	 B.McdSize '
+                ' 	 substr(B.McdSize,1,7) '
                 ' FROM '
                 '	myapp_productorder A '
                 '	LEFT JOIN '
@@ -225,18 +225,18 @@ def getcolor(pk):
     cur = conn.cursor()
     sql = (
             ' select '
-            '	  CONCAT(colorNumber,color) '
+            '	  color '
             '    ,group_concat(size order by size) key_list ' 
             '    ,group_concat(max_value order by size) value_list '
             '    ,colorNumber '
             ' from '
             ' ( '
             '  SELECT '
-            '	 a.id			    AS id '
-            '	,b.McdColor			AS color '
-            '	,c.McdSize			AS size ' 
-            '	,max(a.PodVolume) 	AS max_value '
-            '  	,b.McdColorNumber	AS colorNumber '
+            '	 a.id			                                                        AS id '
+            '	,concat(substr(b.McdColorNumber,1,8)," ",substr(b.McdColor,1,8))        AS color '
+            '	,substr(c.McdSize,1,7)			                                        AS size ' 
+            '	,max(a.PodVolume) 	                                                    AS max_value '
+            '  	,substr(b.McdColorNumber,1,6)                                           AS colorNumber '
             '  FROM '
             '	myapp_productorderdetail a '
             '	left join '
@@ -324,8 +324,8 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     pdf_canvas.setFont('HeiseiKakuGo-W5', font_size)
 
     # ロゴ追加
-    img = './mysite/myapp/templates/image/image1.jpg'
-    #img = './static/image/image1.jpg'
+    #img = './mysite/myapp/templates/image/image1.jpg'
+    img = './static/image/image1.jpg'
     pdf_canvas.drawImage(img, 132*mm, 259*mm , 20*mm, 5*mm)
 
     pdf_canvas.drawString(435, 734, dt[0][26] + dt[0][27])
@@ -493,16 +493,19 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
                 titleNo7 = ''
 
     data = [
-        [titleNo0, '', titleNo2, titleNo3, titleNo4, titleNo5, titleNo6, titleNo7, titleNo8] ,
+        #[titleNo0, '', titleNo2, titleNo3, titleNo4, titleNo5, titleNo6, titleNo7, titleNo8] ,
+        [titleNo0, titleNo2, titleNo3, titleNo4, titleNo5, titleNo6, titleNo7, titleNo8] ,
     ]
 
-    table = Table(data, colWidths=(18*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 22*mm), rowHeights=7.0*mm)
+    #table = Table(data, colWidths=(19*mm, 20*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 22*mm), rowHeights=7.0*mm)
+    table = Table(data, colWidths=(39*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 22*mm), rowHeights=7.0*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
-            ('INNERGRID', (1, 0), (-1, -1), 0.25, colors.black),
+            #('INNERGRID', (1, 0), (-1, -1), 0.25, colors.black),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('SPAN', (0, 0), (1, 0)),
+            #('SPAN', (0, 0), (1, 0)),
         ]))
     table.wrapOn(pdf_canvas, 15*mm, 10*mm)
     table.drawOn(pdf_canvas, 12*mm, 141*mm)
@@ -527,7 +530,7 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             row = dtcolor[i]
             itemNo11 = Paragraph(row[0],styleLeft)
             item = row[2]
-            itemNo10 = Paragraph(row[3],styleLeft) 
+            #itemNo10 = Paragraph(row[3],styleLeft) 
             Vol = item.split(',')
             col = len(Vol)
             itemNo12 = ""
@@ -542,33 +545,53 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
             itemNo17 = ""
             total = 0
             for k in range(col):
-                if k==0:   
-                    itemNo12 = Paragraph(f"{int(Vol[0]):,}",styleRight)
+                if k==0:
+                    if Vol[0]=='0':   #0を空白に変換する
+                        itemNo12 = Paragraph(f" ",styleRight)
+                    else:
+                        itemNo12 = Paragraph(f"{int(Vol[0]):,}",styleRight)
+
                     total += Decimal(Vol[0])
                     itemNo12total += Decimal(Vol[0])
-                if k==1:   
-                    itemNo13 = Paragraph(f"{int(Vol[1]):,}",styleRight)
+                if k==1:
+                    if Vol[1]=='0':   #0を空白に変換する
+                        itemNo13 = Paragraph(f" ",styleRight)
+                    else:
+                        itemNo13 = Paragraph(f"{int(Vol[1]):,}",styleRight)
                     total += Decimal(Vol[1])
                     itemNo13total += Decimal(Vol[1])
-                if k==2:   
-                    itemNo14 = Paragraph(f"{int(Vol[2]):,}",styleRight)
+                if k==2:
+                    if Vol[2]=='0':   #0を空白に変換する   
+                        itemNo14 = Paragraph(f" ",styleRight)
+                    else:
+                        itemNo14 = Paragraph(f"{int(Vol[2]):,}",styleRight)
                     total += Decimal(Vol[2])
                     itemNo14total += Decimal(Vol[2])
-                if k==3:   
-                    itemNo15 = Paragraph(f"{int(Vol[3]):,}",styleRight)
+                if k==3:
+                    if Vol[3]=='0':   #0を空白に変換する
+                        itemNo15 = Paragraph(f" ",styleRight)
+                    else:
+                        itemNo15 = Paragraph(f"{int(Vol[3]):,}",styleRight)
                     total += Decimal(Vol[3])
                     itemNo15total += Decimal(Vol[3])
-                if k==4:   
-                    itemNo16 = Paragraph(f"{int(Vol[4]):,}",styleRight)
+                if k==4:
+                    if Vol[4]=='0':   #0を空白に変換する   
+                        itemNo16 = Paragraph(f" ",styleRight)
+                    else:
+                        itemNo16 = Paragraph(f"{int(Vol[4]):,}",styleRight)
                     total += Decimal(Vol[4])
                     itemNo16total += Decimal(Vol[4])
                 if k==5:   
-                    itemNo17 = Paragraph(f"{int(Vol[5]):,}",styleRight)
+                    if Vol[5]=='0':   #0を空白に変換する   
+                        itemNo17 = Paragraph(f" ",styleRight)
+                    else:
+                        itemNo17 = Paragraph(f"{int(Vol[5]):,}",styleRight)
                     total += Decimal(Vol[5])
                     itemNo17total += Decimal(Vol[5])
             detailtotal = Paragraph(f"{int(total):,}",styleRight)
             data += [
-                [itemNo10, itemNo11,itemNo12,itemNo13,itemNo14,itemNo15,itemNo16,itemNo17,detailtotal] ,
+                #[itemNo10,itemNo11,itemNo12,itemNo13,itemNo14,itemNo15,itemNo16,itemNo17,detailtotal] ,
+                [itemNo11,itemNo12,itemNo13,itemNo14,itemNo15,itemNo16,itemNo17,detailtotal] ,
             ]
         else:
             if i==8:
@@ -607,18 +630,22 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
                     itemNo17total = ''
 
                 data += [
-                    [Paragraph('合',styleRight), Paragraph('計',styleLeft),itemNo12total,itemNo13total,itemNo14total,itemNo15total,itemNo16total,itemNo17total ,itemtotal] ,
+                    #[Paragraph('合',styleRight), Paragraph('計',styleLeft),itemNo12total,itemNo13total,itemNo14total,itemNo15total,itemNo16total,itemNo17total ,itemtotal] ,
+                    [Paragraph('合&nbsp計',style),itemNo12total,itemNo13total,itemNo14total,itemNo15total,itemNo16total,itemNo17total ,itemtotal] ,
                 ]
             else:
                 data += [
-                    ['', '','','','','','','',''] ,
+                    #['','','','','','','','',''] ,
+                    ['','','','','','','',''] ,
                 ]
 
-    table = Table(data, colWidths=(18*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 22*mm), rowHeights=7.0*mm)
+    #table = Table(data, colWidths=(19*mm, 20*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 22*mm), rowHeights=7.0*mm)
+    table = Table(data, colWidths=(39*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 21*mm, 22*mm), rowHeights=7.0*mm)
     table.setStyle(TableStyle([
             ('FONT', (0, 0), (-1, -1), 'HeiseiKakuGo-W5', 9),
             ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
-            ('INNERGRID', (1, 0), (-1, -1), 0.25, colors.black),
+            #('INNERGRID', (1, 0), (-1, -1), 0.25, colors.black),
+            ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
             ('LINEABOVE', (0, 1), (0, 8), 0.25, colors.black),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
         ]))
@@ -637,12 +664,18 @@ def print_string(pdf_canvas,dt,dtsize,dtcolor,dtimage):
     for i in range(l):
         row = dtimage[i]
         if row[3]!="":
-            img = './mysite/media/' + row[3]
-            #img = './media/' + row[3]
+            #img = './mysite/media/' + row[3]
+            img = './media/' + row[3]
             if i==0:
-                pdf_canvas.drawImage(img, 16*mm, 25*mm , 25*mm, 25*mm)
+                #16:9
+                pdf_canvas.drawImage(img, 16*mm, 25*mm , 40*mm, 22.5*mm)
+                #4:3
+                #pdf_canvas.drawImage(img, 16*mm, 25*mm , 40*mm, 30*mm)
             if i==1:
-                pdf_canvas.drawImage(img, 50*mm, 25*mm , 25*mm, 25*mm)
+                #16:9
+                pdf_canvas.drawImage(img, 60*mm, 25*mm , 40*mm, 22.5*mm)
+                #4:3
+                #pdf_canvas.drawImage(img, 60*mm, 25*mm , 40*mm, 30*mm)
 
     if l > 0:
         # 仮品番

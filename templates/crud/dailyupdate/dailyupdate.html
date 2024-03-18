@@ -13,13 +13,15 @@
             {% csrf_token %}
             <div class="tab-content">
                 <div>
-                    <ul class="messages_ul">
-                    {% if messages %}
-                    {% for message in messages %}
-                        <li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</li>
-                    {% endfor %}
-                    {% endif %}
-                    </ul>
+                    <div class="w-50 h-25 mx-auto">
+                        <ul class="messages_ul">
+                        {% if messages %}
+                        {% for message in messages %}
+                            <li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %} list-unstyled" role="alert">{{ message }}</li>
+                        {% endfor %}
+                        {% endif %}
+                        </ul>
+                    </div>
                     <div class="card-body">
                         <div class="form-row">
                             <div class="form-group col-sm-2">

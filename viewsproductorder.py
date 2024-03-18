@@ -294,7 +294,7 @@ class ProductOrderUpdateView(LoginRequiredMixin,UpdateView):
         context.update(list=colorsize) 
 
         return context
-    
+
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
         post = form.save(commit=False)

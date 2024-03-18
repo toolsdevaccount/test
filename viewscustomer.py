@@ -20,6 +20,7 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
     def post(self, request, *args, **kwargs):
         search = [
             self.request.POST.get('query', None),
+            self.request.GET.get('page_obj',None),
         ]
         request.session['cmsearch'] = search
         # 検索時にページネーションに関連したエラーを防ぐ
@@ -58,7 +59,7 @@ class CustomerSupplierListView(LoginRequiredMixin,ListView):
             search = self.request.session['cmsearch']
             query = search[0]
 
-        default_data = {'query': query }
+        default_data = {'query': query}
         
         form = CustomerSearchForm(initial=default_data) # 検索フォーム
         context['cmsearch'] = form
@@ -107,7 +108,7 @@ class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
     model = CustomerSupplier
     form_class =  CustomerSupplierForm
     template_name = "crud/customersupplier/update/customersupplierformupdate.html"
-       
+      
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
         if self.request.method == "POST":

@@ -1,6 +1,7 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
-from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult, viewsdeposit, viewspayment, viewsdailyupdate
+from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult, viewsdeposit 
+from . import viewspayment, viewsdailyupdate, viewsindividualinvoice, viewsindiinvoicepdf,viewsinvoice
 # fileupload import
 from django.conf import settings
 from django.conf.urls.static import static
@@ -57,15 +58,18 @@ urlpatterns = [
     # PDF出力
     path('productorder/pdf/<int:pk>', viewsProductPdf.pdf, name='productorderpdf'),
     
-    # 受発注一覧
+    # 受発注実績一覧
     path('requestresult/list/', viewsrequestresult.RequestResultListView.as_view(), name='requestresultlist'),
-    # 受発注登録
+    # 受発注実績登録
     #path('requestresult/new/<int:pk>/', viewsrequestresult.RequestResultCreateView.as_view(), name='requestresultnew'),
-    # 受発注編集
+    # 受発注実績編集
     path('requestresult/edit/<int:pk>/', viewsrequestresult.RequestResultUpdateView.as_view(), name='requestresultedit'),
     # Ajax処理
     path("requestresult/edit/exec_result/", viewsrequestresult.RequestResultUpdateView.exec_ajax_result, name='exec_result'),
-    # 受発注削除
+    # 更新Ajax処理
+    #path("requestresult/edit/exec_renew/", viewsrequestresult.RequestResultUpdateView.as_view(), name='exec_renew'),
+
+    # 受発注実績削除
     #path('requestresult/delete/<int:pk>/', viewsrequestresult.RequestResultDeleteView.as_view(), name='requestresultdelete'),
     # Ajax処理
     #path("requestresult/new/exec/", viewsrequestresult.RequestResultCreateView.exec_ajax, name='exec'),
@@ -92,6 +96,14 @@ urlpatterns = [
 
     # 日次更新処理
     path('dailyupdate/new/', viewsdailyupdate.DailyUpdateView.as_view(), name='DailyUpdate'),
+
+    # 個別請求書一覧
+    path('individualinvoice/list/', viewsindividualinvoice.individualinvoiceListView.as_view(), name='individualinvoicelist'),
+    # 個別請求書PDF出力
+    path('individualinvoice/pdf/<int:pkfrom>/<int:pkto>/<int:isdate>/', viewsindiinvoicepdf.pdf, name='individualinvoicepdf'), 
+
+    # 一括請求一覧
+    path('invoice/list/', viewsinvoice.invoiceListView.as_view(), name='invoicelist'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

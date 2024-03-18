@@ -39,13 +39,15 @@
 					</button>
 				</div>
 			</div>
-			{% if messages %}
-			<ul class="messages_ul">
-				{% for message in messages %}
-					<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</li>
-				{% endfor %}
-			</ul>
-			{% endif %}
+			<div class="w-50 h-25 mx-auto">
+				{% if messages %}
+				<ul class="messages_ul">
+					{% for message in messages %}
+						<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %} list-unstyled" role="alert">{{ message }}</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
 		</form>
 		{% block extrajs %}
 		<!-- flatpicr -->
@@ -61,11 +63,7 @@
 			<table class="table table-sticky">
 				<thead class="thead-dark">
 					<tr>
-						<th scope="col" class="text-center fixed">
-							<div class="form-check">
-								<input class="form-check-input position-static" type="checkbox">
-							</div>
-						</th>
+						<th scope="col" class="text-center">発行済</th>
 						<th scope="col" class="text-center">区分</th>
 						<th scope="col" class="text-center">区分</th>
 						<th scope="col" class="text-center">依頼日</th>
