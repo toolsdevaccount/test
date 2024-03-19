@@ -38,15 +38,19 @@
 						検索
 					</button>
 				</div>
-			</div>
-			<div class="w-50 h-25 mx-auto">
-				{% if messages %}
-				<ul class="messages_ul">
-					{% for message in messages %}
-						<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</li>
-					{% endfor %}
-				</ul>
-				{% endif %}
+				<div class="w-50 h-25 mx-auto">
+					{% if messages %}
+					<ul class="messages_ul">
+						{% for message in messages %}
+							<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %} list-unstyled alert-dismissible fade show" role="alert">{{ message }}
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+				</div>
 			</div>
             <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="label1" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -148,7 +152,7 @@
 					var InvoiceDate_To = document.getElementById('id_InvoiceDate_To').value;
 					var InvoiceCustomerCode_From = document.getElementById('id_InvoiceCustomerCode_From').value;
 					var InvoiceCustomerCode_To = document.getElementById('id_InvoiceCustomerCode_To').value;
-					var url = "/individualinvoice/pdf/123/456/789/";
+					var url = "/invoice/pdf/123/456/789/";
 
 					InvoiceDate_From = InvoiceDate_From.replace(/-/g,'');
 					InvoiceDate_To = InvoiceDate_To.replace(/-/g,'');

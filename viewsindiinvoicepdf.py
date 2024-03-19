@@ -194,7 +194,7 @@ def print_string(pdf_canvas,dt):
         # 登録番号
         font_size = 9
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(430, 790, '登録番号：T2030001124436')
+        pdf_canvas.drawString(430, 790, '登録番号：T2030001124438')
         # 自社情報
         # ロゴ追加
         img = './mysite/myapp/templates/image/image1.jpg'

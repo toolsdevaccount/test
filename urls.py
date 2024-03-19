@@ -1,7 +1,7 @@
 from django.urls import path
 #from django.contrib.auth import views as auth_views
 from . import views, viewscustomer, viewsordering, viewspopdf, viewsproductorder, viewsmerchandise, viewsProductPdf, viewsrequestresult, viewsdeposit 
-from . import viewspayment, viewsdailyupdate, viewsindividualinvoice, viewsindiinvoicepdf,viewsinvoice
+from . import viewspayment, viewsdailyupdate, viewsindividualinvoice, viewsindiinvoicepdf,viewsinvoice,viewsinvoicepdf
 # fileupload import
 from django.conf import settings
 from django.conf.urls.static import static
@@ -104,6 +104,8 @@ urlpatterns = [
 
     # 一括請求一覧
     path('invoice/list/', viewsinvoice.invoiceListView.as_view(), name='invoicelist'),
+    # 一括請求書PDF出力
+    path('invoice/pdf/<int:pkclosing>/<int:invoiceDate_From>/<int:invoiceDate_To>/', viewsinvoicepdf.pdf, name='invoicepdf'), 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
