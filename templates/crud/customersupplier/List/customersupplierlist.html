@@ -5,6 +5,11 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="{% url 'myapp:index' %}">Home</a></li>
 			<li class="breadcrumb-item active" aria-current="page">得意先仕入先マスタ一覧</li>
+			<div class="container">
+				<div class="text-right">
+					<button class="btn btn-primary btn-sm" onclick="location.href='{% url 'myapp:new' %}'">新規登録</button>
+				</div>
+			</div>
 		</ol>
 	</nav>
 	<div class="form-group">
@@ -16,21 +21,18 @@
 				</div>
 				<div class="col-auto">
 					<button class="btn btn-primary mb-2" type="submit">
-						検索
+							検索
 					</button>
 				</div>
 			</div>
 		</form>
-		<div class="text-right">
-			<button class="btn btn-primary mb-2" onclick="location.href='{% url 'myapp:new' %}'">新規登録</button>
-		</div>
 		<div class="table-responsive table-container">
 		<div class="table-sticky-container">
 			<table class="table table-sticky">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col" class="text-center fixed">コード</th>
-						<th scope="col" class="text-center">名称</th>
+						<th scope="col" class="text-center">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</th>
 						<th scope="col" class="text-center">郵便番号</th>
 						<th scope="col" class="text-center">都道府県</th>
 						<th scope="col" class="text-center">市区町村</th>

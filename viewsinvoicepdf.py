@@ -66,62 +66,37 @@ def connect():
     cur = conn.cursor()
     sql = (
         ' SELECT '
-        '	 C.InvoiceNUmber '
-        '	,CONCAT(A.SlipDiv,"-",A.OrderNumber) 		        AS OrderNumber '
-        '	,D.CustomerName 							        AS CustomerName '
-        '	,D.PostCode '
-        '	,H.prefecturename '
-        '	,D.Municipalities '
-        '	,D.Address '
-        '	,D.BuildingName '
-        '	,E.CustomerName 							        AS ShippingName '
-        '	,DATE_FORMAT(ShippingDate,"%y%m%d")	                AS ShippingDate '
-        '	,A.ProductName '
-        '	,A.OrderingCount '
-        '	,B.DetailColorNumber '
-        '	,B.DetailColor '
-        '	,FORMAT(C.ShippingVolume,2) '
-        '	,FORMAT(B.DetailSellPrice,0) '
-        '	,FORMAT(C.ShippingVolume * B.DetailSellPrice,0)	    AS SellPrice '
-        '	,F.CustomerName '
-        '	,F.PostCode '
-        '	,G.prefecturename '
-        '	,F.Municipalities '
-        '	,F.Address '
-        '	,F.BuildingName '
-        '	,F.PhoneNumber '
-        '	,F.FaxNumber '
-        '	,C.ShippingVolume * B.DetailSellPrice '
-        '   ,CASE WHEN B.DetailUnitDiv=1 THEN "㎏" WHEN B.DetailUnitDiv=2 THEN "本" ELSE " " END'
-        '   ,C.ResultSummary'
+        ' 	 A.id '
+        '	,A.CustomerCode '
+        '	,A.CustomerName '
+        '	,A.Department '
+        '	,A.PostCode '
+        '	,B.prefecturename '
+        '	,A.Municipalities '
+        '	,A.Address '
+        '	,A.BuildingName '
+        '	,A.ClosingDate '
+        '	,A.LastClaimBalance '
+        '	,C.CustomerName '
+        '	,C.PostCode '
+        '	,D.prefecturename '
+        '	,C.Municipalities '
+        '	,C.Address '
+        '	,C.BuildingName '
+        '	,C.PhoneNumber '
+        '	,C.FaxNumber '
         '	,DATE_FORMAT(20240318,"%Y年%m月%d日")	AS issuedate '
-        '   ,D.id'
         ' FROM '
-        '	myapp_orderingtable A '
-        '	INNER JOIN '
-        '	myapp_orderingdetail B ON '
-        '		A.id = B.OrderingTableId_id '
-        '	INNER JOIN '
-        '	myapp_requestresult C ON '
-        '		 A.id = C.OrderingId_id '
-        '	AND B.id = C.OrderingDetailId_id '
+        '	myapp_customersupplier A '
         '	LEFT JOIN '
-        '	myapp_customersupplier D ON '
-        '		A.CustomeCode_id = D.id '
+        '	myapp_prefecture B on '
+        '		A.PrefecturesCode_id = B.id '
+        '	,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A0042" AND is_Deleted = 0) C '
         '	LEFT JOIN '
-        '	myapp_prefecture H on '
-        '		D.PrefecturesCode_id = H.id '
-        '	LEFT JOIN '
-        '	myapp_customersupplier E ON '
-        '		A.ShippingCode_id = E.id '
-        '	,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A0042" AND is_Deleted = 0) F '
-        '	LEFT JOIN '
-        '	myapp_prefecture G on '
-        '		F.PrefecturesCode_id = G.id '
+        '	myapp_prefecture D on '
+        '		C.PrefecturesCode_id = D.id '
         ' WHERE '
-        '	  C.INVOICENumber = 113635 ' 
-        ' ORDER BY '
-        '	C.id ASC '
+        '	A.id BETWEEN 27 AND 27 '
         )
     cur.execute(sql)
     result = cur.fetchall()     
@@ -148,15 +123,15 @@ def print_string(pdf_canvas,dt):
         # 請求先
         font_size = 12
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(40, 795, '〒 ' + dt[0][3])
-        pdf_canvas.drawString(55, 785, dt[0][4] + dt[0][5] + dt[0][6])
-        pdf_canvas.drawString(60, 770, dt[0][7])
+        pdf_canvas.drawString(40, 795, '〒 ' + dt[0][4])
+        pdf_canvas.drawString(55, 785, dt[0][5] + dt[0][6] + dt[0][7])
+        pdf_canvas.drawString(60, 770, dt[0][8])
         font_size = 12
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(55, 740, dt[0][8] + '　' + '様')
+        pdf_canvas.drawString(55, 740, dt[0][2] + '　' + '様')
 
         data =[['締日','請求日'],
-               ['30日締',dt[0][28]],
+               [dt[i][9],dt[i][19]],
               ]
 
         table = Table(data, colWidths=(15*mm, 30*mm), rowHeights=(4*mm, 6*mm))
@@ -183,12 +158,12 @@ def print_string(pdf_canvas,dt):
         # 自社名
         font_size = 16
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(430, 735, dt[0][17])
+        pdf_canvas.drawString(430, 735, dt[0][11])
         # 自社住所
         font_size = 10
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(400, 720, dt[0][19] + dt[0][20] + dt[0][21] + dt[0][22])
-        pdf_canvas.drawString(400, 710, 'TEL: ' + dt[0][23] + '　FAX: ' + dt[0][24])
+        pdf_canvas.drawString(400, 720, dt[0][13] + dt[0][14] + dt[0][15] + dt[0][16])
+        pdf_canvas.drawString(400, 710, 'TEL: ' + dt[0][17] + '　FAX: ' + dt[0][18])
         #取引銀行名
         font_size = 8
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
@@ -196,7 +171,7 @@ def print_string(pdf_canvas,dt):
 
         # 残高
         data =[['前回御請求額','御入金額','','繰越額','当月税抜御請求額10%対象','消費税額 10%'],
-               ['10,000,000','10,000,000','','10,000,000','10,000,000','10,000,000'],
+               [dt[i][10],'10,000,000','','10,000,000','10,000,000','10,000,000'],
               ]
 
         table = Table(data, colWidths=(28*mm, 28*mm, 12*mm, 28*mm, 40*mm, 28*mm), rowHeights=(5*mm, 7*mm))

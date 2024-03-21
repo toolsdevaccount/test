@@ -72,7 +72,6 @@
 									<input type="tel" class="form-control" name="InvoiceDate_From" id="id_InvoiceDate_From" value="">
 									<label for="id_InvoiceDate_To">年月日(To)</label>
 									<input type="tel" class="form-control" name="InvoiceDate_To" id="id_InvoiceDate_To" value="">
-
 									<!-- 得意先コード(FROM) -->
 									<label for="id_InvoiceCustomerCode_From">得意先(FROM)</label>
 									{% if form.errors.InvoiceCustomerCode_From %}
@@ -93,7 +92,7 @@
 									{% endfor %}
 									</datalist>
 									{% endif %}
-									<input type="hidden" name="InvoiceCustomerCode_From" id="id_DepositCustomerCode_From" value=1>
+									<input type="hidden" name="InvoiceCustomerCode_From" id="id_InvoiceCustomerCode_From" value=1>
 									<!-- 得意先コード(To) -->
 									<label for="id_InvoiceCustomerCode_To">得意先(To)</label>
 									{% if form.errors.InvoiceCustomerCode_To %}
@@ -114,7 +113,7 @@
 									{% endfor %}
 									</datalist>
 									{% endif %}
-									<input type="hidden" name="InvoiceCustomerCode_To" id="id_DepositCustomerCode_To" value=1>
+									<input type="hidden" name="InvoiceCustomerCode_To" id="id_InvoiceCustomerCode_To" value=1>
     	                        </div>
 							</div>
 						</div>
@@ -147,10 +146,11 @@
                 })
 
                 ise.addEventListener('click', function() {
-					var closing = document.getElementById('id_closing').value;
+					var closing = document.getElementById('id_invclosing').value;
 					var InvoiceDate_From = document.getElementById('id_InvoiceDate_From').value;
 					var InvoiceDate_To = document.getElementById('id_InvoiceDate_To').value;
-					var InvoiceCustomerCode_From = document.getElementById('id_InvoiceCustomerCode_From').value;
+
+					var InvoiceCustomerCode_From = document.getElementById('InvoiceCustomerCode_From');
 					var InvoiceCustomerCode_To = document.getElementById('id_InvoiceCustomerCode_To').value;
 					var url = "/invoice/pdf/123/456/789/";
 
@@ -159,7 +159,7 @@
 					url = url.replace(/123/,closing);
 					url = url.replace(/456/,InvoiceDate_From);
 					url = url.replace(/789/,InvoiceDate_To);
-					//url = url.replace(/321/,InvoiceCustomerCode_From);
+					//url = url.replace(/345/,InvoiceCustomerCode_From);
 					//url = url.replace(/654/,InvoiceCustomerCode_To);
 					console.log(url);
 					location.href = url;
