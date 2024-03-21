@@ -9,79 +9,77 @@
             <li class="breadcrumb-item active" aria-current="page">入金情報新規登録</li>
         </ol>
     </nav>
-	<div class="form-group">
-        <form method="post" id="form">{% csrf_token %}
+    <div class="form-group">
+        <form class="form-horizontal" method="post" id="form">{% csrf_token %}
             <div class="tab-content">
-                <div>
-                    <div class="card-body">
-                        <div class="form-row">
-                            <div class="form-group col-sm-2">
-                                <label for="id_DepositDate">入金日</label>
-                                {% if form.errors.DepositDate %}
-                                {% for error in form.errors.DepositDate %}
-                                    <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="DepositDate" id="id_DepositDate" value="{{ form.data.DepositDate.value }}">
-                                    <div class="invalid-feedback">{{ error }}</div>
-                                {% endfor %}
-                                {% else %}
-                                    <input type="tel" class="form-control" autocomplete="new-password" name="DepositDate" id="id_DepositDate" value="{{ form.data.DepositDate.value }}">
-                                {% endif %}
-                            </div>
-                            <div class="form-group col-sm-2">
-                                <label for="id_DepositCustomerCode">得意先</label>
-                                {% if form.errors.DepositCustomerCode %}
-                                {% for error in form.errors.DepositCustomerCode %}
-                                <input type="tel" class="form-control is-invalid" list="Deposit" autocomplete="new-password" name="DepositCustomerCode" id="id_DepositCustomerCode" value="A00000 未登録">
-                                <datalist id="Deposit">
-                                {% for data in DepositCustomerCode %}
-                                    <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
-                                {% endfor %}
-                                </datalist>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="id_DepositDate">入金日</label>
+                            {% if form.errors.DepositDate %}
+                            {% for error in form.errors.DepositDate %}
+                                <input type="tel" class="form-control is-invalid" autocomplete="new-password" name="DepositDate" id="id_DepositDate" value="{{ form.data.DepositDate.value }}">
                                 <div class="invalid-feedback">{{ error }}</div>
-                                {% endfor %}
-                                {% else %}
-                                <input type="tel" class="form-control" list="Deposit" autocomplete="new-password" name="DepositCustomerCode" id="id_DepositCustomerCode" value="A00000 未登録">
-                                <datalist id="Deposit">
-                                {% for data in DepositCustomerCode %}
-                                    <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
-                                {% endfor %}
-                                </datalist>
-                                {% endif %}
-                                <input type="hidden" name="DepositCustomerCode" id="id_DepositCustomerCode" value=1>
-                            </div>
+                            {% endfor %}
+                            {% else %}
+                                <input type="tel" class="form-control" autocomplete="new-password" name="DepositDate" id="id_DepositDate" value="{{ form.data.DepositDate.value }}">
+                            {% endif %}
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-sm-2">
-                                <label for="id_DepositMoney">入金金額</label>
-                                {% if form.errors.DepositMoney %}
-                                {% for error in form.errors.DepositMoney %}
-                                <input type="text" class="form-control is-invalid text-right DepositMoney" autocomplete="new-password" name="DepositMoney" id="id_DepositMoney" onchange="comma(this);" value="{{ form.data.DepositMoney | default:"0"}}">
-                                <div class="invalid-feedback">{{ error }}</div>
-                                {% endfor %}
-                                {% else %}
-                                <input type="text" class="form-control text-right DepositMoney" autocomplete="new-password" name="DepositMoney" id="id_DepositMoney" onchange="comma(this);" value="{{ form.data.DepositMoney | default:"0" }}">
-                                {% endif %}
-                            </div>
-                            <div class="form-group col-sm-2">
-                                <label for="id_DepositDiv">入金区分</label>
-                                <select class="custom-select" name="DepositDiv" id="id_DepositDiv">
-                                    {% for data in form.DepositDiv %}
-                                    {{ data }}
-                                    {% endfor %}
-                                </select>
-                            </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_DepositCustomerCode">得意先</label>
+                            {% if form.errors.DepositCustomerCode %}
+                            {% for error in form.errors.DepositCustomerCode %}
+                            <input type="tel" class="form-control is-invalid" list="Deposit" autocomplete="new-password" name="DepositCustomerCode" id="id_DepositCustomerCode" value="A00000 未登録">
+                            <datalist id="Deposit">
+                            {% for data in DepositCustomerCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="tel" class="form-control" list="Deposit" autocomplete="new-password" name="DepositCustomerCode" id="id_DepositCustomerCode" value="A00000 未登録">
+                            <datalist id="Deposit">
+                            {% for data in DepositCustomerCode %}
+                                <option value="{{ data.CustomerCode }} {{ data.CustomerOmitName }}">{{ data.id }}</option>
+                            {% endfor %}
+                            </datalist>
+                            {% endif %}
+                            <input type="hidden" name="DepositCustomerCode" id="id_DepositCustomerCode" value=1>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-sm-4">
-                                <label for="id_DepositSummary">摘要</label>
-                                {% if form.errors.DepositSummary %}
-                                {% for error in form.errors.DepositSummary %}
-                                <input type="text" class="form-control is-invalid" autocomplete="new-password" name="DepositSummary" id="id_DepositSummary" value="{{ form.data.DepositSummary }}">
-                                <div class="invalid-feedback">{{ error }}</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <label for="id_DepositMoney">入金金額</label>
+                            {% if form.errors.DepositMoney %}
+                            {% for error in form.errors.DepositMoney %}
+                            <input type="text" class="form-control is-invalid text-right DepositMoney" autocomplete="new-password" name="DepositMoney" id="id_DepositMoney" onchange="comma(this);" value="{{ form.data.DepositMoney | default:"0"}}">
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control text-right DepositMoney" autocomplete="new-password" name="DepositMoney" id="id_DepositMoney" onchange="comma(this);" value="{{ form.data.DepositMoney | default:"0" }}">
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="id_DepositDiv">入金区分</label>
+                            <select class="custom-select" name="DepositDiv" id="id_DepositDiv">
+                                {% for data in form.DepositDiv %}
+                                {{ data }}
                                 {% endfor %}
-                                {% else %}
-                                <input type="text" class="form-control" autocomplete="new-password" name="DepositSummary" id="id_DepositSummary" value="{{ form.data.DepositSummary }}">
-                                {% endif %}
-                            </div>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <label for="id_DepositSummary">摘要</label>
+                            {% if form.errors.DepositSummary %}
+                            {% for error in form.errors.DepositSummary %}
+                            <input type="text" class="form-control is-invalid" autocomplete="new-password" name="DepositSummary" id="id_DepositSummary" value="{{ form.data.DepositSummary }}">
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            {% else %}
+                            <input type="text" class="form-control" autocomplete="new-password" name="DepositSummary" id="id_DepositSummary" value="{{ form.data.DepositSummary }}">
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -102,7 +100,7 @@
                 <button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;登&nbsp;&nbsp;録&nbsp;&nbsp;</button>
                 <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'myapp:Depositlist' %}'">&nbsp;&nbsp;中&nbsp;&nbsp;止&nbsp;&nbsp;</button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 {% endblock %}
