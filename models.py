@@ -98,6 +98,16 @@ class CustomerSupplier(models.Model):
             (99, "6ヶ月以上"),
         ]
 
+    ExDepositDate = [
+            (0, ""),
+            (5, "5日"),
+            (10, "10日"),
+            (15, "15日"),
+            (20, "20日"),
+            (25, "25日"),
+            (31, "末日"),
+        ]
+
     CustomerCode = models.CharField(max_length=6,null=False,verbose_name="コード")
     CustomerName = models.CharField(max_length=30,null=False,blank=True,verbose_name="名称")
     CustomerOmitName = models.CharField(max_length=12,null=False,blank=True,verbose_name="略称")
@@ -114,7 +124,7 @@ class CustomerSupplier(models.Model):
     MasterDiv = models.IntegerField(null=False,default=0,choices=MasterDiv,verbose_name="マスタ区分")
     ClosingDate = models.IntegerField(null=False,default=0,choices=Closing,verbose_name="締日")
     ExDepositMonth = models.IntegerField(null=False,default=0,choices=ExDepositMonth,verbose_name="入金予定月")
-    ExDepositDate = models.IntegerField(null=False,default=0,choices=Closing,verbose_name="入金予定日")
+    ExDepositDate = models.IntegerField(null=False,default=0,choices=ExDepositDate,verbose_name="入金予定日")
     ExDepositDiv = models.IntegerField(null=False,default=0,choices=ExDepositDiv,verbose_name="入金予定区分")
     ManagerCode = models.ForeignKey(User, to_field='id',on_delete=models.SET_NULL, null=True, db_column='ManagerCode',verbose_name="担当者コード")
     OffsetDiv = models.IntegerField(null=False,default=0,choices=Offset,verbose_name="相殺出力区分")

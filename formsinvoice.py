@@ -45,7 +45,7 @@ class InvoiceSearchForm(forms.Form):
     )
 
 class ClosingChoiceForm(forms.Form):
-     closing = forms.fields.ChoiceField(
+     invclosing = forms.fields.ChoiceField(
          choices = (
              (0, ""),
              (5, "5日"),

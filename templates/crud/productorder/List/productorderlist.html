@@ -38,15 +38,19 @@
 						検索
 					</button>
 				</div>
-			</div>
-			<div class="w-50 h-25 mx-auto">
-				{% if messages %}
-				<ul class="messages_ul">
-					{% for message in messages %}
-						<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %} list-unstyled" role="alert">{{ message }}</li>
-					{% endfor %}
-				</ul>
-				{% endif %}
+				<div class="w-50 h-25 mx-auto">
+					{% if messages %}
+					<ul class="messages_ul">
+						{% for message in messages %}
+							<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %} list-unstyled alert-dismissible fade show" role="alert">{{ message }}
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+				</div>
 			</div>
 		</form>
 		{% block extrajs %}

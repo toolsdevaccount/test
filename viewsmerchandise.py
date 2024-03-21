@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView,CreateView,UpdateView
 from .models import Merchandise,MerchandiseDetail, MerchandiseColor, MerchandiseSize, MerchandiseFileUpload
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 # 検索機能のために追加
 from django.db.models import Q
 # 日時
@@ -15,6 +14,11 @@ from django.db import transaction
 # fileupload
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+# メッセージ
+from django.contrib import messages
+#LOG出力設定
+import logging
+logger = logging.getLogger(__name__)
 
 # 商品一覧/検索
 class MerchandiseListView(LoginRequiredMixin,ListView):
@@ -88,78 +92,88 @@ class MerchandiseCreateView(LoginRequiredMixin,CreateView):
     template_name = "crud/merchandise/new/merchandiseform.html"
    
     def get(self, request):
-        mngcode = self.request.user.id
-        form = MerchandiseForm(self.request.POST or None, 
-                            initial={
-                                    'McdTreatmentCode': '1',
-                                    'McdManagerCode': mngcode,
-                                    'McdUnitCode':'1',
-                                    'McdProcessCode':'1',
-                                    })
-        formset = MerchandiseFormset
-        inlinescolor = MerchandiseColorFormset
-        inlinessize = MerchandiseSizeFormset
-        inlinesfile = MerchandisefileFormset
+        try:
+            mngcode = self.request.user.id
+            form = MerchandiseForm(self.request.POST or None, 
+                                initial={
+                                        'McdTreatmentCode': '1',
+                                        'McdManagerCode': mngcode,
+                                        'McdUnitCode':'1',
+                                        'McdProcessCode':'1',
+                                        })
+            formset = MerchandiseFormset
+            inlinescolor = MerchandiseColorFormset
+            inlinessize = MerchandiseSizeFormset
+            inlinesfile = MerchandisefileFormset
 
-        context = {
-            'form': form,
-            'formset': formset,
-            'inlinescolor': inlinescolor,
-            'inlinessize': inlinessize,
-            'inlinesfile': inlinesfile,
-        }
+            context = {
+                'form': form,
+                'formset': formset,
+                'inlinescolor': inlinescolor,
+                'inlinessize': inlinessize,
+                'inlinesfile': inlinesfile,
+            }
 
-        return render(request, 'crud/merchandise/new/merchandiseform.html', context)
+            return render(request, 'crud/merchandise/new/merchandiseform.html', context)
+        except Exception as e:
+            message = "データの呼び出しに失敗しました"
+            logger.error(message)
+            messages.error(self.request,message) 
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     @transaction.atomic # トランザクション設定
     def form_valid(self, form):
-        post = form.save(commit=False)
-        formset = MerchandiseFormset(self.request.POST,instance=post) 
-        inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
-        inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
-        inlinesfile = MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=post)
+        try:
+            post = form.save(commit=False)
+            formset = MerchandiseFormset(self.request.POST,instance=post) 
+            inlinescolor = MerchandiseColorFormset(self.request.POST,instance=post)
+            inlinessize = MerchandiseSizeFormset(self.request.POST,instance=post)
+            inlinesfile = MerchandisefileFormset(self.request.POST or None, files=self.request.FILES or None, instance=post)
 
-        if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid(): 
-            instances = formset.save(commit=False)
-            instancecolor = inlinescolor.save(commit=False)
-            instancesize = inlinessize.save(commit=False)
+            if self.request.method == 'POST' and formset.is_valid() and inlinescolor.is_valid() and inlinessize.is_valid(): 
+                instances = formset.save(commit=False)
+                instancecolor = inlinescolor.save(commit=False)
+                instancesize = inlinessize.save(commit=False)
+                
+                if form.is_valid():
+                    # Created_id,Updated_idフィールドはログインしているユーザidとする
+                    post.Created_id = self.request.user.id
+                    post.Updated_id = self.request.user.id
+                    post.save()
             
-            if form.is_valid():
-                # Created_id,Updated_idフィールドはログインしているユーザidとする
-                post.Created_id = self.request.user.id
-                post.Updated_id = self.request.user.id
-                post.save()
-        
-            if formset.is_valid():
-                for file in instances:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
+                if formset.is_valid():
+                    for file in instances:
+                        file.Created_id = self.request.user.id
+                        file.Updated_id = self.request.user.id
+                        file.save()
 
-            if inlinescolor.is_valid():
-                for file in instancecolor:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
+                if inlinescolor.is_valid():
+                    for file in instancecolor:
+                        file.Created_id = self.request.user.id
+                        file.Updated_id = self.request.user.id
+                        file.save()
 
-            if inlinessize.is_valid():
-                for file in instancesize:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
+                if inlinessize.is_valid():
+                    for file in instancesize:
+                        file.Created_id = self.request.user.id
+                        file.Updated_id = self.request.user.id
+                        file.save()
 
-            if inlinesfile.is_valid():
-               instancefile = inlinesfile.save(commit=False)
-               for file in instancefile:
-                    file.Created_id = self.request.user.id
-                    file.Updated_id = self.request.user.id
-                    file.save()
-        else:
-            # is_validがFalseの場合はエラー文を表示
-            return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile,))
- 
-        return redirect('myapp:merchandiselist')
+                if inlinesfile.is_valid():
+                    instancefile = inlinesfile.save(commit=False)
+                    for file in instancefile:
+                            file.Created_id = self.request.user.id
+                            file.Updated_id = self.request.user.id
+                            file.save()
+            else:
+                # is_validがFalseの場合はエラー文を表示
+                return self.render_to_response(self.get_context_data(form=form, formset=formset, inlinescolor=inlinescolor, inlinessize=inlinessize, inlinesfile=inlinesfile,))
+    
+            return redirect('myapp:merchandiselist')
+        except Exception as e:
+            message = "更新エラーが発生しました"
+            logger.error(message)
+            messages.error(self.request,message) 
 
     # バリデーションエラー時
     def form_invalid(self, form):

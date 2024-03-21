@@ -142,7 +142,7 @@ def print_string(pdf_canvas,dt):
         # 用紙サイズ
         width, height = A4
         # title
-        font_size = 14
+        font_size = 16
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
         pdf_canvas.drawString(260, 800, '請　求　書')
         # 請求先
@@ -199,13 +199,16 @@ def print_string(pdf_canvas,dt):
                ['10,000,000','10,000,000','','10,000,000','10,000,000','10,000,000'],
               ]
 
-        table = Table(data, colWidths=(28*mm, 28*mm, 12*mm, 28*mm, 40*mm, 28*mm), rowHeights=(4*mm, 7*mm))
+        table = Table(data, colWidths=(28*mm, 28*mm, 12*mm, 28*mm, 40*mm, 28*mm), rowHeights=(5*mm, 7*mm))
         table.setStyle(TableStyle([
-                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
+                ('FONT', (0, 0), (3, 0), 'HeiseiMin-W3', 9),
+                ('FONT', (5, 0), (5, 0), 'HeiseiMin-W3', 9),
+                ('FONT', (4, 0), (4, 0), 'HeiseiMin-W3', 8),
                 ('BOX', (0, 0), (-1, -1), 0.50, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 0.50,  colors.black),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
                 ('ALIGN', (0, 0), (5, 0), 'CENTER'),
+                ('VALIGN', (0, 0), (5, 0), 'MIDDLE'),
                 ('VALIGN', (0, 1), (5, 1), 'BOTTOM'),
                 ('ALIGN', (0, 1), (5, 1), 'RIGHT'),
             ]))
@@ -217,14 +220,15 @@ def print_string(pdf_canvas,dt):
                ['19,339,796'],
               ]
 
-        table = Table(data, colWidths=(25*mm), rowHeights=(4*mm, 7*mm))
+        table = Table(data, colWidths=(25*mm), rowHeights=(5*mm, 7*mm))
         table.setStyle(TableStyle([
-                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 9),
+                ('FONT', (0, 0), (0, 0), 'HeiseiMin-W3', 8),
                 ('BOX', (0, 0), (-1, -1), 0.50, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 0.50,  colors.black),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-                ('ALIGN', (0, 0), (5, 0), 'CENTER'),
-                ('VALIGN', (0, 1), (5, 1), 'BOTTOM'),
+                ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+                ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+                ('VALIGN', (0, 1), (0, 1), 'BOTTOM'),
                 ('ALIGN', (0, 1), (5, 1), 'RIGHT'),
             ]))
         table.wrapOn(pdf_canvas, 10*mm, 10*mm)
@@ -320,7 +324,7 @@ def print_string(pdf_canvas,dt):
             k += 1
 
         table.wrapOn(pdf_canvas, 10*mm, 10*mm)
-        table.drawOn(pdf_canvas, 10*mm, 9.7*mm)
+        table.drawOn(pdf_canvas, 10*mm, 9.9*mm)
 
         pdf_canvas.showPage()
 if __name__ == '__main__':

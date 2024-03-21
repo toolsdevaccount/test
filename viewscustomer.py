@@ -8,6 +8,11 @@ from django.db.models import Q
 # 日時
 from django.utils import timezone
 import datetime
+# メッセージ
+from django.contrib import messages
+#LOG出力設定
+import logging
+logger = logging.getLogger(__name__)
 
 # 得意先仕入先マスター一覧/検索
 class CustomerSupplierListView(LoginRequiredMixin,ListView):
@@ -92,12 +97,16 @@ class CustomerSupplierCreateView(LoginRequiredMixin,CreateView):
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
-        post = form.save(commit=False)
-        # Createid,Updatedidフィールドはログインしているユーザidとする
-        post.Created_id = self.request.user.id
-        post.Updated_id = self.request.user.id
-        post.save()
-
+        try:
+            post = form.save(commit=False)
+            # Createid,Updatedidフィールドはログインしているユーザidとする
+            post.Created_id = self.request.user.id
+            post.Updated_id = self.request.user.id
+            post.save()
+        except Exception as e:
+            message = "登録エラーが発生しました"
+            logger.error(message)
+            messages.error(self.request,message) 
         return redirect('myapp:list')
     # バリデーションエラー時
     def form_invalid(self, form):
@@ -111,14 +120,19 @@ class CustomerSupplierUpdateView(LoginRequiredMixin,UpdateView):
       
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
-        if self.request.method == "POST":
-            if form.is_valid():
-                post = form.save(commit=False)
-                # Updatedidフィールドはログインしているユーザidとする
-                post.Updated_id = self.request.user.id
-                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-                post.save()
-            return redirect('myapp:list')
+        try:
+            if self.request.method == "POST":
+                if form.is_valid():
+                    post = form.save(commit=False)
+                    # Updatedidフィールドはログインしているユーザidとする
+                    post.Updated_id = self.request.user.id
+                    post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                    post.save()
+                return redirect('myapp:list')
+        except Exception as e:
+            message = "更新エラーが発生しました"
+            logger.error(message)
+            messages.error(self.request,message) 
 
     # バリデーションエラー時
     def form_invalid(self, form):
@@ -133,12 +147,17 @@ class CustomerSupplierDeleteView(LoginRequiredMixin,UpdateView):
 
     # form_valid関数をオーバーライドすることで、更新するフィールドと値を指定できる
     def form_valid(self, form):
-        if self.request.method == "POST":
-            post = form.save(commit=False)
- 
-            post.Updated_id = self.request.user.id
-            post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
-            post.is_Deleted = True
-            post.save()
+        try:
+            if self.request.method == "POST":
+                post = form.save(commit=False)
+    
+                post.Updated_id = self.request.user.id
+                post.Updated_at = timezone.now() + datetime.timedelta(hours=9) # 現在の日時
+                post.is_Deleted = True
+                post.save()
 
-        return redirect('myapp:list')
+            return redirect('myapp:list')
+        except Exception as e:
+            message = self.request.id + "データの削除に失敗しました"
+            logger.error(message)
+            messages.error(self.request,message) 
