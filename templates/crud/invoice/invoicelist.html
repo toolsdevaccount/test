@@ -150,18 +150,22 @@
 					var InvoiceDate_From = document.getElementById('id_InvoiceDate_From').value;
 					var InvoiceDate_To = document.getElementById('id_InvoiceDate_To').value;
 
-					var InvoiceCustomerCode_From = document.getElementById('InvoiceCustomerCode_From');
-					var InvoiceCustomerCode_To = document.getElementById('id_InvoiceCustomerCode_To').value;
-					var url = "/invoice/pdf/123/456/789/";
+					var element_from = document.getElementById('id_InvoiceCustomerCode_From').value;
+						element_from = element_from.slice( 0, 5 );
+
+					var element_To = document.getElementById('id_InvoiceCustomerCode_To').value;
+						element_To = element_To.slice( 0, 5 );
+
+					var url = "/invoice/pdf/123/456/789/567/987/";
 
 					InvoiceDate_From = InvoiceDate_From.replace(/-/g,'');
 					InvoiceDate_To = InvoiceDate_To.replace(/-/g,'');
 					url = url.replace(/123/,closing);
 					url = url.replace(/456/,InvoiceDate_From);
 					url = url.replace(/789/,InvoiceDate_To);
-					//url = url.replace(/345/,InvoiceCustomerCode_From);
-					//url = url.replace(/654/,InvoiceCustomerCode_To);
-					console.log(url);
+					url = url.replace(/567/,element_from);
+					url = url.replace(/987/,element_To);
+
 					location.href = url;
 				})
             </script>

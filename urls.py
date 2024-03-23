@@ -105,7 +105,7 @@ urlpatterns = [
     # 一括請求一覧
     path('invoice/list/', viewsinvoice.invoiceListView.as_view(), name='invoicelist'),
     # 一括請求書PDF出力
-    path('invoice/pdf/<int:pkclosing>/<int:invoiceDate_From>/<int:invoiceDate_To>/', viewsinvoicepdf.pdf, name='invoicepdf'), 
+    path('invoice/pdf/<int:pkclosing>/<int:invoiceDate_From>/<int:invoiceDate_To>/<str:element_From>/<str:element_To>/', viewsinvoicepdf.pdf, name='invoicepdf'), 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

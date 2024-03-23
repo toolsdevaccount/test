@@ -15,6 +15,7 @@ import MySQLdb
 # 日時
 from django.utils import timezone
 import datetime
+from dateutil import relativedelta
 # 計算用
 from decimal import Decimal
 import math
@@ -24,14 +25,19 @@ from django.contrib import messages
 import logging
 logger = logging.getLogger(__name__)
 
-def pdf(request,pkclosing,invoiceDate_From,invoiceDate_To):
+def pdf(request, pkclosing, invoiceDate_From, invoiceDate_To, element_From, element_To):
     try:
         strtime = timezone.now() + datetime.timedelta(hours=9)
         filename = "Invoice_" + strtime.strftime('%Y%m%d%H%M%S')
         response = HttpResponse(status=200, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
-        #pkfromdef = pkfrom  # 一括請求書番号初期値をコピー
-        make(pkclosing, invoiceDate_From, invoiceDate_To, response)
+        # 文字列を日付に変換する
+        tdate = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
+        # 前月同日を算出する
+        lastdate = tdate - relativedelta.relativedelta(months=1)
+        lastdate = lastdate.strftime('%Y-%m-%d')
+
+        make(pkclosing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, response)
         #UpdateQuery()
 
     except Exception as e:
@@ -41,16 +47,13 @@ def pdf(request,pkclosing,invoiceDate_From,invoiceDate_To):
         return redirect("myapp:invoicelist")
     return response
 
-def make(pkclosing, invoiceDate_From, invoiceDate_To, response):
+def make(closing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, response):
     pdf_canvas = set_info(response) # キャンバス名
-    #cnt = pkto - pkfrom +1
-    #for i in range(cnt):
-    #    if i>0:
-    #        pkfrom+= 1     
-    dt = connect()
-    print_string(pdf_canvas,dt)
+    #dt = customer(closing, element_From, element_To)
+    dt_PrevBalance = PrevBalance(element_From, lastdate)
+    #print_string(pdf_canvas,dt,dt_PrevBalance)
    
-    pdf_canvas.save() # 保存
+    #pdf_canvas.save() # 保存
 
 #一括請求書
 def set_info(response):
@@ -60,7 +63,7 @@ def set_info(response):
     pdf_canvas.setSubject("一括請求書")
     return pdf_canvas
 
-def connect():
+def customer(closing, invoiceDate_To, element_From, element_To):
     conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
     #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
     cur = conn.cursor()
@@ -85,7 +88,7 @@ def connect():
         '	,C.BuildingName '
         '	,C.PhoneNumber '
         '	,C.FaxNumber '
-        '	,DATE_FORMAT(20240318,"%Y年%m月%d日")	AS issuedate '
+        '	,DATE_FORMAT(' + str(invoiceDate_To) + ',"%Y年%m月%d日")	AS issuedate '
         ' FROM '
         '	myapp_customersupplier A '
         '	LEFT JOIN '
@@ -96,7 +99,7 @@ def connect():
         '	myapp_prefecture D on '
         '		C.PrefecturesCode_id = D.id '
         ' WHERE '
-        '	A.id BETWEEN 27 AND 27 '
+        '	  A.CustomerCode BETWEEN ' + str(element_From) + ' AND ' + str(element_To)
         )
     cur.execute(sql)
     result = cur.fetchall()     
@@ -105,6 +108,67 @@ def connect():
     conn.close()
 
     return result
+
+def PrevBalance(element_From, lastdate ):
+    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
+    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
+    cur = conn.cursor()
+    sql = (
+        '	SELECT '
+        '		 A.id '
+        '		,A.CustomerCode '
+        '		,FORMAT(A.LastClaimBalance - A.DepositMoney + B.SellPrice,0)		AS LastClaimBalance '
+        '		,A.DepositMoney '
+        '		,B.SellPrice '
+        '	FROM '
+        '		( '
+        '		SELECT '
+        '			 B.id '
+        '			,B.CustomerCode '
+        '			,B.LastClaimBalance '
+        '			,SUM(A.DepositMoney)		AS DepositMoney '
+        '		FROM '
+        '			myapp_deposit A '
+        '			left join '
+        '			myapp_customersupplier B on '
+        '				A.DepositCustomerCode_id = B.id '
+        '		WHERE '
+        '			 B.CustomerCode = ' + str(element_From) +
+        '		AND A.DepositDate <= ' + str(lastdate) +
+        '		GROUP BY '
+        '			B.id '
+        '		) A, '
+        '		( '
+        '			SELECT '
+        '			 D.id '
+        '			,D.CustomerCode '
+        '			,SUM(A.ShippingVolume * C.DetailSellPrice) AS SellPrice '
+        '		FROM '
+        '			myapp_requestresult A '
+        '			INNER JOIN '
+        '			myapp_orderingtable B ON '
+        '				A.OrderingId_id = B.id '
+        '			INNER JOIN '
+        '			myapp_orderingdetail C ON '
+        '				A.OrderingDetailId_id = C.id '
+        '			LEFT JOIN '
+        '			myapp_customersupplier D on '
+        '				B.CustomeCode_id = D.id '
+        '		 WHERE '
+        '			 D.CustomerCode = ' + str(element_From) +
+        '		AND A.ShippingDate <= ' + str(lastdate) +
+        '		GROUP BY '
+        '			D.id '
+        '		) B '
+        )
+    cur.execute(sql)
+    result = cur.fetchall()     
+
+    cur.close()
+    conn.close()
+
+    return result
+
 
 def print_string(pdf_canvas,dt):
     rec = len(dt)

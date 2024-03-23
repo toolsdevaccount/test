@@ -216,8 +216,8 @@ def print_string(pdf_canvas,dt):
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
 
         # ロゴ追加
-        #img = './mysite/myapp/templates/image/image1.jpg'
-        img = './static/image/image1.jpg'
+        img = './mysite/myapp/templates/image/image1.jpg'
+        #img = './static/image/image1.jpg'
 
         pdf_canvas.drawImage(img, 173*mm, 134*mm , 20*mm, 5*mm)
 
