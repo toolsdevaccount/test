@@ -10,15 +10,19 @@ from reportlab.lib import colors
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle, ParagraphStyle
 from reportlab.lib.enums import TA_RIGHT, TA_CENTER, TA_LEFT
-# MySQL
-import MySQLdb
+from .models import Deposit, CustomerSupplier, RequestResult
 # 日時
 from django.utils import timezone
 import datetime
 from dateutil import relativedelta
 # 計算用
 from decimal import Decimal
+from django.db.models import Sum,F,DecimalField
+from django.db.models.functions import Abs
+from django.db.models.functions import Coalesce
 import math
+from itertools import chain
+
 # メッセージ
 from django.contrib import messages
 #LOG出力設定
@@ -32,19 +36,8 @@ def pdf(request, pkclosing, invoiceDate_From, invoiceDate_To, element_From, elem
         response = HttpResponse(status=200, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
         # 文字列を日付に変換する
-        tdate = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
-        invoiceDate_From = datetime.datetime.strptime(str(invoiceDate_From), '%Y%m%d') 
-        invoiceDate_To = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
-        # 前月同日を算出する
-        lastdate = tdate - relativedelta.relativedelta(months=1)
-        # 日付型に変換する
-        lastdate = lastdate.strftime('%Y-%m-%d')
-        invoiceDate_From = invoiceDate_From.strftime('%Y-%m-%d') 
-        invoiceDate_To = invoiceDate_To.strftime('%Y-%m-%d') 
-
-        make(pkclosing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, response)
-        #UpdateQuery()
-
+        search_date = conversion(invoiceDate_From, invoiceDate_To)
+        make(pkclosing, search_date[0], search_date[1], element_From, element_To, search_date[2], search_date[3],response)
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
         logger.error(message)
@@ -52,14 +45,33 @@ def pdf(request, pkclosing, invoiceDate_From, invoiceDate_To, element_From, elem
         return redirect("myapp:invoicelist")
     return response
 
-def make(closing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, response):
+def make(closing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, billdate, response):
     pdf_canvas = set_info(response) # キャンバス名
-    dt = customer(invoiceDate_To, element_From, element_To)
-    dt_PrevBalance = PrevBalance(element_From, lastdate, invoiceDate_From, invoiceDate_To)
-    dt_Detail = Detail(element_From, invoiceDate_From, invoiceDate_To)
-    print_string(pdf_canvas, dt, dt_PrevBalance, dt_Detail)
+    dt_own = Own_Company()
+    dt = customer(element_From, element_To)
+    dt_Prev = PrevBalance(lastdate, dt, invoiceDate_From, invoiceDate_To)
+    dt_Detail = Detail(dt, invoiceDate_From, invoiceDate_To)
+    print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail)
    
     pdf_canvas.save() # 保存
+
+def conversion(invoiceDate_From, invoiceDate_To):
+    # 文字列を日付に変換する
+    tdate = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
+    invoiceDate_From = datetime.datetime.strptime(str(invoiceDate_From), '%Y%m%d') 
+    invoiceDate_To = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
+    # 前月同日を算出する
+    lastdate = tdate - relativedelta.relativedelta(months=1)
+    # 日付型に変換する
+    # 前月同日
+    lastdate = lastdate.strftime('%Y-%m-%d')
+    # 日付範囲指定From
+    Date_From = invoiceDate_From.strftime('%Y-%m-%d') 
+    # 日付範囲指定To
+    Date_To = invoiceDate_To.strftime('%Y-%m-%d') 
+    # 請求日
+    billdate = invoiceDate_To.strftime('%Y年%m月%d日')
+    return(Date_From, Date_To, lastdate, billdate)
 
 #一括請求書
 def set_info(response):
@@ -69,210 +81,119 @@ def set_info(response):
     pdf_canvas.setSubject("一括請求書")
     return pdf_canvas
 
-def customer(invoiceDate_To, element_From, element_To):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
-    cur = conn.cursor()
-    sql = (
-        ' SELECT '
-        ' 	 A.id '
-        '	,A.CustomerCode '
-        '	,A.CustomerName '
-        '	,A.Department '
-        '	,A.PostCode '
-        '	,B.prefecturename '
-        '	,A.Municipalities '
-        '	,A.Address '
-        '	,A.BuildingName '
-        '	,A.ClosingDate '
-        '	,A.LastClaimBalance '
-        '	,C.CustomerName '
-        '	,C.PostCode '
-        '	,D.prefecturename '
-        '	,C.Municipalities '
-        '	,C.Address '
-        '	,C.BuildingName '
-        '	,C.PhoneNumber '
-        '	,C.FaxNumber '
-        '	,DATE_FORMAT("' + str(invoiceDate_To) + '","%Y年%m月%d日")	AS issuedate '
-        ' FROM '
-        '	myapp_customersupplier A '
-        '	LEFT JOIN '
-        '	myapp_prefecture B on '
-        '		A.PrefecturesCode_id = B.id '
-        '	,(SELECT PostCode,CustomerName,PrefecturesCode_id,Municipalities,Address,BuildingName,PhoneNumber,FaxNumber FROM myapp_customersupplier WHERE CustomerCode = "A0042" AND is_Deleted = 0) C '
-        '	LEFT JOIN '
-        '	myapp_prefecture D on '
-        '		C.PrefecturesCode_id = D.id '
-        ' WHERE '
-        '	  A.CustomerCode BETWEEN "' + str(element_From) + '" AND "' + str(element_To) + '"'
-        )
-    cur.execute(sql)
-    result = cur.fetchall()     
+def Own_Company():
+    queryset = CustomerSupplier.objects.filter(CustomerCode=('A0042'))
+    Own_Company = list(queryset.values(
+                                    'CustomerCode',
+                                    'CustomerName',
+                                    'PostCode',
+                                    'PrefecturesCode__prefecturename',
+                                    'Municipalities',
+                                    'Address',
+                                    'BuildingName',
+                                    'PhoneNumber',
+                                    'FaxNumber',
+                                ))
 
-    cur.close()
-    conn.close()
+    return Own_Company
 
-    return result
+def customer(element_From, element_To):
+    queryset = CustomerSupplier.objects.filter(CustomerCode__range=(element_From,element_To))
+    Customer = list(queryset.values(
+                                    'id',
+                                    'CustomerCode',
+                                    'CustomerName',
+                                    'Department',
+                                    'PostCode',
+                                    'PrefecturesCode__prefecturename',
+                                    'Municipalities',
+                                    'Address',
+                                    'BuildingName',
+                                    'ClosingDate',
+                                    'LastClaimBalance',
+                            ))
 
-def PrevBalance(element_From, lastdate, invoiceDate_From, invoiceDate_To):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
-    cur = conn.cursor()
-    sql = (
-        '	SELECT '
-        '		 A.id '
-        '		,A.CustomerCode '
-        '		,FORMAT(A.LastClaimBalance - A.LastDepositMoney + B.LastSellPrice,0)		AS LastClaimBalance '
-        '		,FORMAT(C.DepositMoney,0) AS DepositMoney '
-        '		,FORMAT(A.LastClaimBalance - A.LastDepositMoney + B.LastSellPrice - C.DepositMoney,0) AS CarryForward '
-        '		,FORMAT(D.SellPrice,0) AS SellPrice '
-        '		,FORMAT(ROUND(D.SellPrice * 0.1,0),0)	AS TAX '
-        '		,FORMAT((D.SellPrice + ROUND(D.SellPrice * 0.1,0)) + A.LastClaimBalance - A.LastDepositMoney + B.LastSellPrice - C.DepositMoney,0) AS Proceeds '
-        '	FROM '
-        '		( '
-        '		SELECT ' 
-        '			 B.id '
-        '			,B.CustomerCode '
-        '			,B.LastClaimBalance '
-        '			,SUM(A.DepositMoney)		AS LastDepositMoney '
-        '		FROM '
-        '			myapp_deposit A ' 
-        '			left join ' 
-        '			myapp_customersupplier B on '
-        '				A.DepositCustomerCode_id = B.id '
-        '		WHERE '
-        '			 B.CustomerCode = "' + str(element_From) + '"'
-        '		AND A.DepositDate <= "' + str(lastdate) + '"'
-        '		GROUP BY '
-        '			B.id '
-        '		) A, '
-        '		( '
-        '			SELECT '
-        '			 D.id '
-        '			,D.CustomerCode '
-        '			,SUM(A.ShippingVolume * C.DetailSellPrice) AS LastSellPrice '
-        '		FROM '
-        '			myapp_requestresult A ' 
-        '			INNER JOIN '
-        '			myapp_orderingtable B ON '
-        '				A.OrderingId_id = B.id '
-        '			INNER JOIN '
-        '			myapp_orderingdetail C ON '
-        '				A.OrderingDetailId_id = C.id '
-        '			LEFT JOIN '
-        '			myapp_customersupplier D on '
-        '				B.CustomeCode_id = D.id '
-        '		 WHERE '
-        '			 D.CustomerCode = "' + str(element_From) + '"' 
-        '		AND A.ShippingDate <= "' + str(lastdate) + '"' 
-        '		GROUP BY '
-        '			D.id '
-        '		) B, '
-        '			( '
-        '		SELECT ' 
-        '			 B.id '
-        '			,B.CustomerCode '
-        '			,B.LastClaimBalance '
-        '			,SUM(A.DepositMoney)		AS DepositMoney '
-        '		FROM ' 
-        '			myapp_deposit A ' 
-        '			left join ' 
-        '			myapp_customersupplier B on '
-        '				A.DepositCustomerCode_id = B.id '
-        '		WHERE '
-        '			 B.CustomerCode = "' + str(element_From) + '"'
-        '		AND A.DepositDate BETWEEN "' + str(invoiceDate_From) + '" AND "' + str(invoiceDate_To) + '"' 
-        '		GROUP BY '
-        '			B.id '
-        '		) C, '
-        '		( '
-        '			SELECT '
-        '			 D.id '
-        '			,D.CustomerCode '
-        '			,SUM(A.ShippingVolume * C.DetailSellPrice) AS SellPrice '
-        '		FROM '
-        '			myapp_requestresult A ' 
-        '			INNER JOIN '
-        '			myapp_orderingtable B ON '
-        '				A.OrderingId_id = B.id '
-        '			INNER JOIN ' 
-        '			myapp_orderingdetail C ON '
-        '				A.OrderingDetailId_id = C.id '
-        '			LEFT JOIN '
-        '			myapp_customersupplier D on '
-        '				B.CustomeCode_id = D.id '
-        '		 WHERE '
-        '			 D.CustomerCode = "' + str(element_From) + '"'
-        '		AND A.ShippingDate BETWEEN "' + str(invoiceDate_From) + '" AND "' + str(invoiceDate_To) + '"' 
-        '		GROUP BY '
-        '			D.id '
-        '		) D '
-        )
-    cur.execute(sql)
-    result = cur.fetchall()     
+    return Customer
 
-    cur.close()
-    conn.close()
+def PrevBalance(lastdate, Customer, FromDate, ToDate): 
+    #前月までの入金額計
+    queryset = Deposit.objects.filter(DepositDate__lte=(str(lastdate)),DepositCustomerCode=(str(Customer[0]['id'])))
+    DepoPrvSum = list(queryset.values('DepositCustomerCode').annotate(Depo_total=Coalesce(Sum('DepositMoney'),0,output_field=DecimalField())))
+    #0判定
+    if DepoPrvSum:
+        DepoPrvTotal = int(DepoPrvSum[0]['Depo_total'])
+    else:
+        DepoPrvTotal = 0
+    #前月までの売上額計
+    queryset =  RequestResult.objects.filter(ShippingDate__lte=(str(lastdate)),
+                OrderingId__CustomeCode=(str(Customer[0]['id'])),
+                InvoiceNUmber__gt=0,
+                InvoiceIssueDiv=1
+                )
+    SellPrvSum =  list(queryset.values('OrderingId__CustomeCode').annotate(
+        Abs_total=Sum(Abs(Coalesce(F('ShippingVolume'),0) * Coalesce(F('OrderingDetailId__DetailSellPrice'),0)),output_field=DecimalField())))
+    #0判定
+    if SellPrvSum:
+        SellPrvTotal = int(SellPrvSum[0]['Abs_total'])
+    else:
+        SellPrvTotal = 0
+    #前回請求額算出
+    PrevBill = int(Customer[0]['LastClaimBalance']) - int(DepoPrvTotal) + int(SellPrvTotal)
+    #請求月入金合計額
+    queryset = Deposit.objects.filter(DepositDate__range=(str(FromDate),str(ToDate)),DepositCustomerCode=(str(Customer[0]['id'])))
+    DepoSum = list(queryset.values('DepositCustomerCode').annotate(Depo_total=Coalesce(Sum('DepositMoney'),0,output_field=DecimalField())))
+    #0判定
+    if DepoSum:
+        DepoTotal = int(DepoSum[0]['Depo_total'])
+    else:
+        DepoTotal = 0
+    #繰越額
+    CarryForward = int(PrevBill) - int(DepoTotal)   
+    #請求月売上合計額
+    queryset =  RequestResult.objects.filter(ShippingDate__range=(str(FromDate),str(ToDate)),
+                OrderingId__CustomeCode=(str(Customer[0]['id'])),
+                InvoiceNUmber__gt=0,
+                InvoiceIssueDiv=1
+                )
+
+    SellSum =  list(queryset.values('OrderingId__CustomeCode').annotate(
+        Abs_total=Sum(Abs(Coalesce(F('ShippingVolume'),0) * Coalesce(F('OrderingDetailId__DetailSellPrice'),0)),output_field=DecimalField())))
+    #0判定
+    if SellSum:
+        SellTotal = int(SellSum[0]['Abs_total'])
+    else:
+        SellTotal = 0
+    #請求月売上消費税額
+    tax = int(SellTotal) * 0.1
+    #今回請求額
+    invoice = int(CarryForward) + int(SellTotal) + int(tax)
+    return(PrevBill, DepoTotal, CarryForward, SellTotal, tax, invoice)
+
+def Detail(Customer, FromDate, ToDate): 
+    #請求月売上レコード
+    queryset =  RequestResult.objects.filter(ShippingDate__range=(str(FromDate),str(ToDate)),
+                OrderingId__CustomeCode=(str(Customer[0]['id'])),
+                InvoiceNUmber__gt=0,
+                InvoiceIssueDiv=1
+                )
+    queryset = queryset.values_list(
+        'ShippingDate',
+        'InvoiceNUmber',
+        'OrderingId__ProductName',
+        'OrderingId__OrderingCount',
+        'ShippingVolume',
+        ).annotate(
+        Abs_total=Sum(Abs(Coalesce(F('ShippingVolume'),0) * Coalesce(F('OrderingDetailId__DetailSellPrice'),0)),output_field=DecimalField()))
+    
+    #請求月入金レコード
+    queryset_depo = Deposit.objects.filter(DepositDate__range=(str(FromDate),str(ToDate)),DepositCustomerCode=(str(Customer[0]['id'])))
+    queryset_depo = queryset_depo.values_list('DepositDate','DepositSummary','DepositDiv__DepoPayDivname','DepositSummary','DepositSummary','DepositMoney')
+    #売上レコードと入金レコードを結合
+    result = list(chain(queryset, queryset_depo))
 
     return result
 
-def Detail(element_From, invoiceDate_From, invoiceDate_To):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
-    cur = conn.cursor()
-    sql = (
-        ' SELECT '
-        '		 DATE_FORMAT(A.ShippingDate,"%y%m%d")	AS ShippingDate '
-        '		,A.InvoiceNUmber						AS InvoiceNumber '
-        '		,B.ProductName							AS ProductName '
-        '		,B.OrderingCount						AS OrderingCount '
-        '		,A.ShippingVolume						AS ShippingVolume '
-        '		,A.ShippingVolume * C.DetailSellPrice	AS Proceeds '
-        ' FROM '
-        '		myapp_requestresult A '
-        '		INNER JOIN '
-        '		myapp_orderingtable B ON '
-        '			A.OrderingId_id = B.id '
-        '		INNER JOIN '
-        '		myapp_orderingdetail C ON '
-        '			A.OrderingDetailId_id = C.id '
-        '		LEFT JOIN '
-        '		myapp_customersupplier D ON '
-        '			B.CustomeCode_id = D.id '
-        ' WHERE '
-        '	  D.CustomerCode = "' + str(element_From) + '"'
-        ' AND A.ShippingDate BETWEEN "' + str(invoiceDate_From) + '" AND "' + str(invoiceDate_To) + '"'
-        ' UNION ALL '
-        ' SELECT '
-        '		 DATE_FORMAT(A.DepositDate,"%y%m%d") ' 
-        '		,"" '
-        '		,C.DepoPayDivname ' 
-        '		,"" '
-        '		,"" '
-        '		,A.DepositMoney			AS DepositMoney ' 
-        ' FROM '
-        '	myapp_deposit A '
-        '	LEFT JOIN '
-        '	myapp_customersupplier B on '
-        '		A.DepositCustomerCode_id = B.id '
-        '	LEFT JOIN '
-        '	myapp_depopaydiv C on '
-        '		A.DepositDiv_id = C.DepoPayDivcode '
-        ' WHERE '
-        '	  B.CustomerCode = "' + str(element_From) + '"'
-        ' AND A.DepositDate BETWEEN "' + str(invoiceDate_From) + '" AND "' + str(invoiceDate_To) + '"'
-        )
-    cur.execute(sql)
-    result = cur.fetchall()     
-
-    cur.close()
-    conn.close()
-
-    return result
-
-
-def print_string(pdf_canvas,dt,dt_PrevBalance,dt_Detail):
+def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail):
     rec = len(dt)
     req = math.ceil(rec/9)
     k = 0
@@ -289,15 +210,15 @@ def print_string(pdf_canvas,dt,dt_PrevBalance,dt_Detail):
         # 請求先
         font_size = 12
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(40, 795, '〒 ' + dt[0][4])
-        pdf_canvas.drawString(55, 785, dt[0][5] + dt[0][6] + dt[0][7])
-        pdf_canvas.drawString(60, 770, dt[0][8])
+        pdf_canvas.drawString(40, 795, '〒 ' + dt[i]['PostCode'])
+        pdf_canvas.drawString(55, 785, dt[i]['PrefecturesCode__prefecturename'] + dt[i]['Municipalities'] + dt[i]['Address'])
+        pdf_canvas.drawString(60, 770, dt[i]['BuildingName'])
         font_size = 12
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(55, 740, dt[0][2] + '　' + '様')
+        pdf_canvas.drawString(55, 740, dt[i]['CustomerName'] + '　' + '様')
 
         data =[['締日','請求日'],
-               [dt[i][9],dt[i][19]],
+               [dt[i]['ClosingDate'],billdate],
               ]
 
         table = Table(data, colWidths=(15*mm, 30*mm), rowHeights=(4*mm, 6*mm))
@@ -324,12 +245,13 @@ def print_string(pdf_canvas,dt,dt_PrevBalance,dt_Detail):
         # 自社名
         font_size = 16
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(430, 735, dt[0][11])
+        pdf_canvas.drawString(430, 735, dt_own[0]['CustomerName'])
         # 自社住所
         font_size = 10
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
-        pdf_canvas.drawString(400, 720, dt[0][13] + dt[0][14] + dt[0][15] + dt[0][16])
-        pdf_canvas.drawString(400, 710, 'TEL: ' + dt[0][17] + '　FAX: ' + dt[0][18])
+        pdf_canvas.drawString(400, 720, dt_own[0]['PrefecturesCode__prefecturename'] + dt_own[0]['Municipalities'] + 
+                              dt_own[0]['Address'] + dt_own[0]['BuildingName'])
+        pdf_canvas.drawString(400, 710, 'TEL: ' + dt_own[0]['PhoneNumber'] + '　FAX: ' + dt_own[0]['FaxNumber'])
         #取引銀行名
         font_size = 8
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
@@ -337,7 +259,8 @@ def print_string(pdf_canvas,dt,dt_PrevBalance,dt_Detail):
 
         # 残高
         data =[['前回御請求額','御入金額','','繰越額','当月税抜御請求額10%対象','消費税額 10%'],
-               [dt_PrevBalance[0][2], dt_PrevBalance[0][3], '', dt_PrevBalance[0][4], dt_PrevBalance[0][5], dt_PrevBalance[0][6]],
+               ['{:,.0f}'.format(dt_Prev[0]), '{:,.0f}'.format(dt_Prev[1]), '', '{:,.0f}'.format(dt_Prev[2]),
+                 '{:,.0f}'.format(dt_Prev[3]), '{:,.0f}'.format(dt_Prev[4])],
               ]
 
         table = Table(data, colWidths=(28*mm, 28*mm, 12*mm, 28*mm, 40*mm, 28*mm), rowHeights=(5*mm, 7*mm))
@@ -358,7 +281,7 @@ def print_string(pdf_canvas,dt,dt_PrevBalance,dt_Detail):
 
         # 当月税込請求額
         data =[['当月税込御請求額'],
-               [dt_PrevBalance[0][7]],
+               ['{:,.0f}'.format(dt_Prev[5])],
               ]
 
         table = Table(data, colWidths=(25*mm), rowHeights=(5*mm, 7*mm))
@@ -405,10 +328,10 @@ def print_string(pdf_canvas,dt,dt_PrevBalance,dt_Detail):
         styleCenter = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
 
         #if i==0:
-        #    k=0
-        #else:
-        #    k = i*9
-        #rowlg = (i+1)*9
+        # #    k=0
+        # #else:
+        # #    k = i*9
+        # #rowlg = (i+1)*9
 
         k=0
         rowlg=40
@@ -416,11 +339,15 @@ def print_string(pdf_canvas,dt,dt_PrevBalance,dt_Detail):
         while k < rowlg:
             if k<l:
                 row = dt_Detail[k]
-
-                ShippingDate = Paragraph(row[0],styleCenter)
+              
+                ShippingDate = Paragraph(row[0].strftime('%y%m%d'),styleCenter)
                 InvoiceNumber = Paragraph(row[1],styleCenter)
                 ProductName = Paragraph(row[2],styleLeft)
-                ShippingVolume = Paragraph(row[4],styleRight)
+                if row[4]=='':
+                    ShippingVolume = Paragraph(row[4],styleRight)
+                else:
+                    ShippingVolume = Paragraph('{:,.2f}'.format(row[4]),styleRight)
+                
                 Prceeds = Paragraph(f"{int(row[5]):,}",styleRight)
 
                 data += [
