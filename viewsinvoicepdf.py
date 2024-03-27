@@ -48,11 +48,16 @@ def pdf(request, pkclosing, invoiceDate_From, invoiceDate_To, element_From, elem
 def make(closing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, billdate, response):
     pdf_canvas = set_info(response) # キャンバス名
     dt_own = Own_Company()
-    dt = customer(element_From, element_To)
-    dt_Prev = PrevBalance(lastdate, dt, invoiceDate_From, invoiceDate_To)
-    dt_Detail = Detail(dt, invoiceDate_From, invoiceDate_To)
-    print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail)
-   
+    dt_company = company(closing, element_From, element_To)
+    counter = len(dt_company)
+    for i in range(counter):
+        dt = customer(i, dt_company)
+        dt_Prev = PrevBalance(lastdate, dt, invoiceDate_From, invoiceDate_To)
+        dt_Detail = Detail(dt, invoiceDate_From, invoiceDate_To)
+
+        if dt_Detail:
+            print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail)  
+
     pdf_canvas.save() # 保存
 
 def conversion(invoiceDate_From, invoiceDate_To):
@@ -97,8 +102,26 @@ def Own_Company():
 
     return Own_Company
 
-def customer(element_From, element_To):
-    queryset = CustomerSupplier.objects.filter(CustomerCode__range=(element_From,element_To))
+def company(closing, element_From, element_To):
+    queryset = CustomerSupplier.objects.filter(CustomerCode__range=(element_From,element_To),ClosingDate=(closing))
+    Company = list(queryset.values(
+                                    'id',
+                                    'CustomerCode',
+                                    'CustomerName',
+                                    'Department',
+                                    'PostCode',
+                                    'PrefecturesCode__prefecturename',
+                                    'Municipalities',
+                                    'Address',
+                                    'BuildingName',
+                                    'ClosingDate',
+                                    'LastClaimBalance',
+                            ))
+
+    return Company
+
+def customer(i, dt_company):
+    queryset = CustomerSupplier.objects.filter(CustomerCode=(str(dt_company[i]['CustomerCode'])))
     Customer = list(queryset.values(
                                     'id',
                                     'CustomerCode',
