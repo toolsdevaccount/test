@@ -36,7 +36,7 @@ def pdf(request, pkclosing, invoiceDate_From, invoiceDate_To, element_From, elem
         response = HttpResponse(status=200, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
         # 文字列を日付に変換する
-        search_date = conversion(invoiceDate_From, invoiceDate_To)
+        search_date = conversion(invoiceDate_From, invoiceDate_To, pkclosing)
         result = make(pkclosing, search_date[0], search_date[1], element_From, element_To, search_date[2], search_date[3],response, request)
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
@@ -70,13 +70,19 @@ def make(closing, invoiceDate_From, invoiceDate_To, element_From, element_To, la
     pdf_canvas.save() # 保存
     return result
 
-def conversion(invoiceDate_From, invoiceDate_To):
+def conversion(invoiceDate_From, invoiceDate_To, pkclosing):
+    # 前月同日を算出する
+    if pkclosing==31:
+        tdate = datetime.datetime.strptime(str(invoiceDate_From), '%Y%m%d')
+        lastdate = tdate - relativedelta.relativedelta(days=1)
+    else:
+        tdate = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
+        lastdate = tdate - relativedelta.relativedelta(months=1)
+
     # 文字列を日付に変換する
-    tdate = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
     invoiceDate_From = datetime.datetime.strptime(str(invoiceDate_From), '%Y%m%d') 
     invoiceDate_To = datetime.datetime.strptime(str(invoiceDate_To), '%Y%m%d')
-    # 前月同日を算出する
-    lastdate = tdate - relativedelta.relativedelta(months=1)
+
     # 日付型に変換する
     # 前月同日
     lastdate = lastdate.strftime('%Y-%m-%d')
@@ -168,10 +174,12 @@ def PrevBalance(lastdate, Customer, FromDate, ToDate):
     #0判定
     if SellPrvSum:
         SellPrvTotal = int(SellPrvSum[0]['Abs_total'])
+        SellPrvtax = int(SellPrvSum[0]['Abs_total']) * 0.1
     else:
         SellPrvTotal = 0
+        SellPrvtax = 0
     #前回請求額算出
-    PrevBill = int(Customer[0]['LastClaimBalance']) - int(DepoPrvTotal) + int(SellPrvTotal)
+    PrevBill = int(Customer[0]['LastClaimBalance']) - int(DepoPrvTotal) + int(SellPrvTotal) + int(SellPrvtax)
     #請求月入金合計額
     queryset = Deposit.objects.filter(DepositDate__range=(str(FromDate),str(ToDate)),DepositCustomerCode=(str(Customer[0]['id'])))
     DepoSum = list(queryset.values('DepositCustomerCode').annotate(Depo_total=Coalesce(Sum('DepositMoney'),0,output_field=DecimalField())))
@@ -209,14 +217,21 @@ def Detail(Customer, FromDate, ToDate ):
                 InvoiceNUmber__gt=0,
                 InvoiceIssueDiv=1
                 )
-    queryset = queryset.values_list(
-        'ResultDate',
-        'InvoiceNUmber',
-        'OrderingId__ProductName',
-        'OrderingId__OrderingCount',
-        'ShippingVolume',
-        ).annotate(
-        Abs_total=Sum(Abs(Coalesce(F('ShippingVolume'),0) * Coalesce(F('OrderingDetailId__DetailSellPrice'),0)),output_field=DecimalField()))
+    queryset =  queryset.values('InvoiceNUmber','OrderingId__CustomeCode','OrderingId__SlipDiv','OrderingId__OrderNumber',
+                                'OrderingId__CustomeCode_id__CustomerName','OrderingId__ProductName','OrderingId__OrderingCount',
+                                'ShippingDate','ResultDate').annotate(
+                                    Abs_total=Sum(Abs(F("ShippingVolume") * F("OrderingDetailId__DetailSellPrice"))),
+                                    Shipping_total=Sum('ShippingVolume')
+                                    )
+
+    queryset =  queryset.values_list(
+         'ResultDate',
+         'InvoiceNUmber',
+         'OrderingId__ProductName',
+         'OrderingId__OrderingCount',
+         'Shipping_total',
+         'Abs_total',
+    )
 
     #請求月入金レコード
     queryset_depo = Deposit.objects.filter(DepositDate__range=(str(FromDate),str(ToDate)),DepositCustomerCode=(str(Customer[0]['id'])))
