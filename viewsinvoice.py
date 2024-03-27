@@ -52,7 +52,7 @@ class invoiceListView(LoginRequiredMixin,ListView):
 
         queryset =  RequestResult.objects.values('InvoiceNUmber','OrderingId__CustomeCode','OrderingId__SlipDiv','OrderingId__OrderNumber',
                             'OrderingId__CustomeCode_id__CustomerName','OrderingId__ProductName','OrderingId__OrderingCount',
-                            'ShippingDate').annotate(
+                            'ShippingDate','ResultDate').annotate(
                             Abs_total=Sum(Abs(F("ShippingVolume") * F("OrderingDetailId__DetailSellPrice"))),Shipping_total=Sum('ShippingVolume'))
         # 個別請求書番号が付加されたものかつ発行済
         queryset = queryset.filter(Q(InvoiceNUmber__gt=0), Q(InvoiceIssueDiv=1))

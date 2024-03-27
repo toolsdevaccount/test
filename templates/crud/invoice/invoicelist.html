@@ -189,6 +189,7 @@
 						<th scope="col" class="text-center">得意先名</th>
 						<th scope="col" class="text-center">商品名</th>
 						<th scope="col" class="text-center">番手</th>
+						<th scope="col" class="text-center">実績日</th>
 						<th scope="col" class="text-center">出荷日</th>
 						<th scope="col" class="text-center">出荷数</th>
 						<th scope="col" class="text-center">売上金額</th>
@@ -202,6 +203,7 @@
 						<td>{{ InvoiceTable.OrderingId__CustomeCode_id__CustomerName }}</td>
 						<td>{{ InvoiceTable.OrderingId__ProductName }}</td>
 						<td>{{ InvoiceTable.OrderingId__OrderingCount }}</td>
+						<td class="text-right">{{ InvoiceTable.ResultDate }}</td>
 						<td class="text-right">{{ InvoiceTable.ShippingDate }}</td>
 						<td class="text-right">{{ InvoiceTable.Shipping_total|intcomma }}</td>
 						<td class="text-right">{{ InvoiceTable.Abs_total|floatformat|intcomma }}</td>

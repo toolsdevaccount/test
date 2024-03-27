@@ -37,28 +37,38 @@ def pdf(request, pkclosing, invoiceDate_From, invoiceDate_To, element_From, elem
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
         # 文字列を日付に変換する
         search_date = conversion(invoiceDate_From, invoiceDate_To)
-        make(pkclosing, search_date[0], search_date[1], element_From, element_To, search_date[2], search_date[3],response)
+        result = make(pkclosing, search_date[0], search_date[1], element_From, element_To, search_date[2], search_date[3],response, request)
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
         logger.error(message)
         messages.add_message(request, messages.ERROR, message)
         return redirect("myapp:invoicelist")
+    if result==99:
+        message = "請求書発行データがありません"
+        messages.add_message(request, messages.WARNING, message)
+        return redirect("myapp:invoicelist")
     return response
 
-def make(closing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, billdate, response):
+def make(closing, invoiceDate_From, invoiceDate_To, element_From, element_To, lastdate, billdate, response, request):
     pdf_canvas = set_info(response) # キャンバス名
     dt_own = Own_Company()
     dt_company = company(closing, element_From, element_To)
     counter = len(dt_company)
+    if counter==0:
+        result=99
+        return result
+    
     for i in range(counter):
         dt = customer(i, dt_company)
         dt_Prev = PrevBalance(lastdate, dt, invoiceDate_From, invoiceDate_To)
         dt_Detail = Detail(dt, invoiceDate_From, invoiceDate_To)
 
         if dt_Detail:
-            print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail)  
+            print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail, invoiceDate_From)
+            result=0
 
     pdf_canvas.save() # 保存
+    return result
 
 def conversion(invoiceDate_From, invoiceDate_To):
     # 文字列を日付に変換する
@@ -148,7 +158,7 @@ def PrevBalance(lastdate, Customer, FromDate, ToDate):
     else:
         DepoPrvTotal = 0
     #前月までの売上額計
-    queryset =  RequestResult.objects.filter(ShippingDate__lte=(str(lastdate)),
+    queryset =  RequestResult.objects.filter(ResultDate__lte=(str(lastdate)),
                 OrderingId__CustomeCode=(str(Customer[0]['id'])),
                 InvoiceNUmber__gt=0,
                 InvoiceIssueDiv=1
@@ -173,7 +183,7 @@ def PrevBalance(lastdate, Customer, FromDate, ToDate):
     #繰越額
     CarryForward = int(PrevBill) - int(DepoTotal)   
     #請求月売上合計額
-    queryset =  RequestResult.objects.filter(ShippingDate__range=(str(FromDate),str(ToDate)),
+    queryset =  RequestResult.objects.filter(ResultDate__range=(str(FromDate),str(ToDate)),
                 OrderingId__CustomeCode=(str(Customer[0]['id'])),
                 InvoiceNUmber__gt=0,
                 InvoiceIssueDiv=1
@@ -192,31 +202,32 @@ def PrevBalance(lastdate, Customer, FromDate, ToDate):
     invoice = int(CarryForward) + int(SellTotal) + int(tax)
     return(PrevBill, DepoTotal, CarryForward, SellTotal, tax, invoice)
 
-def Detail(Customer, FromDate, ToDate): 
+def Detail(Customer, FromDate, ToDate ): 
     #請求月売上レコード
-    queryset =  RequestResult.objects.filter(ShippingDate__range=(str(FromDate),str(ToDate)),
+    queryset =  RequestResult.objects.filter(ResultDate__range=(str(FromDate),str(ToDate)),
                 OrderingId__CustomeCode=(str(Customer[0]['id'])),
                 InvoiceNUmber__gt=0,
                 InvoiceIssueDiv=1
                 )
     queryset = queryset.values_list(
-        'ShippingDate',
+        'ResultDate',
         'InvoiceNUmber',
         'OrderingId__ProductName',
         'OrderingId__OrderingCount',
         'ShippingVolume',
         ).annotate(
         Abs_total=Sum(Abs(Coalesce(F('ShippingVolume'),0) * Coalesce(F('OrderingDetailId__DetailSellPrice'),0)),output_field=DecimalField()))
-    
+
     #請求月入金レコード
     queryset_depo = Deposit.objects.filter(DepositDate__range=(str(FromDate),str(ToDate)),DepositCustomerCode=(str(Customer[0]['id'])))
     queryset_depo = queryset_depo.values_list('DepositDate','DepositSummary','DepositDiv__DepoPayDivname','DepositSummary','DepositSummary','DepositMoney')
-    #売上レコードと入金レコードを結合
+ 
+    #繰越レコードと売上レコードと入金レコードを結合
     result = list(chain(queryset, queryset_depo))
 
     return result
 
-def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail):
+def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail, Date_From):
     rec = len(dt)
     req = math.ceil(rec/9)
     k = 0
@@ -350,20 +361,36 @@ def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail):
         styleRight = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_RIGHT)
         styleCenter = ParagraphStyle(name='Normal', fontName='HeiseiMin-W3', fontSize=9, alignment=TA_CENTER)
 
-        #if i==0:
-        # #    k=0
-        # #else:
-        # #    k = i*9
-        # #rowlg = (i+1)*9
+        #繰越
+        Date_From = datetime.datetime.strptime(Date_From, '%Y-%m-%d') 
+        ResultDate = Paragraph(Date_From.strftime('%y%m%d'),styleCenter)
+        InvoiceNumber = Paragraph('',styleCenter)
+        ProductName = Paragraph('繰越',styleLeft)
+        ShippingVolume = Paragraph('',styleRight)      
+        Prceeds = Paragraph(f"{int(dt_Prev[0]):,}",styleRight)
+
+        data = [
+                [ResultDate, InvoiceNumber, '', ProductName, ShippingVolume, '', Prceeds, ''],
+        ]
+
+        table = Table(data, colWidths=(18*mm, 18*mm, 10*mm, 60*mm, 21*mm, 21*mm, 25*mm, 20*mm), rowHeights=5.25*mm)
+        table.setStyle(TableStyle([
+                ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 10),
+                ('BOX', (0, 0), (-1, -1), 0.50, colors.black),
+                ('INNERGRID', (0, 0), (-1, -1), 0.50,  colors.black),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ]))
+
+        #table.wrapOn(pdf_canvas, 10*mm, 10*mm)
+        #table.drawOn(pdf_canvas, 10*mm, 210.0*mm)
 
         k=0
-        rowlg=40
-        
+        rowlg=39
         while k < rowlg:
             if k<l:
-                row = dt_Detail[k]
-              
-                ShippingDate = Paragraph(row[0].strftime('%y%m%d'),styleCenter)
+                row = dt_Detail[k]            
+
+                ResultDate = Paragraph(row[0].strftime('%y%m%d'),styleCenter)
                 InvoiceNumber = Paragraph(row[1],styleCenter)
                 ProductName = Paragraph(row[2],styleLeft)
                 if row[4]=='':
@@ -372,9 +399,8 @@ def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail):
                     ShippingVolume = Paragraph('{:,.2f}'.format(row[4]),styleRight)
                 
                 Prceeds = Paragraph(f"{int(row[5]):,}",styleRight)
-
                 data += [
-                        [ShippingDate, InvoiceNumber, '', ProductName, ShippingVolume, '', Prceeds, ''],
+                        [ResultDate, InvoiceNumber, '', ProductName, ShippingVolume, '', Prceeds, ''],
                 ]
             else:
                 data += [
