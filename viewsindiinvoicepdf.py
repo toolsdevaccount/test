@@ -10,6 +10,7 @@ from reportlab.lib import colors
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import ParagraphStyle, ParagraphStyle
 from reportlab.lib.enums import TA_RIGHT, TA_CENTER, TA_LEFT
+from .models import RequestResult
 # MySQL
 import MySQLdb
 # 日時
@@ -31,19 +32,23 @@ def pdf(request,pkfrom,pkto,isdate):
         response = HttpResponse(status=200, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + filename + '.pdf'
         pkfromdef = pkfrom  # 個別請求書番号初期値をコピー
-        make(pkfrom,pkto,isdate,response)
+        result = make(pkfrom,pkto,isdate,response)
         cnt = 0
         cnt = pkto - pkfromdef +1
         for i in range(cnt):
             if i>0:
                 pkfromdef+= 1
             UpdateQuery(pkfromdef,isdate)
-
     except Exception as e:
         message = "PDF作成時にエラーが発生しました"
         logger.error(message)
         messages.add_message(request, messages.ERROR, message)
         return redirect("myapp:individualinvoicelist")
+    if result==99:
+        message = "請求書発行データがありません"
+        messages.add_message(request, messages.WARNING, message)
+        return redirect("myapp:individualinvoicelist")
+
     return response
 
 def make(pkfrom,pkto,isdate,response):
@@ -53,6 +58,9 @@ def make(pkfrom,pkto,isdate,response):
         if i>0:
             pkfrom+= 1     
         dt = connect(pkfrom,isdate)
+        if len(dt)==0:
+            result = 99
+            return result
         print_string(pdf_canvas,dt)
    
     pdf_canvas.save() # 保存
@@ -66,24 +74,11 @@ def set_info(response):
     return pdf_canvas
 
 def UpdateQuery(pkfromdef,isdate):
-    conn = MySQLdb.connect(user='root',passwd='PWStools', host='127.0.0.1',db='ksmdb',port=3308)
-    #conn = MySQLdb.connect(user='test',passwd='password', host='127.0.0.1',db='DjangoSample',port=3308)
-    cur = conn.cursor()
-    sql = (
-           ' UPDATE ' 
-	           ' myapp_requestresult '
-	       ' SET ' 	 
-		       '  InvoiceIssueDate = DATE_FORMAT(' + str(isdate) + ' ,"%Y-%m-%d" )'
-               ' ,InvoiceIssueDiv = true '
-	       ' WHERE '
-		        ' INVOICENumber = ' + str(pkfromdef) 
-        )
-    cur.execute(sql)
-    result = conn.affected_rows()
-    conn.commit()
-
-    cur.close()
-    conn.close()
+    #日付変換
+    tdate = datetime.datetime.strptime(str(isdate), '%Y%m%d')
+    date_up = tdate.strftime('%Y-%m-%d') 
+    #更新処理
+    result = RequestResult.objects.filter(InvoiceNUmber=str(pkfromdef)).update(InvoiceIssueDate=date_up, InvoiceIssueDiv=True)
 
     return result
 
@@ -147,6 +142,7 @@ def connect(pkfrom,isdate):
         '		F.PrefecturesCode_id = G.id '
         ' WHERE '
         '	  C.INVOICENumber = ' + str(pkfrom) + 
+        ' AND B.DetailSellPrice > 0' 
         ' ORDER BY '
         '	C.id ASC '
         )
@@ -196,10 +192,13 @@ def print_string(pdf_canvas,dt):
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
         pdf_canvas.drawString(430, 790, '登録番号：T2030001124438')
         # 自社情報
+        font_size = 16
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(430, 765, dt[0][17])
         # ロゴ追加
-        img = './mysite/myapp/templates/image/image1.jpg'
+        #img = './mysite/myapp/templates/image/image1.jpg'
         #img = './static/image/image1.jpg'
-        pdf_canvas.drawImage(img, 142*mm, 267*mm , 30*mm, 10*mm)
+        #pdf_canvas.drawImage(img, 142*mm, 267*mm , 30*mm, 10*mm)
         # 自社住所
         font_size = 10
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
@@ -356,10 +355,13 @@ def print_string(pdf_canvas,dt):
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
         pdf_canvas.drawString(430, 350, '登録番号：T2030001124436')
         # 自社情報
+        font_size = 16
+        pdf_canvas.setFont('HeiseiMin-W3', font_size)
+        pdf_canvas.drawString(430, 325, dt[0][17])
         # ロゴ追加
-        img = './mysite/myapp/templates/image/image1.jpg'
+        #img = './mysite/myapp/templates/image/image1.jpg'
         #img = './static/image/image1.jpg'
-        pdf_canvas.drawImage(img, 142*mm, 112*mm , 30*mm, 10*mm)
+        #pdf_canvas.drawImage(img, 142*mm, 112*mm , 30*mm, 10*mm)
         #自社住所
         font_size = 10
         pdf_canvas.setFont('HeiseiMin-W3', font_size)
@@ -403,11 +405,9 @@ def print_string(pdf_canvas,dt):
                 total += Decimal(row[25])
 
                 ShippingDate = Paragraph(row[9],styleCenter)
-
                 ProductName = Paragraph(row[10] + '<br/>\n' + row[12],styleLeft)
                 OrderingCount = Paragraph(row[11],styleLeft)
                 DetailColor = Paragraph(row[13],styleLeft)
-
                 ShippingVolume = Paragraph(row[14],styleRight)
                 DetailSellPrice = Paragraph(row[15],styleRight)
                 DetailUnitDiv = Paragraph(row[26],styleCenter)

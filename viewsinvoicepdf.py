@@ -244,7 +244,7 @@ def Detail(Customer, FromDate, ToDate ):
 
 def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail, Date_From):
     rec = len(dt)
-    req = math.ceil(rec/9)
+    req = math.ceil(rec/40)
     k = 0
 
     for i in range(req):
@@ -358,14 +358,15 @@ def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail, Date_From
         itemNo6 = Paragraph('税抜金額',style)
         itemNo7 = Paragraph('摘要',style)
         data = [
-            [itemNo0, itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6, itemNo7],
+            [itemNo0, itemNo1, itemNo2, itemNo3, '', itemNo4, itemNo5, itemNo6, itemNo7],
         ]
-        table = Table(data, colWidths=(18*mm, 18*mm, 10*mm, 60*mm, 21*mm, 21*mm, 25*mm, 20*mm), rowHeights=5.25*mm)
+        table = Table(data, colWidths=(18*mm, 18*mm, 10*mm, 45*mm, 15*mm, 21*mm, 21*mm, 25*mm, 20*mm), rowHeights=5.25*mm)
         table.setStyle(TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 10),
                 ('BOX', (0, 0), (-1, -1), 0.50, colors.black),
                 ('INNERGRID', (0, 0), (-1, -1), 0.50,  colors.black),
                 ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('SPAN', (3, 0), (4, 0)),
             ]))
         table.wrapOn(pdf_canvas, 10*mm, 10*mm)
         table.drawOn(pdf_canvas, 10*mm, 220.0*mm)
@@ -385,10 +386,10 @@ def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail, Date_From
         Prceeds = Paragraph(f"{int(dt_Prev[0]):,}",styleRight)
 
         data = [
-                [ResultDate, InvoiceNumber, '', ProductName, ShippingVolume, '', Prceeds, ''],
+                [ResultDate, InvoiceNumber, '', ProductName, '', ShippingVolume, '', Prceeds, ''],
         ]
 
-        table = Table(data, colWidths=(18*mm, 18*mm, 10*mm, 60*mm, 21*mm, 21*mm, 25*mm, 20*mm), rowHeights=5.25*mm)
+        table = Table(data, colWidths=(18*mm, 18*mm, 10*mm, 45*mm, 15*mm, 21*mm, 21*mm, 25*mm, 20*mm), rowHeights=5.25*mm)
         table.setStyle(TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 10),
                 ('BOX', (0, 0), (-1, -1), 0.50, colors.black),
@@ -400,7 +401,7 @@ def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail, Date_From
         #table.drawOn(pdf_canvas, 10*mm, 210.0*mm)
 
         k=0
-        rowlg=39
+        rowlg=40
         while k < rowlg:
             if k<l:
                 row = dt_Detail[k]            
@@ -414,26 +415,37 @@ def print_string(pdf_canvas, dt_own, dt, billdate, dt_Prev, dt_Detail, Date_From
                     ShippingVolume = Paragraph('{:,.2f}'.format(row[4]),styleRight)
                 
                 Prceeds = Paragraph(f"{int(row[5]):,}",styleRight)
+                OrderingCount = Paragraph(row[3],styleRight)
                 data += [
-                        [ResultDate, InvoiceNumber, '', ProductName, ShippingVolume, '', Prceeds, ''],
+                        [ResultDate, InvoiceNumber, '', ProductName, OrderingCount, ShippingVolume, '', Prceeds, ''],
                 ]
             else:
                 data += [
-                        ['','','','','','','',''],
+                        ['','','','','','','','',''],
                 ]
 
-            table = Table(data, colWidths=(18*mm, 18*mm, 10*mm, 60*mm, 21*mm, 21*mm, 25*mm, 20*mm), rowHeights=5.25*mm)
+            table = Table(data, colWidths=(18*mm, 18*mm, 10*mm, 45*mm, 15*mm, 21*mm, 21*mm, 25*mm, 20*mm), rowHeights=5.25*mm)
             table.setStyle(TableStyle([
                     ('FONT', (0, 0), (-1, -1), 'HeiseiMin-W3', 10),
-                    ('BOX', (0, 0), (-1, -1), 0.50, colors.black),
-                    ('INNERGRID', (0, 0), (-1, -1), 0.50,  colors.black),
+                    #('BOX', (0, 0), (-1, -1), 0.50, colors.black),
+                    ('LINEBEFORE', (0, 0), (0, 40), 0.50, colors.black),
+                    ('LINEBEFORE', (1, 0), (1, 40), 0.50, colors.black),
+                    ('LINEBEFORE', (2, 0), (2, 40), 0.50, colors.black),
+                    ('LINEBEFORE', (3, 0), (3, 40), 0.50, colors.black),
+                    ('LINEBEFORE', (5, 0), (5, 40), 0.50, colors.black),
+                    ('LINEBEFORE', (6, 0), (6, 40), 0.50, colors.black),
+                    ('LINEBEFORE', (7, 0), (7, 40), 0.50, colors.black),
+                    ('LINEBEFORE', (8, 0), (8, 40), 0.50, colors.black),
+                    ('LINEAFTER' , (8, 0), (8, 40), 0.50, colors.black),
+                    ('LINEBELOW' , (0, 0), (8, 40), 0.50, colors.black),
+                    #('INNERGRID', (0, 0), (-1, -1), 0.50,  colors.black),
                     ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
                 ]))
             # 変数加算
             k += 1
 
         table.wrapOn(pdf_canvas, 10*mm, 10*mm)
-        table.drawOn(pdf_canvas, 10*mm, 9.9*mm)
+        table.drawOn(pdf_canvas, 10*mm, 4.5*mm)
 
         pdf_canvas.showPage()
 if __name__ == '__main__':
